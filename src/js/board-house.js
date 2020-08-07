@@ -1,7 +1,7 @@
 // Babel 7's `"useBuiltIns: "usage"` will automatically insert polyfills
 // https://babeljs.io/docs/en/next/babel-preset-env#usebuiltins
 
-import './includes/analytics.js';
+import './lib/tracking.js';
 import { BigBoardCore } from './includes/big-board-core.js';
 
 import $ from './lib/qsa.js';
