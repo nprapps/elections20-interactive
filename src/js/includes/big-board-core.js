@@ -17,6 +17,7 @@ export class BigBoardCore extends Component {
 
   // Lifecycle: Called whenever our component is created
   async componentDidMount() {
+    console.log("here")
     // TODO: make sure we're doing necessary error checking 
     var mainResult = await fetch(`./assets/data/${this.state.json}`);
     var topLevel = await fetch(`./assets/data/top-level-results.json`);
@@ -364,17 +365,13 @@ export class BigBoardCore extends Component {
       return {result1: race[0], uncontested : true }
     }
 
+
     let result1;
     let result2;
-    let loopArr;
-    if (race[0]['precinctsreportingpct'] <= 0) {
-      loopArr = race;
-    } else {
-      loopArr = [race[0], race[1]];
-    }
+    // TODO: check switching away from loopArr didn't break anything
 
-    for (var i = 0; i < loopArr.length; i++) {
-      var result = loopArr[i];
+    for (var i = 0; i < race.length; i++) {
+      var result = race[i];
       if ((result['party'] === 'Dem' || result['party'] === 'Yes') && !result1) {
         result1 = result;
       } else if ((result['party'] === 'GOP' || result['party'] === 'No') && !result2) {
