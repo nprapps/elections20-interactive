@@ -1,7 +1,3 @@
-// Polyfills that aren't covered by `babel-preset-env`
-import 'promise-polyfill/src/polyfill';
-import 'whatwg-fetch';
-
 // npm libraries
 import { h, createProjector } from 'maquette';
 import { buildDataURL } from './helpers.js';

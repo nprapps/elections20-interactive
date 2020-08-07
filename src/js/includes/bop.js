@@ -1,11 +1,6 @@
-// Polyfills that aren't covered by `babel-preset-env`
-import 'promise-polyfill/src/polyfill';
-import 'whatwg-fetch';
-
 // npm libraries
 import { scaleLinear } from 'd3-scale';
 import { select } from 'd3-selection';
-import URL from 'url-parse';
 import countdown from './countdown';
 import {
     buildDataURL,

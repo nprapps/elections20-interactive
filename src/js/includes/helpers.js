@@ -23,24 +23,18 @@ const classify = function (str) {
  * Parse a url parameter by name.
  * via: http://stackoverflow.com/a/901144
  */
-const getParameterByName = function (name) {
-  name = name.replace(/[[]/, '\\[').replace(/[\]]/, '\\]');
-  const regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
-  const results = regex.exec(document.location.search);
-  return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
-};
 
-function isLocalhost (hostname) {
+function isLocalhost(hostname) {
   return hostname && ['127.0.0.1', 'localhost', '0.0.0.0'].includes(hostname);
 }
 
-function shouldUsePJAXForHost (hostname) {
+function shouldUsePJAXForHost(hostname) {
   // Do not include `apps.npr.org`, since this is our test page,
   // and it doesn't act like a normal NPR.org page (with PJAX)
   return isNPRHost(hostname) && hostname !== 'apps.npr.org';
 }
 
-function isNPRHost (hostname) {
+function isNPRHost(hostname) {
   return hostname &&
     (hostname === 'npr.org' || hostname.endsWith('.npr.org'));
 }
@@ -90,7 +84,6 @@ const toTitleCase = str =>
 
 export {
   classify,
-  getParameterByName,
   isLocalhost,
   isNPRHost,
   shouldUsePJAXForHost,

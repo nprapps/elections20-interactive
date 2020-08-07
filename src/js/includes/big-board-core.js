@@ -1,8 +1,3 @@
-// Polyfills that aren't covered by `babel-preset-env`
-import 'promise-polyfill/src/polyfill';
-import 'whatwg-fetch';
-import URL from 'url-parse';
-
 // import { h, createProjector } from 'maquette';
 import { h, Component, Fragment } from 'preact';
 import { buildDataURL, getHighestPymEmbed } from './helpers.js';

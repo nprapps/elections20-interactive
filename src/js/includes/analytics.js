@@ -1,5 +1,4 @@
-import appConfig from './app_config.js';
-import URL from 'url-parse';
+var accountID = "UA-5828686-75";
 
 const embedGa = () => {
   (function (i, s, o, g, r, a, m) {
@@ -17,10 +16,10 @@ const embedGa = () => {
 };
 
 const trackPageLoad = () => {
-  const currentUrl = new URL(window.location.href, true);
-  console.log(currentUrl.query);
-  const parentUrl = new URL(currentUrl.query.parentUrl);
-  const state = currentUrl.query.state || '';
+  const currentUrl = new URL(window.location.href);
+  var parent = currentUrl.searchParams.get("parentUrl");
+  const parentUrl = parent ? new URL(parent) : null;
+  const state = currentUrl.searchParams.get("state") || '';
 
   const embedUrl = window.location.protocol +
     '//' + window.location.hostname +
@@ -34,11 +33,11 @@ const trackPageLoad = () => {
   const DIMENSION_PARENT_HOSTNAME = 'dimension2';
   const DIMENSION_PARENT_INITIAL_WIDTH = 'dimension3';
   let customData = {};
-  customData[DIMENSION_PARENT_URL] = currentUrl.query.parentUrl || '';
-  customData[DIMENSION_PARENT_HOSTNAME] = parentUrl.hostname;
-  customData[DIMENSION_PARENT_INITIAL_WIDTH] = currentUrl.query.initialWidth || '';
+  customData[DIMENSION_PARENT_URL] = parent || '';
+  customData[DIMENSION_PARENT_HOSTNAME] = parentUrl && parentUrl.hostname;
+  customData[DIMENSION_PARENT_INITIAL_WIDTH] = currentUrl.searchParams.get("initialWidth") || '';
 
-  window.ga('create', appConfig.VIZ_GOOGLE_ANALYTICS.ACCOUNT_ID, 'auto');
+  window.ga('create', accountID, 'auto');
   window.ga('set', 'location', gaLocation);
   window.ga('set', 'page', gaPath);
   window.ga('send', 'pageview', customData);
@@ -47,7 +46,7 @@ const trackPageLoad = () => {
 const trackEvent = (eventName, label, value) => {
   var eventData = {
     'hitType': 'event',
-    'eventCategory': appConfig.PROJECT_SLUG,
+    'eventCategory': "elections20",
     'eventAction': eventName
   };
 
@@ -57,29 +56,7 @@ const trackEvent = (eventName, label, value) => {
   window.ga('send', eventData);
 };
 
-const trackCompletion = () => {
-  // Register a "completion" event when a user scrolls to or past
-  // the bottom of an embed's iframe
-  let wasIframeBottomVisibleOrPassed = false;
-  window.pymChild.onMessage('viewport-iframe-position', parentInfo => {
-    const parentWindowHeight = Number(parentInfo.split(' ')[1]);
-    const iframeBottom = Number(parentInfo.split(' ')[4]);
-    const isIframeBottomVisibleOrPassed = (parentWindowHeight > iframeBottom);
-    if (
-      // No need to run computation if the event already happened
-      !wasIframeBottomVisibleOrPassed &&
-      isIframeBottomVisibleOrPassed
-    ) {
-      wasIframeBottomVisibleOrPassed = true;
-      window.ANALYTICS.trackEvent('finished-graphic', document.title);
-    }
-  });
-};
 
 embedGa();
 trackPageLoad();
 window.ANALYTICS = { 'trackEvent': trackEvent };
-window.addEventListener('load', () => {
-  // Queue this listener until Pym is ready
-  setTimeout(trackCompletion, 0);
-});
