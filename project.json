@@ -1,0 +1,39 @@
+{
+  "s3": {
+    "stage": {
+      "bucket": "stage-apps.npr.org",
+      "path": "elections20-interactive"
+    },
+    "live": {
+      "bucket": "apps.npr.org",
+      "path": "elections20-interactive"
+    }
+  },
+  "styles": {
+    "src/css/seed.less": "build/style.css",
+    "src/css/board-ballot.less": "build/board-ballot.css",
+    "src/css/board-senate.less": "build/board-senate.css",
+    "src/css/embeds.less": "build/embeds.css",
+    "src/css/get-caught-up.less": "build/get-caught-up.css"
+  },
+  "scripts": {
+    "src/js/main.js": "build/app.js",
+    "src/js/board-ballot.js": "build/board-ballot.js",
+    "src/js/board-senate.js": "build/board-senate.js",
+    "src/js/board-house.js": "build/board-house.js",
+    "src/js/get-caught-up.js": "build/get-caught-up.js"
+  },
+  "title": "",
+  "description": "",
+  "url": "",
+  "image": "assets/logo.png",
+  "analytics": {
+    "topicIDs": [],
+    "primaryTopic": "",
+    "secondaryTopics": []
+  },
+  "sheets": ["1pfTPmeWGTQlw_7efXcnMoblarzyaz_zjDzqBfLFnLYg"],
+  "docs": {},
+  "embedded": true,
+  "production": false
+}

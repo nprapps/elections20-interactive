@@ -1,0 +1,126 @@
+.board-key {
+    .clearfix();
+    -webkit-font-smoothing: antialiased;
+    border-top: 1px solid @gray-lighter;
+    color: @gray;
+    font-family: @font-family-sans-serif;
+    font-size: 12px;
+    margin: 22px 0 0 0;
+    padding-top: 11px;
+
+    h3 {
+        color: @gray-darker;
+        float: left;
+        font-family: @knockout;
+        font-size: 14px;
+        font-weight: normal;
+        letter-spacing: 0.05em;
+        margin: 0 0 6px 0;
+        text-transform: uppercase;
+    }
+
+    ul {
+        border-left: 1px solid @gray-lighter;
+        display: -webkit-flex;
+        display: flex;
+        -webkit-flex-direction: row;
+        flex-direction: row;
+        -webkit-flex-wrap: wrap;
+        flex-wrap: wrap;
+        list-style-type: none;
+        margin: 0 0 0 35px;
+        padding: 0 0 0 11px;
+    }
+    li {
+        display: block;
+        line-height: 14px;
+        margin: 0 0 6px 0;
+        padding: 0;
+        white-space: nowrap;
+        width: 210px;
+    }
+    i {
+        display: inline-block;
+        font-style: normal;
+        margin-right: 5px;
+    }
+
+    .dem, .gop, .ind,
+    .yes, .no {
+        i {
+            border-radius: 2px;
+            float: left;
+            margin-top: 2px;
+            height: 10px;
+            width: 1em;
+        }
+        .winner {
+            border-radius: 2px;
+            color: #fff;
+            padding: 0 3px;
+        }
+    }
+
+    .dem i { background-color: @demDim; }
+    .dem .winner { background-color: @dem; }
+    .gop i { background-color: @gopDim; }
+    .gop .winner { background-color: @gop; }
+    .ind i { background-color: @indDim; }
+    .ind .winner { background-color: @ind; }
+    .yes i { background-color: @indDim; }
+    .yes .winner { background-color: @ind; }
+    .no i { background-color: @gopDim; }
+    .no .winner { background-color: @gop; }
+
+    .yes, .no { display: none; }
+
+    .pickup i {
+        width: 1em;
+        font-style: italic;
+        font-size: 10px;
+        line-height: 12px;
+        color: @dem;
+    }
+
+    .runoff i {
+        width: .9em;
+
+        img {
+            width: 100%;
+            height: auto;
+        }
+    }
+
+    .time i {
+        color: @gray-light;
+        font-family: @knockout;
+        font-size: 12px;
+        font-weight: 500;
+        letter-spacing: 0.05em;
+    }
+
+    .held i {
+        color: @gop;
+        font-size: 12px;
+        letter-spacing: 0;
+    }
+
+    .precincts i {
+        color: @gray;
+        font-size: 12px;
+        letter-spacing: 0;
+        text-transform: none;
+
+        span {
+            font-size: 80%;
+            margin-left: -0.1em;
+            vertical-align: top;
+        }
+    }
+}
+
+.board.ballot-measures + .board-key {
+    li { width: auto; margin-right: 30px; }
+    .dem, .gop, .ind, .incumbent, .pickup, .runoff, .held, .time { display: none; }
+    .yes, .no { display: block; }
+}

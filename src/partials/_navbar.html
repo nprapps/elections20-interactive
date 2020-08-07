@@ -1,0 +1,48 @@
+<!-- Hide the navbar by default, for station sites -->
+<!-- See information in the `navbar.js` file on why this is done -->
+<% 
+var { nav, county_data } = grunt.data.json;
+%>
+
+<div id="results-nav-wrapper">
+    <nav class="results-nav">
+
+        <div class="results-logo">
+            <span class="election-name">Election</span>
+            <span class="election-year">2018</span>
+        </div>
+
+        <input type="checkbox" id="small-screen-nav-checkbox" />
+
+        <label for="small-screen-nav-checkbox" class="toggle small-screen-nav-label">More Live Results</label>
+
+        <ul class="menu">
+
+             <% for (item of nav) { %>
+            <li>
+                <a target="_blank" href=" <%= item.url %>"><%= item.label %></a>
+            </li>
+             <%}%>
+
+            <ul>
+                <li class="state-nav">
+                    <input type="checkbox" id="state-nav-checkbox" />
+                    <label for="state-nav-checkbox" class="state-nav-label">state results </label>
+
+                    <ul class="states">
+                        <li>
+                            <% for (column in county_data) { %>
+                            <div >
+                                <% for (state in column) {%>
+                                    <p><a target="_blank" href="<%= state.url%>"><%= state.fullname %></a></p>
+                                <%}%>
+                            </div>
+                            <%}%>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+           
+        </ul>
+    </nav>
+</div> <!-- / results-nav-wrapper -->

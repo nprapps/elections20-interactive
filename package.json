@@ -1,0 +1,65 @@
+{
+  "name": "elections20-interactive",
+  "description": "",
+  "version": "0.0.1",
+  "author": "ruthwtalbot",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nprapps/elections20-interactive.git"
+  },
+  "dependencies": {
+    "@babel/plugin-transform-react-jsx": "^7.10.4",
+    "@babel/polyfill": "~7.0.0",
+    "@babel/preset-react": "^7.10.4",
+    "@nprapps/betty": "^1.0.9",
+    "async": "^2.0.0-rc.1",
+    "aws-sdk": "^2.2.45",
+    "babelify": "^10.0.0",
+    "browser-pack-flat": "^3.0.5",
+    "browserify": "^16.2.3",
+    "chalk": "^2.4.2",
+    "commonmark": "^0.24.0",
+    "csv": "^5.1.1",
+    "dot": "^1.1.2",
+    "exorcist": "^1.0.1",
+    "googleapis": "^45.0.0",
+    "grunt": "^1.0.4",
+    "grunt-contrib-connect": "^2.0.0",
+    "grunt-contrib-watch": "^1.0.0",
+    "less": "^3.9.0",
+    "maquette": "^2.5.4",
+    "mime": "^2.4.2",
+    "opn": "^5.4.0",
+    "preact": "^10.4.6",
+    "promise-polyfill": "^8.1.0",
+    "resolve": "^1.1.7",
+    "shelljs": "^0.8.3",
+    "through2": "^3.0.1",
+    "typogr": "^0.6.4",
+    "url-parse": "^1.4.3",
+    "whatwg-fetch": "^3.0.0"
+  },
+  "browser": {
+    "share": "./src/js/lib/share.min.js",
+    "angular": "angular/angular.min",
+    "jquery": "jquery/dist/jquery.min",
+    "leaflet": "leaflet/dist/leaflet.js",
+    "three": "three/three.min"
+  },
+  "browserify": {
+    "transform": [
+      "./tasks/lib/browserify-less",
+      "./tasks/lib/browserify-text"
+    ]
+  },
+  "devDependencies": {
+    "@babel/core": "^7.10.5",
+    "@babel/plugin-transform-modules-commonjs": "^7.10.4",
+    "@babel/polyfill": "^7.10.4",
+    "@babel/preset-env": "^7.10.4",
+    "babel-preset-es2015": "^6.24.1"
+  },
+  "plugins": [
+    "@babel/plugin-transform-modules-commonjs"
+  ]
+}

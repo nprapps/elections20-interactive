@@ -1,0 +1,26 @@
+
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="embeds.css">
+    <link rel="stylesheet" type="text/css" href="board-ballot.css">
+    <link rel="stylesheet" type="text/css" href="get-caught-up.css">
+    <%= t.include("partials/_webfonts.html") %>
+    <base target="_blank">
+    <%= t.include("partials/_head.html", grunt.data.json) %>
+  </head>
+  <body>
+    <%= t.include("partials/_navbar.html") %> 
+    <div class="get-caught-up-wrapper"></div>
+
+    <script src="https://pym.nprapps.org/pym.v1.min.js"></script>
+
+    <script src="get-caught-up.js" async></script>
+
+
+    <%= t.include("partials/_board_key.html") %> 
+    <%= t.include("partials/_footer.html") %>
+  </body>
+</html>
