@@ -1,7 +1,8 @@
 // npm libraries
 import { h, createProjector } from 'maquette';
 import { buildDataURL } from './helpers.js';
-import copyBop from './copy.bop.js';
+
+var copyBop = window.copy.bop;
 
 // global vars
 let dataURL = null;

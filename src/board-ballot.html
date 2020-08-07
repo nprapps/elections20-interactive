@@ -13,7 +13,12 @@
     <%= t.include("partials/_navbar.html") %> 
     <div class="board big-board"></div>
 
-    <script src="https://pym.nprapps.org/pym.v1.min.js"></script>
+    <script>
+      window.copy = {
+        content: <%= JSON.stringify(json.content) %>,
+        bop: <%= JSON.stringify(json.bop) %>
+      }
+    </script>
     <script src="board-ballot.js" async></script>
 
 

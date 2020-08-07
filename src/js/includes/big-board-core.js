@@ -1,7 +1,8 @@
 // import { h, createProjector } from 'maquette';
 import { h, Component, Fragment } from 'preact';
 import { buildDataURL, getHighestPymEmbed } from './helpers.js';
-import copyBop from './copy.bop.js';
+
+var copyBop = window.copy.bop;
 
 export class BigBoardCore extends Component {
   constructor(props) {

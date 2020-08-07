@@ -8,7 +8,8 @@ import {
     getHighestPymEmbed,
     shouldUsePJAXForHost
 } from './helpers.js';
-import copyBop from './copy.bop.js';
+
+var copyBop = window.copy.bop;
 
 // Global vars
 var DATA_FILE = 'top-level-results.json';
