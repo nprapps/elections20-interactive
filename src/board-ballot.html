@@ -3,15 +3,14 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <link rel="stylesheet" type="text/css" href="embeds.css">
-    <link rel="stylesheet" type="text/css" href="board-ballot.css">
+    <link rel="stylesheet" type="text/css" href="style.css">
     <%= t.include("partials/_webfonts.html") %>
     <base target="_blank">
     <%= t.include("partials/_head.html", grunt.data.json) %>
   </head>
   <body style="max-width:2000px">
     <%= t.include("partials/_navbar.html") %> 
-    <div class="board big-board"></div>
+    <div class="board big-board" data-json="ballot-measures-national.json" data-title="Key Ballot Initiatives"></div>
 
     <script>
       window.copy = {
@@ -19,7 +18,7 @@
         bop: <%= JSON.stringify(json.bop) %>
       }
     </script>
-    <script src="board-ballot.js" async></script>
+    <script src="app.js" async></script>
 
 
     <%= t.include("partials/_board_key.html") %> 

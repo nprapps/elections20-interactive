@@ -10,20 +10,10 @@
     }
   },
   "styles": {
-    "src/css/seed.less": "build/style.css",
-    "src/css/board-ballot.less": "build/board-ballot.css",
-    "src/css/board-senate.less": "build/board-senate.css",
-    "src/css/board-president.less": "build/board-president.css",
-    "src/css/embeds.less": "build/embeds.css",
-    "src/css/get-caught-up.less": "build/get-caught-up.css"
+    "src/css/seed.less": "build/style.css"
   },
   "scripts": {
-    "src/js/main.js": "build/app.js",
-    "src/js/board-ballot.js": "build/board-ballot.js",
-    "src/js/board-senate.js": "build/board-senate.js",
-    "src/js/board-president.js": "build/board-president.js",
-    "src/js/board-house.js": "build/board-house.js",
-    "src/js/get-caught-up.js": "build/get-caught-up.js"
+    "src/js/main.js": "build/app.js"
   },
   "title": "",
   "description": "",
