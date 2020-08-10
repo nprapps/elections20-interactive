@@ -145,7 +145,6 @@ export class BigBoardCore extends Component {
   }
 
   renderTopLevel() {
-    console.log("toplevel", this.state)
     if (this.state.title.match(/^House/)) {
       var bop = this.state.house_bop;
       return this.renderCongressBOP(bop);
@@ -205,7 +204,20 @@ export class BigBoardCore extends Component {
               {this.getTopLevelHeaderGroup("Dem.", 'Dem', demSeats)}
               {this.getTopLevelHeaderGroup("GOP.", 'GOP', gopSeats)}
               {this.getTopLevelHeaderGroup("Ind.", 'Other', indSeats)}
+              {this.getTopLevelHeaderGroup("Not Yet Called", 'Not-Called', uncalledRaces)}
             </div>
+
+
+    //         h('div.results-header-group.not-called', [
+    //   h('h2.party', [
+    //       h('label', [
+    //           'Not Yet Called'
+    //       ]),
+    //       h('abbr', [
+    //           uncalledRaces
+    //       ])
+    //   ])
+    // ])
   }
 
   getTopLevelHeaderGroup(label, party, data, winner) {
