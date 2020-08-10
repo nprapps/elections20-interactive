@@ -6,6 +6,14 @@
   </head>
   <body>
 
+    <main class="app"></main>
+
+    <script>
+      window.copy = {
+        content: <%= JSON.stringify(json.content) %>,
+        bop: <%= JSON.stringify(json.bop) %>
+      }
+    </script>
     <script src="app.js" async></script>
     <%= t.include("partials/_analytics.html") %>
   </body>
