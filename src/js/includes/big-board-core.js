@@ -1,6 +1,7 @@
 // import { h, createProjector } from 'maquette';
 import { h, Component, Fragment } from 'preact';
 import { buildDataURL, getHighestPymEmbed } from './helpers.js';
+import gopher from "../gopher.js";
 
 var copyBop = window.copy.bop;
 
@@ -9,36 +10,24 @@ export class BigBoardCore extends Component {
     super();
 
     this.state = { json: props.json, title: props.title };
+    this.onData = this.onData.bind(this);
+  }
+
+  onData(json) {
+    this.setState(json);
   }
 
   // Lifecycle: Called whenever our component is created
   async componentDidMount() {
-    console.log("here")
-    // TODO: make sure we're doing necessary error checking 
-    var mainResult = await fetch(`./assets/data/${this.state.json}`);
-    var topLevel = await fetch(`./assets/data/top-level-results.json`);
-
-    var data = {};
-    if (mainResult.ok){
-      data = {...data, ...await mainResult.json()};
-    } else {
-      console.warn(Error(mainResult.statusText));
-    }
-
-    if (topLevel.ok){
-      var topLevelData = await topLevel.json();
-      data = {...data, ...topLevelData};
-      
-    } else {
-      console.warn(Error(mainResult.statusText));
-    }
-
-    this.setState(data);
+    gopher.watch(`https://apps.npr.org/elections18-graphics/data/${this.state.json}`, this.onData);
+    gopher.watch(`https://apps.npr.org/elections18-graphics/data/top-level-results.json`, this.onData);
   }
 
   // Lifecycle: Called just before our component will be destroyed
   componentWillUnmount() {
   // stop when not renderable
+    gopher.unwatch(`https://apps.npr.org/elections18-graphics/data/${this.state.json}`, this.onData);
+    gopher.unwatch(`https://apps.npr.org/elections18-graphics/data/top-level-results.json`, this.onData);
   }
 
   render() {

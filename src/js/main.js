@@ -9,10 +9,10 @@ import App from "./app.js";
 
 
 $(".big-board").forEach(function(board) {
-  var json = board.dataset.source;
+  var json = board.dataset.json;
   var title = board.dataset.title;
 
-  render(<BigBoardCore json="{json}" title="{title}"/>, board);
+  render(<BigBoardCore json={json} title={title}/>, board);
 });
 
 $(".get-caught-up-wrapper").forEach(function(gcu) {
