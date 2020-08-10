@@ -5,6 +5,7 @@
     <link rel="stylesheet" type="text/css" href="style.css">
   </head>
   <body>
+    <%= t.include("partials/_navbar.html") %> 
 
     <main class="app"></main>
 
@@ -15,6 +16,8 @@
       }
     </script>
     <script src="app.js" async></script>
+    <%= t.include("partials/_board_key.html") %> 
+    <%= t.include("partials/_footer.html") %>
     <%= t.include("partials/_analytics.html") %>
   </body>
 </html>

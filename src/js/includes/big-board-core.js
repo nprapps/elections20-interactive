@@ -25,13 +25,13 @@ export class BigBoardCore extends Component {
 
   // Lifecycle: Called just before our component will be destroyed
   componentWillUnmount() {
-  // stop when not renderable
+    // stop when not renderable
     gopher.unwatch(`https://apps.npr.org/elections18-graphics/data/${this.state.json}`, this.onData);
     gopher.unwatch(`https://apps.npr.org/elections18-graphics/data/top-level-results.json`, this.onData);
   }
 
   render() {
-    if (!this.state.results) {
+    if (!this.state.results || !this.state.house_bop) {
       return <div> "Loading..." </div>;
     } else if (false) { // TODO: replace this with a check for valid formatting?
       return <div></div>;
@@ -145,6 +145,7 @@ export class BigBoardCore extends Component {
   }
 
   renderTopLevel() {
+    console.log("toplevel", this.state)
     if (this.state.title.match(/^House/)) {
       var bop = this.state.house_bop;
       return this.renderCongressBOP(bop);
