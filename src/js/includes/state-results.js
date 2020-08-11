@@ -41,19 +41,20 @@ export class StateResults extends Component {
   componentWillUnmount() {
     // stop when not renderable
     gopher.unwatch(
-      'https://apps.npr.org/elections18-graphics/data/extra_data/' +
-        this.state.currState +
-        '-extra.json',
+      this.getDataFileName("main"),
       this.onData
     );
     gopher.unwatch(
-      `https://apps.npr.org/elections18-graphics/data/${this.state.currState}.json`,
+      this.getDataFileName("key"),
       this.onData
     );
   }
 
-  componentDidUpdate(prevState, prevProps) {
-    if (prevState.activeView !== this.state.activeView) {
+  componentDidUpdate(prevProps, prevState) {
+    var { state, props } = this;
+    var changed = prevState.activeView != state.activeView || props.state != prevProps.state;
+    console.log("DID", changed);
+    if (changed) {
       this.updateWatchedFiles(prevState.activeView, this.state.activeView);
     }
   }
@@ -414,26 +415,25 @@ export class StateResults extends Component {
   updateWatchedFiles(prevView, currView) {
     const prevFile = this.getDataFileName(prevView);
     const newFile = this.getDataFileName(currView);
-    if (newFile != prevFile) {
-      gopher.unwatch(prevFile, this.onData);
-      gopher.watch(newFile, this.onData);
-    }
+    gopher.unwatch(prevFile, this.onData);
+    gopher.watch(newFile, this.onData);
   }
 
   getDataFileName(view) {
+    var state = this.props.state.toLowerCase();
     // TODO: should this be in this.state? It doesn't change so feels like no?
     if (view === 'senate' || view === 'governor') {
-      return `https://apps.npr.org/elections18-graphics/data/${this.state.currState}-counties-${view}.json`;
+      return `https://apps.npr.org/elections18-graphics/data/${state}-counties-${view}.json`;
     } else if (view === 'senate special') {
-      return `https://apps.npr.org/elections18-graphics/data/${this.state.currState}-counties-senate-special.json`;
+      return `https://apps.npr.org/elections18-graphics/data/${state}-counties-senate-special.json`;
     } else if (view === 'main') {
       return (
         'https://apps.npr.org/elections18-graphics/data/extra_data/' +
-        this.state.currState +
+        state +
         '-extra.json'
       );
     } else {
-      return `https://apps.npr.org/elections18-graphics/data/${this.state.currState}.json`;
+      return `https://apps.npr.org/elections18-graphics/data/${state}.json`;
     }
   }
 
@@ -547,7 +547,7 @@ export class StateResults extends Component {
 
   // TODO: refactor this to make big board code shared again.
   renderRace(race) {
-    console.log('Race: ', race);
+    // console.log('Race: ', race);
     var result1 = race[0];
     var result2 = race[1];
     let winningResult;

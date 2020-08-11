@@ -52,7 +52,7 @@ export class Gopher {
 
   unwatch(url, callback) {
     var entry = this.urls.get(url);
-    if (!entry) throw `No gopher entry found for ${url}`;
+    if (!entry) return console.warn(`No gopher entry found for ${url}`);
     entry.callbacks = entry.callbacks.filter((c) => c != callback);
     this.watchCount--;
     if (this.watchCount <= 0) {

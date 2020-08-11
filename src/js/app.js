@@ -6,8 +6,6 @@ import { StateResults } from './includes/state-results.js';
 
 import Scrapple from "@twilburn/scrapple";
 
-var router = new Scrapple();
-
 var metaData = {
   senate: {
     json: "senate-national.json",
@@ -27,12 +25,11 @@ export default class App extends Component {
   constructor() {
     super();
     this.state = {
-      route: "renderA",
+      route: "renderGetCaughtUp",
       params: {}
     };
 
     this.router = new Scrapple();
-    this.addRoute("/", "renderA");
     this.addRoute("/boards/:type", "renderBoards");
     this.addRoute("/get-caught-up", "renderGetCaughtUp");
     this.addRoute("/states/:state", "renderState");
