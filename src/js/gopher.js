@@ -32,7 +32,7 @@ export class Gopher {
     entry.etag = response.headers.get("etag");
     var json = await response.json();
     entry.last = json;
-    entry.callbacks.forEach(c => c(json));
+    entry.callbacks.forEach((c) => c(json));
     return json;
   }
 
@@ -53,7 +53,7 @@ export class Gopher {
   unwatch(url, callback) {
     var entry = this.urls.get(url);
     if (!entry) throw `No gopher entry found for ${url}`;
-    entry.callbacks = entry.callbacks.filter(c => c != callback);
+    entry.callbacks = entry.callbacks.filter((c) => c != callback);
     this.watchCount--;
     if (this.watchCount <= 0) {
       this.watchCount = 0;
@@ -71,10 +71,8 @@ export class Gopher {
     }
     setTimeout(this.tick, this.interval * 1000);
   }
-
 }
 
 var gopher = new Gopher();
 
 export default gopher;
-
