@@ -1,5 +1,7 @@
 import { Component, h } from "preact";
 import { BigBoardCore } from './includes/big-board-core.js';
+import { GetCaughtUp } from './includes/get-caught-up.js';
+import { StateResults } from './includes/state-results.js';
 
 import Scrapple from "@twilburn/scrapple";
 
@@ -31,6 +33,8 @@ export default class App extends Component {
     this.router = new Scrapple();
     this.addRoute("/", "renderA");
     this.addRoute("/boards/:type", "renderBoards");
+    this.addRoute("/get-caught-up", "renderGetCaughtUp");
+    this.addRoute("/states/:state", "renderState");
   }
 
   addRoute(path, route) {
@@ -43,6 +47,19 @@ export default class App extends Component {
     let currentBoard = this.state.params.type;
     return <div class="board big-board">
             <BigBoardCore json={metaData[currentBoard].json} title={metaData[currentBoard].title}/>
+          </div>
+  }
+
+  renderState() {
+    let currentState = this.state.params.state;
+    return <div id="state-results">
+            <StateResults state={currentState} activeView="key"/>
+          </div>
+  }
+
+  renderGetCaughtUp() {
+    return <div class="get-caught-up-wrapper">
+            <GetCaughtUp />
           </div>
   }
 

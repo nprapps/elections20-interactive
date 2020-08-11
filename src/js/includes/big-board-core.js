@@ -36,7 +36,7 @@ export class BigBoardCore extends Component {
     } else if (false) { // TODO: replace this with a check for valid formatting?
       return <div></div>;
     }
-    const results = this.getCleanedResults();
+    const results = this.getCleanedResults(this.state.results);
 
     // TODO: add in last updated to footer and senate footnote
     return <div class="results-wrapper">
@@ -95,6 +95,7 @@ export class BigBoardCore extends Component {
   }
 
   renderRace(race) {
+    console.log("Race: ",race)
     var result1 = race['results']['result1'];
     var result2 = race['results']['result2'];
     var winningResult = race['results']['winningResult'];
@@ -234,9 +235,8 @@ export class BigBoardCore extends Component {
             </div>
   }
 
-  getCleanedResults() {
+  getCleanedResults(resultsData) {
     // Get our data into a clean final format
-    var resultsData = this.state.results;
     var numRaces = 0;
     let sortedCategories = [];
 
