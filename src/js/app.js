@@ -1,24 +1,24 @@
 import { Component, h } from "preact";
-import { BigBoardCore } from './includes/big-board-core.js';
+import { BigBoardCore } from "./includes/big-board-core.js";
 
 import Scrapple from "@twilburn/scrapple";
 
 var router = new Scrapple();
 
 var metaData = {
-  senate : {
+  senate: {
     json: "senate-national.json",
     title: "Senate"
   },
-  house : {
+  house: {
     json: "house-national.json",
     title: "House"
   },
-  ballot : {
+  ballot: {
     json: "ballot-measures-national.json",
     title: "Ballot"
   }
-}
+};
 
 export default class App extends Component {
   constructor() {
@@ -26,7 +26,7 @@ export default class App extends Component {
     this.state = {
       route: "renderA",
       params: {}
-    }
+    };
 
     this.router = new Scrapple();
     this.addRoute("/", "renderA");
@@ -41,9 +41,14 @@ export default class App extends Component {
 
   renderBoards() {
     let currentBoard = this.state.params.type;
-    return <div class="board big-board">
-            <BigBoardCore json={metaData[currentBoard].json} title={metaData[currentBoard].title}/>
-          </div>
+    return (
+      <div class="board big-board">
+        <BigBoardCore
+          json={metaData[currentBoard].json}
+          title={metaData[currentBoard].title}
+        />
+      </div>
+    );
   }
 
   render(props, state) {
