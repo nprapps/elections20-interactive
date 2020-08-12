@@ -1,4 +1,3 @@
-
 // TODO: make all of this easier to re-use in smaller chunks
 // TODO: clean up shareable parts of getCleanedData and bring in here?
 export function determineResults(race) {
@@ -12,10 +11,7 @@ export function determineResults(race) {
   // TODO: check switching away from loopArr didn't break anything
   for (var i = 0; i < race.length; i++) {
     var result = race[i];
-    if (
-      (result['party'] === 'Dem' || result['party'] === 'Yes') &&
-      !result1
-    ) {
+    if ((result['party'] === 'Dem' || result['party'] === 'Yes') && !result1) {
       result1 = result;
     } else if (
       (result['party'] === 'GOP' || result['party'] === 'No') &&
@@ -122,6 +118,16 @@ export function getMetaData(results) {
   }
 
   return { winningResult, called, reporting, change };
+}
+
+export function calculatePrecinctsReporting(pct) {
+  if (pct > 0 && pct < 0.005) {
+    return '<1';
+  } else if (pct > 0.995 && pct < 1) {
+    return '>99';
+  } else {
+    return Math.round(pct * 100);
+  }
 }
 
 // Helper functions

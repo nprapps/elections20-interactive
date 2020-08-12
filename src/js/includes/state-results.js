@@ -6,7 +6,8 @@ import { buildDataURL, getHighestPymEmbed, toTitleCase } from './helpers.js';
 import gopher from '../gopher.js';
 import getValues from 'lodash.values';
 import sortBy from 'lodash.sortby';
-import { KeyResults } from './KeyResults.js';
+import { KeyResults } from './keyResults.js';
+import { HouseResults } from './houseResults.js';
 
 var lastRequestTime;
 var initialized = false;
@@ -21,7 +22,7 @@ export class StateResults extends Component {
   constructor(props) {
     super();
 
-    console.log(props.activeView)
+    console.log(props.activeView);
     this.state = {
       activeView: props.activeView,
     };
@@ -98,40 +99,7 @@ export class StateResults extends Component {
     if (this.state.activeView === 'key') {
       return <KeyResults state={this.props.state.toLowerCase()} />;
     } else if (this.state.activeView === 'house') {
-      const sortedHouseKeys = Object.keys(data['house']['results']).sort(
-        function (a, b) {
-          return (
-            data['house']['results'][a][0]['seatnum'] -
-            data['house']['results'][b][0]['seatnum']
-          );
-        }
-      );
-
-      return (
-        <div class="results-house">
-          <div class="results-wrapper">
-            {sortedHouseKeys.map(race =>
-              this.renderRacewideTable(
-                data['house']['results'][race],
-                'house-race'
-              )
-            )}
-          </div>
-        </div>
-      );
-
-      // resultsElements = h('div.results-house', {
-      //   classes: {
-      //     'one-result': Object.keys(data['house']['results']).length === 1,
-      //     'two-results': Object.keys(data['house']['results']).length === 2,
-      //     'three-results': Object.keys(data['house']['results']).length === 3,
-      //     'four-results': Object.keys(data['house']['results']).length === 4
-      //   }
-      // }, [
-      //   h('div.results-wrapper', [
-      //     sortedHouseKeys.map(race => renderRacewideTable(data['house']['results'][race], 'house-race'))
-      //   ])
-      // ]);
+      return <HouseResults state={this.props.state.toLowerCase()} />;
     }
     //else if (
     //   resultsView === 'senate' ||
@@ -196,101 +164,6 @@ export class StateResults extends Component {
     // }
 
     // return h('div.results-elements', [resultsElements]);
-  }
-
-  renderRacewideTable(results, tableClass) {
-    if (results.length === 1) {
-      return renderUncontestedRace(results[0], tableClass);
-    }
-
-    const seatName =
-      results[0].officename === 'U.S. House' ? results[0].seatname : null;
-    let totalVotes = 0;
-    for (let i = 0; i < results.length; i++) {
-      totalVotes += results[i].votecount;
-    }
-
-    if (results.length > 2) {
-      results = this.sortResults(results);
-    }
-
-    // TODO add in fmtComma to total votes
-    return (
-      <div class={tableClass}>
-        <table class="results-table">
-          {seatName ? <caption> {seatName}</caption> : ''}
-          <colgroup>
-            <col class="seat-status"></col>
-            <col class="candidate"></col>
-            <col class="amt"></col>
-            <col class="amt"></col>
-          </colgroup>
-          <thead>
-            <tr>
-              <th class="seat-info" scope="col"></th>
-              <th class="candidate" scope="col">
-                Candidate
-              </th>
-              <th class="amt" scope="col">
-                Votes
-              </th>
-              <th class="amt" scope="col">
-                Percent
-              </th>
-            </tr>
-          </thead>
-          <tbody>{results.map(result => this.renderRow(result))}</tbody>
-          <tfoot>
-            <tr>
-              <td class="seat-status"></td>
-              <th class="candidate" scope="row">
-                Total
-              </th>
-              <td class="amt">{totalVotes}</td>
-              <td class="amt">%100</td>
-            </tr>
-          </tfoot>
-        </table>
-        <p class="precincts">
-          {this.calculatePrecinctsReporting(
-            results[0]['precinctsreportingpct']
-          ) +
-            '% of precincts reporting (' +
-            results[0].precinctsreporting +
-            ' of ' +
-            results[0].precinctstotal +
-            ')'}
-        </p>
-      </div>
-    );
-  }
-
-  renderRow(result) {
-    // TODO add classes back in
-    return (
-      <tr>
-        <td class="seat-status">
-          {result.pickup ? <span class="pickup"></span> : ''}
-        </td>
-        {this.renderCandidateName(result)}
-        <td class="amt">{result.votecount}</td>
-        <td class="amt">{(result.votepct * 100).toFixed(1)}%</td>
-      </tr>
-    );
-  }
-
-  renderCandidateName(result) {
-    // Handle `Other` candidates, which won't have a `party` property
-    const party = result.party ? ` (${result.party})` : '';
-
-    return (
-      <td class="candidate" scope="col">
-        <span class="fname">{result.first} </span>
-        <span class="lname">{result.last}</span>
-        {party}
-        {result.npr_winner ? <i class="icon icon-ok"></i> : ''}
-      </td>
-    );
   }
 
   sortResults(results) {
@@ -427,16 +300,6 @@ export class StateResults extends Component {
 
     // // Track both which tab is switched to, and what element linked to it
     // window.ANALYTICS.trackEvent('switch-state-tab', `${resultsView}-via-${e.target.getAttribute('name')}`);
-  }
-
-  calculatePrecinctsReporting(pct) {
-    if (pct > 0 && pct < 0.005) {
-      return '<1';
-    } else if (pct > 0.995 && pct < 1) {
-      return '>99';
-    } else {
-      return Math.round(pct * 100);
-    }
   }
 
   decideLabel(race) {
