@@ -8,12 +8,14 @@ import getValues from 'lodash.values';
 import sortBy from 'lodash.sortby';
 import { KeyResults } from './keyResults.js';
 import { HouseResults } from './houseResults.js';
+import { StatewideResults } from './statewideResults.js';
 
 var lastRequestTime;
 var initialized = false;
 var useDebug = false;
 var isValidMarkup;
 
+// TODO: check on the use of all of these
 const STATES_WITHOUT_COUNTY_INFO = ['AK'];
 const STATES_WITH_POTENTIAL_RUNOFFS = ['GA', 'LA', 'MS'];
 const NEW_ENGLAND_STATES = ['ME', 'NH', 'VT', 'MA', 'CT', 'RI'];
@@ -58,14 +60,12 @@ export class StateResults extends Component {
 
   // Lifecycle: Called whenever our component is created
   async componentDidMount() {
-    gopher.watch(this.getDataFileName('main'), this.onData);
     gopher.watch(this.getDataFileName('key'), this.onResultsData);
   }
 
   // Lifecycle: Called just before our component will be destroyed
   componentWillUnmount() {
     // stop when not renderable
-    gopher.unwatch(this.getDataFileName('main'), this.onData);
     gopher.unwatch(this.getDataFileName('key'), this.onResultsData);
   }
 
@@ -81,7 +81,6 @@ export class StateResults extends Component {
   }
 
   render() {
-    console.log(this.state)
     if (!this.props.state || !this.state.results) {
       return <div> "Loading..." </div>;
     } else if (false) {
@@ -123,6 +122,8 @@ export class StateResults extends Component {
       return <KeyResults state={this.props.state.toLowerCase()} />;
     } else if (this.state.activeView === 'house') {
       return <HouseResults state={this.props.state.toLowerCase()} />;
+    } else if (this.state.activeView.match(/senate/) || this.state.activeView == "governor") {
+      return <StatewideResults state={this.props.state.toLowerCase()} view={this.state.activeView} />;
     }
     //else if (
     //   resultsView === 'senate' ||
