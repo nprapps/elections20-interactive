@@ -6,6 +6,7 @@ import { buildDataURL, getHighestPymEmbed, toTitleCase } from './helpers.js';
 import gopher from '../gopher.js';
 import getValues from 'lodash.values';
 import sortBy from 'lodash.sortby';
+import { KeyResults } from './KeyResults.js';
 
 var lastRequestTime;
 var initialized = false;
@@ -40,20 +41,16 @@ export class StateResults extends Component {
   // Lifecycle: Called just before our component will be destroyed
   componentWillUnmount() {
     // stop when not renderable
-    gopher.unwatch(
-      this.getDataFileName("main"),
-      this.onData
-    );
-    gopher.unwatch(
-      this.getDataFileName("key"),
-      this.onData
-    );
+    gopher.unwatch(this.getDataFileName('main'), this.onData);
+    gopher.unwatch(this.getDataFileName('key'), this.onData);
   }
 
   componentDidUpdate(prevProps, prevState) {
     var { state, props } = this;
-    var changed = prevState.activeView != state.activeView || props.state != prevProps.state;
-    console.log("DID", changed);
+    var changed =
+      prevState.activeView != state.activeView ||
+      props.state != prevProps.state;
+    console.log('DID', changed);
     if (changed) {
       this.updateWatchedFiles(prevState.activeView, this.state.activeView);
     }
@@ -66,7 +63,7 @@ export class StateResults extends Component {
       return <div></div>;
     }
 
-    // TODO: Use this to set a more permanent state name?
+    // TODO: Use this to set a more permanent state name? Make a code to name mapping
     const anyHouseRaceID = Object.keys(this.state.results.house.results)[0];
     const anyHouseCandidate = this.state.results.house.results[
       anyHouseRaceID
@@ -96,79 +93,9 @@ export class StateResults extends Component {
     // Render race data elements, depending on which race-type tab is active
     let resultsElements;
     let data = this.state.results;
+
     if (this.state.activeView === 'key') {
-      // Avoid showing too few (or no) House races, especially for small states
-      const SHOW_ONLY_KEY_HOUSE_RACES_IF_MORE_THAN_N_DISTRICTS = 10;
-
-      const houseResults = getValues(data.house.results);
-      const keyHouseResults = houseResults.filter(
-        race => race[0].meta.key_race
-      );
-
-      const allRaces = []
-        .concat(getValues(data.house.results))
-        .concat(getValues(data.senate.results))
-        .concat(getValues(data.governor.results))
-        .concat(getValues(data.ballot_measures.results));
-
-      // Poll-close time is set at a statewide level, can be extracted from any race
-      const pollCloseTime = allRaces[0][0].meta.poll_closing;
-      const areThereAnyVotesYet = allRaces.some(race =>
-        race.some(result => result.votecount > 0 || result.npr_winner)
-      );
-
-      // {Object.keys(data.senate.results).length ? this.renderMiniBigBoard('Senate', 'senate', data.senate.results.filter(r => !r[0].is_special_election), 'senate', showCountyResults ? 'County-level results \u203a' : 'Detailed Senate results \u203a') : ''}
-      //           {Object.keys(data.senate.results).length ? this.renderMiniBigBoard('Senate Special', 'senate senate-special', data.senate.results.filter(r => r[0].is_special_election), 'senate special', showCountyResults ? 'County-level results \u203a' : 'Detailed Senate Special results \u203a') : ''}
-      const showCountyResults = !STATES_WITHOUT_COUNTY_INFO.includes(
-        allRaces[0][0].statepostal
-      );
-      return (
-        <div>
-          {areThereAnyVotesYet ? (
-            ''
-          ) : (
-            <p class="poll-closing">{`Last polls close at ${pollCloseTime} ET.`}</p>
-          )}
-          {Object.keys(data.governor.results).length
-            ? this.renderMiniBigBoard(
-                'Governor',
-                'governor',
-                data.governor.results,
-                'governor',
-                showCountyResults
-                  ? 'County-level results \u203a'
-                  : 'Detailed gubernatorial results \u203a'
-              )
-            : ''}
-          {keyHouseResults.length &&
-          Object.keys(data.house.results).length >
-            SHOW_ONLY_KEY_HOUSE_RACES_IF_MORE_THAN_N_DISTRICTS
-            ? this.renderMiniBigBoard(
-                'Key House Races',
-                'house',
-                sortBy(keyHouseResults, race => parseInt(race[0].seatnum)),
-                'house',
-                'All House results \u203a'
-              )
-            : this.renderMiniBigBoard(
-                'House Races',
-                'house',
-                sortBy(houseResults, race => parseInt(race[0].seatnum)),
-                'house',
-                'Detailed House results \u203a'
-              )}
-          {Object.keys(data.ballot_measures.results).length
-            ? this.renderMiniBigBoard(
-                'Key Ballot Initiatives',
-                'ballot-measures',
-                sortBy(
-                  getValues(data.ballot_measures.results),
-                  race => race[0].seatname.split(' - ')[0]
-                )
-              )
-            : ' '}
-        </div>
-      );
+      return <KeyResults state={this.state.currState} />;
     } else if (this.state.activeView === 'house') {
       const sortedHouseKeys = Object.keys(data['house']['results']).sort(
         function (a, b) {
@@ -380,38 +307,6 @@ export class StateResults extends Component {
     return results;
   }
 
-  renderMiniBigBoard(title, boardClass, races, linkRaceType, linkText) {
-    return (
-      <div class={'board ' + this.getBoardClasses(boardClass, races)}>
-        <h2>
-          {title}
-          {linkRaceType ? (
-            <button
-              name="see-more-nav"
-              data-hook={linkRaceType}
-              onclick={this.switchResultsView.bind(this)}
-            >
-              {linkText}
-            </button>
-          ) : (
-            <span></span>
-          )}
-        </h2>
-        <div class="results-wrapper">
-          <div class="results">
-            <div class="column">
-              <table class="races">
-                {Object.values(races).map(race =>
-                  this.renderRace(race.slice(0, 2))
-                )}
-              </table>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
   updateWatchedFiles(prevView, currView) {
     const prevFile = this.getDataFileName(prevView);
     const newFile = this.getDataFileName(currView);
@@ -468,14 +363,6 @@ export class StateResults extends Component {
         {tab.charAt(0).toUpperCase() + tab.slice(1)}
       </span>
     );
-  }
-
-  getBoardClasses(boardClass, races) {
-    var c = [boardClass];
-    if (races.length === 0) {
-      c.push('hidden');
-    }
-    return c.join(' ');
   }
 
   sortCountyResults() {
@@ -543,89 +430,6 @@ export class StateResults extends Component {
 
     // // Track both which tab is switched to, and what element linked to it
     // window.ANALYTICS.trackEvent('switch-state-tab', `${resultsView}-via-${e.target.getAttribute('name')}`);
-  }
-
-  // TODO: refactor this to make big board code shared again.
-  renderRace(race) {
-    // console.log('Race: ', race);
-    var result1 = race[0];
-    var result2 = race[1];
-    let winningResult;
-    if (result1['npr_winner']) {
-      winningResult = result1;
-    } else if (result2['npr_winner']) {
-      winningResult = result2;
-    }
-    var results = race;
-    var coloredParties = ['Dem', 'GOP', 'Yes', 'No'];
-
-    // Create the first and second candidate cells.
-    var firstCandClasses = createClassesForBoardCells(result1, coloredParties);
-    var firstCand = (
-      <Fragment>
-        <td class="pickup"></td>
-        <th class="state">{this.decideLabel(result1)}</th>
-        <td class={'candidate ' + firstCandClasses}>
-          <span class="fname">
-            {' '}
-            {result1['first'] ? result1['first'] + ' ' : ''}
-          </span>
-          <span class="lname">
-            {results['uncontested']
-              ? result1['last'] + ' (Uncontested)'
-              : result1['last']}
-          </span>
-        </td>
-        <td class={'candidate-total ' + firstCandClasses}>
-          {results['uncontested'] ? (
-            ''
-          ) : (
-            <span class="candidate-total-wrapper">
-              {Math.round(result1['votepct'] * 100)}
-            </span>
-          )}
-        </td>
-      </Fragment>
-    );
-
-    var secondCandClasses = results['uncontested']
-      ? ''
-      : createClassesForBoardCells(result2, coloredParties);
-    var secondCand = results['uncontested'] ? (
-      <div></div>
-    ) : (
-      <Fragment>
-        <td class="candidate-total-spacer"></td>
-        <td class={'candidate-total ' + secondCandClasses}>
-          {results['uncontested'] ? (
-            ''
-          ) : (
-            <span class="candidate-total-wrapper">
-              {Math.round(result2['votepct'] * 100)}
-            </span>
-          )}
-        </td>
-        <td class={'candidate ' + secondCandClasses}>
-          <span class="fname">
-            {' '}
-            {result2['first'] ? result2['first'] + ' ' : ''}
-          </span>
-          <span class="lname">{result2['last']}</span>
-        </td>
-        <td class="results-status">
-          {!results['uncontested']
-            ? this.calculatePrecinctsReporting(result1['precinctsreportingpct'])
-            : ''}
-        </td>
-      </Fragment>
-    );
-
-    return (
-      <tr>
-        {firstCand}
-        {secondCand}
-      </tr>
-    );
   }
 
   calculatePrecinctsReporting(pct) {
