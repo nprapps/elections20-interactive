@@ -48,7 +48,7 @@ export class RaceTable extends Component {
           </th>
         </tr>
       </thead>
-        {this.state.races.map(race => this.renderRace(race))}
+        {this.state.races.map(race => this.renderRace(race.races))}
       </table>
   }
 
