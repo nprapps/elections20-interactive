@@ -1,5 +1,5 @@
 import { h, Component, Fragment } from 'preact';
-import { buildDataURL, getHighestPymEmbed } from './helpers.js';
+import { buildDataURL, getHighestPymEmbed, fmtComma } from './helpers.js';
 import gopher from '../gopher.js';
 import { calculatePrecinctsReporting } from './util.js';
 
@@ -7,8 +7,7 @@ export class RacewideTable extends Component {
   constructor(props) {
     super();
 
-    console.log(props)
-    this.state = { data: props.data, tableClass: props.className};
+    this.state = { data: props.data, tableClass: props.className };
   }
 
   render() {
@@ -17,7 +16,7 @@ export class RacewideTable extends Component {
     }
     var results = this.state.data;
     if (results.length === 1) {
-      // Add this back in.
+      // TODO: Add this back in if needed.
       return renderUncontestedRace(results[0], this.state.tableClass);
     }
 
@@ -32,7 +31,6 @@ export class RacewideTable extends Component {
       results = this.sortResults(results);
     }
 
-    // TODO add in fmtComma to total votes
     return (
       <div class={this.state.tableClass}>
         <table class="results-table">
@@ -64,19 +62,17 @@ export class RacewideTable extends Component {
               <th class="candidate" scope="row">
                 Total
               </th>
-              <td class="amt">{totalVotes}</td>
-              <td class="amt">%100</td>
+              <td class="amt">{fmtComma(totalVotes)}</td>
+              <td class="amt">100%</td>
             </tr>
           </tfoot>
         </table>
         <p class="precincts">
-          {calculatePrecinctsReporting(
-            results[0]['precinctsreportingpct']
-          ) +
+          {calculatePrecinctsReporting(results[0]['precinctsreportingpct']) +
             '% of precincts reporting (' +
-            results[0].precinctsreporting +
+            fmtComma(results[0].precinctsreporting) +
             ' of ' +
-            results[0].precinctstotal +
+            fmtComma(results[0].precinctstotal) +
             ')'}
         </p>
       </div>
@@ -86,7 +82,9 @@ export class RacewideTable extends Component {
   renderRow(result) {
     // TODO add classes back in
     return (
-      <tr>
+      <tr
+        class={this.createClassesForCandidateRow(result, this.state.tableClass)}
+      >
         <td class="seat-status">
           {result.pickup ? <span class="pickup"></span> : ''}
         </td>
@@ -109,5 +107,78 @@ export class RacewideTable extends Component {
         {result.npr_winner ? <i class="icon icon-ok"></i> : ''}
       </td>
     );
+  }
+
+  // TODO: figure out if this is necessary or can be combined with multiple results.
+  // renderUncontestedRace(result, tableClass) {
+  //   const seatName = result.officename === 'U.S. House'
+  //     ? result.seatname
+  //     : null;
+
+  //   return <div class={tableClass}>
+  //             <table>
+  //             </table>
+  //         </div>
+
+  //   return maquette.h(`div.${tableClass}`, [
+  //     maquette.h('table.results-table', [
+  //       seatName ? maquette.h('caption', seatName) : '',
+  //       maquette.h('colgroup', [
+  //         maquette.h('col.seat-status'),
+  //         maquette.h('col.candidate'),
+  //         maquette.h('col')
+  //       ]),
+  //       maquette.h('thead', [
+  //         maquette.h('tr', [
+  //           maquette.h('th.seat-status', ''),
+  //           maquette.h('th.candidate', 'Candidate'),
+  //           maquette.h('th', '')
+  //         ])
+  //       ]),
+  //       maquette.h('tbody',
+  //         maquette.h('tr', { classes: createClassesForCandidateRow(result) }, [
+  //           maquette.h('td.seat-status', [
+  //             result.pickup
+  //               ? maquette.h('span.pickup', { class: 'pickup' })
+  //               : ''
+  //           ]),
+  //           renderCandidateName(result),
+  //           maquette.h('td.amt.uncontested', 'uncontested')
+  //         ])
+  //       )
+  //     ]),
+  //     maquette.h('p.precincts', [ copy.ap_uncontested_note ])
+  //   ]);
+  // }
+
+  createClassesForCandidateRow(result) {
+    let classlist = '';
+    if (result.npr_winner) {
+      classlist += ' winner';
+      classlist += result['party'].toLowerCase();
+
+      if (!['Dem', 'GOP'].includes(result['party'])) {
+        classlist += 'ind';
+      }
+    }
+    if (result['incumbent']) {
+      classlist += ' incumbent';
+    }
+    return classlist;
+  }
+
+  sortResults(results) {
+    results.sort(function (a, b) {
+      if (a.last === 'Other') return 1;
+      if (b.last === 'Other') return -1;
+      if (a.votecount > 0 || a.precinctsreporting > 0) {
+        return b.votecount - a.votecount;
+      } else {
+        if (a.last < b.last) return -1;
+        if (a.last > b.last) return 1;
+        return 0;
+      }
+    });
+    return results;
   }
 }

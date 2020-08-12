@@ -22,11 +22,11 @@ export class StateResults extends Component {
   constructor(props) {
     super();
 
-    console.log(props.activeView);
     this.state = {
       activeView: props.activeView,
     };
     this.onData = this.onData.bind(this);
+    this.onResultsData = this.onResultsData.bind(this);
     this.switchResultsView = this.switchResultsView.bind(this);
   }
 
@@ -34,17 +34,39 @@ export class StateResults extends Component {
     this.setState(json);
   }
 
+  onResultsData(json) {
+    var activeRaces = new Set(["key"]);
+    // TODO: add back in legend item suppression
+    if (json.results) {
+      Object.keys(json.results).forEach(function(item) {
+        if (Object.keys(json.results[item].results).length && item !== "ballot_measures") {
+          activeRaces.add(item);
+        }
+      });
+      if (Object.keys(json.results.senate.results).length === 1) {
+        const isSpecial =
+          json.results.senate.results[Object.keys(json.results.senate.results)[0]][0]
+            .is_special_election;
+        if (isSpecial) {
+          activeRaces.add('senate special');
+          activeRaces.delete('senate');
+        }
+      }
+    }
+    this.setState({...json, activeRaces: Array.from(activeRaces)});
+  }
+
   // Lifecycle: Called whenever our component is created
   async componentDidMount() {
     gopher.watch(this.getDataFileName('main'), this.onData);
-    gopher.watch(this.getDataFileName('key'), this.onData);
+    gopher.watch(this.getDataFileName('key'), this.onResultsData);
   }
 
   // Lifecycle: Called just before our component will be destroyed
   componentWillUnmount() {
     // stop when not renderable
     gopher.unwatch(this.getDataFileName('main'), this.onData);
-    gopher.unwatch(this.getDataFileName('key'), this.onData);
+    gopher.unwatch(this.getDataFileName('key'), this.onResultsData);
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -59,6 +81,7 @@ export class StateResults extends Component {
   }
 
   render() {
+    console.log(this.state)
     if (!this.props.state || !this.state.results) {
       return <div> "Loading..." </div>;
     } else if (false) {
@@ -166,21 +189,6 @@ export class StateResults extends Component {
     // return h('div.results-elements', [resultsElements]);
   }
 
-  sortResults(results) {
-    results.sort(function (a, b) {
-      if (a.last === 'Other') return 1;
-      if (b.last === 'Other') return -1;
-      if (a.votecount > 0 || a.precinctsreporting > 0) {
-        return b.votecount - a.votecount;
-      } else {
-        if (a.last < b.last) return -1;
-        if (a.last > b.last) return 1;
-        return 0;
-      }
-    });
-    return results;
-  }
-
   updateWatchedFiles(prevView, currView) {
     const prevFile = this.getDataFileName(prevView);
     const newFile = this.getDataFileName(currView);
@@ -212,7 +220,7 @@ export class StateResults extends Component {
     const DELIMITER = '|';
 
     // TODO: make this real
-    const elements = ['key', 'house', 'governor'].flatMap((tab, i) => [
+    const elements = this.state.activeRaces.flatMap((tab, i) => [
       this.createTabElement(tab),
       DELIMITER,
     ]);
@@ -300,44 +308,6 @@ export class StateResults extends Component {
 
     // // Track both which tab is switched to, and what element linked to it
     // window.ANALYTICS.trackEvent('switch-state-tab', `${resultsView}-via-${e.target.getAttribute('name')}`);
-  }
-
-  decideLabel(race) {
-    if (race['officename'] === 'U.S. House') {
-      return race['statepostal'] + '-' + race['seatnum'];
-    } else if (
-      race['officename'] === 'President' &&
-      race['level'] === 'district' &&
-      race['reportingunitname'] !== 'At Large'
-    ) {
-      return race['statepostal'] + '-' + race['reportingunitname'].slice('-1');
-    } else if (race['is_ballot_measure']) {
-      // The AP provides ballot measure names in inconsistent formats
-      const splitName = race.seatname.split(' - ');
-      const isHyphenatedMeasureName = Boolean(
-        race.seatname.match(/^[A-Z\d]+-[A-Z\d]+ /)
-      );
-
-      if (splitName.length === 1 && !isHyphenatedMeasureName) {
-        // Sometimes there's no identifier, such as: 'Legislative Pay'
-        return `${race.statepostal}: ${race.seatname}`;
-      } else if (splitName.length === 1 && isHyphenatedMeasureName) {
-        // Sometimes there's a compound identifier, such as '18-1 Legalize Marijuana'
-        const [number, ...identifierParts] = race.seatname.split(' ');
-        const identifier = identifierParts.join(' ');
-        return `${race.statepostal}-${number}: ${identifier}`;
-      } else if (splitName.length === 2) {
-        // Usually, there's an identifier with a ` - ` delimiter, eg:
-        // 'S - Crime Victim Rights'
-        // '1464 - Campaign Finance'
-        return `${race.statepostal}-${splitName[0]}: ${splitName[1]}`;
-      } else {
-        console.error('Cannot properly parse the ballot measure name');
-        return `${race.statepostal} - ${race.seatname}`;
-      }
-    } else {
-      return race['statepostal'];
-    }
   }
 }
 

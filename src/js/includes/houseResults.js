@@ -61,7 +61,7 @@ export class HouseResults extends Component {
       </div>
     );
 
-    // Add back in
+    // TODO: Figure out if these are needed, don't see in original
     // classes: {
     //     'one-result': Object.keys(data['house']['results']).length === 1,
     //     'two-results': Object.keys(data['house']['results']).length === 2,

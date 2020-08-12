@@ -82,6 +82,8 @@ const toTitleCase = str =>
     .map(word => word.charAt(0).toUpperCase().concat(word.slice(1)))
     .join(' ');
 
+const fmtComma = s => s.toLocaleString("en-US").replace(/\.0+$/, "");
+
 export {
   classify,
   isLocalhost,
@@ -90,5 +92,6 @@ export {
   identifyParentHostname,
   buildDataURL,
   getHighestPymEmbed,
-  toTitleCase
+  toTitleCase,
+  fmtComma
 };
