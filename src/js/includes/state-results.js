@@ -21,10 +21,10 @@ export class StateResults extends Component {
     super();
 
     this.state = {
-      currState: props.state.toLowerCase(),
       activeView: props.activeView,
     };
     this.onData = this.onData.bind(this);
+    this.switchResultsView = this.switchResultsView.bind(this);
   }
 
   onData(json) {
@@ -53,14 +53,13 @@ export class StateResults extends Component {
   componentDidUpdate(prevProps, prevState) {
     var { state, props } = this;
     var changed = prevState.activeView != state.activeView || props.state != prevProps.state;
-    console.log("DID", changed);
     if (changed) {
       this.updateWatchedFiles(prevState.activeView, this.state.activeView);
     }
   }
 
   render() {
-    if (!this.state.currState || !this.state.results) {
+    if (!this.props.state || !this.state.results) {
       return <div> "Loading..." </div>;
     } else if (false) {
       return <div></div>;
@@ -79,7 +78,7 @@ export class StateResults extends Component {
       <div class="results">
         <header id="state-header">
           <div class="state-icon">
-            <i class={'stateface stateface-' + this.state.currState}></i>
+            <i class={'stateface stateface-' + this.props.state}></i>
           </div>
           <h1>
             <span class="state-name">{stateName}</span>
@@ -389,7 +388,7 @@ export class StateResults extends Component {
             <button
               name="see-more-nav"
               data-hook={linkRaceType}
-              onclick={this.switchResultsView.bind(this)}
+              onclick={this.switchResultsView}
             >
               {linkText}
             </button>
@@ -443,29 +442,25 @@ export class StateResults extends Component {
     const DELIMITER = '|';
 
     // TODO: make this real
-    const elements = ['key', 'house', 'governor'].map(tab =>
-      this.createTabElement(tab)
+    const elements = ['key', 'house', 'governor'].flatMap((tab, i) =>
+      [this.createTabElement(tab), DELIMITER]
     );
+    // remove the trailing delimiter
+    elements.pop();
 
-    const delimited = elements.reduce((all, el, index) => {
-      return index < elements.length - 1
-        ? all.concat([el, DELIMITER])
-        : all.concat(el);
-    }, []);
-
-    return <div class="switcher">Election results: {delimited}</div>;
+    return <div class="switcher">Election results: {elements}</div>;
   }
 
   createTabElement(tab) {
     return (
       <span
         role="button"
-        onclick={this.switchResultsView.bind(this)}
+        onclick={this.switchResultsView}
         name="race-type-nav"
         data-hook={tab.toLowerCase()}
         classes={this.state.activeView === tab.toLowerCase() ? 'active' : ''}
       >
-        {tab.charAt(0).toUpperCase() + tab.slice(1)}
+        {tab[0].toUpperCase() + tab.slice(1)}
       </span>
     );
   }
@@ -547,7 +542,7 @@ export class StateResults extends Component {
 
   // TODO: refactor this to make big board code shared again.
   renderRace(race) {
-    // console.log('Race: ', race);
+    // console.log;('Race: ', race);
     var result1 = race[0];
     var result2 = race[1];
     let winningResult;
