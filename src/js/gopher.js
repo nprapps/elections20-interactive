@@ -15,6 +15,7 @@ export class Gopher {
     var entry = {
       url,
       etag: null,
+      modified: null,
       callbacks: [],
       last: null
     };
@@ -23,13 +24,13 @@ export class Gopher {
   }
 
   async sync(entry) {
-    var response = await fetch(entry.url, {
-      headers: {
-        "If-None-Match": entry.etag
-      }
-    });
+    var headers = {};
+    if (entry.etag) headers["If-None-Match"] = entry.etag;
+    if (entry.modified) headers["If-Modified-Since"] = entry.modified;
+    var response = await fetch(entry.url, { headers });
     if (response.status == 304) return;
-    entry.etag = response.headers.get("etag");
+    entry.etag = response.headers.get("etag") || entry.etag;
+    entry.modified = response.headers.get("last-modified") || entry.modified;
     var json = await response.json();
     entry.last = json;
     entry.callbacks.forEach((c) => c(json));

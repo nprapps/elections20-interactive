@@ -10,8 +10,6 @@ var copyBop = window.copy.bop;
 export class BigBoardCore extends Component {
   constructor(props) {
     super();
-
-    this.state = { json: props.json, title: props.title };
     this.onData = this.onData.bind(this);
   }
 
@@ -22,7 +20,7 @@ export class BigBoardCore extends Component {
   // Lifecycle: Called whenever our component is created
   async componentDidMount() {
     gopher.watch(
-      `https://apps.npr.org/elections18-graphics/data/${this.state.json}`,
+      `https://apps.npr.org/elections18-graphics/data/${this.props.json}`,
       this.onData
     );
     gopher.watch(
@@ -35,7 +33,7 @@ export class BigBoardCore extends Component {
   componentWillUnmount() {
     // stop when not renderable
     gopher.unwatch(
-      `https://apps.npr.org/elections18-graphics/data/${this.state.json}`,
+      `https://apps.npr.org/elections18-graphics/data/${this.props.json}`,
       this.onData
     );
     gopher.unwatch(
@@ -57,7 +55,7 @@ export class BigBoardCore extends Component {
     return (
       <div class="results-wrapper">
         <div class="results-header">
-          <h1> {this.state.title} </h1>
+          <h1> {this.props.title} </h1>
           {this.renderTopLevel()}
         </div>
         <div class="results">
@@ -101,10 +99,10 @@ export class BigBoardCore extends Component {
   }
 
   renderTopLevel() {
-    if (this.state.title.match(/^House/)) {
+    if (this.props.title.match(/^House/)) {
       var bop = this.state.house_bop;
       return this.renderCongressBOP(bop);
-    } else if (this.state.title.indexOf('Senate') !== -1) {
+    } else if (this.props.title.indexOf('Senate') !== -1) {
       var bop = this.state.senate_bop;
       return this.renderCongressBOP(bop);
     }
