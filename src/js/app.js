@@ -42,8 +42,8 @@ export default class App extends Component {
     });
   }
 
-  renderBoards() {
-    let currentBoard = this.state.params.type;
+  renderBoards(props, state) {
+    let currentBoard = state.params.type;
     return (
       <div class="board big-board">
         <BigBoardCore
@@ -54,22 +54,22 @@ export default class App extends Component {
     );
   }
 
-  renderState() {
-    let currentState = this.state.params.state;
+  renderState(props, state) {
+    let currentState = state.params.state;
     // Default to key view
-    let subview = this.state.params.subview || "key";
+    let subview = state.params.subview || "key";
     return <div id="state-results">
             <StateResults state={currentState} activeView={subview}/>
           </div>
   }
 
-  renderGetCaughtUp() {
+  renderGetCaughtUp(props, state) {
     return <div class="get-caught-up-wrapper">
             <GetCaughtUp />
           </div>
   }
 
   render(props, state) {
-    return this[state.route]();
+    return this[state.route](props, state);
   }
 }
