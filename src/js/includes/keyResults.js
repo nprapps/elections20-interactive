@@ -10,7 +10,7 @@ export class KeyResults extends Component {
 
     this.showHousesIfMoreThanN = 10;
     this.statesWithoutCountyInfo = ['AK']; // Get me passed in
-    this.state = { state: props.state };
+    this.state = { };
     this.onData = this.onData.bind(this);
   }
 
@@ -42,7 +42,7 @@ export class KeyResults extends Component {
   // Lifecycle: Called whenever our component is created
   async componentDidMount() {
     gopher.watch(
-      `https://apps.npr.org/elections18-graphics/data/${this.state.state}.json`,
+      `https://apps.npr.org/elections18-graphics/data/${this.props.state}.json`,
       this.onData
     );
   }
@@ -51,7 +51,7 @@ export class KeyResults extends Component {
   componentWillUnmount() {
     // stop when not renderable
     gopher.unwatch(
-      `https://apps.npr.org/elections18-graphics/data/${this.state.state}.json`,
+      `https://apps.npr.org/elections18-graphics/data/${this.props.state}.json`,
       this.onData
     );
   }
@@ -76,17 +76,15 @@ export class KeyResults extends Component {
         ) : (
           <p class="poll-closing">{`Last polls close at ${this.state.pollCloseTime} ET.`}</p>
         )}
-        {Object.keys(data.governor.results).length
-          ? this.renderMiniBigBoard(
-              'Governor',
-              'governor',
-              data.governor.results,
-              'governor',
-              this.state.showCountyResults
-                ? 'County-level results \u203a'
-                : 'Detailed gubernatorial results \u203a'
-            )
-          : ''}
+        {this.renderMiniBigBoard(
+          'Governor',
+          'governor',
+          data.governor.results,
+          'governor',
+          this.state.showCountyResults
+            ? 'County-level results \u203a'
+            : 'Detailed gubernatorial results \u203a'
+        )}
         {keyHouseResults.length &&
         Object.keys(data.house.results).length > this.showHousesIfMoreThanN
           ? this.renderMiniBigBoard(
@@ -107,21 +105,22 @@ export class KeyResults extends Component {
               'house',
               'Detailed House results \u203a'
             )}
-        {Object.keys(data.ballot_measures.results).length
-          ? this.renderMiniBigBoard(
-              'Key Ballot Initiatives',
-              'ballot-measures',
-              Object.values(data.ballot_measures.results).sort(
-                (a, b) =>
-                  a[0].seatname.split(' - ')[0] - b[0].seatname.split(' - ')[0]
-              )
-            )
-          : ' '}
+        {this.renderMiniBigBoard(
+          'Key Ballot Initiatives',
+          'ballot-measures',
+          Object.values(data.ballot_measures.results).sort(
+            (a, b) =>
+              a[0].seatname.split(' - ')[0] - b[0].seatname.split(' - ')[0]
+          )
+        )}
       </div>
     );
   }
 
   renderMiniBigBoard(title, boardClass, races, linkRaceType, linkText) {
+    if (!Object.keys(races).length) {
+      return '';
+    }
     // TODO: get this functional again.
     //onclick={this.switchResultsView.bind(this)}*/}
     const cleanedRaces = this.getCleanedResults(races);
@@ -130,9 +129,9 @@ export class KeyResults extends Component {
         <h2>
           {title}
           {linkRaceType ? (
-            <button name="see-more-nav" data-hook={linkRaceType}>
+            <a href={`./#/states/${this.props.state}/${boardClass}`}>
               {linkText}
-            </button>
+            </a>
           ) : (
             <span></span>
           )}

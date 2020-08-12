@@ -21,6 +21,7 @@ export class StateResults extends Component {
   constructor(props) {
     super();
 
+    console.log(props.activeView)
     this.state = {
       activeView: props.activeView,
     };
@@ -348,17 +349,16 @@ export class StateResults extends Component {
     return <div class="switcher">Election results: {elements}</div>;
   }
 
+  // TODO: use built in uppercase fxn here
   createTabElement(tab) {
     return (
-      <span
-        role="button"
-        onclick={this.switchResultsView}
+      <a
+        href={`./#/states/${this.props.state}/${tab.toLowerCase()}`}
         name="race-type-nav"
-        data-hook={tab.toLowerCase()}
-        classes={this.state.activeView === tab.toLowerCase() ? 'active' : ''}
+        class={this.state.activeView === tab.toLowerCase() ? 'active' : ''}
       >
         {tab[0].toUpperCase() + tab.slice(1)}
-      </span>
+      </a>
     );
   }
 

@@ -32,6 +32,7 @@ export default class App extends Component {
     this.router = new Scrapple();
     this.addRoute("/boards/:type", "renderBoards");
     this.addRoute("/get-caught-up", "renderGetCaughtUp");
+    this.addRoute("/states/:state/:subview", "renderState");
     this.addRoute("/states/:state", "renderState");
   }
 
@@ -55,8 +56,10 @@ export default class App extends Component {
 
   renderState() {
     let currentState = this.state.params.state;
+    // Default to key view
+    let subview = this.state.params.subview || "key";
     return <div id="state-results">
-            <StateResults state={currentState} activeView="key"/>
+            <StateResults state={currentState} activeView={subview}/>
           </div>
   }
 
