@@ -1,5 +1,6 @@
 
-
+// TODO: make all of this easier to re-use in smaller chunks
+// TODO: clean up shareable parts of getCleanedData and bring in here?
 export function determineResults(race) {
   if (race.length === 1) {
     return { result1: race[0], uncontested: true };
@@ -7,8 +8,8 @@ export function determineResults(race) {
 
   let result1;
   let result2;
-  // TODO: check switching away from loopArr didn't break anything
 
+  // TODO: check switching away from loopArr didn't break anything
   for (var i = 0; i < race.length; i++) {
     var result = race[i];
     if (

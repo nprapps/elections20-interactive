@@ -26,7 +26,7 @@ export class KeyResults extends Component {
     const areThereAnyVotesYet = allRaces.some(race =>
       race.some(result => result.votecount > 0 || result.npr_winner)
     );
-    // TODO: Move me out of here at some point?
+    // TODO: Move me into calling classes
     const showCountyResults = !this.statesWithoutCountyInfo.includes(
       allRaces[0][0].statepostal
     );
@@ -65,9 +65,9 @@ export class KeyResults extends Component {
     const houseResults = Object.values(data.house.results);
     const keyHouseResults = houseResults.filter(race => race[0].meta.key_race);
 
+    // TODO: add these back in
     // {Object.keys(data.senate.results).length ? this.renderMiniBigBoard('Senate', 'senate', data.senate.results.filter(r => !r[0].is_special_election), 'senate', showCountyResults ? 'County-level results \u203a' : 'Detailed Senate results \u203a') : ''}
-    //           {Object.keys(data.senate.results).length ? this.renderMiniBigBoard('Senate Special', 'senate senate-special', data.senate.results.filter(r => r[0].is_special_election), 'senate special', showCountyResults ? 'County-level results \u203a' : 'Detailed Senate Special results \u203a') : ''}
-    // Update this to come in to component already set
+    // {Object.keys(data.senate.results).length ? this.renderMiniBigBoard('Senate Special', 'senate senate-special', data.senate.results.filter(r => r[0].is_special_election), 'senate special', showCountyResults ? 'County-level results \u203a' : 'Detailed Senate Special results \u203a') : ''}
 
     return (
       <div>
@@ -122,6 +122,7 @@ export class KeyResults extends Component {
   }
 
   renderMiniBigBoard(title, boardClass, races, linkRaceType, linkText) {
+    // TODO: get this functional again.
     //onclick={this.switchResultsView.bind(this)}*/}
     const cleanedRaces = this.getCleanedResults(races);
     return (
