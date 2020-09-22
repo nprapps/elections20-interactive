@@ -1,48 +1,42 @@
 <!-- Hide the navbar by default, for station sites -->
 <!-- See information in the `navbar.js` file on why this is done -->
 <% 
-var { nav, county_data } = grunt.data.json;
+var { nav, states } = grunt.data.json;
 %>
 
 <div id="results-nav-wrapper">
-    <nav class="results-nav">
+  <nav class="results-nav">
 
-        <div class="results-logo">
-            <span class="election-name">Election</span>
-            <span class="election-year">2018</span>
-        </div>
+    <div class="results-logo">
+      <span class="election-name">Election</span>
+      <span class="election-year">2018</span>
+    </div>
 
-        <input type="checkbox" id="small-screen-nav-checkbox" />
+    <input type="checkbox" id="small-screen-nav-checkbox" />
 
-        <label for="small-screen-nav-checkbox" class="toggle small-screen-nav-label">More Live Results</label>
+    <label for="small-screen-nav-checkbox" class="toggle small-screen-nav-label">More Live Results</label>
 
-        <ul class="menu">
+    <ul class="menu">
 
-             <% for (var item of nav) { %>
-            <li>
-                <a target="_blank" href=" <%= item.url %>"><%= item.label %></a>
-            </li>
-             <%}%>
+     <% for (var item of nav) { %>
+     <li>
+      <a target="_blank" href=" <%= item.url %>"><%= item.label %></a>
+    </li>
+    <%}%>
 
-            <ul>
-                <li class="state-nav">
-                    <input type="checkbox" id="state-nav-checkbox" />
-                    <label for="state-nav-checkbox" class="state-nav-label">state results </label>
+    <li class="state-nav">
+      <label aria-hidden="true" for="state-nav-checkbox" class="state-nav-label">state results </label>
+      <input aria-hidden="true" type="checkbox" id="state-nav-checkbox" />
 
-                    <ul class="states">
-                        <li>
-                            <% for (var column in county_data) { %>
-                            <div >
-                                <% for (var state in column) {%>
-                                    <p><a target="_blank" href="<%= state.url%>"><%= state.fullname %></a></p>
-                                <%}%>
-                            </div>
-                            <%}%>
-                        </li>
-                    </ul>
-                </li>
-            </ul>
-           
-        </ul>
-    </nav>
+      <ul class="states">
+        <% for (var state in states) {%>
+        <li>
+          <a href="#/states/<%= state %>"><%= states[state].fullname %></a>
+        </li>
+        <%}%>
+      </ul>
+    </li>
+
+  </ul>
+</nav>
 </div> <!-- / results-nav-wrapper -->
