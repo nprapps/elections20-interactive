@@ -6,32 +6,29 @@ export default class Countdown extends Component {
     super();
     this.state = {
       counter: gopher.interval,
-      timeout: null,
       text: ""
     };
+    this.timeout = null;
     this.start = this.start.bind(this);
     this.tick = this.tick.bind(this);
-    gopher.addEventListener("tick", this.start);
+    gopher.addEventListener("schedule", this.start);
     setTimeout(this.tick, 1000);
   }
 
-  start(counter) {
-    var { timeout } = this.state;
-    if (timeout) clearTimeout(timeout);
-    timeout = setTimeout(this.tick, 1000);
-    this.setState({ counter, timeout });
+  start() {
+    if (this.timeout) clearTimeout(this.timeout);
+    this.timeout = setTimeout(this.tick, 1000);
   }
 
   tick() {
-    var { counter, timeout } = this.state;
-    var text = "0:" + String(counter).padStart(2, 0);
-    counter--;
-    if (timeout) {
-      clearTimeout(timeout);
-      timeout = null;
+    var { scheduled } = gopher;
+    var anticipation = (scheduled - Date.now()) / 1000;
+    var text = "0:" + String(Math.round(anticipation)).padStart(2, 0);
+    if (this.timeout) {
+      clearTimeout(this.timeout);
     }
-    if (counter) timeout = setTimeout(this.tick, 1000);
-    this.setState({ counter, text, timeout });
+    this.timeout = setTimeout(this.tick, 1000);
+    this.setState({ text });
   }
 
   render(props, state) {

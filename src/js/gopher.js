@@ -45,8 +45,7 @@ export class Gopher extends EventTarget {
     this.watchCount++;
     this.sync(entry);
     if (!this.timeout) {
-      this.dispatchEvent("tick", this.interval);
-      this.timeout = setTimeout(this.tick, this.interval * 1000);
+      this.schedule();
     }
     // return cached state immediately
     if (entry.last) {
@@ -68,6 +67,14 @@ export class Gopher extends EventTarget {
     }
   }
 
+  schedule() {
+    var delay = this.interval * 1000;
+    this.scheduled = Date.now() + delay;
+    if (this.timeout) clearTimeout(this.timeout);
+    this.timeout = setTimeout(this.tick, delay);
+    this.dispatchEvent("schedule", this.interval);
+  }
+
   async tick() {
     this.dispatchEvent("sync-start");
     var urls = [...this.urls.values()];
@@ -77,8 +84,7 @@ export class Gopher extends EventTarget {
     });
     await Promise.all(requests);
     this.dispatchEvent("sync-end");
-    setTimeout(this.tick, this.interval * 1000);
-    this.dispatchEvent("tick", this.interval);
+    this.schedule();
   }
 }
 
