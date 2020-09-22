@@ -4,6 +4,7 @@
 import { h, Component } from "preact";
 import { buildDataURL, getHighestPymEmbed } from "./helpers.js";
 import gopher from "../gopher.js";
+import Countdown from "./countdown.js";
 
 var lastRequestTime;
 var initialized = false;
@@ -42,8 +43,6 @@ export class GetCaughtUp extends Component {
   render() {
     if (!this.state.content) {
       return <div class="get-caught-up-wrapper"> "Loading..." </div>;
-    } else if (false) {
-      return <div></div>;
     }
 
     // setTimeout(window.pymChild.sendHeight, 0);
@@ -68,6 +67,7 @@ export class GetCaughtUp extends Component {
             <li dangerouslySetInnerHTML={{ __html: s }}></li>
           ))}
         </ul>
+        <Countdown />
       </div>
     );
   }

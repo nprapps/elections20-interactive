@@ -1,7 +1,9 @@
 // class for centrally monitoring URLs
+import EventTarget from "./eventTarget.js";
 
-export class Gopher {
+export class Gopher extends EventTarget {
   constructor(interval = 10) {
+    super();
     this.interval = interval;
     this.urls = new Map();
     this.timeout = null;
@@ -43,6 +45,7 @@ export class Gopher {
     this.watchCount++;
     this.sync(entry);
     if (!this.timeout) {
+      this.dispatchEvent("tick", this.interval);
       this.timeout = setTimeout(this.tick, this.interval * 1000);
     }
     // return cached state immediately
@@ -65,12 +68,17 @@ export class Gopher {
     }
   }
 
-  tick() {
-    for (var entry of this.urls.values()) {
-      if (!entry.callbacks.length) continue;
-      this.sync(entry);
-    }
+  async tick() {
+    this.dispatchEvent("sync-start");
+    var urls = [...this.urls.values()];
+    var requests = urls.map(entry => {
+      if (!entry.callbacks.length) return Promise.resolve();
+      return this.sync(entry);
+    });
+    await Promise.all(requests);
+    this.dispatchEvent("sync-end");
     setTimeout(this.tick, this.interval * 1000);
+    this.dispatchEvent("tick", this.interval);
   }
 }
 

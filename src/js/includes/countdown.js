@@ -1,52 +1,43 @@
-const resultsCountdown = function(indicator, loadInterval) {
-    var counter = null;
-    var interval = null;
+import gopher from "../gopher.js";
+import { Component, h } from "preact";
 
-    indicator.innerHTML = 'Next update: ';
+export default class Countdown extends Component {
+  constructor() {
+    super();
+    this.state = {
+      counter: gopher.interval,
+      timeout: null,
+      text: ""
+    };
+    this.start = this.start.bind(this);
+    this.tick = this.tick.bind(this);
+    gopher.addEventListener("tick", this.start);
+    setTimeout(this.tick, 1000);
+  }
 
-    var bTag = document.createElement('b');
-    bTag.classList.add('icon', 'icon-spin3');
+  start(counter) {
+    var { timeout } = this.state;
+    if (timeout) clearTimeout(timeout);
+    timeout = setTimeout(this.tick, 1000);
+    this.setState({ counter, timeout });
+  }
 
-    var spanTag = document.createElement('span');
-    spanTag.classList.add('text');
-
-    // bTag.appendChild(spanTag);
-    indicator.appendChild(bTag);
-    indicator.appendChild(spanTag);
-
-    var indicatorSpinner = indicator.querySelector('.icon');
-    var indicatorText = indicator.querySelector('.text');
-
-    var startIndicator = function() {
-        indicatorSpinner.classList.remove('animate-spin');
-        counter = loadInterval / 1000;
-        updateText();
-        interval = setInterval(updateIndicator, 1000);
+  tick() {
+    var { counter, timeout } = this.state;
+    var text = "0:" + String(counter).padStart(2, 0);
+    counter--;
+    if (timeout) {
+      clearTimeout(timeout);
+      timeout = null;
     }
+    if (counter) timeout = setTimeout(this.tick, 1000);
+    this.setState({ counter, text, timeout });
+  }
 
-    var updateIndicator = function() {
-        counter--;
-        updateText();
-        if (counter === 0) {
-            stopIndicator();
-        }
-    }
-
-    var stopIndicator = function() {
-        clearInterval(interval);
-        indicatorSpinner.classList.add('animate-spin');
-        indicatorText.textContent = 'Loading';
-    }
-
-    var updateText = function() {
-        if (counter > 9) {
-            indicatorText.textContent = '0:' + counter;
-        } else {
-            indicatorText.textContent = '0:0' + counter;
-        }
-    }
-
-    startIndicator();
-};
-
-export default resultsCountdown;
+  render(props, state) {
+    return <div class="indicator">
+      <b class={"icon icon-spin3" + (state.running ? "animate-spin" : "")}></b>
+      <span class="text">{state.text}</span>
+    </div>
+  }
+}
