@@ -5,13 +5,15 @@ export default class Countdown extends Component {
   constructor() {
     super();
     this.state = {
-      counter: gopher.interval,
-      text: ""
+      text: "",
+      loading: false
     };
     this.timeout = null;
     this.start = this.start.bind(this);
     this.tick = this.tick.bind(this);
     gopher.addEventListener("schedule", this.start);
+    gopher.addEventListener("sync-start", () => this.setState({ loading: true }));
+    gopher.addEventListener("sync-end", () => this.setState({ loading: false }));
     setTimeout(this.tick, 1000);
   }
 
@@ -23,6 +25,7 @@ export default class Countdown extends Component {
   tick() {
     var { scheduled } = gopher;
     var anticipation = (scheduled - Date.now()) / 1000;
+    if (anticipation < 0) anticipation = gopher.interval;
     var text = "0:" + String(Math.round(anticipation)).padStart(2, 0);
     if (this.timeout) {
       clearTimeout(this.timeout);
@@ -32,9 +35,9 @@ export default class Countdown extends Component {
   }
 
   render(props, state) {
-    return <div class="indicator">
-      <b class={"icon icon-spin3" + (state.running ? "animate-spin" : "")}></b>
-      <span class="text">{state.text}</span>
+    return <div class="countdown-indicator">
+      <img alt="" src="./assets/icons/update.svg" class={state.loading ? "animate-spin" : ""} />
+      <span class="text">{state.loading ? "Loading..." : state.text}</span>
     </div>
   }
 }

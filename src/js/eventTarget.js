@@ -18,7 +18,7 @@ export default class EventTarget {
   }
 
   dispatchEvent(type, event) {
-    console.log(this.constructor.name, type, event);
+    // console.log(this.constructor.name, type, event);
     var queue = this[registry][type];
     if (!queue) return;
     queue.forEach(f => f(event));

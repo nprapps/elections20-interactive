@@ -83,6 +83,7 @@ export class Gopher extends EventTarget {
       return this.sync(entry);
     });
     await Promise.all(requests);
+    await new Promise(ok => setTimeout(ok, 1000));
     this.dispatchEvent("sync-end");
     this.schedule();
   }
