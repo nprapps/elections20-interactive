@@ -58,8 +58,9 @@ export default class App extends Component {
     let currentState = state.params.state;
     // Default to key view
     let subview = state.params.subview || "key";
+    let key = currentState + subview;
     return <div id="state-results">
-            <StateResults state={currentState} activeView={subview}/>
+            <StateResults state={currentState} activeView={subview} key={key}/>
           </div>
   }
 

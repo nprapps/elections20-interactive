@@ -74,7 +74,6 @@ export class StateResults extends Component {
     var changed =
       prevState.activeView != state.activeView ||
       props.state != prevProps.state;
-    console.log('DID', changed);
     if (changed) {
       this.updateWatchedFiles(prevState.activeView, this.state.activeView);
     }
