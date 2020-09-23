@@ -18,6 +18,10 @@ var metaData = {
   ballot: {
     json: "ballot-measures-national.json",
     title: "Ballot"
+  },
+  president: {
+    json: "presidential-big-board.json",
+    title: "President"
   }
 };
 

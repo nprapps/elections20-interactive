@@ -1,0 +1,146 @@
+.county-map {
+  display: block;
+
+  .container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    position: relative;
+
+    &.horizontal {
+      flex-direction: row;
+
+      @media @mobile {
+        flex-direction: column;
+      }
+
+      .key {
+        order: 1;
+        margin-left: 30px;
+        margin-bottom: 0;
+
+        @media @mobile {
+          order: 0;
+          margin-left: 0;
+          margin-bottom: 25px;
+        }
+      }
+    }
+  }
+
+  &.chonky {
+    @media @mobile-above {
+      padding: 0 10vw;
+    }
+  }
+
+  .tooltip {
+    position: absolute;
+    border: 1px solid #bbb;
+    background-color: #eee;
+    padding: 6px 8px;
+    display: none;
+    pointer-events: none;
+
+    &.shown {
+      display: block;
+    }
+
+    .name {
+      .gotham();
+      font-weight: bold;
+    }
+
+    .pop,
+    .reporting,
+    .result {
+      font-size: .9rem;
+      .knockout();
+      color: #787878;
+
+      &:empty { display: none; }
+    }
+  }
+
+  .map-container {
+    position: relative;
+    margin-bottom: 25px;
+    max-width: 100%;
+
+    .map, svg {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+  }
+
+  .map path {
+    stroke: #ddd;
+    fill-opacity: 0;
+    fill: white;
+    stroke-width: 1;
+    /*transition: fill-opacity 1s linear;*/
+
+    &.painted {
+      fill-opacity: .75;
+      stroke: #eee;
+      stroke-width: 1;
+    }
+
+    &:hover {
+      cursor: pointer;
+      fill-opacity: 1;
+      stroke-width: 2;
+      /*transition-duration: 0s !important;*/
+      paint-order: fill stroke;
+    }
+
+    &.clicked {
+      stroke: #787878;
+      stroke-width: 2;
+      paint-order: fill stroke;
+      fill-opacity: 1;
+    }
+  }
+
+  .key {
+    margin-bottom: 25px;
+  }
+
+  .key-row {
+    display: inline-block;
+    line-height: 1em;
+
+    .name {
+      font-family: 'Gotham SSm', Helvetica, Arial, sans-serif;
+      font-weight: normal;
+      font-size: 0.9em;
+      display: inline-block;
+      vertical-align: top;
+      margin: 1px 8px 0 1px;
+    }
+  }
+
+  .horizontal .key-row {
+    display: block;
+    margin-bottom: 8px;
+  }
+
+  .label {
+    font-family: 'Knockout 31 4r','Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
+    font-weight: normal;
+    color: #787878;
+    letter-spacing: 0.025em;
+    line-height: 1.2em;
+  }
+
+  .swatch {
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+  }
+
+}

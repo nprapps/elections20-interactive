@@ -1,14 +1,15 @@
 // Polyfills that aren't covered by `babel-preset-env`
 
 // import { h, createProjector } from 'maquette';
-import { h, Component, Fragment } from 'preact';
-import { buildDataURL, getHighestPymEmbed, toTitleCase } from './helpers.js';
-import gopher from '../gopher.js';
-import getValues from 'lodash.values';
-import sortBy from 'lodash.sortby';
-import { KeyResults } from './keyResults.js';
-import { HouseResults } from './houseResults.js';
-import { StatewideResults } from './statewideResults.js';
+import { h, Component, Fragment } from "preact";
+import { buildDataURL, getHighestPymEmbed, toTitleCase } from "./helpers.js";
+import gopher from "../gopher.js";
+import getValues from "lodash.values";
+import sortBy from "lodash.sortby";
+import { KeyResults } from "./keyResults.js";
+import { HouseResults } from "./houseResults.js";
+import { StatewideResults } from "./statewideResults.js";
+import { CountyMap } from "./countyMap.js";
 
 var lastRequestTime;
 var initialized = false;
@@ -16,9 +17,9 @@ var useDebug = false;
 var isValidMarkup;
 
 // TODO: check on the use of all of these
-const STATES_WITHOUT_COUNTY_INFO = ['AK'];
-const STATES_WITH_POTENTIAL_RUNOFFS = ['GA', 'LA', 'MS'];
-const NEW_ENGLAND_STATES = ['ME', 'NH', 'VT', 'MA', 'CT', 'RI'];
+const STATES_WITHOUT_COUNTY_INFO = ["AK"];
+const STATES_WITH_POTENTIAL_RUNOFFS = ["GA", "LA", "MS"];
+const NEW_ENGLAND_STATES = ["ME", "NH", "VT", "MA", "CT", "RI"];
 
 export class StateResults extends Component {
   constructor(props) {
@@ -40,33 +41,37 @@ export class StateResults extends Component {
     var activeRaces = new Set(["key"]);
     // TODO: add back in legend item suppression
     if (json.results) {
-      Object.keys(json.results).forEach(function(item) {
-        if (Object.keys(json.results[item].results).length && item !== "ballot_measures") {
+      Object.keys(json.results).forEach(function (item) {
+        if (
+          Object.keys(json.results[item].results).length &&
+          item !== "ballot_measures"
+        ) {
           activeRaces.add(item);
         }
       });
       if (Object.keys(json.results.senate.results).length === 1) {
         const isSpecial =
-          json.results.senate.results[Object.keys(json.results.senate.results)[0]][0]
-            .is_special_election;
+          json.results.senate.results[
+            Object.keys(json.results.senate.results)[0]
+          ][0].is_special_election;
         if (isSpecial) {
-          activeRaces.add('senate special');
-          activeRaces.delete('senate');
+          activeRaces.add("senate special");
+          activeRaces.delete("senate");
         }
       }
     }
-    this.setState({...json, activeRaces: Array.from(activeRaces)});
+    this.setState({ ...json, activeRaces: Array.from(activeRaces) });
   }
 
   // Lifecycle: Called whenever our component is created
   async componentDidMount() {
-    gopher.watch(this.getDataFileName('key'), this.onResultsData);
+    gopher.watch(this.getDataFileName("key"), this.onResultsData);
   }
 
   // Lifecycle: Called just before our component will be destroyed
   componentWillUnmount() {
     // stop when not renderable
-    gopher.unwatch(this.getDataFileName('key'), this.onResultsData);
+    gopher.unwatch(this.getDataFileName("key"), this.onResultsData);
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -74,7 +79,7 @@ export class StateResults extends Component {
     var changed =
       prevState.activeView != state.activeView ||
       props.state != prevProps.state;
-    console.log('DID', changed);
+    console.log("DID", changed);
     if (changed) {
       this.updateWatchedFiles(prevState.activeView, this.state.activeView);
     }
@@ -95,12 +100,11 @@ export class StateResults extends Component {
     let stateName = anyHouseCandidate.statename;
 
     let resultsType = `${this.state.activeView.toUpperCase()} Results`;
-
     return (
       <div class="results">
         <header id="state-header">
           <div class="state-icon">
-            <i class={'stateface stateface-' + this.props.state}></i>
+            <i class={"stateface stateface-" + this.props.state}></i>
           </div>
           <h1>
             <span class="state-name">{stateName}</span>
@@ -108,6 +112,9 @@ export class StateResults extends Component {
           </h1>
           {this.renderTabSwitcher()}
         </header>
+        <div>
+          <CountyMap state={this.props.state} />
+        </div>
         <div class="results-elements">{this.renderResults()}</div>
       </div>
     );
@@ -118,12 +125,20 @@ export class StateResults extends Component {
     let resultsElements;
     let data = this.state.results;
 
-    if (this.state.activeView === 'key') {
+    if (this.state.activeView === "key") {
       return <KeyResults state={this.props.state.toLowerCase()} />;
-    } else if (this.state.activeView === 'house') {
+    } else if (this.state.activeView === "house") {
       return <HouseResults state={this.props.state.toLowerCase()} />;
-    } else if (this.state.activeView.match(/senate/) || this.state.activeView == "governor") {
-      return <StatewideResults state={this.props.state.toLowerCase()} view={this.state.activeView} />;
+    } else if (
+      this.state.activeView.match(/senate/) ||
+      this.state.activeView == "governor"
+    ) {
+      return (
+        <StatewideResults
+          state={this.props.state.toLowerCase()}
+          view={this.state.activeView}
+        />
+      );
     }
     //else if (
     //   resultsView === 'senate' ||
@@ -200,15 +215,15 @@ export class StateResults extends Component {
   getDataFileName(view) {
     var state = this.props.state.toLowerCase();
     // TODO: should this be in this.state? It doesn't change so feels like no?
-    if (view === 'senate' || view === 'governor') {
+    if (view === "senate" || view === "governor") {
       return `https://apps.npr.org/elections18-graphics/data/${state}-counties-${view}.json`;
-    } else if (view === 'senate special') {
+    } else if (view === "senate special") {
       return `https://apps.npr.org/elections18-graphics/data/${state}-counties-senate-special.json`;
-    } else if (view === 'main') {
+    } else if (view === "main") {
       return (
-        'https://apps.npr.org/elections18-graphics/data/extra_data/' +
+        "https://apps.npr.org/elections18-graphics/data/extra_data/" +
         state +
-        '-extra.json'
+        "-extra.json"
       );
     } else {
       return `https://apps.npr.org/elections18-graphics/data/${state}.json`;
@@ -218,7 +233,7 @@ export class StateResults extends Component {
   renderTabSwitcher() {
     // Create the tab switcher, between different race types
     // For styling on the page, these links will be split by a delimiter
-    const DELIMITER = '|';
+    const DELIMITER = "|";
 
     // TODO: make this real
     const elements = this.state.activeRaces.flatMap((tab, i) => [
@@ -237,7 +252,7 @@ export class StateResults extends Component {
       <a
         href={`./#/states/${this.props.state}/${tab.toLowerCase()}`}
         name="race-type-nav"
-        class={this.state.activeView === tab.toLowerCase() ? 'active' : ''}
+        class={this.state.activeView === tab.toLowerCase() ? "active" : ""}
       >
         {tab[0].toUpperCase() + tab.slice(1)}
       </a>
@@ -249,26 +264,26 @@ export class StateResults extends Component {
 
     for (let fipscode in extraData) {
       let sorter;
-      if (sortMetric['census']) {
-        sorter = extraData[fipscode].census[sortMetric['key']];
+      if (sortMetric["census"]) {
+        sorter = extraData[fipscode].census[sortMetric["key"]];
       } else {
-        sorter = extraData[fipscode][sortMetric['key']];
+        sorter = extraData[fipscode][sortMetric["key"]];
       }
       values.push([fipscode, sorter]);
     }
 
     values.sort(function (a, b) {
-      if (sortMetric['key'] === 'past_margin') {
+      if (sortMetric["key"] === "past_margin") {
         // always put Democratic wins on top
-        if (a[1][0] === 'D' && b[1][0] === 'R') return -1;
-        if (a[1][0] === 'R' && b[1][0] === 'D') return 1;
+        if (a[1][0] === "D" && b[1][0] === "R") return -1;
+        if (a[1][0] === "R" && b[1][0] === "D") return 1;
 
-        const aMargin = parseInt(a[1].split('+')[1]);
-        const bMargin = parseInt(b[1].split('+')[1]);
+        const aMargin = parseInt(a[1].split("+")[1]);
+        const bMargin = parseInt(b[1].split("+")[1]);
 
         // if Republican, sort in ascending order
         // if Democratic, sort in descending order
-        if (a[1][0] === 'R') {
+        if (a[1][0] === "R") {
           return aMargin - bMargin;
         } else {
           return bMargin - aMargin;
@@ -313,13 +328,13 @@ export class StateResults extends Component {
 }
 
 const createClassesForBoardCells = (result, coloredParties, uncontested) => {
-  let classes = result.npr_winner ? 'winner ' : '';
+  let classes = result.npr_winner ? "winner " : "";
   classes += result.party.toLowerCase();
   classes +=
-    !coloredParties.includes(result.party) && result.party !== 'Uncontested'
-      ? ' other'
-      : '';
-  classes += result.incumbent ? ' incumbent' : '';
-  classes += result.last.length > 8 ? ' longname' : '';
+    !coloredParties.includes(result.party) && result.party !== "Uncontested"
+      ? " other"
+      : "";
+  classes += result.incumbent ? " incumbent" : "";
+  classes += result.last.length > 8 ? " longname" : "";
   return classes;
 };

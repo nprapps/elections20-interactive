@@ -7,12 +7,10 @@ export class RacewideTable extends Component {
   constructor(props) {
     super();
 
-    console.log(props)
     this.state = { data: props.data, tableClass: props.className };
   }
 
   render() {
-    console.log(this.state)
     if (!this.state.data) {
       return '';
     }
