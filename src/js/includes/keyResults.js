@@ -162,7 +162,6 @@ export class KeyResults extends Component {
     for (let bucket in resultsData) {
       var raceLabel = decideLabel(resultsData[bucket][0]);
       var raceResults = determineResults(resultsData[bucket]);
-      console.log('race results', raceResults);
       var metadata = getMetaData(raceResults);
       Object.assign(raceResults, metadata);
 

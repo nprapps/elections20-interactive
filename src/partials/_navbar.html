@@ -4,31 +4,27 @@
 var { nav, states } = grunt.data.json;
 %>
 
-<div id="results-nav-wrapper">
-  <nav class="results-nav">
+<nav class="results-nav">
 
-    <div class="results-logo">
-      <span class="election-name">Election</span>
-      <span class="election-year">2018</span>
-    </div>
+  <div class="results-logo">
+    <span class="election-name">Election</span>
+    <span class="election-year">2020</span>
+  </div>
 
-    <input type="checkbox" id="small-screen-nav-checkbox" />
+  <button class="menu-toggle" aria-controls="main-menu">Menu</button>
 
-    <label for="small-screen-nav-checkbox" class="toggle small-screen-nav-label">More Live Results</label>
+  <ul class="menu-contents" id="main-menu">
 
-    <ul class="menu">
-
-     <% for (var item of nav) { %>
-     <li>
+    <% for (var item of nav) { %>
+    <li>
       <a target="_blank" href=" <%= item.url %>"><%= item.label %></a>
     </li>
-    <%}%>
+    <% } %>
 
     <li class="state-nav">
-      <label aria-hidden="true" for="state-nav-checkbox" class="state-nav-label">state results </label>
-      <input aria-hidden="true" type="checkbox" id="state-nav-checkbox" />
+      <button class="menu-toggle" aria-controls="states-menu">State results</button>
 
-      <ul class="states">
+      <ul class="states menu-contents" id="states-menu">
         <% for (var state in states) {%>
         <li>
           <a href="#/states/<%= state %>"><%= states[state].fullname %></a>
@@ -39,4 +35,3 @@ var { nav, states } = grunt.data.json;
 
   </ul>
 </nav>
-</div> <!-- / results-nav-wrapper -->
