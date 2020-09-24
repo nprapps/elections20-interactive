@@ -585,3 +585,68 @@
     }
   }
 }
+
+nav.race-calendar {
+  @border-color: #EEE;
+  .gotham();
+
+  @media @mobile {
+    display: none;
+  }
+
+  a {
+    text-decoration: none;
+  }
+
+  ul {
+    padding: 0 0 8px;
+    margin: 0;
+    display: flex;
+    align-items: stretch;
+    justify-content: flex-start;
+    border-bottom: 2px solid @border-color;
+  }
+
+  li {
+    display: block;
+    padding: 10px 20px;
+    border-right: 2px solid @border-color;
+    border-top: 2px solid transparent;
+    line-height: 1.5em;
+
+    &:last-child {
+      border-right: none;
+    }
+  }
+
+  .office {
+    display: block;
+    font-weight: bold;
+    /*color: var(--foreground);*/
+  }
+
+  .parties {
+    display: block;
+  }
+
+  .date {
+    display: block;
+    color: #AAA;
+    font-size: 12px;
+  }
+
+  .active {
+    border-top: 2px solid #CCC;
+  }
+}
+
+h1 {
+  img.icon {
+  float: left;
+  margin-right: 14px;
+  max-width: 75px;
+  height: 60px;
+  opacity: 0.4;
+  outline: none;
+}
+}

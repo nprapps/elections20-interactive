@@ -138,7 +138,7 @@ export class StatewideResults extends Component {
     if (!this.statesWithoutCountyInfo.includes(stateResults[0].statepostal)) {
       countyLevel = (
         <div
-          class={'results-counties ' + sortMetric['key'].split('_').join('-')}
+          class={'results-counties ' + this.state.sortMetric['key'].split('_').join('-')}
         >
           <h2>Results By County</h2>
           <ul class="sorter">
@@ -308,6 +308,9 @@ export class StatewideResults extends Component {
   }
 
   sortCountyResults() {
+    if (!this.state) {
+      return;
+    }
     let values = [];
 
     for (let fipscode in this.state.extraData) {
@@ -321,7 +324,7 @@ export class StatewideResults extends Component {
     }
 
     values.sort(function (a, b) {
-      if (this.state.sortMetric['key'] === 'past_margin') {
+      if (sortMetric['key'] === 'past_margin') {
         // always put Democratic wins on top
         if (a[1][0] === 'D' && b[1][0] === 'R') return -1;
         if (a[1][0] === 'R' && b[1][0] === 'D') return 1;

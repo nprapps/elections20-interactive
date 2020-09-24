@@ -211,7 +211,6 @@ export class CountyMap extends Component {
   }
 
   onMove(e) {
-    console.log(e)
     var tooltip = this.tooltipRef.current;
     var fips = e.target.id.replace("fips-", "");
     if (!fips || e.type == "mouseleave") {

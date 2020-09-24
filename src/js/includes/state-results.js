@@ -107,6 +107,7 @@ export class StateResults extends Component {
             <i class={"stateface stateface-" + this.props.state}></i>
           </div>
           <h1>
+            <img class="icon" src={"../../assets/states/" + this.props.state + ".svg"}></img>
             <span class="state-name">{stateName}</span>
             {resultsType}
           </h1>
@@ -237,25 +238,23 @@ export class StateResults extends Component {
 
     // TODO: make this real
     const elements = this.state.activeRaces.flatMap((tab, i) => [
-      this.createTabElement(tab),
-      DELIMITER,
+      this.createTabElement(tab)
     ]);
-    // remove the trailing delimiter
-    elements.pop();
 
-    return <div class="switcher">Election results: {elements}</div>;
+    return <nav class="race-calendar"><ul>{elements}</ul></nav>;
   }
 
   // TODO: use built in uppercase fxn here
   createTabElement(tab) {
     return (
+      <li class={this.state.activeView === tab.toLowerCase() ? "active" : ""}>
       <a
         href={`./#/states/${this.props.state}/${tab.toLowerCase()}`}
         name="race-type-nav"
-        class={this.state.activeView === tab.toLowerCase() ? "active" : ""}
       >
         {tab[0].toUpperCase() + tab.slice(1)}
       </a>
+      </li>
     );
   }
 
