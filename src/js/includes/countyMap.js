@@ -3,7 +3,6 @@
 // import { h, createProjector } from 'maquette';
 import { h, Component } from "preact";
 import { buildDataURL, getHighestPymEmbed } from "./helpers.js";
-import { InteractiveComponent } from "./interactiveComponent.js";
 import gopher from "../gopher.js";
 
 var specialStates = new Set(['IA', 'MA', 'OK', 'WA']);
