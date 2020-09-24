@@ -12,7 +12,8 @@ export class CountyMap extends Component {
     super();
 
     this.state = {};
-    this.ref = createRef();
+    this.svgRef = createRef();
+    this.tooltipRef = createRef();
 
     this.onData = this.onData.bind(this);
   }
@@ -79,17 +80,9 @@ export class CountyMap extends Component {
             style="height: 65vh; width: 55.794vh;"
           >
             <div class="map" data-as="map">
-              <div ref={this.ref}></div>
+              <div ref={this.svgRef}></div>
             </div>
-            <div
-              class="tooltip"
-              data-as="tooltip"
-              style="left: 112.938px; top: 184.922px;"
-            >
-              <div class="name"></div>
-              <div class="pop"></div>
-              <div class="result"></div>
-              <div class="reporting"></div>
+            <div class="tooltip" ref={this.tooltipRef}>
             </div>
           </div>
         </div>
@@ -97,19 +90,9 @@ export class CountyMap extends Component {
     );
   }
 
-  highlightCounty(fips) {
-    if (!this.svg) return;
-    var county = this.svg.querySelector(`[id="fips-${fips}"]`);
-    if (county == this.lastClicked) return;
-    if (this.lastClicked) this.lastClicked.classList.remove("clicked");
-    county.parentElement.appendChild(county);
-    county.classList.add("clicked");
-    this.lastClicked = county;
-  }
-
   async loadSVG(svgText) {
-    this.ref.current.innerHTML = svgText;
-    var svg = this.ref.current.getElementsByTagName('svg')[0];
+    this.svgRef.current.innerHTML = svgText;
+    var svg = this.svgRef.current.getElementsByTagName('svg')[0];
 
     svg.setAttribute("preserveAspectRatio", "xMaxYMid meet");
 
@@ -120,6 +103,10 @@ export class CountyMap extends Component {
 
     var width = svg.getAttribute("width") * 1;
     var height = svg.getAttribute("height") * 1;
+
+    svg.addEventListener("click", e => this.onClick(e));
+    svg.addEventListener("mousemove", e => this.onMove(e));
+    svg.addEventListener("mouseleave", e => this.onMove(e));
     // var embedded = document.body.classList.contains("embedded");
 
     // Move this to own function called in render?
@@ -200,5 +187,69 @@ export class CountyMap extends Component {
     //   keyData = filtered.length < 2 ? keyData.slice(0, 2) : filtered;
     //   elements.key.innerHTML = key({ keyData, incomplete, guid: this.guid });
     // }
+  }
+
+  highlightCounty(fips) {
+    if (!this.svg) return;
+    var county = this.svg.querySelector(`[id="fips-${fips}"]`);
+    if (county == this.lastClicked) return;
+    if (this.lastClicked) this.lastClicked.classList.remove("clicked");
+    county.parentElement.appendChild(county);
+    county.classList.add("clicked");
+    this.lastClicked = county;
+  }
+
+  onClick(e) {
+    var county = e.target;
+    var fips = county.id.replace("fips-", "");
+
+    if (fips.length > 0) {
+      // TODO: add back in some version of this to communicate county change
+      // this.dispatch("map-click", { fips });
+      this.highlightCounty(fips);
+    }
+  }
+
+  onMove(e) {
+    console.log(e)
+    var tooltip = this.tooltipRef.current;
+    var fips = e.target.id.replace("fips-", "");
+    if (!fips || e.type == "mouseleave") {
+      return tooltip.classList.remove("shown");
+    }
+
+    // Add back in when we have results
+    // var result = this.fipsLookup[fips];
+    // if (result) {
+    //   var candText = "";
+    //   if (result.reportingPercentage > 25) {
+    //     var leadingCandidate = result.candidates[0];
+    //     var prefix = leadingCandidate.winner ? "Winner: " : "Leading: ";
+    //     var candText = prefix + leadingCandidate.last + " (" + (leadingCandidate.percentage || 0).toFixed(1) + "%)";
+    //   }
+
+    //   var countyDisplay = result.county.replace(/\s[a-z]/g, match =>
+    //     match.toUpperCase()
+    //   );
+      tooltip.innerHTML = `
+        <div class="name">${'test'}</div>
+        <div class="pop">Pop. ${'test'}</div>
+        <div class="result">${ 'test'}</div>
+        <div class="reporting">${'test'}% reporting</div>
+      `;
+    // }
+
+    var bounds = this.svgRef.current.getBoundingClientRect();
+    var x = e.clientX - bounds.left;
+    var y = e.clientY - bounds.top;
+    if (x > bounds.width / 2) {
+      x -= tooltip.offsetWidth + 10;
+    } else {
+      x += 20;
+    }
+    tooltip.style.left = x + "px";
+    tooltip.style.top = y + "px";
+
+    tooltip.classList.add("shown");
   }
 }
