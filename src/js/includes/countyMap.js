@@ -1,7 +1,7 @@
 // Polyfills that aren't covered by `babel-preset-env`
 
 // import { h, createProjector } from 'maquette';
-import { h, Component } from "preact";
+import { h, Component, createRef } from "preact";
 import { buildDataURL, getHighestPymEmbed } from "./helpers.js";
 import gopher from "../gopher.js";
 
@@ -12,6 +12,7 @@ export class CountyMap extends Component {
     super();
 
     this.state = {};
+    this.ref = createRef();
 
     this.onData = this.onData.bind(this);
   }
@@ -28,23 +29,14 @@ export class CountyMap extends Component {
     var text = await response.text();
     var svg = await this.loadSVG(text);
     this.setState({ svg: svg });
-    // TODO: replace with county-data files
   }
 
   // Lifecycle: Called just before our component will be destroyed
   componentWillUnmount() {
     // stop when not renderable
-    // gopher.unwatch(
-    //   "https://apps.npr.org/elections18-graphics/data/get-caught-up.json",
-    //   this.onData
-    // );
   }
 
   render() {
-    if (!this.state.svg) {
-      return "";
-    }
-
     var isChonky = specialStates.has(this.props.state);
 
     return (
@@ -87,7 +79,7 @@ export class CountyMap extends Component {
             style="height: 65vh; width: 55.794vh;"
           >
             <div class="map" data-as="map">
-              <div dangerouslySetInnerHTML={{ __html: this.state.svg.outerHTML }}/>
+              <div ref={this.ref}></div>
             </div>
             <div
               class="tooltip"
@@ -115,10 +107,10 @@ export class CountyMap extends Component {
     this.lastClicked = county;
   }
 
-  async loadSVG(svg) {
-    var parser = new DOMParser();
-    var html = parser.parseFromString(svg, "image/svg+xml");
-    var svg = html.querySelector("svg");
+  async loadSVG(svgText) {
+    this.ref.current.innerHTML = svgText;
+    var svg = this.ref.current.getElementsByTagName('svg')[0];
+
     svg.setAttribute("preserveAspectRatio", "xMaxYMid meet");
 
     var paths = svg.querySelectorAll("path");
