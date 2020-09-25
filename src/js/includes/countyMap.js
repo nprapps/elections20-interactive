@@ -6,7 +6,6 @@ import { buildDataURL, getHighestPymEmbed } from "./helpers.js";
 import gopher from "../gopher.js";
 
 var specialStates = new Set(['IA', 'MA', 'OK', 'WA']);
-var guid = 0;
 
 export class CountyMap extends Component {
   constructor(props) {
@@ -18,7 +17,7 @@ export class CountyMap extends Component {
     this.state = {};
     this.svgRef = createRef();
     this.tooltipRef = createRef();
-    this.guid = guid++;
+    this.guid = 0;
 
     this.onData = this.onData.bind(this);
   }
