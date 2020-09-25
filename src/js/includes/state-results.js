@@ -9,7 +9,6 @@ import sortBy from "lodash.sortby";
 import { KeyResults } from "./keyResults.js";
 import { HouseResults } from "./houseResults.js";
 import { StatewideResults } from "./statewideResults.js";
-import { CountyMap } from "./countyMap.js";
 
 var lastRequestTime;
 var initialized = false;
@@ -113,9 +112,6 @@ export class StateResults extends Component {
           </h1>
           {this.renderTabSwitcher()}
         </header>
-        <div>
-          <CountyMap state={this.props.state} />
-        </div>
         <div class="results-elements">{this.renderResults()}</div>
       </div>
     );

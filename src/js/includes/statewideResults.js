@@ -8,6 +8,8 @@ import {
   calculatePrecinctsReporting,
 } from './util.js';
 import { RacewideTable } from './racewideTable.js';
+import { CountyMap } from "./countyMap.js";
+import { fmtComma } from './helpers.js';
 
 const availableMetrics = [
   {
@@ -111,22 +113,6 @@ export class StatewideResults extends Component {
     if (!this.state.data) {
       return '';
     }
-    let statewide = (
-      <div class="results-elements">
-        <h2>Statewide Results</h2>
-        {
-          <RacewideTable
-            data={this.state.data.state}
-            className={
-              this.state.activeView === 'senate'
-                ? 'results-senate'
-                : 'results-gubernatorial'
-            }
-          />
-        }
-      </div>
-    );
-
     const stateResults = this.state.data.state.filter(
       c => !(c.first === '' && c.last === 'Other')
     );
@@ -144,7 +130,7 @@ export class StatewideResults extends Component {
           <ul class="sorter">
             <li class="label">
               Sort Counties By
-              {availableMetrics.map(metric => renderMetricLi(metric))}
+              {availableMetrics.map(metric => this.renderMetricLi(metric))}
             </li>
           </ul>
           <table
@@ -175,12 +161,29 @@ export class StatewideResults extends Component {
                 </th>
               </tr>
               {sortKeys.map(key =>
-                this.renderCountyRow(data[key[0]], key[0], availableCandidates)
+                this.renderCountyRow(this.state.data[key[0]], key[0], availableCandidates)
               )}
             </thead>
           </table>
         </div>
       );
+
+      return (
+      <div class="results-elements">
+        <CountyMap state={this.props.state.toUpperCase()}/>
+        <h2>Statewide Results</h2>
+        {
+          <RacewideTable
+            data={this.state.data.state}
+            className={
+              this.state.activeView === 'senate'
+                ? 'results-senate'
+                : 'results-gubernatorial'
+            }
+          />
+        }
+      </div>
+    );
     }
   }
 
@@ -219,6 +222,7 @@ export class StatewideResults extends Component {
     }, {});
 
     const winner = this.determineWinner(keyedResults);
+    console.log(winner)
 
     let extraMetric;
     if (this.state.sortMetric['census']) {
@@ -228,7 +232,7 @@ export class StatewideResults extends Component {
     }
 
     if (this.state.sortMetric['comma_filter']) {
-      extraMetric = commaNumber(extraMetric);
+      extraMetric = fmtComma(extraMetric);
     }
 
     if (this.state.sortMetric['percent_filter']) {
@@ -259,7 +263,7 @@ export class StatewideResults extends Component {
         {availableCandidates.map(key =>
           this.renderCountyCell(keyedResults[key], winner)
         )}
-        {renderMarginCell(keyedResults, winner)}
+        {this.renderMarginCell(keyedResults, winner)}
         
       </tr>
       
@@ -283,9 +287,13 @@ export class StatewideResults extends Component {
   }
 
   renderMarginCell(result, winner) {
-    var party = ['Dem', 'GOP'].includes(winner.party)
+    var party;
+    if (winner) {
+      party = ['Dem', 'GOP'].includes(winner.party)
       ? winner.party.toLowerCase()
       : 'ind';
+    }
+    
     var cell = <td class={`vote margin ${party}`}></td>;
   }
 
@@ -308,6 +316,7 @@ export class StatewideResults extends Component {
   }
 
   sortCountyResults() {
+    var sortMetric = this.state.sortMetric;
     if (!this.state) {
       return;
     }
