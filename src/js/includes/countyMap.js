@@ -5,14 +5,14 @@ import { h, Component, createRef } from "preact";
 import { buildDataURL, getHighestPymEmbed } from "./helpers.js";
 import gopher from "../gopher.js";
 
-var specialStates = new Set(['IA', 'MA', 'OK', 'WA']);
+var specialStates = new Set(["IA", "MA", "OK", "WA"]);
 
 export class CountyMap extends Component {
   constructor(props) {
     super();
 
     this.fipsLookup = [];
-    this.palette = {'Dem': '#237bbd', 'Rep': '#d62021' }
+    this.palette = { Dem: "#237bbd", GOP: "#d62021" };
 
     this.state = {};
     this.svgRef = createRef();
@@ -45,7 +45,11 @@ export class CountyMap extends Component {
     var isChonky = specialStates.has(this.props.state);
 
     return (
-      <div class= {"county-map" + (isChonky ? " chonky" : "")} data-as="map" aria-hidden="true">
+      <div
+        class={"county-map" + (isChonky ? " chonky" : "")}
+        data-as="map"
+        aria-hidden="true"
+      >
         <div class="container horizontal" data-as="container">
           <svg
             class="patterns"
@@ -68,14 +72,9 @@ export class CountyMap extends Component {
           </svg>
           <div class="key" data-as="key">
             <div class="key-grid">
-              <div class="key-row">
-                <div class="swatch" style="background: #d62021;"></div>
-                <div class="name"></div>
-              </div>
-              <div class="key-row">
-                <div class="swatch" style="background: #237bbd;"></div>
-                <div class="name"></div>
-              </div>
+              {this.props.data.state.map(candidate =>
+                this.createLegend(candidate)
+              )}
             </div>
           </div>
           <div
@@ -86,8 +85,7 @@ export class CountyMap extends Component {
             <div class="map" data-as="map">
               <div ref={this.svgRef}></div>
             </div>
-            <div class="tooltip" ref={this.tooltipRef}>
-            </div>
+            <div class="tooltip" ref={this.tooltipRef}></div>
           </div>
         </div>
       </div>
@@ -96,7 +94,7 @@ export class CountyMap extends Component {
 
   async loadSVG(svgText) {
     this.svgRef.current.innerHTML = svgText;
-    var svg = this.svgRef.current.getElementsByTagName('svg')[0];
+    var svg = this.svgRef.current.getElementsByTagName("svg")[0];
 
     svg.setAttribute("preserveAspectRatio", "xMaxYMid meet");
 
@@ -157,7 +155,7 @@ export class CountyMap extends Component {
     for (var d of Object.keys(mapData)) {
       var [top] = mapData[d].sort((a, b) => b.votepct - a.votepct);
       if (top.votecount) {
-        winners.add(top.party in this.palette ? top.party: "other");
+        winners.add(top.party in this.palette ? top.party : "other");
         hasVotes = true;
       }
       this.fipsLookup[top.fipscode] = mapData[d];
@@ -197,6 +195,21 @@ export class CountyMap extends Component {
     }
   }
 
+  createLegend(candidate) {
+    if (!candidate.candidateid) return;
+    var name = `${candidate.first} ${candidate.last}`;
+    console.log(this.palette, this.palette[candidate.party], candidate.party);
+    return (
+      <div class="key-row">
+        <div
+          class="swatch"
+          style={`background: ${this.palette[candidate.party]};`}
+        ></div>
+        <div class="name">{name}</div>
+      </div>
+    );
+  }
+
   highlightCounty(fips) {
     if (!this.svg) return;
     var county = this.svg.querySelector(`[id="fips-${fips}"]`);
@@ -231,16 +244,24 @@ export class CountyMap extends Component {
       if (result.reportingPercentage > 25) {
         var leadingCandidate = result[0];
         var prefix = leadingCandidate.winner ? "Winner: " : "Leading: ";
-        var candText = prefix + leadingCandidate.last + " (" + (leadingCandidate.percentage || 0).toFixed(1) + "%)";
+        var candText =
+          prefix +
+          leadingCandidate.last +
+          " (" +
+          (leadingCandidate.percentage || 0).toFixed(1) +
+          "%)";
       }
 
-      var countyDisplay = result[0].reportingunitname.replace(/\s[a-z]/g, match =>
-        match.toUpperCase()
+      var countyDisplay = result[0].reportingunitname.replace(
+        /\s[a-z]/g,
+        match => match.toUpperCase()
       );
       tooltip.innerHTML = `
         <div class="name">${countyDisplay}</div>
-        <div class="result">${ candText }</div>
-        <div class="reporting">${result[0].precinctsreportingpct.toFixed(1)}% reporting</div>
+        <div class="result">${candText}</div>
+        <div class="reporting">${result[0].precinctsreportingpct.toFixed(
+          1
+        )}% reporting</div>
       `;
     }
     // Add population back in
