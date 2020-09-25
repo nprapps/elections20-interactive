@@ -6,14 +6,19 @@ import { buildDataURL, getHighestPymEmbed } from "./helpers.js";
 import gopher from "../gopher.js";
 
 var specialStates = new Set(['IA', 'MA', 'OK', 'WA']);
+var guid = 0;
 
 export class CountyMap extends Component {
   constructor(props) {
     super();
 
+    this.fipsLookup = [];
+    this.palette = {'Dem': '#237bbd', 'Rep': '#d62021' }
+
     this.state = {};
     this.svgRef = createRef();
     this.tooltipRef = createRef();
+    this.guid = guid++;
 
     this.onData = this.onData.bind(this);
   }
@@ -65,11 +70,11 @@ export class CountyMap extends Component {
           <div class="key" data-as="key">
             <div class="key-grid">
               <div class="key-row">
-                <div class="swatch" style="background: #9999cb;"></div>
+                <div class="swatch" style="background: #d62021;"></div>
                 <div class="name"></div>
               </div>
               <div class="key-row">
-                <div class="swatch" style="background: #b7ce59;"></div>
+                <div class="swatch" style="background: #237bbd;"></div>
                 <div class="name"></div>
               </div>
             </div>
@@ -142,51 +147,55 @@ export class CountyMap extends Component {
   }
 
   paint() {
-
+    var mapData = this.props.data;
     if (!this.svg) return;
 
+    var incomplete = false;
+
     // Need to get the data in here first
-    // var winners = new Set();
-    // var hasVotes = false;
-    // this.state.results.forEach(r => {
-    //   var [top] = r.candidates.sort((a, b) => b.percentage - a.percentage);
-    //   if (top.votes) {
-    //     winners.add(top.id in palette ? top.id : "other");
-    //     hasVotes = true;
-    //   }
-    //   this.fipsLookup[r.fips] = r;
-    // });
+    var winners = new Set();
+    var hasVotes = false;
+    for (var d of Object.keys(mapData)) {
+      var [top] = mapData[d].sort((a, b) => b.votepct - a.votepct);
+      if (top.votecount) {
+        winners.add(top.party in this.palette ? top.party: "other");
+        hasVotes = true;
+      }
+      this.fipsLookup[top.fipscode] = mapData[d];
+    }
 
-    // var lookup = {};
-    // for (var r of results) {
-    //   var { fips, candidates } = r;
-    //   var [top] = candidates.sort((a, b) => b.percentage - a.percentage);
-    //   if (!top.votes) continue;
+    var lookup = {};
+    for (var d of Object.keys(mapData)) {
+      var fips = d;
+      var candidates = mapData[d];
+      var [top] = candidates.sort((a, b) => b.percentage - a.percentage);
+      // if (!top.votecount) continue;
 
-    //   var path = this.svg.querySelector(`[id="fips-${fips}"]`);
-    //   path.classList.add("painted");
-    //   var pigment = palette[top.id];
-    //   var hitThreshold = r.reportingPercentage > 25;
-    //   var paint = "#bbb";
-    //   if (hitThreshold) {
-    //     paint = pigment ? pigment.color : "#bbb";
-    //   } else {
-    //     paint = `url(#pending-${this.guid})`;
-    //     incomplete = true;
-    //   }
+      var path = this.svg.querySelector(`[id="fips-${fips}"]`);
+      if (!path) continue;
+      path.classList.add("painted");
+      var pigment = this.palette[top.party];
+      var hitThreshold = top.precinctsreportingpct > 50;
+      var paint = "#bbb";
+      if (hitThreshold) {
+        paint = pigment ? pigment : "#bbb";
+      } else {
+        paint = `url(#pending-${this.guid})`;
+        incomplete = true;
+      }
 
-    //   path.style.fill = paint;
-    // }
+      path.style.fill = paint;
+    }
 
-    // if (hasVotes) {
-    //   var pKeys = Object.keys(palette);
-    //   var keyData = pKeys
-    //     .map(p => palette[p])
-    //     .sort((a, b) => (a.order < b.order ? -1 : 1));
-    //   var filtered = keyData.filter(p => winners.has(p.id));
-    //   keyData = filtered.length < 2 ? keyData.slice(0, 2) : filtered;
-    //   elements.key.innerHTML = key({ keyData, incomplete, guid: this.guid });
-    // }
+    if (hasVotes) {
+      var pKeys = Object.keys(this.palette);
+      var keyData = pKeys
+        .map(p => this.palette[p])
+        .sort((a, b) => (a.order < b.order ? -1 : 1));
+      var filtered = keyData.filter(p => winners.has(p.id));
+      keyData = filtered.length < 2 ? keyData.slice(0, 2) : filtered;
+      elements.key.innerHTML = key({ keyData, incomplete, guid: this.guid });
+    }
   }
 
   highlightCounty(fips) {
@@ -217,26 +226,26 @@ export class CountyMap extends Component {
       return tooltip.classList.remove("shown");
     }
 
-    // Add back in when we have results
-    // var result = this.fipsLookup[fips];
-    // if (result) {
-    //   var candText = "";
-    //   if (result.reportingPercentage > 25) {
-    //     var leadingCandidate = result.candidates[0];
-    //     var prefix = leadingCandidate.winner ? "Winner: " : "Leading: ";
-    //     var candText = prefix + leadingCandidate.last + " (" + (leadingCandidate.percentage || 0).toFixed(1) + "%)";
-    //   }
+    var result = this.fipsLookup[fips];
+    if (result) {
+      var candText = "";
+      if (result.reportingPercentage > 25) {
+        var leadingCandidate = result[0];
+        var prefix = leadingCandidate.winner ? "Winner: " : "Leading: ";
+        var candText = prefix + leadingCandidate.last + " (" + (leadingCandidate.percentage || 0).toFixed(1) + "%)";
+      }
 
-    //   var countyDisplay = result.county.replace(/\s[a-z]/g, match =>
-    //     match.toUpperCase()
-    //   );
+      var countyDisplay = result[0].reportingunitname.replace(/\s[a-z]/g, match =>
+        match.toUpperCase()
+      );
       tooltip.innerHTML = `
-        <div class="name">${'test'}</div>
-        <div class="pop">Pop. ${'test'}</div>
-        <div class="result">${ 'test'}</div>
-        <div class="reporting">${'test'}% reporting</div>
+        <div class="name">${countyDisplay}</div>
+        <div class="result">${ candText }</div>
+        <div class="reporting">${result[0].precinctsreportingpct.toFixed(1)}% reporting</div>
       `;
-    // }
+    }
+    // Add population back in
+    // <div class="pop">Pop. ${result[0].population.toLocaleString()}</div>
 
     var bounds = this.svgRef.current.getBoundingClientRect();
     var x = e.clientX - bounds.left;

@@ -109,7 +109,6 @@ export class StatewideResults extends Component {
   }
 
   render() {
-    console.log(this.state);
     if (!this.state.data) {
       return '';
     }
@@ -170,7 +169,7 @@ export class StatewideResults extends Component {
 
       return (
       <div class="results-elements">
-        <CountyMap state={this.props.state.toUpperCase()}/>
+        <CountyMap state={this.props.state.toUpperCase()} data={this.state.data}/>
         <h2>Statewide Results</h2>
         {
           <RacewideTable
@@ -182,6 +181,7 @@ export class StatewideResults extends Component {
             }
           />
         }
+        {countyLevel}
       </div>
     );
     }
@@ -298,6 +298,7 @@ export class StatewideResults extends Component {
   }
 
   determineWinner(keyedResults) {
+    console.log(keyedResults)
     let winner = null;
     let winningPct = 0;
     for (var key in keyedResults) {
