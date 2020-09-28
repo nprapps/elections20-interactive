@@ -89,7 +89,7 @@ module.exports = function(grunt) {
           Body: upload.buffer,
           // ACL: "public-read",
           ContentType: mime.getType(upload.path),
-          CacheControl: "public,max-age=300"
+          CacheControl: "public,max-age=10"
         });
       }, function(obj, next) {
         if (deploy == "live") {

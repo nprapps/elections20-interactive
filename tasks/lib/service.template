@@ -1,0 +1,23 @@
+# This file defines a systemd service that runs the liveblog build process
+# To set up:
+# 1. Copy this file to /etc/systemd/system/liveblog.service
+# 2. Start the service with `sudo systemctl start liveblog`
+# 3. Halt it with `sudo systemctl stop liveblog`
+# 4. Get info with `sudo systemctl status liveblog`
+# 5. Follow logs with `journalctl -a -u liveblog.service -f`
+
+[Unit]
+Description=NPR Primary Results 2020
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+Restart=always
+RestartSec=30
+User=ubuntu
+%ENV%
+WorkingDirectory=%HERE%
+ExecStart=%HOME%/.nvm/nvm-exec grunt deploy
+
+[Install]
+WantedBy=multi-user.target
