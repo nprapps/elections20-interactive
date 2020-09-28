@@ -8,7 +8,8 @@ var etags = {};
 var resultsURL = "https://api.ap.org/v2/elections/";
 var resultsParams = {
   apikey: process.env.AP_API_KEY,
-  format: "JSON"
+  format: "JSON",
+  avotes: true
 };
 
 var apDate = function(d) {
@@ -136,4 +137,4 @@ var redeemTicket = async function(ticket, options) {
   }
 }
 
-module.exports = { issueTickets, redeemTicket };
+module.exports = { issueTickets, redeemTicket, apDate };

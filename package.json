@@ -15,6 +15,7 @@
     "@twilburn/scrapple": "^1.0.0",
     "async": "^2.0.0-rc.1",
     "aws-sdk": "^2.2.45",
+    "axios": "^0.20.0",
     "babelify": "^10.0.0",
     "browser-pack-flat": "^3.0.5",
     "browserify": "^16.2.3",
