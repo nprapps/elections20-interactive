@@ -88,13 +88,18 @@ module.exports = function(resultArray, overrides = { calls: {}, candidates: {} }
 
         var call = overrides.calls[raceMeta.id];
 
-        unitMeta.candidates = unit.candidates.map(translate.candidate);
-        var total = unitMeta.candidates.reduce((acc, c) => acc + c.votes, 0);
+        var total = 0;
+        unitMeta.candidates = unit.candidates.map(function(c) {
+          c = translate.candidate(c);
+          total += c.votes;
+          return c;
+        });
         unitMeta.candidates.forEach(function(c) {
           // assign percentages
           c.percent = Math.round((c.votes / total) * ROUNDING) / ROUNDING;
           // TODO: assign overrides from the sheet by candidate ID
-          // TODO: reset the winner if there's a call
+
+          // TODO: should calls be here, or back out in the elex task?
           if (call) {
             if (call == c.id) {
               c.winner = "X";
