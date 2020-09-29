@@ -32,12 +32,20 @@ module.exports = function(grunt) {
     //   candidates: grunt.data.json.candidates
     // };
 
-    var tickets = [
-      // national results down to counties
-      { date: "2020-11-03", 
+    // probably move this into a sheet to be safe
+    // also, should we use the ticket merging system?
+    var tickets = [{
+        date: "2020-11-03",
         params: {
-          level: "FIPScode",
-          officeID: "P"
+          officeID: "P,G,S",
+          level: "FIPSCode"
+        }
+      },
+      {
+        date: "2020-11-03",
+        params: {
+          officeID: "H,I",
+          level: "state"
         }
       }
     ];
@@ -49,9 +57,37 @@ module.exports = function(grunt) {
     rawResults = rawResults.filter(r => r);
     var results = normalize(rawResults);
 
-    await fs.writeFile("test.json", serialize(results));
+    // ensure the data folder exists
+    await fs.mkdir("build/data", { recursive: true });
 
-    //group tickets by reporting unit, then by office, then by state
+    // now create slices of various results
+    // national results
+    var national = results.filter(r => r.level == "national");
+    await fs.writeFile("build/data/national.json", serialize(national));
+
+    // state-level results
+    var states = {};
+    results.filter(r => r.level == "state").forEach(function(result) {
+      var { state } = result;
+      if (!states[state]) states[state] = [];
+      states[state].push(result);
+    });
+    for (var state in states) {
+      await fs.writeFile(`build/data/state-${state}.json`, serialize(states[state]));
+    }
+
+    // county files
+    await fs.mkdir("build/data/counties", { recursive: true });
+    var countyRaces = {};
+    results.filter(r => r.level == "county").forEach(function(result) {
+      var { state, id } = result;
+      var key = [state, id].join("-");
+      if (!countyRaces[key]) countyRaces[key] = [];
+      countyRaces[key].push(result);
+    });
+    for (var key in countyRaces) {
+      await fs.writeFile(`build/data/counties/${key}.json`, serialize(countyRaces[key]));
+    }
 
   }
 
