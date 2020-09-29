@@ -27,10 +27,10 @@ module.exports = function(grunt) {
     var offline = grunt.option("offline");
     var live = !grunt.option("archive");
 
-    // var overrides = {
-    //   calls: grunt.data.json.calls,
-    //   candidates: grunt.data.json.candidates
-    // };
+    var overrides = {
+      calls: grunt.data.json.calls,
+      candidates: grunt.data.json.candidates
+    };
 
     // probably move this into a sheet to be safe
     // also, should we use the ticket merging system?
@@ -50,12 +50,27 @@ module.exports = function(grunt) {
       }
     ];
 
-    var options = { test };
+    var options = { test, offline };
 
     var requests = tickets.map(t => redeemTicket(t, options));
     var rawResults = await Promise.all(requests);
     rawResults = rawResults.filter(r => r);
-    var results = normalize(rawResults);
+    var results = normalize(rawResults, overrides);
+
+    // merge in per-county census/historical data
+    results.forEach(function(r) {
+      if (!r.fips) return;
+      // get the winner from the prior results
+      var [ winner ] = grunt.data.csv.prior_results
+        .filter(p => p.fipscode == r.fips)
+        .sort((a, b) => b.votepct - a.votepct);
+      var prior = {
+        last: winner.last,
+        party: winner.party,
+        percent: winner.votepct * 1
+      };
+      r.county = { prior };
+    });
 
     // ensure the data folder exists
     await fs.mkdir("build/data", { recursive: true });

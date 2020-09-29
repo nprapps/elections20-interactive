@@ -9,6 +9,8 @@ race IDs.
 
 var depths = require("./depths");
 
+var ROUNDING = 10000;
+
 var nprDate = apDate => {
   var [y, m, d] = apDate.split("-").map(parseFloat);
   return [m, d, y].join("/");
@@ -84,7 +86,23 @@ module.exports = function(resultArray, overrides = { calls: {}, candidates: {} }
 
         unitMeta.updated = Date.parse(unitMeta.updated);
 
+        var call = overrides.calls[raceMeta.id];
+
         unitMeta.candidates = unit.candidates.map(translate.candidate);
+        var total = unitMeta.candidates.reduce((acc, c) => acc + c.votes, 0);
+        unitMeta.candidates.forEach(function(c) {
+          // assign percentages
+          c.percent = Math.round((c.votes / total) * ROUNDING) / ROUNDING;
+          // TODO: assign overrides from the sheet by candidate ID
+          // TODO: reset the winner if there's a call
+          if (call) {
+            if (call == c.id) {
+              c.winner = "X";
+            } else {
+              delete c.winner;
+            }
+          }
+        });
         output.push(unitMeta);
       }
 
