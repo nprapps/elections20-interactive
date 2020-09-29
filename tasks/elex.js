@@ -61,25 +61,32 @@ module.exports = function(grunt) {
     await fs.mkdir("build/data", { recursive: true });
 
     // now create slices of various results
+    // separate by geography for easier grouping
+    var geo = {
+      national: results.filter(r => r.level == "national"),
+      state: results.filter(r => r.level == "state"),
+      county: results.filter(r => r.level == "county")
+    };
+
     // national results
-    var national = results.filter(r => r.level == "national");
-    await fs.writeFile("build/data/national.json", serialize(national));
+    await fs.writeFile("build/data/national.json", serialize(geo.national));
 
     // state-level results
+    await fs.mkdir("build/data/states", { recursive: true });
     var states = {};
-    results.filter(r => r.level == "state").forEach(function(result) {
+    geo.state.forEach(function(result) {
       var { state } = result;
       if (!states[state]) states[state] = [];
       states[state].push(result);
     });
     for (var state in states) {
-      await fs.writeFile(`build/data/state-${state}.json`, serialize(states[state]));
+      await fs.writeFile(`build/data/states/${state}.json`, serialize(states[state]));
     }
 
     // county files
     await fs.mkdir("build/data/counties", { recursive: true });
     var countyRaces = {};
-    results.filter(r => r.level == "county").forEach(function(result) {
+    geo.county.forEach(function(result) {
       var { state, id } = result;
       var key = [state, id].join("-");
       if (!countyRaces[key]) countyRaces[key] = [];
@@ -87,6 +94,19 @@ module.exports = function(grunt) {
     });
     for (var key in countyRaces) {
       await fs.writeFile(`build/data/counties/${key}.json`, serialize(countyRaces[key]));
+    }
+
+    // sliced by office
+    var byOffice = {
+      president: geo.state.filter(r => r.office == "P"),
+      house: geo.state.filter(r => r.office == "H"),
+      senate: geo.state.filter(r => r.office == "s"),
+      gov: geo.state.filter(r => r.office == "G"),
+      ballots: geo.state.filter(r => r.office == "I")
+    }
+
+    for (var office in byOffice) {
+      await fs.writeFile(`build/data/${office}.json`, serialize(byOffice[office]));
     }
 
   }

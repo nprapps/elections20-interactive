@@ -22,7 +22,9 @@ var translation = {
     party: "party",
     eevp: "eevp",
     type: "raceType",
-    seat: "seatNum"
+    seatNumber: "seatNum",
+    seat: "seatName",
+    description: "description"
   },
   unit: {
     level: "level",
@@ -94,7 +96,6 @@ module.exports = function(resultArray, overrides = { calls: {}, candidates: {} }
   TODO:
   - add metadata overrides and calls
   - think about how much processing should live in this layer
-  - parse updated dates
   */
 
   return output;
