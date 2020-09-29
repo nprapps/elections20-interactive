@@ -65,10 +65,12 @@ Object.keys(translation).forEach(type => {
   };
 });
 
-module.exports = function(resultArray, overrides = { calls: {}, candidates: {} }) {
+module.exports = function(resultArray, overrides = {}) {
   // AP data is structured as race->reportingunits, where each "race" includes both state and FIPS
   // we will instead restructure into groupings by geography
   var output = [];
+
+  var { calls = {}, candidates = {} } = overrides;
 
   for (var response of resultArray) {
 
@@ -91,15 +93,13 @@ module.exports = function(resultArray, overrides = { calls: {}, candidates: {} }
         var total = 0;
         unitMeta.candidates = unit.candidates.map(function(c) {
           c = translate.candidate(c);
+          // TODO: assign overrides from the sheet by candidate ID
           total += c.votes;
           return c;
         });
         unitMeta.candidates.forEach(function(c) {
           // assign percentages
           c.percent = Math.round((c.votes / total) * ROUNDING) / ROUNDING;
-          // TODO: assign overrides from the sheet by candidate ID
-
-          // TODO: should calls be here, or back out in the elex task?
           if (call) {
             if (call == c.id) {
               c.winner = "X";
