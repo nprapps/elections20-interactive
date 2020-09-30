@@ -65,12 +65,64 @@ Object.keys(translation).forEach(type => {
   };
 });
 
+
+var majorParties = new Set(["GOP", "Dem"]);
+var sortCandidates = function(votes, candidates) {
+  var compare = function(a, b) {
+    // if no votes yet
+    if (votes == 0) {
+      // put major parties first
+      if (
+        (majorParties.has(a.party) && majorParties.has(b.party)) ||
+        a.party == b.party) 
+      {
+        return a.last < b.last ? -1 : 1;
+      } else {
+        // one of them is not GOP/Dem
+        if (majorParties.has(a.party)) {
+          return -1;
+        }
+        return 1;
+      }
+    } else {
+      // sort strictly on votes
+      return b.votes - a.votes;
+    }
+  }
+  candidates.sort(compare);
+};
+
+var mergeOthers = function(candidates, raceID) {
+  // always take the top two
+  var merged = candidates.slice(0, 2);
+  var remaining = candidates.slice(2);
+  var other = {
+    first: "",
+    last: "Other",
+    party: "Other",
+    id: `other-${raceID}`,
+    votes: 0,
+    avotes: 0,
+    electoral: 0
+  }
+  for (var c of remaining) {
+    other.votes += c.votes || 0;
+    other.avotes += c.avotes || 0;
+    other.electoral += c.electoral || 0;
+    if (c.winner) {
+      other.winner = c.winner;
+    }
+  }
+  merged.push(other);
+  return merged;
+};
+
 module.exports = function(resultArray, overrides = {}) {
   // AP data is structured as race->reportingunits, where each "race" includes both state and FIPS
   // we will instead restructure into groupings by geography
   var output = [];
 
-  var { calls = {}, candidates = {} } = overrides;
+  var { calls = {}, candidates = {}, slates = {} } = overrides;
 
   for (var response of resultArray) {
 
@@ -100,29 +152,7 @@ module.exports = function(resultArray, overrides = {}) {
           return c;
         });
 
-        // sort candidates
-        var majorParties = new Set(["GOP", "Dem"]);
-        candidates.sort(function(a, b) {
-          // if no votes yet
-          if (total == 0) {
-            // put major parties first
-            if (
-              (majorParties.has(a.party) && majorParties.has(b.party)) ||
-              a.party == b.party) 
-            {
-              return a.last < b.last ? -1 : 1;
-            } else {
-              // one of them is not GOP/Dem
-              if (majorParties.has(a.party)) {
-                return -1;
-              }
-              return 1;
-            }
-          } else {
-            // sort strictly on votes
-            return b.votes - a.votes;
-          }
-        });
+        sortCandidates(total, candidates);
 
         // create "other" merged candidate if:
         // - More than two candidates and 
@@ -130,28 +160,7 @@ module.exports = function(resultArray, overrides = {}) {
         // - they're not marked as exceptions in a sheet (TODO)
         // TODO: handle "jungle primary" races (LA and CA)
         if (candidates.length > 2 && parties.size > 2) {
-          // always take the top two
-          var merged = candidates.slice(0, 2);
-          var remaining = candidates.slice(2);
-          var other = {
-            first: "",
-            last: "Other",
-            party: "Other",
-            id: `other-${raceMeta.id}`,
-            votes: 0,
-            avotes: 0,
-            electoral: 0
-          }
-          for (var c of remaining) {
-            other.votes += c.votes || 0;
-            other.avotes += c.avotes || 0;
-            other.electoral += c.electoral || 0;
-            if (c.winner) {
-              other.winner = c.winner;
-            }
-          }
-          merged.push(other);
-          candidates = merged;
+          candidates = mergeOthers(candidates, raceMeta.id);
         }
 
         candidates.forEach(function(c) {
