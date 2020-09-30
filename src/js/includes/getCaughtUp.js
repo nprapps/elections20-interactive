@@ -2,6 +2,9 @@
 
 // import { h, createProjector } from 'maquette';
 import { h, Component } from "preact";
+
+import marked from "marked";
+
 import { buildDataURL, getHighestPymEmbed } from "./helpers.js";
 import gopher from "../gopher.js";
 import Countdown from "./countdown.js";
@@ -25,48 +28,23 @@ export class GetCaughtUp extends Component {
 
   // Lifecycle: Called whenever our component is created
   async componentDidMount() {
-    gopher.watch(
-      "https://apps.npr.org/elections18-graphics/data/get-caught-up.json",
-      this.onData
-    );
+    gopher.watch("/data/get-caught-up.json", this.onData);
   }
 
   // Lifecycle: Called just before our component will be destroyed
   componentWillUnmount() {
     // stop when not renderable
-    gopher.unwatch(
-      "https://apps.npr.org/elections18-graphics/data/get-caught-up.json",
-      this.onData
-    );
+    gopher.unwatch("/data/get-caught-up.json", this.onData);
   }
 
   render() {
-    if (!this.state.content) {
+    if (!this.state.published) {
       return <div class="get-caught-up-wrapper"> "Loading..." </div>;
     }
-
-    // setTimeout(window.pymChild.sendHeight, 0);
-    var bullets = Object.keys(this.state.content)
-      .filter((k) => k.match(/^bullet/))
-      .sort()
-      .map((k) => this.state.content[k]);
-
-    var intros = Object.keys(this.state.content)
-      .filter((k) => k.match(/^intro/))
-      .sort()
-      .map((k) => this.state.content[k]);
-
     return (
       <div>
-        <h2> Latest Election Headlines</h2>
-        {intros.map((s) => (
-          <p dangerouslySetInnerHTML={{ __html: s }}></p>
-        ))}
-        <ul>
-          {bullets.map((s) => (
-            <li dangerouslySetInnerHTML={{ __html: s }}></li>
-          ))}
-        </ul>
+        <h2 dangerouslySetInnerHTML={{ __html: this.state.headline }}></h2>
+        <p dangerouslySetInnerHTML={{ __html: marked(this.state.text) }}></p>
         <Countdown />
       </div>
     );

@@ -1,7 +1,7 @@
 import { Component, h } from "preact";
 
 import { BigBoardCore } from './includes/big-board-core.js';
-import { GetCaughtUp } from './includes/get-caught-up.js';
+import { GetCaughtUp } from './includes/getCaughtUp.js';
 import { StateResults } from './includes/state-results.js';
 
 import Scrapple from "@twilburn/scrapple";

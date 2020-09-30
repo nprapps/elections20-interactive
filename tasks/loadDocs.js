@@ -30,6 +30,10 @@ module.exports = function(grunt) {
         italic: text => `<i>${text}</i>`
       };
 
+      var isNewLine = (paragraph) =>
+        paragraph.elements.length == 1 &&
+        paragraph.elements[0].textRun.content == "\n";
+
       /*
        * Large document sets may hit rate limits; you can find details on your quota at:
        * https://console.developers.google.com/apis/api/drive.googleapis.com/quotas?project=<project>
@@ -42,14 +46,16 @@ module.exports = function(grunt) {
           var documentId = config.docs[key];
           var suggestionsViewMode = "PREVIEW_WITHOUT_SUGGESTIONS";
           var docResponse = await docs.get({ documentId, suggestionsViewMode });
+          console.log(`Got document response for ${key}`);
           var name = key + ".docs.txt";
           var body = docResponse.data.body.content;
           var text = "";
 
           var lists = docResponse.data.lists;
 
-          body.forEach(function(block) {
+          body.forEach(function(block, index) {
             if (!block.paragraph) return;
+            if (isNewLine(block.paragraph)) return;
             if (block.paragraph.bullet) {
               var list = lists[block.paragraph.bullet.listId];
               var level = block.paragraph.bullet.nestingLevel || 0;
@@ -63,11 +69,13 @@ module.exports = function(grunt) {
               var indent = "  ".repeat(level);
               text += indent + bullet;
             }
-            block.paragraph.elements.forEach(function(element) {
-              // console.log(element);
+
+            var p = "";
+
+            block.paragraph.elements.forEach(function(element, index) {
               if (!element.textRun) return;
               var { content, textStyle } = element.textRun;
-              if (content.trim())
+              if (content.replace(/[ \t\r]+/g, ""))
                 for (var f in formatters) {
                   if (textStyle[f]) {
                     var [_, before, inside, after] = content.match(
@@ -76,11 +84,13 @@ module.exports = function(grunt) {
                     content = before + formatters[f](inside, textStyle) + after;
                   }
                 }
-              text += content;
+              p += content;
             });
+            text += p + "\n";
           });
 
           text = text.replace(/\x0b/g, "\n");
+          // text = text.replace(/\n{2,}/g, "\n\n");
 
           console.log(`Writing document as data/${name}`);
           grunt.file.write(path.join("data", name), text);
