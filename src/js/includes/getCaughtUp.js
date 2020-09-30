@@ -3,8 +3,6 @@
 // import { h, createProjector } from 'maquette';
 import { h, Component } from "preact";
 
-import marked from "marked";
-
 import { buildDataURL, getHighestPymEmbed } from "./helpers.js";
 import gopher from "../gopher.js";
 import Countdown from "./countdown.js";
@@ -28,23 +26,24 @@ export class GetCaughtUp extends Component {
 
   // Lifecycle: Called whenever our component is created
   async componentDidMount() {
-    gopher.watch("/data/get-caught-up.json", this.onData);
+    gopher.watch("/data/topline.json", this.onData);
   }
 
   // Lifecycle: Called just before our component will be destroyed
   componentWillUnmount() {
     // stop when not renderable
-    gopher.unwatch("/data/get-caught-up.json", this.onData);
+    gopher.unwatch("/data/topline.json", this.onData);
   }
 
   render() {
-    if (!this.state.published) {
+    if (!this.state.gcuText) {
       return <div class="get-caught-up-wrapper"> "Loading..." </div>;
     }
+
     return (
       <div>
-        <h2 dangerouslySetInnerHTML={{ __html: this.state.headline }}></h2>
-        <p dangerouslySetInnerHTML={{ __html: marked(this.state.text) }}></p>
+        <h2 dangerouslySetInnerHTML={{ __html: this.state.gcuHeader }}></h2>
+        <div dangerouslySetInnerHTML={{ __html: this.state.gcuText }}></div>
         <Countdown />
       </div>
     );

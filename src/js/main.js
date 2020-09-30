@@ -3,7 +3,6 @@
 import $ from "./lib/qsa";
 import { h, render, Fragment } from "preact";
 
-import { GetCaughtUp } from "./includes/getCaughtUp.js";
 import { BigBoardCore } from "./includes/big-board-core.js";
 import App from "./app.js";
 
