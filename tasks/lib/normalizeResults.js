@@ -1,13 +1,9 @@
 /*
 
 Builds an array of normalized races from an array of multiple API responses.
-These are not yet grouped--it's just to compute subtotals and rename columns.
-The calling task will need to create the lookup map from races to individual
-race IDs.
+Also sets overrides for candidate/race metadata, and applies winner overrides.
 
 */
-
-var depths = require("./depths");
 
 var ROUNDING = 10000;
 

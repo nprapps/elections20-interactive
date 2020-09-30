@@ -1,15 +1,8 @@
 /*
 
-Lots of flags available on this one:
-
---date=M/D/YYYY - pull data for this date (and the previous day)
-  By default the rig will use today's date
-
 --test - Ask the AP for test data
 
 --offline - Use cached data if it exists
-
---archive - Set the "live" flag to false for all race JSON
 
 */
 
@@ -21,13 +14,11 @@ module.exports = function(grunt) {
 
   var elex = {};
 
+  // Grunt doesn't like top-level async, so define this here and call it immediately
   var task = async function() {
 
     var test = grunt.option("test");
     var offline = grunt.option("offline");
-    var live = !grunt.option("archive");
-
-    var { calls, candidates, rosters } = grunt.data.json;
 
     // probably move this into a sheet to be safe
     // also, should we use the ticket merging system?
@@ -47,17 +38,18 @@ module.exports = function(grunt) {
       }
     ];
 
-    var options = { test, offline };
-
-    var requests = tickets.map(t => redeemTicket(t, options));
+    // get results from AP
+    var requests = tickets.map(t => redeemTicket(t, { test, offline}));
     var rawResults = await Promise.all(requests);
+    // remove empty responses
     rawResults = rawResults.filter(r => r);
-    var results = normalize(rawResults, { calls, candidates, rosters });
+    // turn AP into normalized race objects
+    var results = normalize(rawResults, grunt.data.json);
 
     // merge in per-county census/historical data
     results.forEach(function(r) {
       if (!r.fips) return;
-      // get the winner from the prior results
+      // get the winner from the previous election
       var prior = grunt.data.csv.prior_results
         .filter(p => p.fipscode == r.fips)
         .sort((a, b) => b.votepct - a.votepct)
@@ -69,6 +61,7 @@ module.exports = function(grunt) {
             percent: r.votepct * 1
           }
         });
+      // TODO: add census/unemployment data
       r.county = { prior };
     });
 
@@ -115,7 +108,7 @@ module.exports = function(grunt) {
     var byOffice = {
       president: geo.state.filter(r => r.office == "P"),
       house: geo.state.filter(r => r.office == "H"),
-      senate: geo.state.filter(r => r.office == "s"),
+      senate: geo.state.filter(r => r.office == "S"),
       gov: geo.state.filter(r => r.office == "G"),
       ballots: geo.state.filter(r => r.office == "I")
     }
