@@ -44,7 +44,7 @@ var translation = {
     party: "party",
     id: "polID",
     votes: "voteCount",
-    early: "avotes",
+    avotes: "avotes",
     electoral: "electWon",
     winner: "winner",
     incumbent: "incumbent"
@@ -91,13 +91,70 @@ module.exports = function(resultArray, overrides = {}) {
         var call = overrides.calls[raceMeta.id];
 
         var total = 0;
-        unitMeta.candidates = unit.candidates.map(function(c) {
+        var parties = new Set();
+        var candidates = unit.candidates.map(function(c) {
           c = translate.candidate(c);
           // TODO: assign overrides from the sheet by candidate ID
           total += c.votes;
+          parties.add(c.party);
           return c;
         });
-        unitMeta.candidates.forEach(function(c) {
+
+        // sort candidates
+        var majorParties = new Set(["GOP", "Dem"]);
+        candidates.sort(function(a, b) {
+          // if no votes yet
+          if (total == 0) {
+            // put major parties first
+            if (
+              (majorParties.has(a.party) && majorParties.has(b.party)) ||
+              a.party == b.party) 
+            {
+              return a.last < b.last ? -1 : 1;
+            } else {
+              // one of them is not GOP/Dem
+              if (majorParties.has(a.party)) {
+                return -1;
+              }
+              return 1;
+            }
+          } else {
+            // sort strictly on votes
+            return b.votes - a.votes;
+          }
+        });
+
+        // create "other" merged candidate if:
+        // - More than two candidates and 
+        // - Independent candidate(s) exist and
+        // - they're not marked as exceptions in a sheet (TODO)
+        // TODO: handle "jungle primary" races (LA and CA)
+        if (candidates.length > 2 && parties.size > 2) {
+          // always take the top two
+          var merged = candidates.slice(0, 2);
+          var remaining = candidates.slice(2);
+          var other = {
+            first: "",
+            last: "Other",
+            party: "Other",
+            id: `other-${raceMeta.id}`,
+            votes: 0,
+            avotes: 0,
+            electoral: 0
+          }
+          for (var c of remaining) {
+            other.votes += c.votes || 0;
+            other.avotes += c.avotes || 0;
+            other.electoral += c.electoral || 0;
+            if (c.winner) {
+              other.winner = c.winner;
+            }
+          }
+          merged.push(other);
+          candidates = merged;
+        }
+
+        candidates.forEach(function(c) {
           // assign percentages
           c.percent = Math.round((c.votes / total) * ROUNDING) / ROUNDING;
           if (call) {
@@ -108,6 +165,7 @@ module.exports = function(resultArray, overrides = {}) {
             }
           }
         });
+        unitMeta.candidates = candidates;
         output.push(unitMeta);
       }
 
