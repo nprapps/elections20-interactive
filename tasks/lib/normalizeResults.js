@@ -122,7 +122,7 @@ module.exports = function(resultArray, overrides = {}) {
   // we will instead restructure into groupings by geography
   var output = [];
 
-  var { calls = {}, candidates = {}, slates = {} } = overrides;
+  var { calls = {}, candidates = {}, rosters = {} } = overrides;
 
   for (var response of resultArray) {
 
@@ -144,26 +144,39 @@ module.exports = function(resultArray, overrides = {}) {
 
         var total = 0;
         var parties = new Set();
-        var candidates = unit.candidates.map(function(c) {
+        var ballot = unit.candidates.map(function(c) {
           c = translate.candidate(c);
-          // TODO: assign overrides from the sheet by candidate ID
+          // assign overrides from the sheet by candidate ID
+          var override = candidates[c.id];
+          if (override) {
+            for (var k in override) {
+              if (override[k]) c[k] = override[k];
+            }
+          }
           total += c.votes;
           parties.add(c.party);
           return c;
         });
 
-        sortCandidates(total, candidates);
+        // override the ballot if necessary
+        var roster = rosters[raceMeta.id];
+        if (roster) {
+          roster = new Set(roster.toString().split(/,\s*/));
+          ballot = ballot.filter(c => roster.has(c.id));
+        }
+
+        sortCandidates(total, ballot);
 
         // create "other" merged candidate if:
         // - More than two candidates and 
         // - Independent candidate(s) exist and
-        // - they're not marked as exceptions in a sheet (TODO)
+        // - they're not marked as exceptions in a sheet
         // TODO: handle "jungle primary" races (LA and CA)
-        if (candidates.length > 2 && parties.size > 2) {
-          candidates = mergeOthers(candidates, raceMeta.id);
+        if (!roster && ballot.length > 2 && parties.size > 2) {
+          ballot = mergeOthers(ballot, raceMeta.id);
         }
 
-        candidates.forEach(function(c) {
+        ballot.forEach(function(c) {
           // assign percentages
           c.percent = Math.round((c.votes / total) * ROUNDING) / ROUNDING;
           if (call) {
@@ -174,7 +187,7 @@ module.exports = function(resultArray, overrides = {}) {
             }
           }
         });
-        unitMeta.candidates = candidates;
+        unitMeta.candidates = ballot;
         output.push(unitMeta);
       }
 

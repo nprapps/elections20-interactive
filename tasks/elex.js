@@ -27,7 +27,7 @@ module.exports = function(grunt) {
     var offline = grunt.option("offline");
     var live = !grunt.option("archive");
 
-    var { calls, candidates } = grunt.data.json;
+    var { calls, candidates, rosters } = grunt.data.json;
 
     // probably move this into a sheet to be safe
     // also, should we use the ticket merging system?
@@ -52,7 +52,7 @@ module.exports = function(grunt) {
     var requests = tickets.map(t => redeemTicket(t, options));
     var rawResults = await Promise.all(requests);
     rawResults = rawResults.filter(r => r);
-    var results = normalize(rawResults, { calls, candidates });
+    var results = normalize(rawResults, { calls, candidates, rosters });
 
     // merge in per-county census/historical data
     results.forEach(function(r) {
