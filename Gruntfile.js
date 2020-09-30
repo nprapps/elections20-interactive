@@ -28,6 +28,7 @@ module.exports = function(grunt) {
     "less",
     "template"
   ]);
+  grunt.registerTask("ap", "Load and generate election data files", ["content", "elex"]);
   grunt.registerTask("serve", "Start the dev server", ["connect:dev", "watch"]);
   grunt.registerTask("default", ["clean", "static", "serve"]);
 };

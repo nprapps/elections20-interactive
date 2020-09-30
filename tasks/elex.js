@@ -58,14 +58,17 @@ module.exports = function(grunt) {
     results.forEach(function(r) {
       if (!r.fips) return;
       // get the winner from the prior results
-      var [ winner ] = grunt.data.csv.prior_results
+      var prior = grunt.data.csv.prior_results
         .filter(p => p.fipscode == r.fips)
-        .sort((a, b) => b.votepct - a.votepct);
-      var prior = {
-        last: winner.last,
-        party: winner.party,
-        percent: winner.votepct * 1
-      };
+        .sort((a, b) => b.votepct - a.votepct)
+        .slice(0, 2)
+        .map(function(r) {
+          return {
+            last: r.last,
+            party: r.party,
+            percent: r.votepct * 1
+          }
+        });
       r.county = { prior };
     });
 
