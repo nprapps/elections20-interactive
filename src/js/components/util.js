@@ -11,10 +11,10 @@ export function determineResults(race) {
   // TODO: check switching away from loopArr didn't break anything
   for (var i = 0; i < race.length; i++) {
     var result = race[i];
-    if ((result['party'] === 'Dem' || result['party'] === 'Yes') && !result1) {
+    if ((result.party === 'Dem' || result.party === 'Yes') && !result1) {
       result1 = result;
     } else if (
-      (result['party'] === 'GOP' || result['party'] === 'No') &&
+      (result.party === 'GOP' || result.party === 'No') &&
       !result2
     ) {
       result2 = result;
@@ -40,8 +40,8 @@ export function determineResults(race) {
   if (result1.party === result2.party) {
     sortedResults = sortedResults.sort(function (a, b) {
       return sortedResults[0].party === 'GOP'
-        ? a['votepct'] - b['votepct']
-        : b['votepct'] - a['votepct'];
+        ? a.votepct - b.votepct
+        : b.votepct - a.votepct;
     });
   }
 
@@ -49,15 +49,15 @@ export function determineResults(race) {
 }
 
 export function decideLabel(race) {
-  if (race['officename'] === 'U.S. House') {
-    return race['statepostal'] + '-' + race['seatnum'];
+  if (race.officename === 'U.S. House') {
+    return race.statepostal + '-' + race.seatnum;
   } else if (
-    race['officename'] === 'President' &&
-    race['level'] === 'district' &&
-    race['reportingunitname'] !== 'At Large'
+    race.officename === 'President' &&
+    race.level === 'district' &&
+    race.reportingunitname !== 'At Large'
   ) {
-    return race['statepostal'] + '-' + race['reportingunitname'].slice('-1');
-  } else if (race['is_ballot_measure']) {
+    return race.statepostal + '-' + race.reportingunitname.slice('-1');
+  } else if (race.is_ballot_measure) {
     // The AP provides ballot measure names in inconsistent formats
     const splitName = race.seatname.split(' - ');
     const isHyphenatedMeasureName = Boolean(
@@ -82,7 +82,7 @@ export function decideLabel(race) {
       return `${race.statepostal} - ${race.seatname}`;
     }
   } else {
-    return race['statepostal'];
+    return race.statepostal;
   }
 }
 
@@ -91,9 +91,9 @@ export function getMetaData(results) {
   const result2 = results.result2;
 
   let winningResult;
-  if (result1['npr_winner'] || results.uncontested) {
+  if (result1.npr_winner || results.uncontested) {
     winningResult = result1;
-  } else if (result2['npr_winner']) {
+  } else if (result2.npr_winner) {
     winningResult = result2;
   }
 
@@ -103,16 +103,16 @@ export function getMetaData(results) {
 
   if (
     winningResult &&
-    result1['meta']['current_party'] &&
-    winningResult['party'] !== result1['meta']['current_party']
+    result1.meta.current_party &&
+    winningResult.party !== result1.meta.current_party
   ) {
     var change = true;
   }
 
   if (
     called ||
-    result1['votecount'] > 0 ||
-    (!results.uncontested && result2['votecount'] > 0)
+    result1.votecount > 0 ||
+    (!results.uncontested && result2.votecount > 0)
   ) {
     var reporting = true;
   }
