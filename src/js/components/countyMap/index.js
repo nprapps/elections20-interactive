@@ -2,7 +2,6 @@
 
 // import { h, createProjector } from 'maquette';
 import { h, Component, createRef } from "preact";
-import { buildDataURL, getHighestPymEmbed } from "./helpers.js";
 import gopher from "../gopher.js";
 
 var specialStates = new Set(["IA", "MA", "OK", "WA"]);

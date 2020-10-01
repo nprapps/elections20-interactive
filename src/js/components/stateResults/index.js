@@ -2,13 +2,10 @@
 
 // import { h, createProjector } from 'maquette';
 import { h, Component, Fragment } from "preact";
-import { buildDataURL, getHighestPymEmbed, toTitleCase } from "./helpers.js";
 import gopher from "../gopher.js";
-import getValues from "lodash.values";
-import sortBy from "lodash.sortby";
-import { KeyResults } from "./keyResults.js";
-import { HouseResults } from "./houseResults.js";
-import { StatewideResults } from "./statewideResults.js";
+import { KeyResults } from "../keyResults";
+import { HouseResults } from "../houseResults";
+import { StatewideResults } from "../statewide";
 
 var lastRequestTime;
 var initialized = false;

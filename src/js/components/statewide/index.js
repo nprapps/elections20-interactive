@@ -1,15 +1,14 @@
 import { h, Component, Fragment } from "preact";
-import { buildDataURL, getHighestPymEmbed } from "./helpers.js";
 import gopher from "../gopher.js";
 import {
   determineResults,
   decideLabel,
   getMetaData,
   calculatePrecinctsReporting,
-} from "./util.js";
-import { RacewideTable } from "./racewideTable.js";
-import { CountyMap } from "./countyMap.js";
-import { fmtComma } from "./helpers.js";
+} from "../util.js";
+import { RacewideTable } from "../racewideTable";
+import { CountyMap } from "../countyMap";
+var fmtComma = n => n.toLocaleString();
 
 const availableMetrics = [
   {

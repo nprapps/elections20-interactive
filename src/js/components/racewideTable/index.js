@@ -1,7 +1,6 @@
 import { h, Component, Fragment } from 'preact';
-import { buildDataURL, getHighestPymEmbed, fmtComma } from './helpers.js';
 import gopher from '../gopher.js';
-import { calculatePrecinctsReporting } from './util.js';
+import { calculatePrecinctsReporting } from '../util.js';
 
 export class RacewideTable extends Component {
   constructor(props) {

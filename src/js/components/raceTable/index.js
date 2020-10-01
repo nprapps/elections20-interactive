@@ -1,5 +1,4 @@
 import { h, Component, Fragment } from 'preact';
-import { buildDataURL, getHighestPymEmbed } from './helpers.js';
 import gopher from '../gopher.js';
 
 var copyBop = window.copy.bop;

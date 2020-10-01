@@ -3,11 +3,8 @@
 // import { h, createProjector } from 'maquette';
 import { h, Component } from "preact";
 
-import marked from "marked";
-
-import { buildDataURL, getHighestPymEmbed } from "./helpers.js";
 import gopher from "../gopher.js";
-import Countdown from "./countdown.js";
+import Countdown from "../countdown";
 
 var lastRequestTime;
 var initialized = false;

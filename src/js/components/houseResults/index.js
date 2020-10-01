@@ -1,8 +1,7 @@
 import { h, Component, Fragment } from 'preact';
-import { buildDataURL, getHighestPymEmbed } from './helpers.js';
 import gopher from '../gopher.js';
-import { determineResults, decideLabel, getMetaData } from './util.js';
-import { RacewideTable } from './racewideTable.js';
+import { determineResults, decideLabel, getMetaData } from '../util.js';
+import { RacewideTable } from '../racewideTable';
 
 export class HouseResults extends Component {
   constructor(props) {
