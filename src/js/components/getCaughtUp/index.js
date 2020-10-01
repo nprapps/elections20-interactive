@@ -20,28 +20,28 @@ export class GetCaughtUp extends Component {
   }
 
   onData(json) {
-    this.setState(json);
+    this.setState(json.gcu);
   }
 
   // Lifecycle: Called whenever our component is created
   async componentDidMount() {
-    gopher.watch("/data/get-caught-up.json", this.onData);
+    gopher.watch("./data/topResults.json", this.onData);
   }
 
   // Lifecycle: Called just before our component will be destroyed
   componentWillUnmount() {
     // stop when not renderable
-    gopher.unwatch("/data/get-caught-up.json", this.onData);
+    gopher.unwatch("./data/topResults.json", this.onData);
   }
 
   render() {
-    if (!this.state.published) {
+    if (!this.state.headline) {
       return <div class="get-caught-up-wrapper"> "Loading..." </div>;
     }
     return (
       <div>
         <h2 dangerouslySetInnerHTML={{ __html: this.state.headline }}></h2>
-        <p dangerouslySetInnerHTML={{ __html: marked(this.state.text) }}></p>
+        <p dangerouslySetInnerHTML={{ __html: this.state.text }}></p>
         <Countdown />
       </div>
     );

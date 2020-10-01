@@ -12,8 +12,12 @@ module.exports = function(grunt) {
     "markdown",
     "archieml"
   ]);
-  grunt.registerTask("template", "Build HTML from content/templates", [
+  grunt.registerTask("ap", "Load and generate election data files", [
     "content",
+    "elex"
+  ]);
+  grunt.registerTask("template", "Build HTML from content/templates", [
+    "ap",
     "build"
   ]);
   grunt.registerTask("static", "Build all files", [
@@ -28,7 +32,6 @@ module.exports = function(grunt) {
     "less",
     "template"
   ]);
-  grunt.registerTask("ap", "Load and generate election data files", ["content", "elex"]);
   grunt.registerTask("serve", "Start the dev server", ["connect:dev", "watch"]);
   grunt.registerTask("default", ["clean", "static", "serve"]);
 };

@@ -46,6 +46,8 @@ module.exports = function(grunt) {
     // turn AP into normalized race objects
     var results = normalize(rawResults, grunt.data.json);
 
+    grunt.log.writeln("Merging in external data...");
+
     // merge in per-county census/historical data
     results.forEach(function(r) {
       if (!r.fips) return;
@@ -64,6 +66,8 @@ module.exports = function(grunt) {
       // TODO: add census/unemployment data
       r.county = { prior };
     });
+
+    grunt.log.writeln("Generating data files...");
 
     // ensure the data folder exists
     await fs.mkdir("build/data", { recursive: true });
@@ -116,6 +120,20 @@ module.exports = function(grunt) {
     for (var office in byOffice) {
       await fs.writeFile(`build/data/${office}.json`, serialize(byOffice[office]));
     }
+
+    // top-level results fusion
+    var gcu = grunt.data.archieml.longform.getCaughtUp;
+    "headline text".split(" ").forEach(p => gcu[p] = grunt.template.renderMarkdown(gcu[p]));
+    var top = {
+      gcu,
+      senate: [],
+      house: [],
+      president: [],
+      gov: [],
+      ballots: []
+    };
+
+    await fs.writeFile(`build/data/topResults.json`, serialize(top));
 
   }
 
