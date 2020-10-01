@@ -61,7 +61,7 @@ export default class App extends Component {
   renderState(props, state) {
     let currentState = state.params.state;
     // Default to key view
-    let subview = state.params.subview || "key";
+    let subview = state.params.subview || "president";
     let key = currentState + subview;
     return <div id="state-results">
             <StateResults state={currentState.toUpperCase()} activeView={subview} key={key}/>

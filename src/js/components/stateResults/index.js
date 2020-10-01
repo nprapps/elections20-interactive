@@ -76,7 +76,6 @@ export class StateResults extends Component {
   }
 
   render() {
-    console.log(this.state)
     if (!this.props.state || !this.state.races) {
       return <div> "Loading..." </div>;
     } else if (false) {
@@ -202,13 +201,7 @@ export class StateResults extends Component {
   getDataFileName(view) {
     var state = this.props.state;
     // TODO: should this be in this.state? It doesn't change so feels like no?
-    if (view === "senate" || view === "governor") {
-      return `https://apps.npr.org/elections18-graphics/data/${state}-counties-${view}.json`;
-    } else if (view === "senate special") {
-      return `https://apps.npr.org/elections18-graphics/data/${state}-counties-senate-special.json`;
-    } else {
-      return `/data/states/${state}.json`;
-    }
+    return `/data/states/${state}.json`;
   }
 
   renderTabSwitcher() {
