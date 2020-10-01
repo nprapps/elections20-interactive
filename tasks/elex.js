@@ -63,8 +63,12 @@ module.exports = function(grunt) {
             percent: r.votepct * 1
           }
         });
-      // TODO: add census/unemployment data
-      r.county = { prior };
+
+      var census = grunt.data.csv.census_data
+        .filter(c => c.fips == r.fips)[0];
+
+      // TODO: add unemployment data
+      r.county = { prior, census};
     });
 
     grunt.log.writeln("Generating data files...");
