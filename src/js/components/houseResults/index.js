@@ -1,7 +1,7 @@
-import { h, Component, Fragment } from 'preact';
-import gopher from '../gopher.js';
-import { determineResults, decideLabel, getMetaData } from '../util.js';
-import { RacewideTable } from '../racewideTable';
+import { h, Component, Fragment } from "preact";
+import gopher from "../gopher.js";
+import { determineResults, decideLabel, getMetaData } from "../util.js";
+import { RacewideTable } from "../racewideTable";
 
 export class HouseResults extends Component {
   constructor(props) {
@@ -12,40 +12,33 @@ export class HouseResults extends Component {
   }
 
   onData(json) {
-    const sortedHouseKeys = Object.keys(json.results.house.results).sort(
+    console.log(json)
+    const sortedHouseResults = json.filter(r => r.office == "H").sort(
       function (a, b) {
-        return (
-          json.results.house.results[a][0]['seatnum'] -
-          json.results.house.results[b][0]['seatnum']
-        );
+        return parseInt(a.seatNumber) - parseInt(b.seatNumber);
       }
     );
+    console.log(sortedHouseResults)
     this.setState({
-      houseKeys: sortedHouseKeys,
-      house : json.results.house.results
+      houseKeys: sortedHouseResults.map(a => a.seatNumber),
+      house: sortedHouseResults,
     });
   }
 
   // Lifecycle: Called whenever our component is created
   async componentDidMount() {
-    gopher.watch(
-      `https://apps.npr.org/elections18-graphics/data/${this.props.state}.json`,
-      this.onData
-    );
+    gopher.watch(`/data/states/${this.props.state}.json`, this.onData);
   }
 
   // Lifecycle: Called just before our component will be destroyed
   componentWillUnmount() {
     // stop when not renderable
-    gopher.unwatch(
-      `https://apps.npr.org/elections18-graphics/data/${this.props.state}.json`,
-      this.onData
-    );
+    gopher.unwatch(`/data/states/${this.props.state}.json`, this.onData);
   }
 
   render() {
     if (!this.state.house) {
-      return '';
+      return "";
     }
     return (
       <div class="results-house">
@@ -53,7 +46,7 @@ export class HouseResults extends Component {
           {this.state.houseKeys.map(race => (
             <RacewideTable
               data={this.state.house[race]}
-              className={'house-race'}
+              className={"house-race"}
             />
           ))}
         </div>

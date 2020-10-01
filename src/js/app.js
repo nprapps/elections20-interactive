@@ -64,7 +64,7 @@ export default class App extends Component {
     let subview = state.params.subview || "key";
     let key = currentState + subview;
     return <div id="state-results">
-            <StateResults state={currentState} activeView={subview} key={key}/>
+            <StateResults state={currentState.toUpperCase()} activeView={subview} key={key}/>
           </div>
   }
 

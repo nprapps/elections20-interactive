@@ -17,6 +17,8 @@ const STATES_WITHOUT_COUNTY_INFO = ["AK"];
 const STATES_WITH_POTENTIAL_RUNOFFS = ["GA", "LA", "MS"];
 const NEW_ENGLAND_STATES = ["ME", "NH", "VT", "MA", "CT", "RI"];
 
+var viewMappings = {"P": "president", "S": "senate", "H": "house"}
+
 export class StateResults extends Component {
   constructor(props) {
     super();
@@ -36,27 +38,13 @@ export class StateResults extends Component {
   onResultsData(json) {
     var activeRaces = new Set(["key"]);
     // TODO: add back in legend item suppression
-    if (json.results) {
-      Object.keys(json.results).forEach(function (item) {
-        if (
-          Object.keys(json.results[item].results).length &&
-          item !== "ballot_measures"
-        ) {
-          activeRaces.add(item);
-        }
-      });
-      if (Object.keys(json.results.senate.results).length === 1) {
-        const isSpecial =
-          json.results.senate.results[
-            Object.keys(json.results.senate.results)[0]
-          ][0].is_special_election;
-        if (isSpecial) {
-          activeRaces.add("senate special");
-          activeRaces.delete("senate");
-        }
+    // TODO: handle special senate elections?
+    Object.keys(json).forEach(function (item) {
+      if (json[item].office != 'I') {
+        activeRaces.add(viewMappings[json[item].office])
       }
-    }
-    this.setState({ ...json, activeRaces: Array.from(activeRaces) });
+    });
+    this.setState({ races: json, activeRaces: Array.from(activeRaces) });
   }
 
   // Lifecycle: Called whenever our component is created
@@ -82,18 +70,15 @@ export class StateResults extends Component {
   }
 
   render() {
-    if (!this.props.state || !this.state.results) {
+    console.log(this.state)
+    if (!this.props.state || !this.state.races) {
       return <div> "Loading..." </div>;
     } else if (false) {
       return <div></div>;
     }
 
-    // TODO: Use this to set a more permanent state name? Make a code to name mapping
-    const anyHouseRaceID = Object.keys(this.state.results.house.results)[0];
-    const anyHouseCandidate = this.state.results.house.results[
-      anyHouseRaceID
-    ][0];
-    let stateName = anyHouseCandidate.statename;
+    // TODO: Grab state name from a mapping or include it in json
+    let stateName = this.state.races[0].state;
 
     let resultsType = `${this.state.activeView.toUpperCase()} Results`;
     return (
@@ -117,19 +102,18 @@ export class StateResults extends Component {
   renderResults() {
     // Render race data elements, depending on which race-type tab is active
     let resultsElements;
-    let data = this.state.results;
 
     if (this.state.activeView === "key") {
-      return <KeyResults state={this.props.state.toLowerCase()} />;
+      return <KeyResults state={this.props.state} />;
     } else if (this.state.activeView === "house") {
-      return <HouseResults state={this.props.state.toLowerCase()} />;
+      return <HouseResults state={this.props.state} />;
     } else if (
       this.state.activeView.match(/senate/) ||
       this.state.activeView == "governor"
     ) {
       return (
         <StatewideResults
-          state={this.props.state.toLowerCase()}
+          state={this.props.state}
           view={this.state.activeView}
         />
       );
@@ -207,7 +191,7 @@ export class StateResults extends Component {
   }
 
   getDataFileName(view) {
-    var state = this.props.state.toLowerCase();
+    var state = this.props.state;
     // TODO: should this be in this.state? It doesn't change so feels like no?
     if (view === "senate" || view === "governor") {
       return `https://apps.npr.org/elections18-graphics/data/${state}-counties-${view}.json`;
@@ -220,7 +204,7 @@ export class StateResults extends Component {
         "-extra.json"
       );
     } else {
-      return `https://apps.npr.org/elections18-graphics/data/${state}.json`;
+      return `/data/states/${state}.json`;
     }
   }
 
