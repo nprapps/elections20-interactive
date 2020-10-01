@@ -8,3 +8,4 @@ data/*.sheet.json
 data/*.docs.txt
 src/assets/synced
 src/assets/data
+env/*
