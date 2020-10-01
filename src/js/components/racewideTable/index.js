@@ -6,7 +6,6 @@ export class RacewideTable extends Component {
   constructor(props) {
     super();
 
-    console.log("Data", props.data);
     this.state = { data: props.data, tableClass: props.className };
   }
 

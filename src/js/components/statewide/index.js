@@ -65,45 +65,28 @@ export class StatewideResults extends Component {
   constructor(props) {
     super();
 
+    // TODO: Split this out into a map/table reusable component
     this.statesWithoutCountyInfo = ["AK"]; // Get me passed in
-    let dataFile;
-    if (props.view === "senate" || props.view === "governor") {
-      dataFile = `https://apps.npr.org/elections18-graphics/data/${props.state}-counties-${props.view}.json`;
-    } else if (props.view === "senate-special") {
-      dataFile = `https://apps.npr.org/elections18-graphics/data/${props.state}-counties-senate-special.json`;
-    }
+    let dataFile = `/data/counties/${props.state}-${props.ids[0]}.json`;
 
     let sortMetric = availableMetrics[0];
 
     this.state = { dataFile, activeView: props.view, sortMetric };
     this.onData = this.onData.bind(this);
-    this.onExtraData = this.onExtraData.bind(this);
   }
 
   onData(json) {
-    this.setState({ data: json.results });
-  }
-
-  onExtraData(json) {
-    this.setState({ extraData: json });
+    this.setState({ data: json });
   }
 
   // Lifecycle: Called whenever our component is created
   async componentDidMount() {
-    gopher.watch(
-      `https://apps.npr.org/elections18-graphics/data/extra_data/${this.props.state}-extra.json`,
-      this.onExtraData
-    );
     gopher.watch(this.state.dataFile, this.onData);
   }
 
   // Lifecycle: Called just before our component will be destroyed
   componentWillUnmount() {
     // stop when not renderable
-    gopher.watch(
-      `https://apps.npr.org/elections18-graphics/data/extra_data/${this.props.state}-extra.json`,
-      this.onExtraData
-    );
     gopher.unwatch(this.state.dataFile, this.onData);
   }
 
@@ -111,15 +94,15 @@ export class StatewideResults extends Component {
     if (!this.state.data) {
       return "";
     }
-    const stateResults = this.state.data.state.filter(
-      c => !(c.first === "" && c.last === "Other")
-    );
+    // const stateResults = this.state.data.filter(
+    //   c => !(c.first === "" && c.last === "Other")
+    // );
     // Render a county-level table below
     const sortKeys = this.sortCountyResults();
-    const availableCandidates = stateResults.map(c => c.last);
+    const availableCandidates = this.state.data[0].candidates;
 
     let countyLevel = "";
-    if (!this.statesWithoutCountyInfo.includes(stateResults[0].statepostal)) {
+    if (!this.statesWithoutCountyInfo.includes(this.props.state)) {
       countyLevel = (
         <div
           class={
@@ -129,8 +112,7 @@ export class StatewideResults extends Component {
         >
           <h2>Results By County</h2>
           <table
-            class={`results-table candidates-${availableCandidates.length}`}
-          >
+            class={`results-table candidates-${availableCandidates.length}`}>
             <thead>
               <tr>
                 <th class="county">
@@ -176,7 +158,7 @@ export class StatewideResults extends Component {
           <h2>Statewide Results</h2>
           {
             <RacewideTable
-              data={this.state.data.state}
+              data={this.props.data[0]}
               className={
                 this.state.activeView === "senate"
                   ? "results-senate"

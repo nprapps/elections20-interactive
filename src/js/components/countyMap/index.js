@@ -17,12 +17,6 @@ export class CountyMap extends Component {
     this.svgRef = createRef();
     this.tooltipRef = createRef();
     this.guid = 0;
-
-    this.onData = this.onData.bind(this);
-  }
-
-  onData(json) {
-    this.setState(json);
   }
 
   // Lifecycle: Called whenever our component is created
@@ -71,7 +65,7 @@ export class CountyMap extends Component {
           </svg>
           <div class="key" data-as="key">
             <div class="key-grid">
-              {this.props.data.state.map(candidate =>
+              {this.props.data[0].candidates.map(candidate =>
                 this.createLegend(candidate)
               )}
             </div>
@@ -152,26 +146,27 @@ export class CountyMap extends Component {
     var winners = new Set();
     var hasVotes = false;
     for (var d of Object.keys(mapData)) {
-      var [top] = mapData[d].sort((a, b) => b.votepct - a.votepct);
-      if (top.votecount) {
+      var [top] = mapData[d].candidates.sort((a, b) => b.percent - a.percent);
+      if (top.votes) {
         winners.add(top.party in this.palette ? top.party : "other");
         hasVotes = true;
       }
-      this.fipsLookup[top.fipscode] = mapData[d];
+      this.fipsLookup[mapData[d].fips] = mapData[d];
     }
 
     var lookup = {};
     for (var d of Object.keys(mapData)) {
-      var fips = d;
-      var candidates = mapData[d];
-      var [top] = candidates.sort((a, b) => b.percentage - a.percentage);
-      // if (!top.votecount) continue;
+      var fips = mapData[d].fips;
+      var candidates = mapData[d].candidates;
+      var [top] = candidates.sort((a, b) => b.percent - a.percent);
+      if (!top.votes) continue;
+      
 
       var path = this.svg.querySelector(`[id="fips-${fips}"]`);
       if (!path) continue;
       path.classList.add("painted");
       var pigment = this.palette[top.party];
-      var hitThreshold = top.precinctsreportingpct > 50;
+      var hitThreshold = mapData[d].eevp > 50;
       var paint = "#bbb";
       if (hitThreshold) {
         paint = pigment ? pigment : "#bbb";
@@ -183,21 +178,21 @@ export class CountyMap extends Component {
       path.style.fill = paint;
     }
 
-    if (hasVotes) {
-      var pKeys = Object.keys(this.palette);
-      var keyData = pKeys
-        .map(p => this.palette[p])
-        .sort((a, b) => (a.order < b.order ? -1 : 1));
-      var filtered = keyData.filter(p => winners.has(p.id));
-      keyData = filtered.length < 2 ? keyData.slice(0, 2) : filtered;
-      elements.key.innerHTML = key({ keyData, incomplete, guid: this.guid });
-    }
+    // TODO: get tooltip working again
+    // if (hasVotes) {
+    //   var pKeys = Object.keys(this.palette);
+    //   var keyData = pKeys
+    //     .map(p => this.palette[p])
+    //     .sort((a, b) => (a.order < b.order ? -1 : 1));
+    //   var filtered = keyData.filter(p => winners.has(p.id));
+    //   keyData = filtered.length < 2 ? keyData.slice(0, 2) : filtered;
+    //   elements.key.innerHTML = key({ keyData, incomplete, guid: this.guid });
+    // }
   }
 
   createLegend(candidate) {
-    if (!candidate.candidateid) return;
+    if (!candidate.id) return;
     var name = `${candidate.first} ${candidate.last}`;
-    console.log(this.palette, this.palette[candidate.party], candidate.party);
     return (
       <div class="key-row">
         <div

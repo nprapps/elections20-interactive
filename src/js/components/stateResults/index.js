@@ -37,14 +37,20 @@ export class StateResults extends Component {
 
   onResultsData(json) {
     var activeRaces = new Set(["key"]);
+    var raceIds = {}
     // TODO: add back in legend item suppression
     // TODO: handle special senate elections?
     Object.keys(json).forEach(function (item) {
       if (json[item].office != 'I') {
-        activeRaces.add(viewMappings[json[item].office])
+        var office = viewMappings[json[item].office];
+        activeRaces.add(office)
+        if (!raceIds[office]) {
+          raceIds[office] = [];
+        }
+        raceIds[office].push(json[item].id)
       }
     });
-    this.setState({ races: json, activeRaces: Array.from(activeRaces) });
+    this.setState({ races: json, activeRaces: Array.from(activeRaces), ids: raceIds });
   }
 
   // Lifecycle: Called whenever our component is created
@@ -109,12 +115,15 @@ export class StateResults extends Component {
       return <HouseResults state={this.props.state} />;
     } else if (
       this.state.activeView.match(/senate/) ||
-      this.state.activeView == "governor"
+      this.state.activeView == "governor" ||
+      this.state.activeView == "president"
     ) {
       return (
         <StatewideResults
+          data = {this.state.races.filter(a => viewMappings[a.office] == this.state.activeView)}
           state={this.props.state}
           view={this.state.activeView}
+          ids={this.state.ids[this.state.activeView]}
         />
       );
     }
@@ -197,12 +206,6 @@ export class StateResults extends Component {
       return `https://apps.npr.org/elections18-graphics/data/${state}-counties-${view}.json`;
     } else if (view === "senate special") {
       return `https://apps.npr.org/elections18-graphics/data/${state}-counties-senate-special.json`;
-    } else if (view === "main") {
-      return (
-        "https://apps.npr.org/elections18-graphics/data/extra_data/" +
-        state +
-        "-extra.json"
-      );
     } else {
       return `/data/states/${state}.json`;
     }
@@ -210,10 +213,7 @@ export class StateResults extends Component {
 
   renderTabSwitcher() {
     // Create the tab switcher, between different race types
-    // For styling on the page, these links will be split by a delimiter
-    const DELIMITER = "|";
 
-    // TODO: make this real
     const elements = this.state.activeRaces.flatMap((tab, i) => [
       this.createTabElement(tab)
     ]);
@@ -235,6 +235,7 @@ export class StateResults extends Component {
     );
   }
 
+  // Move into statewide?
   sortCountyResults() {
     let values = [];
 
