@@ -67,8 +67,10 @@ module.exports = function(grunt) {
       var census = grunt.data.csv.census_data
         .filter(c => c.fips == r.fips)[0];
 
-      // TODO: add unemployment data
-      r.county = { prior, census};
+      var unemployment = grunt.data.csv.unemployment_data
+        .filter(c => c.fips == r.fips)[0];
+
+      r.county = { prior, census, unemployment};
     });
 
     grunt.log.writeln("Generating data files...");
