@@ -1,6 +1,5 @@
 import pandas as pd
 import censusdata
-import re
 
 detail_tables = {'B01003_001E' : 'population', "B02001_001E": "race_total", "B02001_003E": "black_total", "B03002_001E": "race_hispanic_total", "B03002_003E": "white_alone", "B03002_012E" : "hispanic_total"}
 subject_tables = {"S1501_C02_015E": "percent_bachelors", "S1901_C01_012E": "median_income"}
@@ -33,7 +32,7 @@ def getAllCounties():
              censusdata.censusgeo([('state', state_fips),
                                    ('county', '*')]),
             list(detail_tables.keys())).reset_index()
-    
+
     # Get correct fips for index
     subject_data['index'] = subject_data.apply(lambda row : getFips(row['index']), axis = 1)
     detail_data['index'] = detail_data.apply(lambda row : getFips(row['index']), axis = 1)
