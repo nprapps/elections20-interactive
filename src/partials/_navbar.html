@@ -28,9 +28,9 @@ var { nav, states } = grunt.data.json;
         <button class="menu-toggle" aria-controls="states-menu">State results</button>
 
         <ul class="states menu-contents" id="states-menu">
-          <% for (var state in states) {%>
+          <% for (var state of Object.keys(states)) {%>
           <li>
-            <a href="#/states/<%= state %>"><%= states[state].fullname %></a>
+            <a href="#/states/<%= state %>"><%= states[state] %></a>
           </li>
           <%}%>
         </ul>
