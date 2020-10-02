@@ -1,8 +1,6 @@
 import { h, Component, Fragment } from 'preact';
 import gopher from '../gopher.js';
 
-var copyBop = window.copy.bop;
-
 export class RaceTable extends Component {
   constructor(props) {
     super();

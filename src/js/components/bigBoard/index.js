@@ -4,8 +4,6 @@ import gopher from '../gopher.js';
 import { RaceTable } from '../raceTable';
 import { determineResults, decideLabel, getMetaData } from '../util.js';
 
-var copyBop = window.copy.bop;
-
 export class BigBoardCore extends Component {
   constructor(props) {
     super();

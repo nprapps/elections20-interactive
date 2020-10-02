@@ -1,15 +1,18 @@
 nav.results-nav {
   @nav-gray: #454545;
-  display: flex;
   .knockout-header();
   color: @nav-gray;
   align-items: center;
-  padding: 16px;
-  justify-content: flex-start;
-  flex-wrap: wrap;
   border-bottom: 5px solid;
   border-image: linear-gradient(to right, @rigorous, @true) 100;
   margin-bottom: 16px;
+
+  .constrained {
+    padding: 16px;
+    display: flex;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+  }
 
   @media @tablet {
     justify-content: space-between;
