@@ -18,7 +18,7 @@ const STATES_WITHOUT_COUNTY_INFO = ["AK"];
 const STATES_WITH_POTENTIAL_RUNOFFS = ["GA", "LA", "MS"];
 const NEW_ENGLAND_STATES = ["ME", "NH", "VT", "MA", "CT", "RI"];
 
-var viewMappings = {"P": "president", "S": "senate", "H": "house"}
+var viewMappings = {"P": "president", "S": "senate", "H": "house", "G": "governor"}
 
 export class StateResults extends Component {
   constructor(props) {
@@ -227,43 +227,6 @@ export class StateResults extends Component {
       </a>
       </li>
     );
-  }
-
-  // Move into statewide?
-  sortCountyResults() {
-    let values = [];
-
-    for (let fipscode in extraData) {
-      let sorter;
-      if (sortMetric["census"]) {
-        sorter = extraData[fipscode].census[sortMetric["key"]];
-      } else {
-        sorter = extraData[fipscode][sortMetric["key"]];
-      }
-      values.push([fipscode, sorter]);
-    }
-
-    values.sort(function (a, b) {
-      if (sortMetric["key"] === "past_margin") {
-        // always put Democratic wins on top
-        if (a[1][0] === "D" && b[1][0] === "R") return -1;
-        if (a[1][0] === "R" && b[1][0] === "D") return 1;
-
-        const aMargin = parseInt(a[1].split("+")[1]);
-        const bMargin = parseInt(b[1].split("+")[1]);
-
-        // if Republican, sort in ascending order
-        // if Democratic, sort in descending order
-        if (a[1][0] === "R") {
-          return aMargin - bMargin;
-        } else {
-          return bMargin - aMargin;
-        }
-      }
-
-      return b[1] - a[1];
-    });
-    return values;
   }
 
   switchResultsView(e) {
