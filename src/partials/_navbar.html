@@ -17,11 +17,10 @@ var { nav, states } = grunt.data.json;
 
   <ul class="menu-contents" id="main-menu">
 
-    <% for (var item of nav) { %>
-    <li>
-      <a target="_blank" href=" <%= item.url %>"><%= item.label %></a>
-    </li>
-    <% } %>
+    <li> <a href="#/house">House</a> </li>
+    <li> <a href="#/senate">Senate</a> </li>
+    <li> <a href="#/gov">Governor</a> </li>
+    <li> <a href="#/ballot">Ballot</a> </li>
 
     <li class="state-nav">
       <button class="menu-toggle" aria-controls="states-menu">State results</button>

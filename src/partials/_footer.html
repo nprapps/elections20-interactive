@@ -1,10 +1,54 @@
-<footer id="npr-elections-footer" class="npr-footer hidden">
-    <p class="copyright"><span class="copy-year">&copy; 2020 npr</span></p>
-    <ul>
-        <li><a href="https://help.npr.org/">Help</a></li>
-        <li id="footerContact"><a href="https://www.npr.org/contact">Contact</a></li>
-        <li><a href="https://www.npr.org/about-npr/179876898/terms-of-use">Terms of Use</a></li>
-        <li><a href="https://www.npr.org/about-npr/179878450/privacy-policy">Privacy</a></li>
-    </ul>
+<%
+  var prefix;
+  if (typeof prefix == "undefined") {
+    prefix = "";
+  }
+%>
+
+<footer class="mega-nav" role="contentinfo">
+  <div class="constrained">
+
+    <h3 class="more-hed">2020 Election Resources</h3>
+
+    <div class="more-2020 link-block">
+      <ul>
+        <% for (var a of json.footer) { %>
+        <li><a href="<%= a.url %>"><%= a.label %></a></li>
+        <% } %>
+      </ul>
+    </div>
+
+    <h3 class="state-hed">2020 State Results</h3>
+
+
+    <div class="state-nav link-block">
+
+      <% Object.keys(json.states).sort().forEach(function(s) { %>
+        <div>
+          <a href="#/states/<%= s %>">
+            <%= json.states[s] %>
+          </a>
+        </div>
+      <% }); %>
+    </div>
+
 </footer>
 
+<footer class="more" role="contentinfo">
+  <div class="constrained">
+    <div class="credits">
+      <h3>Credits</h3>
+      <p> Sources: Electoral results from the AP<span class="page-timestamp"></span>. Population data are 2013-2017 ACS 5-year estimates. Candidates receiving less than 1% support not shown individually.</p>
+    </div>
+
+    <div class="npr">
+      <ul>
+        <li><a href="https://www.npr.org/about-npr/179876898/terms-of-use" target="_blank">Terms of Use</a></li>
+        <li><a href="https://www.npr.org/about-npr/179878450/privacy-policy" target="_blank">Privacy</a></li>
+        <li><a href="https://www.npr.org/about-npr/179878450/privacy-policy#yourchoices" target="_blank">Your Privacy Choices</a></li>
+        <li><a href="https://text.npr.org/" target="_blank">Text Only</a></li>
+        <li>&copy; 2019 NPR</li>
+      </ul>
+    </div>
+  </div>
+</footer>
