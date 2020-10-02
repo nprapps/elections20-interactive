@@ -6,7 +6,7 @@ export class RacewideTable extends Component {
   constructor(props) {
     super();
 
-    console.log(props.data)
+    console.log(props.data);
     this.state = { data: props.data, tableClass: props.className };
   }
 
@@ -15,13 +15,16 @@ export class RacewideTable extends Component {
       return "";
     }
     var results = this.state.data;
+    const seatName = results.office === "H" ? results.seat : null;
     if (results.candidates.length === 1) {
       // TODO: Add this back in if needed.
-      return renderUncontestedRace(results.candidate[0], this.state.tableClass);
+      return this.renderUncontestedRace(
+        results.candidates[0],
+        seatName,
+        this.state.tableClass
+      );
     }
 
-    const seatName =
-      results.officename === "U.S. House" ? results.seatname : null;
     let totalVotes = 0;
     for (let i = 0; i < results.candidates.length; i++) {
       totalVotes += results.candidates[i].votes;
@@ -85,7 +88,6 @@ export class RacewideTable extends Component {
   }
 
   renderRow(result) {
-    console.log(result)
     // TODO add classes back in
     return (
       <tr
@@ -98,7 +100,9 @@ export class RacewideTable extends Component {
         </td>
         {this.renderCandidateName(result)}
         <td class="amt">{result.votes}</td>
-        <td class="amt">{((parseFloat(result.percent) || 0) * 100).toFixed(1)}%</td>
+        <td class="amt">
+          {((parseFloat(result.percent) || 0) * 100).toFixed(1)}%
+        </td>
       </tr>
     );
   }
@@ -117,47 +121,45 @@ export class RacewideTable extends Component {
     );
   }
 
-  // TODO: figure out if this is necessary or can be combined with multiple results.
-  // renderUncontestedRace(result, tableClass) {
-  //   const seatName = result.officename === 'U.S. House'
-  //     ? result.seatname
-  //     : null;
-
-  //   return <div class={tableClass}>
-  //             <table>
-  //             </table>
-  //         </div>
-
-  //   return maquette.h(`div.${tableClass}`, [
-  //     maquette.h('table.results-table', [
-  //       seatName ? maquette.h('caption', seatName) : '',
-  //       maquette.h('colgroup', [
-  //         maquette.h('col.seat-status'),
-  //         maquette.h('col.candidate'),
-  //         maquette.h('col')
-  //       ]),
-  //       maquette.h('thead', [
-  //         maquette.h('tr', [
-  //           maquette.h('th.seat-status', ''),
-  //           maquette.h('th.candidate', 'Candidate'),
-  //           maquette.h('th', '')
-  //         ])
-  //       ]),
-  //       maquette.h('tbody',
-  //         maquette.h('tr', { classes: createClassesForCandidateRow(result) }, [
-  //           maquette.h('td.seat-status', [
-  //             result.pickup
-  //               ? maquette.h('span.pickup', { class: 'pickup' })
-  //               : ''
-  //           ]),
-  //           renderCandidateName(result),
-  //           maquette.h('td.amt.uncontested', 'uncontested')
-  //         ])
-  //       )
-  //     ]),
-  //     maquette.h('p.precincts', [ copy.ap_uncontested_note ])
-  //   ]);
-  // }
+  // TODO: share some of this code with the other table
+  renderUncontestedRace(result, seatName, tableClass) {
+    // TODO: add back in pickup information here, and everywhere
+    return (
+      <div class={tableClass}>
+        <table class="results-table">
+          {seatName ? <caption> {seatName}</caption> : ""}
+          <colgroup>
+            <col class="seat-status"></col>
+            <col class="candidate"></col>
+            <col class="amt"></col>
+            <col class="amt"></col>
+          </colgroup>
+          <thead>
+            <tr>
+              <th class="seat-status" scope="col"></th>
+              <th class="candidate" scope="col">
+                Candidate
+              </th>
+              <th class="amt" scope="col">
+                Votes
+              </th>
+              <th class="" scope="col"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class={this.createClassesForCandidateRow(result)}>
+              <td class="seat-status">
+                {result.pickup ? <span class="pickup"></span> : ""}
+              </td>
+              <td>{this.renderCandidateName(result)}</td>
+              <td class="amt uncontested">Uncontested</td>
+            </tr>
+          </tbody>
+        </table>
+        <p class="precincts">TKTK AP uncontested note </p>
+      </div>
+    );
+  }
 
   createClassesForCandidateRow(result) {
     let classlist = "";
