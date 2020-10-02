@@ -6,6 +6,7 @@ import gopher from "../gopher.js";
 import { KeyResults } from "../keyResults";
 import { HouseResults } from "../houseResults";
 import { StatewideResults } from "../statewide";
+import stateLookup from "states.sheet.json";
 
 var lastRequestTime;
 var initialized = false;
@@ -83,7 +84,7 @@ export class StateResults extends Component {
     }
 
     // TODO: Grab state name from a mapping or include it in json
-    let stateName = this.state.races[0].state;
+    let stateName = stateLookup[this.props.state];
 
     let resultsType = `${this.state.activeView.toUpperCase()} Results`;
     return (

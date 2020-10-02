@@ -19,7 +19,7 @@ module.exports = function(grunt) {
     var seeds = config.scripts;
 
     async.forEachOf(seeds, function(dest, src, c) {
-      var b = browserify({ debug: mode == "dev" });
+      var b = browserify({ debug: mode == "dev", paths: ["data"] });
       b.plugin(require("browser-pack-flat/plugin"));
       b.transform("babelify", { global: true, presets: [
         ["@babel/preset-react", {
