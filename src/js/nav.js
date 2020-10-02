@@ -33,7 +33,6 @@ $(".menu-toggle").forEach(function(button) {
   // hide menu on blur
   menu.addEventListener("focusout", function(e) {
     setTimeout(function() {
-      console.log(document.activeElement, menu.contains(document.activeElement));
       if (!menu.contains(document.activeElement)) menu.classList.remove("show");
     }, 300);
   });

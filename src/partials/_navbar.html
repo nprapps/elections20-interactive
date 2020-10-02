@@ -4,14 +4,16 @@
 var { nav, states } = grunt.data.json;
 %>
 
-<nav class="results-nav">
+<nav class="results-nav constrained">
 
   <div class="results-logo">
-    <span class="election-name">Election</span>
-    <span class="election-year">2020</span>
+    <img src="./assets/logo.png" alt="NPR" />
+    <hr aria-hidden="true" />
+    <img src="./assets/logo-2020-election.svg" class="full" alt="2020 Elections" />
+    <img src="./assets/logo-2020-e.svg" class="short" alt="2020 Elections" />
   </div>
 
-  <button class="menu-toggle" aria-controls="main-menu">Menu</button>
+  <button class="menu-toggle" aria-controls="main-menu">More live results</button>
 
   <ul class="menu-contents" id="main-menu">
 
@@ -34,4 +36,5 @@ var { nav, states } = grunt.data.json;
     </li>
 
   </ul>
+
 </nav>
