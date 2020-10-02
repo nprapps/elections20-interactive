@@ -6,6 +6,7 @@ export class RacewideTable extends Component {
   constructor(props) {
     super();
 
+    console.log(props.data)
     this.state = { data: props.data, tableClass: props.className };
   }
 
@@ -84,6 +85,7 @@ export class RacewideTable extends Component {
   }
 
   renderRow(result) {
+    console.log(result)
     // TODO add classes back in
     return (
       <tr
@@ -96,7 +98,7 @@ export class RacewideTable extends Component {
         </td>
         {this.renderCandidateName(result)}
         <td class="amt">{result.votes}</td>
-        <td class="amt">{(parseFloat(result.percent) * 100).toFixed(1)}%</td>
+        <td class="amt">{((parseFloat(result.percent) || 0) * 100).toFixed(1)}%</td>
       </tr>
     );
   }

@@ -12,13 +12,11 @@ export class HouseResults extends Component {
   }
 
   onData(json) {
-    console.log(json)
     const sortedHouseResults = json.filter(r => r.office == "H").sort(
       function (a, b) {
         return parseInt(a.seatNumber) - parseInt(b.seatNumber);
       }
     );
-    console.log(sortedHouseResults)
     this.setState({
       houseKeys: sortedHouseResults.map(a => a.seatNumber),
       house: sortedHouseResults,
@@ -43,9 +41,9 @@ export class HouseResults extends Component {
     return (
       <div class="results-house">
         <div class="results-wrapper">
-          {this.state.houseKeys.map(race => (
+          { this.state.houseKeys.map(race => (
             <RacewideTable
-              data={this.state.house[race]}
+              data={this.state.house.filter(a => a.seatNumber == race)[0]}
               className={"house-race"}
             />
           ))}
