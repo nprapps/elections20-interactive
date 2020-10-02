@@ -17,7 +17,7 @@ module.exports = function(grunt) {
     "elex"
   ]);
   grunt.registerTask("template", "Build HTML from content/templates", [
-    "ap",
+    "content",
     "build"
   ]);
   grunt.registerTask("static", "Build all files", [
@@ -26,6 +26,13 @@ module.exports = function(grunt) {
     "less",
     "template"
   ]);
+  grunt.registerTask("startup", "Build all files and data", [
+    "copy",
+    "bundle",
+    "less",
+    "ap",
+    "build"
+  ]);
   grunt.registerTask("quick", "Build without assets", [
     "clean",
     "bundle",
@@ -33,5 +40,5 @@ module.exports = function(grunt) {
     "template"
   ]);
   grunt.registerTask("serve", "Start the dev server", ["connect:dev", "watch"]);
-  grunt.registerTask("default", ["clean", "static", "serve"]);
+  grunt.registerTask("default", ["clean", "startup", "serve"]);
 };
