@@ -232,28 +232,31 @@ export class CountyMap extends Component {
       return tooltip.classList.remove("shown");
     }
 
+    // TODO: check syntax around leading candidate/winner
     var result = this.fipsLookup[fips];
     if (result) {
       var candText = "";
-      if (result.reportingPercentage > 25) {
-        var leadingCandidate = result[0];
+      if (result.eevp > 50) {
+        var leadingCandidate = result.candidates[0];
         var prefix = leadingCandidate.winner ? "Winner: " : "Leading: ";
         var candText =
           prefix +
           leadingCandidate.last +
           " (" +
-          (leadingCandidate.percentage || 0).toFixed(1) +
+          (leadingCandidate.percent || 0).toFixed(1) +
           "%)";
       }
 
-      var countyDisplay = result[0].reportingunitname.replace(
-        /\s[a-z]/g,
-        match => match.toUpperCase()
-      );
+      // TODO: get the county name back in and check language around eevp
+      // var countyDisplay = result[0].reportingunitname.replace(
+      //   /\s[a-z]/g,
+      //   match => match.toUpperCase()
+      // );
+      //${countyDisplay}
       tooltip.innerHTML = `
-        <div class="name">${countyDisplay}</div>
+        <div class="name">TKTK</div>
         <div class="result">${candText}</div>
-        <div class="reporting">${result[0].precinctsreportingpct.toFixed(
+        <div class="reporting">${result.eevp.toFixed(
           1
         )}% reporting</div>
       `;
