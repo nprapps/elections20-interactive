@@ -51,6 +51,7 @@ module.exports = function(grunt) {
     // merge in per-county census/historical data
     results.forEach(function(r) {
       if (!r.fips) return;
+
       // get the winner from the previous election
       var prior = grunt.data.csv.prior_results
         .filter(p => p.fipscode == r.fips)
@@ -64,15 +65,12 @@ module.exports = function(grunt) {
           }
         });
 
-      var census = grunt.data.csv.census_data
-        .filter(c => c.fips == r.fips)[0];
+      var census = grunt.data.csv.census_data[r.fips];
 
-      var unemployment = grunt.data.csv.unemployment_data
-        .filter(c => c.fips == r.fips)[0];
+      var bls = grunt.data.csv.unemployment_data[r.fips] || {};
+      var { unemployment } = bls;
 
-      var name = grunt.data.csv.county_names
-        .filter(c => c.fips == r.fips)[0];
-      var countyName = name ? name.name : name;
+      var countyName = grunt.data.csv.county_names[r.fips] || "At large";
 
       r.county = { prior, census, unemployment, countyName};
     });
@@ -150,7 +148,8 @@ module.exports = function(grunt) {
   var serialize = d => JSON.stringify(d, null, 2);
 
   grunt.registerTask("elex", async function() {
-    grunt.task.requires("json"); // we need the schedule sheet
+    grunt.task.requires("json");
+    grunt.task.requires("csv");
 
     var done = this.async();
 

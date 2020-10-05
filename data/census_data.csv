@@ -1,4 +1,4 @@
-fips,population,race_total,black_total,race_hispanic_total,white_alone,hispanic_total,percent_bachelors,median_income,percent_black,percent_white,percent_hispanic
+key,population,race_total,black_total,race_hispanic_total,white_alone,hispanic_total,percent_bachelors,median_income,percent_black,percent_white,percent_hispanic
 27033,11372,11372,85,11372,9841,844,21.2,53354.0,0.007474498768906085,0.8653710868800563,0.07421737601125572
 27139,143372,143372,5840,143372,117245,7275,39.3,97744.0,0.04073319755600815,0.81776776497503,0.05074212538013001
 27039,20582,20582,49,20582,18990,1031,24.4,71669.0,0.0023807210183655622,0.9226508599747352,0.050092313672140704

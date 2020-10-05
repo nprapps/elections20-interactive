@@ -34,7 +34,9 @@ module.exports = function(grunt) {
         if (isKeyed) {
           var key = line.key;
           delete line.key;
-          parsed[key] = line;
+          // handle key/value pair sheets
+          var value = Object.keys(line).length == 1 && line.value ? line.value : line;
+          parsed[key] = value;
         } else {
           parsed.push(line);
         }
