@@ -130,6 +130,11 @@ export function calculatePrecinctsReporting(pct) {
   }
 }
 
+export function getViewFromRace(race) {
+  var viewMappings = {"P": "president", "S": "senate", "H": "house", "G": "governor"};
+  return viewMappings[race]
+}
+
 // Helper functions
 const areCandidatesSame = (c1, c2) =>
   c1.first === c2.first && c1.last === c2.last && c1.party === c2.party;
