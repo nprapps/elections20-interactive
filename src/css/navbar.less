@@ -1,17 +1,22 @@
 nav.results-nav {
   @nav-gray: #454545;
   .knockout-header();
+  font-size: 13.5px;
   color: @nav-gray;
   align-items: center;
   border-bottom: 5px solid;
+  border-top: 0px; 
   border-image: linear-gradient(to right, @rigorous, @true) 100;
   margin-bottom: 16px;
 
   .constrained {
-    padding: 16px;
+    padding: 0 20px;
     display: flex;
     justify-content: flex-start;
+    align-items: center;
+    height: 44px;
     flex-wrap: wrap;
+    max-width: 100%;
   }
 
   @media @tablet {
@@ -23,11 +28,13 @@ nav.results-nav {
     padding-right: 20px;
 
     hr {
-      margin: 0 12px;
+      margin: 0 20px;
+      border: none;
+      border-left: 1px solid #ccc; 
     }
 
     img {
-      height: 16px;
+      height: 18px;
       display: block;
     }
 
@@ -76,8 +83,8 @@ nav.results-nav {
     cursor: pointer;
     text-align: inherit;
 
-    &:hover, &:focus {
-
+    &:hover, &:focus, &:active {
+      opacity: 0.6;
     }
   }
 
