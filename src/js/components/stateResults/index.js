@@ -66,7 +66,7 @@ export class StateResults extends Component {
 
   render() {
     if (!this.props.state || !this.state.races) {
-      return <div> "Loading..." </div>;
+      return <div> Loading... </div>;
     }
 
     // TODO: Grab state name from a mapping or include it in json

@@ -3,6 +3,7 @@ import { Component, h, Fragment } from "preact";
 import { BigBoardCore } from './components/bigBoard';
 import { GetCaughtUp } from './components/getCaughtUp';
 import { StateResults } from './components/stateResults';
+import { CountyResults } from './components/countyResults';
 
 import Scrapple from "@twilburn/scrapple";
 
@@ -101,11 +102,12 @@ export default class App extends Component {
     );
   }
 
-  renderCounty(props, state) {
+   renderCounty(props, state, race) {
+    let currentState = state.params.state;
     return (<>
-      <h1>County results for [[race]]</h1>
-      <div class="placeholder">Statewide results table</div>
-      <div class="placeholder">Map</div>
+      <div id="county-results">
+        <CountyResults state={currentState} raceid={state.params.race}/>
+      </div>
       <div class="placeholder">Demographic/results dataviz</div>
       <div class="placeholder">County table</div>
     </>)
