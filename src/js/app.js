@@ -95,14 +95,19 @@ export default class App extends Component {
     let key = currentState + subview;
     return (
       <div id="state-results">
-        <StateResults state={currentState.toUpperCase()} activeView={subview} key={key}/>
+        <StateResults state={currentState} activeView={subview} key={key}/>
       </div>
     );
   }
 
   renderCounty(props, state) {
-    console.log(props, state);
-    return "COUNTY";
+    return (<>
+      <h1>County results for [[race]]</h1>
+      <div class="placeholder">Statewide results table</div>
+      <div class="placeholder">Map</div>
+      <div class="placeholder">Demographic/results dataviz</div>
+      <div class="placeholder">County table</div>
+    </>)
   }
 
   render(props, state) {
