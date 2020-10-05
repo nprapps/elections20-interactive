@@ -248,13 +248,12 @@ export class CountyMap extends Component {
       }
 
       // TODO: get the county name back in and check language around eevp
-      // var countyDisplay = result[0].reportingunitname.replace(
-      //   /\s[a-z]/g,
-      //   match => match.toUpperCase()
-      // );
-      //${countyDisplay}
+      var countyName = result.county.countyName.replace(
+        /\s[a-z]/g,
+        match => match.toUpperCase()
+      );
       tooltip.innerHTML = `
-        <div class="name">TKTK</div>
+        <div class="name">${countyName}</div>
         <div class="result">${candText}</div>
         <div class="reporting">${result.eevp.toFixed(
           1

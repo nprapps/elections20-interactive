@@ -70,7 +70,11 @@ module.exports = function(grunt) {
       var unemployment = grunt.data.csv.unemployment_data
         .filter(c => c.fips == r.fips)[0];
 
-      r.county = { prior, census, unemployment};
+      var name = grunt.data.csv.county_names
+        .filter(c => c.fips == r.fips)[0];
+      var countyName = name ? name.name : name;
+
+      r.county = { prior, census, unemployment, countyName};
     });
 
     grunt.log.writeln("Generating data files...");
