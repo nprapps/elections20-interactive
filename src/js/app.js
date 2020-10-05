@@ -29,11 +29,12 @@ export default class App extends Component {
   constructor() {
     super();
     this.state = {
-      route: "renderPresident",
+      route: "loading",
       params: {}
     };
 
     this.router = new Scrapple();
+    this.router.onhit = () => {};
     this.addRoute(["/", "/president"], "renderPresident")
     this.addRoute("/house", "renderHouse");
     this.addRoute("/senate", "renderSenate");
@@ -112,6 +113,9 @@ export default class App extends Component {
 
   render(props, state) {
     console.log(props, state);
+    if (!this[state.route]) {
+      return "";
+    }
     return this[state.route](props, state);
   }
 }
