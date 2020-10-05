@@ -29,15 +29,18 @@ export default class App extends Component {
   constructor() {
     super();
     this.state = {
-      route: "renderGetCaughtUp",
+      route: "renderPresident",
       params: {}
     };
 
     this.router = new Scrapple();
-    this.addRoute("/boards/:type", "renderBoards");
-    this.addRoute("/get-caught-up", "renderGetCaughtUp");
-    this.addRoute("/states/:state/:subview", "renderState");
-    this.addRoute("/states/:state", "renderState");
+    this.addRoute(["/", "/president"], "renderPresident")
+    this.addRoute("/house", "renderHouse");
+    this.addRoute("/senate", "renderSenate");
+    this.addRoute("/governors", "renderGov");
+    this.addRoute("/ballots", "renderBallot");
+    this.addRoute("/states/:state/detail/:race", "renderCounty");
+    this.addRoute("/states/:state/:subview?", "renderState");
   }
 
   addRoute(path, route) {
@@ -46,16 +49,29 @@ export default class App extends Component {
     });
   }
 
-  renderBoards(props, state) {
-    let currentBoard = state.params.type;
-    return (
-      <div class="board big-board">
-        <BigBoardCore
-          json={metaData[currentBoard].json}
-          title={metaData[currentBoard].title}
-        />
-      </div>
-    );
+  renderPresident(props, state) {
+    console.log(props, state);
+    return "PRESIDENT";
+  }
+
+  renderHouse(props, state) {
+    console.log(props, state);
+    return "HOUSE";
+  }
+
+  renderSenate(props, state) {
+    console.log(props, state);
+    return "SENATE";
+  }
+
+  renderBallots(props, state) {
+    console.log(props, state);
+    return "BALLOTS";
+  }
+
+  renderCounty(props, state) {
+    console.log(props, state);
+    return "COUNTY";
   }
 
   renderState(props, state) {
@@ -63,18 +79,15 @@ export default class App extends Component {
     // Default to key view
     let subview = state.params.subview || "president";
     let key = currentState + subview;
-    return <div id="state-results">
-            <StateResults state={currentState.toUpperCase()} activeView={subview} key={key}/>
-          </div>
-  }
-
-  renderGetCaughtUp(props, state) {
-    return <div class="get-caught-up-wrapper">
-            <GetCaughtUp />
-          </div>
+    return (
+      <div id="state-results">
+        <StateResults state={currentState.toUpperCase()} activeView={subview} key={key}/>
+      </div>
+    );
   }
 
   render(props, state) {
+    console.log(state.route);
     return this[state.route](props, state);
   }
 }

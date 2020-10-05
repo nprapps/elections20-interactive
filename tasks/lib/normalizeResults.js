@@ -125,6 +125,9 @@ module.exports = function(resultArray, overrides = {}) {
     for (var race of response.races) {
       var raceMeta = translate.race(race);
 
+      // early races may not have reporting units yet
+      if (!race.reportingUnits) continue;
+
       for (var unit of race.reportingUnits) {
         var level = unit.level == "FIPSCode" ? "county" : unit.level;
         // do we have this race  at this level already?
@@ -190,12 +193,6 @@ module.exports = function(resultArray, overrides = {}) {
     }
 
   };
-
-  /*
-  TODO:
-  - add metadata overrides and calls
-  - think about how much processing should live in this layer
-  */
 
   return output;
 
