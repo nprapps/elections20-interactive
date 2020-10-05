@@ -1,4 +1,4 @@
-import { Component, h } from "preact";
+import { Component, h, Fragment } from "preact";
 
 import { BigBoardCore } from './components/bigBoard';
 import { GetCaughtUp } from './components/getCaughtUp';
@@ -37,10 +37,11 @@ export default class App extends Component {
     this.addRoute(["/", "/president"], "renderPresident")
     this.addRoute("/house", "renderHouse");
     this.addRoute("/senate", "renderSenate");
-    this.addRoute("/governors", "renderGov");
-    this.addRoute("/ballots", "renderBallot");
+    this.addRoute("/governor", "renderGov");
+    this.addRoute("/ballots", "renderBallots");
+    this.addRoute("/states/:state", "renderState");
     this.addRoute("/states/:state/detail/:race", "renderCounty");
-    this.addRoute("/states/:state/:subview?", "renderState");
+    this.addRoute("/states/:state/:subview", "renderState");
   }
 
   addRoute(path, route) {
@@ -50,28 +51,40 @@ export default class App extends Component {
   }
 
   renderPresident(props, state) {
-    console.log(props, state);
-    return "PRESIDENT";
+    return (<>
+      <h1>President</h1>
+      <div class="placeholder">Map or dataviz</div>
+      <div class="placeholder">Results by state</div>
+    </>);
   }
 
   renderHouse(props, state) {
-    console.log(props, state);
-    return "HOUSE";
+    return (<>
+      <h1>Key House Results</h1>
+      <div class="placeholder">Balance of Power</div>
+      <div class="placeholder">Selected races</div>
+    </>);
   }
 
   renderSenate(props, state) {
-    console.log(props, state);
-    return "SENATE";
+    return (<>
+      <h1>Senate</h1>
+      <div class="placeholder">State results by rating</div>
+    </>);
+  }
+
+  renderGov(props, state) {
+    return (<>
+      <h1>Governor</h1>
+      <div class="placeholder">State results</div>
+    </>);
   }
 
   renderBallots(props, state) {
-    console.log(props, state);
-    return "BALLOTS";
-  }
-
-  renderCounty(props, state) {
-    console.log(props, state);
-    return "COUNTY";
+    return (<>
+      <h1>Ballot Initiatives</h1>
+      <div class="placeholder">Selected Ballots</div>
+    </>);
   }
 
   renderState(props, state) {
@@ -86,8 +99,13 @@ export default class App extends Component {
     );
   }
 
+  renderCounty(props, state) {
+    console.log(props, state);
+    return "COUNTY";
+  }
+
   render(props, state) {
-    console.log(state.route);
+    console.log(props, state);
     return this[state.route](props, state);
   }
 }

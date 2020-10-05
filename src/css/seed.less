@@ -6,6 +6,29 @@
   padding: 0 15px;
 }
 
+.placeholder {
+  padding: 40px;
+  background: #DDD;
+  margin-bottom: 20px;
+  position: relative;
+  font-weight: bold;
+  .knockout();
+  font-size: 24px;
+
+  &::before {
+    color: white;
+    display: block;
+    content: "PLACEHOLDER";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    tranform-origin: center;
+    transform: translate(-50%, -50%) rotate(-20deg);
+    font-size: 150%;
+    filter: blur(2px);
+  }
+}
+
 @import "navbar";
 @import "footer";
 
