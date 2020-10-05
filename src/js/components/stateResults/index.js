@@ -7,6 +7,7 @@ import { KeyResults } from "../keyResults";
 import { HouseResults } from "../houseResults";
 import { StatewideResults } from "../statewide";
 import stateLookup from "states.sheet.json";
+import ResultTableWithNames from "../resultsNamed";
 
 var lastRequestTime;
 var initialized = false;
@@ -86,6 +87,8 @@ export class StateResults extends Component {
     // TODO: Grab state name from a mapping or include it in json
     let stateName = stateLookup[this.props.state];
 
+    var first = this.state.races[0];
+
     let resultsType = `${this.state.activeView.toUpperCase()} Results`;
     return (
       <div class="results">
@@ -100,6 +103,7 @@ export class StateResults extends Component {
           </h1>
           {this.renderTabSwitcher()}
         </header>
+        <ResultTableWithNames race={first} />
         <div class="results-elements">{this.renderResults()}</div>
       </div>
     );

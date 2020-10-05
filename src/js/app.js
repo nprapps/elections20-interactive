@@ -111,6 +111,10 @@ export default class App extends Component {
     </>)
   }
 
+  loading() {
+    return "Loading...";
+  }
+
   render(props, state) {
     console.log(props, state);
     if (!this[state.route]) {
