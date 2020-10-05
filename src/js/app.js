@@ -69,6 +69,7 @@ export default class App extends Component {
   renderSenate(props, state) {
     return (<>
       <h1>Senate</h1>
+      <div class="placeholder">Balance of Power</div>
       <div class="placeholder">State results by rating</div>
     </>);
   }
