@@ -8,9 +8,9 @@ def get_unemployment_data(year):
     url = 'https://www.bls.gov/lau/laucnty' + year + '.xlsx'
     xlsx = pd.read_excel(url, usecols=[1,2,4,9])
     xlsx = xlsx.iloc[5:]
-    xlsx.columns = ['state-fips', 'county-fips', 'year', 'unemployment']
-    xlsx['fips'] = xlsx['state-fips'] + xlsx['county-fips']
-    xlsx = xlsx.drop(columns=['state-fips', 'county-fips'])
+    xlsx.columns = ['state_fips', 'county_fips', 'year', 'unemployment']
+    xlsx['fips'] = xlsx['state_fips'] + xlsx['county_fips']
+    xlsx = xlsx.drop(columns=['state_fips', 'county_fips'])
 
     xlsx.to_csv('data/unemployment_data.csv', index=False, encoding='utf-8',)
 
