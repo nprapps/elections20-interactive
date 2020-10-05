@@ -1,0 +1,36 @@
+.about-box {
+	background: #eeeeee;
+	max-width: 730px;
+	margin: auto;
+	margin-bottom: 30px;
+	padding: 8px 35px;
+	padding-bottom: 35px;
+	border-top: 6px solid;
+  border-image: linear-gradient(to right, @rigorous, @true) 100;
+  color: #333;
+	.gotham();
+
+	a {
+		text-decoration: none;
+		font-weight: bold;
+	}
+
+	&.closed {
+		display: none;
+	}
+
+	.close {
+		float: right;
+		margin-top: 20px;
+		font-size: 15px;
+		color: #eee;
+		background-color: #333;
+		border-radius: 50%;
+		padding: 0px 6px;
+
+		&:hover {
+			cursor: pointer;
+			background-color: @gray;
+		}
+	}
+}

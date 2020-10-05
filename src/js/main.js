@@ -13,3 +13,7 @@ if (appContainer) {
   render(<App />, appContainer);
 }
 
+// hide about box on click
+$.one(".about-box .close").addEventListener("click", function() {
+	$.one(".about-box").classList.add("closed");
+});
