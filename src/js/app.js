@@ -4,7 +4,7 @@ import { BigBoardCore } from "./components/bigBoard";
 import { GetCaughtUp } from "./components/getCaughtUp";
 import { StateResults } from "./components/stateResults";
 import { CountyResults } from "./components/countyResults";
-import { BoardSenate } from "./components/boardSenate"
+import { BoardSenate } from "./components/boardSenate";
 
 import Scrapple from "@twilburn/scrapple";
 
@@ -37,7 +37,7 @@ export default class App extends Component {
 
     this.router = new Scrapple();
     this.router.onhit = () => {};
-    this.addRoute(["/", "/president"], "renderPresident")
+    this.addRoute(["/", "/president"], "renderPresident");
     this.addRoute("/house", "renderHouse");
     this.addRoute("/senate", "renderSenate");
     this.addRoute("/governor", "renderGov");
@@ -54,19 +54,23 @@ export default class App extends Component {
   }
 
   renderPresident(props, state) {
-    return (<>
-      <h1>President</h1>
-      <div class="placeholder">Map or dataviz</div>
-      <div class="placeholder">Results by state</div>
-    </>);
+    return (
+      <>
+        <h1>President</h1>
+        <div class="placeholder">Map or dataviz</div>
+        <div class="placeholder">Results by state</div>
+      </>
+    );
   }
 
   renderHouse(props, state) {
-    return (<>
-      <h1>Key House Results</h1>
-      <div class="placeholder">Balance of Power</div>
-      <div class="placeholder">Selected races</div>
-    </>);
+    return (
+      <>
+        <h1>Key House Results</h1>
+        <div class="placeholder">Balance of Power</div>
+        <div class="placeholder">Selected races</div>
+      </>
+    );
   }
 
   renderSenate(props, state) {
@@ -78,17 +82,21 @@ export default class App extends Component {
   }
 
   renderGov(props, state) {
-    return (<>
-      <h1>Governor</h1>
-      <div class="placeholder">State results</div>
-    </>);
+    return (
+      <>
+        <h1>Governor</h1>
+        <div class="placeholder">State results</div>
+      </>
+    );
   }
 
   renderBallots(props, state) {
-    return (<>
-      <h1>Ballot Initiatives</h1>
-      <div class="placeholder">Selected Ballots</div>
-    </>);
+    return (
+      <>
+        <h1>Ballot Initiatives</h1>
+        <div class="placeholder">Selected Ballots</div>
+      </>
+    );
   }
 
   renderState(props, state) {
@@ -98,19 +106,21 @@ export default class App extends Component {
     let key = currentState + subview;
     return (
       <div id="state-results">
-        <StateResults state={currentState} activeView={subview} key={key}/>
+        <StateResults state={currentState} activeView={subview} key={key} />
       </div>
     );
   }
 
-   renderCounty(props, state, race) {
+  renderCounty(props, state, race) {
     let currentState = state.params.state;
-    return (<>
-      <div id="county-results">
-        <CountyResults state={currentState} raceid={state.params.race}/>
-      </div>
-      <div class="placeholder">Demographic/results dataviz</div>
-    </>)
+    return (
+      <>
+        <div id="county-results">
+          <CountyResults state={currentState} raceid={state.params.race} />
+        </div>
+        <div class="placeholder">Demographic/results dataviz</div>
+      </>
+    );
   }
 
   loading() {

@@ -4,10 +4,10 @@ import {
   determineResults,
   decideLabel,
   getMetaData,
-  calculatePrecinctsReporting,
+  calculatePrecinctsReporting
 } from "../util.js";
 import { RacewideTable } from "../racewideTable";
-import { CountyResults } from '../countyResults';
+import { CountyResults } from "../countyResults";
 
 const STATES_WITHOUT_COUNTY_INFO = ["AK"];
 
@@ -48,7 +48,7 @@ export class StatewideResults extends Component {
     return (
       <div class="results-elements">
         <h2>Statewide Results </h2>
-        {this.props.data.map(race => this.getResultsTable(race))}
+        {this.props.data.map((race) => this.getResultsTable(race))}
       </div>
     );
   }

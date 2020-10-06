@@ -12,14 +12,14 @@ export default class HouseResults extends Component {
   }
 
   onData(json) {
-    const sortedHouseResults = json.filter(r => r.office == "H").sort(
-      function (a, b) {
+    const sortedHouseResults = json
+      .filter((r) => r.office == "H")
+      .sort(function (a, b) {
         return parseInt(a.seatNumber) - parseInt(b.seatNumber);
-      }
-    );
+      });
     this.setState({
-      houseKeys: sortedHouseResults.map(a => a.seatNumber),
-      house: sortedHouseResults,
+      houseKeys: sortedHouseResults.map((a) => a.seatNumber),
+      house: sortedHouseResults
     });
   }
 
@@ -41,9 +41,9 @@ export default class HouseResults extends Component {
     return (
       <div class="results-house">
         <div class="results-wrapper">
-          { this.state.houseKeys.map(race => (
+          {this.state.houseKeys.map((race) => (
             <RacewideTable
-              data={this.state.house.filter(a => a.seatNumber == race)[0]}
+              data={this.state.house.filter((a) => a.seatNumber == race)[0]}
               className={"house-race"}
             />
           ))}

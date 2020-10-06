@@ -1,5 +1,3 @@
-// Polyfills that aren't covered by `babel-preset-env`
-
 // import { h, createProjector } from 'maquette';
 import { h, Component } from "preact";
 import gopher from "../gopher.js";
@@ -18,7 +16,7 @@ export class StateResults extends Component {
     super();
 
     this.state = {
-      activeView: props.activeView,
+      activeView: props.activeView
     };
     this.onData = this.onData.bind(this);
     this.onResultsData = this.onResultsData.bind(this);
@@ -47,7 +45,7 @@ export class StateResults extends Component {
     this.setState({
       races: json,
       activeRaces: Array.from(activeRaces),
-      ids: raceIds,
+      ids: raceIds
     });
   }
 
@@ -80,7 +78,8 @@ export class StateResults extends Component {
           <h1>
             <img
               class="icon"
-              src={"../../assets/states/" + this.props.state + ".svg"}></img>
+              src={"../../assets/states/" + this.props.state + ".svg"}
+            ></img>
             <span class="state-name">{stateName}</span>
             {resultsType}
           </h1>
@@ -107,7 +106,7 @@ export class StateResults extends Component {
       return (
         <StatewideResults
           data={this.state.races.filter(
-            a => getViewFromRace(a.office) == this.state.activeView
+            (a) => getViewFromRace(a.office) == this.state.activeView
           )}
           state={this.props.state}
           view={this.state.activeView}
@@ -120,7 +119,7 @@ export class StateResults extends Component {
   renderTabSwitcher() {
     // Create the tab switcher, between different race types
     const elements = this.state.activeRaces.flatMap((tab, i) => [
-      this.createTabElement(tab),
+      this.createTabElement(tab)
     ]);
 
     return (
@@ -136,7 +135,8 @@ export class StateResults extends Component {
       <li class={this.state.activeView === tab.toLowerCase() ? "active" : ""}>
         <a
           href={`./#/states/${this.props.state}/${tab.toLowerCase()}`}
-          name="race-type-nav">
+          name="race-type-nav"
+        >
           {toTitleCase(tab)}
         </a>
       </li>
@@ -147,7 +147,7 @@ export class StateResults extends Component {
     const newTarget = e.target.dataset.hook;
 
     this.setState({
-      activeView: newTarget,
+      activeView: newTarget
     });
 
     // // When switching tabs, if the user is below the header then

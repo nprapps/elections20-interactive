@@ -60,7 +60,7 @@ export class RacewideTable extends Component {
             </tr>
           </thead>
           <tbody>
-            {results.candidates.map(result => this.renderRow(result))}
+            {results.candidates.map((result) => this.renderRow(result))}
           </tbody>
           <tfoot>
             <tr>
@@ -91,10 +91,8 @@ export class RacewideTable extends Component {
     // TODO add classes back in
     return (
       <tr
-        class={this.createClassesForCandidateRow(
-          result,
-          this.state.tableClass
-        )}>
+        class={this.createClassesForCandidateRow(result, this.state.tableClass)}
+      >
         <td class="seat-status">
           {result.pickup ? <span class="pickup"></span> : ""}
         </td>

@@ -4,7 +4,7 @@ import {
   determineResults,
   decideLabel,
   getMetaData,
-  calculatePrecinctsReporting,
+  calculatePrecinctsReporting
 } from "../util.js";
 import { RacewideTable } from "../racewideTable";
 import { CountyMap } from "../countyMap";
@@ -15,50 +15,50 @@ const availableMetrics = [
     name: "Population",
     key: "population",
     census: true,
-    comma_filter: true,
+    comma_filter: true
   },
   {
     name: "2016 Presidential Margin",
     key: "past_margin",
-    census: false,
+    census: false
   },
   {
     name: "Unemployment",
     key: "unemployment",
     census: false,
-    append: "%",
+    append: "%"
   },
   {
     name: "% White",
     key: "percent_white",
     census: true,
-    percent_filter: true,
+    percent_filter: true
   },
   {
     name: "% Black",
     key: "percent_black",
     census: true,
-    percent_filter: true,
+    percent_filter: true
   },
   {
     name: "% Hispanic",
     key: "percent_hispanic",
     census: true,
-    percent_filter: true,
+    percent_filter: true
   },
   {
     name: "Median Income",
     key: "median_income",
     census: true,
     comma_filter: true,
-    prepend: "$",
+    prepend: "$"
   },
   {
     name: "% College-Educated",
     key: "percent_bachelors",
     census: true,
-    percent_filter: true,
-  },
+    percent_filter: true
+  }
 ];
 
 export class CountyResults extends Component {
@@ -134,7 +134,8 @@ export class CountyResults extends Component {
         class={
           "results-counties " +
           this.state.sortMetric["key"].split("_").join("-")
-        }>
+        }
+      >
         <h2>Results By County</h2>
         <table class={`results-table candidates-${availableCandidates.length}`}>
           <thead>
@@ -149,7 +150,7 @@ export class CountyResults extends Component {
                   <span></span>
                 </div>
               </th>
-              {availableCandidates.map(cand => this.renderCandidateTH(cand))}
+              {availableCandidates.map((cand) => this.renderCandidateTH(cand))}
               <th class="vote margin" key="margin">
                 <div>
                   <span>Vote margin</span>
@@ -161,9 +162,9 @@ export class CountyResults extends Component {
                 </div>
               </th>
             </tr>
-            {sortKeys.map(key =>
+            {sortKeys.map((key) =>
               this.renderCountyRow(
-                this.state.data.filter(a => a.fips == key[0])[0],
+                this.state.data.filter((a) => a.fips == key[0])[0],
                 availableCandidates
               )
             )}
@@ -180,7 +181,8 @@ export class CountyResults extends Component {
       <li
         class={
           "sortButton " + metric === this.state.sortMetric ? "selected" : ""
-        }>
+        }
+      >
         <span class="metric">{[metric["name"]]}</span>
         {metric.name !== "% College-Educated" ? (
           <span class="pipe">|</span>
@@ -237,7 +239,7 @@ export class CountyResults extends Component {
         <td class="precincts amt">
           {calculatePrecinctsReporting(results.reporting) + "% in"}
         </td>
-        {availableCandidates.map(key => this.renderCountyCell(key))}
+        {availableCandidates.map((key) => this.renderCountyCell(key))}
         {this.renderMarginCell(availableCandidates, winner)}
         <td> {extraMetric} </td>
       </tr>
@@ -251,7 +253,8 @@ export class CountyResults extends Component {
         class={`vote ${candidate.party.toLowerCase()} ${
           candidate.winner ? "winner" : ""
         }`}
-        key={candidate.id}>
+        key={candidate.id}
+      >
         {(candidate.percent * 100).toFixed(1) + "%"}
       </td>
     );
@@ -282,7 +285,6 @@ export class CountyResults extends Component {
 
     // First candidate should be leading/winner since we sort by votes.
     return candidates[0];
-
   }
 
   sortCountyResults() {

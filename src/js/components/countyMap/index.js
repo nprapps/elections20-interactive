@@ -41,27 +41,31 @@ export class CountyMap extends Component {
       <div
         class={"county-map" + (isChonky ? " chonky" : "")}
         data-as="map"
-        aria-hidden="true">
+        aria-hidden="true"
+      >
         <div class="container horizontal" data-as="container">
           <svg
             class="patterns"
-            style="opacity: 0; position: absolute; left: -1000px">
+            style="opacity: 0; position: absolute; left: -1000px"
+          >
             <pattern
               id="pending-0"
               class="stripes"
               width="10"
               height="10"
               patternUnits="userSpaceOnUse"
-              patternTransform="rotate(-45)">
+              patternTransform="rotate(-45)"
+            >
               <path
                 d="M5,0L5,10"
                 stroke="rgba(0, 0, 0, .2)"
-                stroke-width="4"></path>
+                stroke-width="4"
+              ></path>
             </pattern>
           </svg>
           <div class="key" data-as="key">
             <div class="key-grid">
-              {this.props.data[0].candidates.map(candidate =>
+              {this.props.data[0].candidates.map((candidate) =>
                 this.createLegend(candidate)
               )}
             </div>
@@ -69,7 +73,8 @@ export class CountyMap extends Component {
           <div
             class="map-container"
             data-as="mapContainer"
-            style="height: 65vh; width: 55.794vh;">
+            style="height: 65vh; width: 55.794vh;"
+          >
             <div class="map" data-as="map">
               <div ref={this.svgRef}></div>
             </div>
@@ -94,9 +99,9 @@ export class CountyMap extends Component {
     var width = svg.getAttribute("width") * 1;
     var height = svg.getAttribute("height") * 1;
 
-    svg.addEventListener("click", e => this.onClick(e));
-    svg.addEventListener("mousemove", e => this.onMove(e));
-    svg.addEventListener("mouseleave", e => this.onMove(e));
+    svg.addEventListener("click", (e) => this.onClick(e));
+    svg.addEventListener("mousemove", (e) => this.onMove(e));
+    svg.addEventListener("mouseleave", (e) => this.onMove(e));
     // var embedded = document.body.classList.contains("embedded");
 
     // Move this to own function called in render?
@@ -191,7 +196,8 @@ export class CountyMap extends Component {
       <div class="key-row">
         <div
           class="swatch"
-          style={`background: ${this.palette[candidate.party]};`}></div>
+          style={`background: ${this.palette[candidate.party]};`}
+        ></div>
         <div class="name">{name}</div>
       </div>
     );
@@ -241,7 +247,7 @@ export class CountyMap extends Component {
       }
 
       // TODO: get the county name back in and check language around eevp
-      var countyName = result.county.countyName.replace(/\s[a-z]/g, match =>
+      var countyName = result.county.countyName.replace(/\s[a-z]/g, (match) =>
         match.toUpperCase()
       );
       var perReporting = result.eevp ? result.eevp.toFixed(1) : 0;

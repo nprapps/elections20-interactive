@@ -1,5 +1,5 @@
-import { h, Component, Fragment } from 'preact';
-import gopher from '../gopher.js';
+import { h, Component, Fragment } from "preact";
+import gopher from "../gopher.js";
 import Strings from "strings.sheet.json";
 
 export default class KeyRaces extends Component {
@@ -7,8 +7,8 @@ export default class KeyRaces extends Component {
     super();
 
     this.showHousesIfMoreThanN = 10;
-    this.statesWithoutCountyInfo = ['AK']; // Get me passed in
-    this.state = { };
+    this.statesWithoutCountyInfo = ["AK"]; // Get me passed in
+    this.state = {};
     this.onData = this.onData.bind(this);
   }
 
@@ -24,21 +24,12 @@ export default class KeyRaces extends Component {
     this.setState({ races, grouped });
   }
 
-  // Lifecycle: Called whenever our component is created
-  async componentDidMount() {
-    gopher.watch(
-      `./data/states/${this.props.state}.json`,
-      this.onData
-    );
+  componentDidMount() {
+    gopher.watch(`./data/states/${this.props.state}.json`, this.onData);
   }
 
-  // Lifecycle: Called just before our component will be destroyed
   componentWillUnmount() {
-    // stop when not renderable
-    gopher.unwatch(
-      `./data/states/${this.props.state}.json`,
-      this.onData
-    );
+    gopher.unwatch(`./data/states/${this.props.state}.json`, this.onData);
   }
 
   render() {
@@ -47,22 +38,22 @@ export default class KeyRaces extends Component {
       return "";
     }
 
-    var offices = "PGSHI".split("").filter(o => o in grouped);
-    
-    return offices.map(o => {
+    var offices = "PGSHI".split("").filter((o) => o in grouped);
+
+    return offices.map((o) => {
       var data = grouped[o];
       var label = Strings[`office-${o}`];
       return (
         <div class="key-race-group">
           <h2>{label}</h2>
           <div class="races">
-            {data.map(r => (
+            {data.map((r) => (
               // TODO: set up the results table here instead
-            <div>{r.id}</div>
+              <div>{r.id}</div>
             ))}
           </div>
         </div>
-      )
+      );
     });
   }
 }

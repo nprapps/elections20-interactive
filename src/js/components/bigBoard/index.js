@@ -1,8 +1,8 @@
 // import { h, createProjector } from 'maquette';
-import { h, Component, Fragment } from 'preact';
-import gopher from '../gopher.js';
-import { RaceTable } from '../raceTable';
-import { determineResults, decideLabel, getMetaData } from '../util.js';
+import { h, Component, Fragment } from "preact";
+import gopher from "../gopher.js";
+import { RaceTable } from "../raceTable";
+import { determineResults, decideLabel, getMetaData } from "../util.js";
 
 export class BigBoardCore extends Component {
   constructor(props) {
@@ -57,15 +57,15 @@ export class BigBoardCore extends Component {
         </div>
         <div class="results">
           <div class="column first">
-            {results.firstCol.map(res => this.renderResultsTable(res))}
+            {results.firstCol.map((res) => this.renderResultsTable(res))}
           </div>
           <div class="column second">
-            {results.secondCol.map(res => this.renderResultsTable(res))}
+            {results.secondCol.map((res) => this.renderResultsTable(res))}
           </div>
         </div>
         <div class="footer">
           <p>
-            {' '}
+            {" "}
             Source: AP <span>as of lastupdated ET</span>
           </p>
         </div>
@@ -81,10 +81,10 @@ export class BigBoardCore extends Component {
         <Fragment>
           <h2 class="bucketed-group">
             <span>
-              {isBucketedByTime(column['category'])
-                ? column['category'] + ' ET'
-                : column['category']}
-              {column.overflow ? ' (continued) ' : ''}
+              {isBucketedByTime(column["category"])
+                ? column["category"] + " ET"
+                : column["category"]}
+              {column.overflow ? " (continued) " : ""}
             </span>
           </h2>
           <RaceTable races={races} />
@@ -99,7 +99,7 @@ export class BigBoardCore extends Component {
     if (this.props.title.match(/^House/)) {
       var bop = this.state.house_bop;
       return this.renderCongressBOP(bop);
-    } else if (this.props.title.indexOf('Senate') !== -1) {
+    } else if (this.props.title.indexOf("Senate") !== -1) {
       var bop = this.state.senate_bop;
       return this.renderCongressBOP(bop);
     }
@@ -114,49 +114,49 @@ export class BigBoardCore extends Component {
 
   renderCongressBOP(bop, chamber) {
     // TODO: refactor this to make cleaner
-    const demSeats = bop['Dem']['seats'];
-    const gopSeats = bop['GOP']['seats'];
-    const indSeats = bop['Other']['seats'];
+    const demSeats = bop["Dem"]["seats"];
+    const gopSeats = bop["GOP"]["seats"];
+    const indSeats = bop["Other"]["seats"];
 
     var netGain = 0;
-    var netGainParty = 'no-change';
-    var netGainPartyLabel = 'No change';
-    var netGainTitle = '';
-    var netGainExplanation = copyBop['pickups_' + chamber];
+    var netGainParty = "no-change";
+    var netGainPartyLabel = "No change";
+    var netGainTitle = "";
+    var netGainExplanation = copyBop["pickups_" + chamber];
 
-    if (bop['Dem']['pickups'] > 0) {
-      netGain = bop['Dem']['pickups'];
-      netGainParty = 'dem';
-      netGainPartyLabel = 'Dem.';
-      netGainTitle = copyBop['pickups_' + netGainParty];
-      netGainTitle = netGainTitle.replace('___PICKUPS___', netGain);
-    } else if (bop['GOP']['pickups'] > 0) {
-      netGain = bop['GOP']['pickups'];
-      netGainParty = 'gop';
-      netGainPartyLabel = 'GOP';
-      netGainTitle = copyBop['pickups_' + netGainParty];
-      netGainTitle = netGainTitle.replace('___PICKUPS___', netGain);
+    if (bop["Dem"]["pickups"] > 0) {
+      netGain = bop["Dem"]["pickups"];
+      netGainParty = "dem";
+      netGainPartyLabel = "Dem.";
+      netGainTitle = copyBop["pickups_" + netGainParty];
+      netGainTitle = netGainTitle.replace("___PICKUPS___", netGain);
+    } else if (bop["GOP"]["pickups"] > 0) {
+      netGain = bop["GOP"]["pickups"];
+      netGainParty = "gop";
+      netGainPartyLabel = "GOP";
+      netGainTitle = copyBop["pickups_" + netGainParty];
+      netGainTitle = netGainTitle.replace("___PICKUPS___", netGain);
     }
 
-    const chamberWinner = bop['npr_winner'];
-    const uncalledRaces = bop['uncalled_races'];
+    const chamberWinner = bop["npr_winner"];
+    const uncalledRaces = bop["uncalled_races"];
 
     return (
       <div class="leaderboard">
         <div class="results-header-group net-gain">
-          <h2 class={'party ' + netGainParty} title={netGainTitle}>
-            <label>{copyBop['pickups_gain']}</label>
+          <h2 class={"party " + netGainParty} title={netGainTitle}>
+            <label>{copyBop["pickups_gain"]}</label>
             <abbr title={netGainTitle}>
-              {netGain > 0 ? netGainPartyLabel + '+' + netGain : netGain}
+              {netGain > 0 ? netGainPartyLabel + "+" + netGain : netGain}
             </abbr>
           </h2>
         </div>
-        {this.getTopLevelHeaderGroup('Dem.', 'Dem', demSeats)}
-        {this.getTopLevelHeaderGroup('GOP.', 'GOP', gopSeats)}
-        {this.getTopLevelHeaderGroup('Ind.', 'Other', indSeats)}
+        {this.getTopLevelHeaderGroup("Dem.", "Dem", demSeats)}
+        {this.getTopLevelHeaderGroup("GOP.", "GOP", gopSeats)}
+        {this.getTopLevelHeaderGroup("Ind.", "Other", indSeats)}
         {this.getTopLevelHeaderGroup(
-          'Not Yet Called',
-          'Not-Called',
+          "Not Yet Called",
+          "Not-Called",
           uncalledRaces
         )}
       </div>
@@ -165,10 +165,10 @@ export class BigBoardCore extends Component {
 
   getTopLevelHeaderGroup(label, party, data, winner) {
     return (
-      <div class={'results-header-group ' + party.toLowerCase()}>
+      <div class={"results-header-group " + party.toLowerCase()}>
         <h2 class="party">
           <label>
-            {winner === party ? <i class="icon.icon-ok"></i> : ''}
+            {winner === party ? <i class="icon.icon-ok"></i> : ""}
             {label}
           </label>
           <abbr>{data}</abbr>
@@ -227,7 +227,7 @@ export class BigBoardCore extends Component {
         }
         return {
           firstCol: sortedCategories.slice(0, i + 1),
-          secondCol: sortedCategories.slice(i + 1, sortedCategories.length + 1),
+          secondCol: sortedCategories.slice(i + 1, sortedCategories.length + 1)
         };
       }
     }
@@ -238,13 +238,13 @@ export class BigBoardCore extends Component {
   sortBuckets(buckets) {
     return isBucketedByTime(buckets[0].category)
       ? buckets.sort(function (a, b) {
-          var aHour = parseInt(a.category.split(':')[0]);
-          var bHour = parseInt(b.category.split(':')[0]);
+          var aHour = parseInt(a.category.split(":")[0]);
+          var bHour = parseInt(b.category.split(":")[0]);
 
-          if (a.category.slice(-4) === 'a.m.') return 1;
-          if (b.category.slice(-4) === 'a.m.') return -1;
-          if (aHour === bHour && a.category.indexOf('30') !== -1) return 1;
-          if (aHour === bHour && b.category.indexOf('30') !== -1) return -1;
+          if (a.category.slice(-4) === "a.m.") return 1;
+          if (b.category.slice(-4) === "a.m.") return -1;
+          if (aHour === bHour && a.category.indexOf("30") !== -1) return 1;
+          if (aHour === bHour && b.category.indexOf("30") !== -1) return -1;
           else return aHour - bHour;
         })
       : buckets.sort((a, b) => (a.category > b.category ? 1 : -1));
@@ -252,5 +252,5 @@ export class BigBoardCore extends Component {
 }
 
 // TODO: make this a regex
-const isBucketedByTime = bucket =>
-  bucket.includes(':') && (bucket.includes('a.m.') || bucket.includes('p.m.'));
+const isBucketedByTime = (bucket) =>
+  bucket.includes(":") && (bucket.includes("a.m.") || bucket.includes("p.m."));
