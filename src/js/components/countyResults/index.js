@@ -121,7 +121,7 @@ export class CountyResults extends Component {
 
   getCountyLevelTable() {
     const sortKeys = this.sortCountyResults();
-    const availableCandidates = this.state.data[0].candidates.slice(0, 2);
+    const availableCandidates = this.state.data[0].candidates.slice(0,2).sort((a, b) => a.party < b.party ? -1 : 1);
 
     let countyLevel = "";
     countyLevel = (
@@ -159,8 +159,7 @@ export class CountyResults extends Component {
             </tr>
             {sortKeys.map((key) =>
               this.renderCountyRow(
-                this.state.data.filter((a) => a.fips == key[0])[0],
-                availableCandidates
+                this.state.data.filter((a) => a.fips == key[0])[0]
               )
             )}
           </thead>
@@ -198,7 +197,8 @@ export class CountyResults extends Component {
     );
   }
 
-  renderCountyRow(results, availableCandidates) {
+  renderCountyRow(results) {
+    var availableCandidates = results.candidates.slice(0,2).sort((a, b) => a.party < b.party ? -1 : 1);
     let extraMetric;
     if (this.state.sortMetric["census"]) {
       extraMetric = results.county.census[this.state.sortMetric["key"]];
@@ -224,7 +224,7 @@ export class CountyResults extends Component {
       extraMetric = extraMetric.toFixed(1) + this.state.sortMetric["append"];
     }
 
-    var winner = this.determineWinner(availableCandidates, results);
+    var winner = this.determineWinner(results);
 
     return (
       <tr>
@@ -232,10 +232,10 @@ export class CountyResults extends Component {
           <span class="precincts mobile">{results.county.countyName}</span>
         </td>
         <td class="precincts amt">
-          {calculatePrecinctsReporting(results.reporting) + "% in"}
+          {calculatePrecinctsReporting(results.reporting/results.precincts) + "% in"}
         </td>
         {availableCandidates.map((key) => this.renderCountyCell(key))}
-        {this.renderMarginCell(availableCandidates, winner)}
+        {this.renderMarginCell(results.candidates, winner)}
         <td> {extraMetric} </td>
       </tr>
     );
@@ -273,13 +273,14 @@ export class CountyResults extends Component {
 
   // TODO: figure out if this can be done a cleaner way
   // And test on results with values that aren't just 0
-  determineWinner(candidates, results) {
+  determineWinner(results) {
     if (parseInt(results.reporting) / parseInt(results.precincts) < 1) {
       return null;
     }
 
     // First candidate should be leading/winner since we sort by votes.
-    return candidates[0];
+    console.log(results.candidates[0], results)
+    return results.candidates[0];
   }
 
   sortCountyResults() {

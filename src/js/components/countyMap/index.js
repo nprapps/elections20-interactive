@@ -165,7 +165,8 @@ export class CountyMap extends Component {
       if (!path) continue;
       path.classList.add("painted");
       var pigment = this.palette[top.party];
-      var hitThreshold = mapData[d].eevp > 50;
+      // TODO: eevp or precints reporting here and below
+      var hitThreshold = mapData[d].reporting/mapData[d].precincts > .5;
       var paint = "#bbb";
       if (hitThreshold) {
         paint = pigment ? pigment : "#bbb";
@@ -242,7 +243,7 @@ export class CountyMap extends Component {
           prefix +
           leadingCandidate.last +
           " (" +
-          (leadingCandidate.percent || 0).toFixed(1) +
+          (leadingCandidate.percent * 100 || 0).toFixed(1) +
           "%)";
       }
 
@@ -250,16 +251,15 @@ export class CountyMap extends Component {
       var countyName = result.county.countyName.replace(/\s[a-z]/g, (match) =>
         match.toUpperCase()
       );
-      var perReporting = result.eevp ? result.eevp.toFixed(1) : 0;
+      var perReporting = result.reporting/result.precincts * 100 ;
       tooltip.innerHTML = `
         <div class="name">${countyName}</div>
         <div class="result">${candText}</div>
         <div class="reporting">${perReporting}% reporting</div>
+        <div class="pop">Pop. ${result.county.census.population.toLocaleString()}</div>
       `;
     }
-    // Add population back in
-    // <div class="pop">Pop. ${result[0].population.toLocaleString()}</div>
-
+    
     var bounds = this.svgRef.current.getBoundingClientRect();
     var x = e.clientX - bounds.left;
     var y = e.clientY - bounds.top;
