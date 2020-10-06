@@ -2,7 +2,7 @@ import { h, Component, Fragment } from 'preact';
 import gopher from '../gopher.js';
 import Strings from "strings.sheet.json";
 
-export class KeyResults extends Component {
+export default class KeyRaces extends Component {
   constructor(props) {
     super();
 

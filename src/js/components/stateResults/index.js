@@ -3,8 +3,8 @@
 // import { h, createProjector } from 'maquette';
 import { h, Component } from "preact";
 import gopher from "../gopher.js";
-import { KeyResults } from "../keyResults";
-import { HouseResults } from "../houseResults";
+import KeyRaces from "../stateViewKeyRaces";
+import HouseResults from "../stateViewHouse";
 import { StatewideResults } from "../statewide";
 import stateLookup from "states.sheet.json";
 import { getViewFromRace, toTitleCase } from "../util.js";
@@ -96,7 +96,7 @@ export class StateResults extends Component {
     let resultsElements;
 
     if (this.state.activeView === "key") {
-      return <KeyResults state={this.props.state} />;
+      return <KeyRaces state={this.props.state} />;
     } else if (this.state.activeView === "house") {
       return <HouseResults state={this.props.state} />;
     } else if (

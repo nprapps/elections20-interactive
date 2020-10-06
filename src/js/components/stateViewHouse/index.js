@@ -3,7 +3,7 @@ import gopher from "../gopher.js";
 import { determineResults, decideLabel, getMetaData } from "../util.js";
 import { RacewideTable } from "../racewideTable";
 
-export class HouseResults extends Component {
+export default class HouseResults extends Component {
   constructor(props) {
     super();
 
