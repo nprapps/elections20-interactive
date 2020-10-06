@@ -7,8 +7,7 @@ import { KeyResults } from "../keyResults";
 import { HouseResults } from "../houseResults";
 import { StatewideResults } from "../statewide";
 import stateLookup from "states.sheet.json";
-import { getViewFromRace } from "../util.js";
-import { toTitleCase } from "../../includes/helpers.js";
+import { getViewFromRace, toTitleCase } from "../util.js";
 
 // TODO: check on the use of all of these
 const STATES_WITHOUT_COUNTY_INFO = ["AK"];

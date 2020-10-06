@@ -28,9 +28,9 @@ export function determineResults(race) {
   // Handle when there're two candidates of one party, and
   // ensure that the same candidate isn't used twice
   if (!result1) {
-    result1 = race.filter(r => !areCandidatesSame(r, result2))[0];
+    result1 = race.filter(r => r.id != result2.id)[0];
   } else if (!result2) {
-    result2 = race.filter(r => !areCandidatesSame(r, result1))[0];
+    result2 = race.filter(r => r.id != result1.id)[0];
   }
 
   let sortedResults = [result1, result2];
@@ -136,5 +136,6 @@ export function getViewFromRace(race) {
 }
 
 // Helper functions
-const areCandidatesSame = (c1, c2) =>
-  c1.first === c2.first && c1.last === c2.last && c1.party === c2.party;
+
+export const toTitleCase = str => str.replace(/(\b\w)/g, g => g.toUpperCase());
+export const fmtComma = s => s.toLocaleString("en-US").replace(/\.0+$/, "");
