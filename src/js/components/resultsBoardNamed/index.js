@@ -13,7 +13,7 @@ export default function(props) {
     <table class="named results table">
       {props.races.map(r => (
         <tr>
-          <td class="state">{r.state}</td>
+          <td class="state">{r.state}{r.seatNumber ? "-" + r.seatNumber : ""}</td>
           <td class="reporting">{r.eevp}% in</td>
           {r.candidates[0].leading = true}
           {r.candidates.slice(0,2).sort((a,b) => (sortValue(a.party) - sortValue(b.party))).map(c => (

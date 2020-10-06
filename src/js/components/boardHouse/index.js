@@ -26,10 +26,15 @@ export default class BoardHouse extends Component {
   }
 
   render() {
+    var { races } = this.state;
+    if (!races) {
+      return "";
+    }
+
     return <>
       <h1>Key House Results</h1>
       <div class="placeholder">Balance of Power</div>
-      <div class="placeholder">Selected races</div>
+      <Results races={races}/>
     </>
   }
 }

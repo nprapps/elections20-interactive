@@ -16,19 +16,24 @@ export default class BoardGovernor extends Component {
 
   // Lifecycle: Called whenever our component is created
   async componentDidMount() {
-    gopher.watch(`./data/governor.json`, this.onData);
+    gopher.watch(`./data/gov.json`, this.onData);
   }
 
   // Lifecycle: Called just before our component will be destroyed
   componentWillUnmount() {
     // stop when not renderable
-    gopher.unwatch(`./data/governor.json`, this.onData);
+    gopher.unwatch(`./data/gov.json`, this.onData);
   }
 
   render() {
+    var { races } = this.state;
+    if (!races) {
+      return "";
+    }
+
     return <>
       <h1>Governor</h1>
-      <div class="placeholder">State results</div>
+      <Results races={races}/>
     </>;
   }
 }
