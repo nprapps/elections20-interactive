@@ -1,5 +1,4 @@
 import { h, Component, Fragment } from "preact";
-import { determineResults, decideLabel, getMetaData } from "../util.js";
 import gopher from "../gopher.js";
 import InactiveSenateRaces from "inactive_senate_races.sheet.json";
 
