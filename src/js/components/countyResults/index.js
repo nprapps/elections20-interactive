@@ -8,7 +8,7 @@ import {
 } from "../util.js";
 import { RacewideTable } from "../racewideTable";
 import { CountyMap } from "../countyMap";
-import { fmtComma } from "../../includes/helpers.js";
+import { fmtComma } from "../util.js";
 
 const availableMetrics = [
   {
