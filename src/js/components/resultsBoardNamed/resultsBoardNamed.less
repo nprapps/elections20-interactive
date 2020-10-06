@@ -1,3 +1,36 @@
 table.named.results {
-  // background: red;
+	font-family: 'Gotham SSm', Helvetica, Arial, sans-serif;
+	color: #666666;
+	font-size: 11px;
+	border-collapse: collapse;
+
+	td {
+		padding: 4px 6px;
+		border: 1px solid #eee;
+		border-right: 0;
+	}
+	td.state {
+		border-left: 0;
+	}
+	td.reporting {
+		border-left: 0;
+		font-size: 9px;
+		font-style: italic;
+		color: #9a9a9a;
+	}
+  td.candidate {
+  	background: green;
+  	color: white;
+
+  	.perc {
+  		float: right;
+  		margin-left: 6px;
+  	}
+  }
+  td.GOP {
+  	background: #D61F21;
+  }
+  td.Dem {
+  	background: #237BBD;
+  }
 }

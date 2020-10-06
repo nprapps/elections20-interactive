@@ -73,7 +73,6 @@ export default class App extends Component {
     return (<>
       <h1>Senate</h1>
       <div class="placeholder">Balance of Power</div>
-      <div class="placeholder">State results by rating</div>
       <BoardSenate/>
     </>);
   }

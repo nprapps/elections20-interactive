@@ -1,7 +1,6 @@
 import { h, Component, Fragment } from "preact";
 import gopher from "../gopher.js";
 import Results from "../resultsBoardNamed"
-// import Strings from "strings.sheet.json";
 
 export class BoardSenate extends Component {
   constructor(props) {
@@ -12,14 +11,7 @@ export class BoardSenate extends Component {
   }
 
   onData(races) {
-    console.log(races)
-    // var grouped = {};
-    // for (var r of races) {
-    //   if (!grouped[r.office]) grouped[r.office] = [];
-    //   grouped[r.office].push(r);
-    // }
-
-    //TODO: filter house races for "featured"
+    console.log("races",races)
 
     this.setState({ races });
   }
@@ -47,12 +39,8 @@ export class BoardSenate extends Component {
       return "";
     }
 
-    // var offices = "PGSHI".split("").filter(o => o in grouped);
-    
-    // return offices.map(o => {
-    //   var data = grouped[o];
-    //   var label = Strings[`office-${o}`];
 
-    return races.map(r => <Results race={r}/>);
+
+    return (<Results races={races}/>);
   }
 }
