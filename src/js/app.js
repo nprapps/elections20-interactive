@@ -109,7 +109,6 @@ export default class App extends Component {
         <CountyResults state={currentState} raceid={state.params.race}/>
       </div>
       <div class="placeholder">Demographic/results dataviz</div>
-      <div class="placeholder">County table</div>
     </>)
   }
 
@@ -118,7 +117,6 @@ export default class App extends Component {
   }
 
   render(props, state) {
-    console.log(props, state);
     if (!this[state.route]) {
       return "";
     }

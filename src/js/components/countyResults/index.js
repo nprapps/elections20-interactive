@@ -8,7 +8,7 @@ import {
 } from "../util.js";
 import { RacewideTable } from "../racewideTable";
 import { CountyMap } from "../countyMap";
-var fmtComma = n => n.toLocaleString();
+import { fmtComma } from "../../includes/helpers.js";
 
 const availableMetrics = [
   {
@@ -65,14 +65,9 @@ export class CountyResults extends Component {
   constructor(props) {
     super();
 
-    // TODO: Split this out into a map/table reusable component
-    this.statesWithoutCountyInfo = ["AK"]; // Get me passed in
-
     let sortMetric = availableMetrics[0];
 
-    let dataFile = `/data/counties/${props.state}-${props.raceid}.json`;
-
-    this.state = { dataFile, activeView: props.view, sortMetric };
+    this.state = { activeView: props.view, sortMetric };
     this.onCountyData = this.onCountyData.bind(this);
     this.onStateData = this.onStateData.bind(this);
   }
@@ -115,29 +110,16 @@ export class CountyResults extends Component {
     // Render a county-level table below
 
     // TODO: get table working if we decide to use it.
-    // var countyLevel = this.getCountyLevelTable();
-    var race = "";
+    var countyLevel = this.getCountyLevelTable();
+
     return (
       <div class="results-elements">
-        <h1>County results for {race}</h1>
-        <h2>Statewide Results</h2>
-        {
-          <RacewideTable
-            data={
-              this.state.stateData.filter(r => r.office == this.state.office)[0]
-            }
-            className={
-              this.state.activeView === "senate"
-                ? "results-senate"
-                : "results-gubernatorial"
-            }
-          />
-        }
+        <h1>County results</h1>
         <CountyMap
           state={this.props.state.toUpperCase()}
           data={this.state.data}
         />
-        {/*{countyLevel}*/}
+        {countyLevel}
       </div>
     );
   }
@@ -181,7 +163,7 @@ export class CountyResults extends Component {
             </tr>
             {sortKeys.map(key =>
               this.renderCountyRow(
-                this.state.data.filter(a => a.fips == key),
+                this.state.data.filter(a => a.fips == key[0])[0],
                 availableCandidates
               )
             )}
@@ -211,30 +193,23 @@ export class CountyResults extends Component {
 
   renderCandidateTH(candidate) {
     return (
-      <th class="vote" key={candidate}>
+      <th class="vote" key={candidate.party}>
         <div>
-          <span>{candidate}</span>
+          <span>{candidate.last}</span>
         </div>
       </th>
     );
   }
 
   renderCountyRow(results, availableCandidates) {
-    const keyedResults = availableCandidates.reduce((obj, lastName) => {
-      obj[lastName] = results.find(c => c.last === lastName);
-      return obj;
-    }, {});
-
-    const winner = this.determineWinner(keyedResults);
-
     let extraMetric;
     if (this.state.sortMetric["census"]) {
-      extraMetric = this.state.data.census[this.state.sortMetric["key"]];
+      extraMetric = results.county.census[this.state.sortMetric["key"]];
     } else {
-      extraMetric = this.state.extraData[results[0].fipscode][
-        this.state.sortMetric["key"]
-      ];
+      // TODO: get the rest of these working, if we decide to use them
+      extraMetric = results.county[this.state.sortMetric["key"]];
     }
+    extraMetric = parseInt(extraMetric);
 
     if (this.state.sortMetric["comma_filter"]) {
       extraMetric = fmtComma(extraMetric);
@@ -252,42 +227,37 @@ export class CountyResults extends Component {
       extraMetric = extraMetric.toFixed(1) + this.state.sortMetric["append"];
     }
 
-    // Correct issue where New England counties are all-uppercase
-    // This will be fixed eventually upstream in Elex, as it's a bug therein
-    // https://github.com/newsdev/elex/pull/337
+    var winner = this.determineWinner(availableCandidates, results);
+
     return (
       <tr>
         <td class="county">
-          <span class="precincts mobile">{results[0].reportingunitname}</span>
+          <span class="precincts mobile">{results.county.countyName}</span>
         </td>
         <td class="precincts amt">
-          {calculatePrecinctsReporting(results[0].precinctsreportingpct) +
-            "% in"}
+          {calculatePrecinctsReporting(results.reporting) + "% in"}
         </td>
-        {availableCandidates.map(key =>
-          this.renderCountyCell(keyedResults[key], winner)
-        )}
-        {this.renderMarginCell(keyedResults, winner)}
+        {availableCandidates.map(key => this.renderCountyCell(key))}
+        {this.renderMarginCell(availableCandidates, winner)}
+        <td> {extraMetric} </td>
       </tr>
     );
-    //{calculateVoteMargin(keyedResults)}
-    //{renderComparison(extraMetric)}
   }
 
-  renderCountyCell(result, winner) {
+  renderCountyCell(candidate) {
     // TODO: add in independent class
     return (
       <td
-        class={`vote ${result.party.toLowerCase()} ${
-          winner === result ? "winner" : ""
+        class={`vote ${candidate.party.toLowerCase()} ${
+          candidate.winner ? "winner" : ""
         }`}
-        key={result.candidateid}>
-        {(result.votepct * 100).toFixed(1) + "%"}
+        key={candidate.id}>
+        {(candidate.percent * 100).toFixed(1) + "%"}
       </td>
     );
   }
 
-  renderMarginCell(result, winner) {
+  renderMarginCell(candidates, winner) {
     var party;
     if (winner) {
       party = ["Dem", "GOP"].includes(winner.party)
@@ -296,27 +266,23 @@ export class CountyResults extends Component {
     }
 
     var cell = (
-      <td class={`vote margin ${party}`}>{this.calculateVoteMargin(result)}</td>
+      <td class={`vote margin ${party}`}>
+        {this.calculateVoteMargin(candidates, winner)}
+      </td>
     );
     return cell;
   }
 
-  determineWinner(keyedResults) {
-    let winner = null;
-    let winningPct = 0;
-    for (var key in keyedResults) {
-      let result = keyedResults[key];
-
-      if (result.precinctsreportingpct < 1) {
-        return winner;
-      }
-
-      if (result.votepct > winningPct) {
-        winningPct = result.votepct;
-        winner = result;
-      }
+  // TODO: figure out if this can be done a cleaner way
+  // And test on results with values that aren't just 0
+  determineWinner(candidates, results) {
+    if (parseInt(results.reporting) / parseInt(results.precincts) < 1) {
+      return null;
     }
-    return winner;
+
+    // First candidate should be leading/winner since we sort by votes.
+    return candidates[0];
+
   }
 
   sortCountyResults() {
@@ -360,34 +326,14 @@ export class CountyResults extends Component {
     return values;
   }
 
-  calculateVoteMargin(keyedResults) {
-    let winnerVotePct = 0;
-    let winner = null;
-    for (let key in keyedResults) {
-      let result = keyedResults[key];
-
-      if (result.votepct > winnerVotePct) {
-        winnerVotePct = result.votepct;
-        winner = result;
-      }
-    }
-
-    if (!winner) {
-      return "";
-    }
-    let winnerMargin = 100;
-    for (let key in keyedResults) {
-      let result = keyedResults[key];
-
-      if (winner.votepct - result.votepct < winnerMargin && winner !== result) {
-        winnerMargin = winner.votepct - result.votepct;
-      }
-    }
+  calculateVoteMargin(results) {
+    // TODO: re-do what to do here if there isn't someone ahead?
+    var winnerMargin = results[0].percent - results[1].percent;
 
     let prefix;
-    if (winner.party === "Dem") {
+    if (results[0].party === "Dem") {
       prefix = "D";
-    } else if (winner.party === "GOP") {
+    } else if (results[0].party === "GOP") {
       prefix = "R";
     } else {
       prefix = "I";

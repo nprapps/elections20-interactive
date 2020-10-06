@@ -7,13 +7,13 @@ import {
   calculatePrecinctsReporting,
 } from "../util.js";
 import { RacewideTable } from "../racewideTable";
-import { CountyMap } from "../countyMap";
+import { CountyResults } from '../countyResults';
+
+const STATES_WITHOUT_COUNTY_INFO = ["AK"];
 
 export class StatewideResults extends Component {
   constructor(props) {
     super();
-
-    this.statesWithoutCountyInfo = ["AK"];
 
     this.state = { activeView: props.view };
     this.onData = this.onData.bind(this);
@@ -56,19 +56,16 @@ export class StatewideResults extends Component {
   getResultsTable(race) {
     // TODO: add better styles to this/rearrange.
     // Don't add link to county results at all for Alaska
-    var seeCounty = "";
-    if (!this.statesWithoutCountyInfo.includes(this.props.state)) {
-      seeCounty = (
-        <div>
-          <a href={`./#/states/${this.props.state}/detail/${race.id}`}>
-            See county results{" "}
-          </a>
+    var county = "";
+    if (!STATES_WITHOUT_COUNTY_INFO.includes(this.props.state)) {
+      county = (
+        <div id="county-results">
+          <CountyResults state={this.props.state} raceid={race.id} />
         </div>
       );
     }
     return (
       <Fragment>
-        {seeCounty}
         <RacewideTable
           data={race}
           className={
@@ -77,6 +74,7 @@ export class StatewideResults extends Component {
               : "results-gubernatorial"
           }
         />
+        {county}
       </Fragment>
     );
   }
