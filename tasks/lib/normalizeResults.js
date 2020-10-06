@@ -137,6 +137,8 @@ module.exports = function(resultArray, overrides = {}) {
           level
         }
 
+        var sheetMetadata = overrides.house[raceMeta.id] || overrides.senate[raceMeta.id];
+        unitMeta.previousParty = sheetMetadata ? sheetMetadata.party : null;
         unitMeta.updated = Date.parse(unitMeta.updated);
 
         var call = overrides.calls[raceMeta.id];

@@ -1,6 +1,7 @@
 import { h, Component, Fragment } from "preact";
 import gopher from "../gopher.js";
 import Results from "../resultsBoardNamed";
+import { BalanceOfPower } from "../BalanceOfPower";
 
 export class BoardSenate extends Component {
   constructor(props) {
@@ -30,7 +31,12 @@ export class BoardSenate extends Component {
     if (!races) {
       return "";
     }
-    
-    return (<Results races={races}/>);
+
+    return (
+      <Fragment>
+        <BalanceOfPower json="senate.json" />
+        <Results races={races}/>
+      </Fragment>
+    );
   }
 }
