@@ -4,43 +4,28 @@ import { BigBoardCore } from "./components/bigBoard";
 import { GetCaughtUp } from "./components/getCaughtUp";
 import { StateResults } from "./components/stateResults";
 import { CountyResults } from "./components/countyResults";
-import { BoardSenate } from "./components/boardSenate";
+import BoardSenate from "./components/boardSenate";
+import BoardHouse from "./components/boardHouse";
+import BoardPresident from "./components/boardPresident";
+import BoardGovernor from "./components/boardGovernor";
 
 import Scrapple from "@twilburn/scrapple";
-
-var metaData = {
-  senate: {
-    json: "senate-national.json",
-    title: "Senate"
-  },
-  house: {
-    json: "house-national.json",
-    title: "House"
-  },
-  ballot: {
-    json: "ballot-measures-national.json",
-    title: "Ballot"
-  },
-  president: {
-    json: "presidential-big-board.json",
-    title: "President"
-  }
-};
 
 export default class App extends Component {
   constructor() {
     super();
     this.state = {
       route: "loading",
-      params: {}
+      params: {},
+      View: null
     };
 
     this.router = new Scrapple();
     this.router.onhit = () => {};
-    this.addRoute(["/", "/president"], "renderPresident");
-    this.addRoute("/house", "renderHouse");
-    this.addRoute("/senate", "renderSenate");
-    this.addRoute("/governor", "renderGov");
+    this.addView(["/", "/president"], BoardPresident);
+    this.addView("/house", BoardHouse);
+    this.addView("/governor", BoardGovernor);
+    this.addView("/senate", BoardSenate);
     this.addRoute("/ballots", "renderBallots");
     this.addRoute("/states/:state", "renderState");
     this.addRoute("/states/:state/detail/:race", "renderCounty");
@@ -53,41 +38,10 @@ export default class App extends Component {
     });
   }
 
-  renderPresident(props, state) {
-    return (
-      <>
-        <h1>President</h1>
-        <div class="placeholder">Map or dataviz</div>
-        <div class="placeholder">Results by state</div>
-      </>
-    );
-  }
-
-  renderHouse(props, state) {
-    return (
-      <>
-        <h1>Key House Results</h1>
-        <div class="placeholder">Balance of Power</div>
-        <div class="placeholder">Selected races</div>
-      </>
-    );
-  }
-
-  renderSenate(props, state) {
-    return (<>
-      <h1>Senate</h1>
-      <div class="placeholder">Balance of Power</div>
-      <BoardSenate/>
-    </>);
-  }
-
-  renderGov(props, state) {
-    return (
-      <>
-        <h1>Governor</h1>
-        <div class="placeholder">State results</div>
-      </>
-    );
+  addView(path, View) {
+    this.router.add(path, ({ params }) => {
+      this.setState({ route: null, params, View });
+    });
   }
 
   renderBallots(props, state) {
@@ -128,9 +82,19 @@ export default class App extends Component {
   }
 
   render(props, state) {
-    if (!this[state.route]) {
-      return "";
+    // use a View component
+    if (!state.route && state.View) {
+      console.log(`Loaded page component: ${state.View.name}`);
+      return <state.View {...state.params} />
     }
-    return this[state.route](props, state);
+
+    // otherwise call a route method
+    if (this[state.route]) {
+      console.log(`Loading local view method: ${state.route}()`);
+      return this[state.route](props, state);
+    }
+
+    // otherwise fall back to nothing
+    return "";
   }
 }

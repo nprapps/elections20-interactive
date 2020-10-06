@@ -1,9 +1,8 @@
 import { h, Component, Fragment } from "preact";
 import gopher from "../gopher.js";
 import Results from "../resultsBoardNamed";
-import { BalanceOfPower } from "../BalanceOfPower";
 
-export default class BoardSenate extends Component {
+export default class BoardPresident extends Component {
   constructor(props) {
     super();
 
@@ -17,27 +16,20 @@ export default class BoardSenate extends Component {
 
   // Lifecycle: Called whenever our component is created
   async componentDidMount() {
-    gopher.watch(`./data/senate.json`, this.onData);
+    gopher.watch(`./data/president.json`, this.onData);
   }
 
   // Lifecycle: Called just before our component will be destroyed
   componentWillUnmount() {
     // stop when not renderable
-    gopher.unwatch(`./data/senate.json`, this.onData);
+    gopher.unwatch(`./data/president.json`, this.onData);
   }
 
   render() {
-    var { races } = this.state;
-    if (!races) {
-      return "";
-    }
-
-    return (
-      <Fragment>
-        <h1>Senate</h1>
-        <BalanceOfPower race="senate" />
-        <Results races={races}/>
-      </Fragment>
-    );
+    return <>
+      <h1>President</h1>
+      <div class="placeholder">Map or dataviz</div>
+      <div class="placeholder">Results by state</div>
+    </>
   }
 }
