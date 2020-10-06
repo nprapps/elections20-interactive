@@ -1,6 +1,5 @@
 import { h, Component, Fragment } from "preact";
 import gopher from "../gopher.js";
-import { determineResults, decideLabel, getMetaData } from "../util.js";
 import { RacewideTable } from "../racewideTable";
 
 export default class HouseResults extends Component {

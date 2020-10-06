@@ -34,7 +34,7 @@ export class BoardSenate extends Component {
 
     return (
       <Fragment>
-        <BalanceOfPower json="senate.json" />
+        <BalanceOfPower race="senate" />
         <Results races={races}/>
       </Fragment>
     );
