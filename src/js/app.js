@@ -1,9 +1,10 @@
 import { Component, h, Fragment } from "preact";
 
-import { BigBoardCore } from './components/bigBoard';
-import { GetCaughtUp } from './components/getCaughtUp';
-import { StateResults } from './components/stateResults';
-import { CountyResults } from './components/countyResults';
+import { BigBoardCore } from "./components/bigBoard";
+import { GetCaughtUp } from "./components/getCaughtUp";
+import { StateResults } from "./components/stateResults";
+import { CountyResults } from "./components/countyResults";
+import { BoardSenate } from "./components/boardSenate"
 
 import Scrapple from "@twilburn/scrapple";
 
@@ -73,6 +74,7 @@ export default class App extends Component {
       <h1>Senate</h1>
       <div class="placeholder">Balance of Power</div>
       <div class="placeholder">State results by rating</div>
+      <BoardSenate/>
     </>);
   }
 

@@ -1,6 +1,6 @@
 import { h, Fragment } from "preact";
 
-import "./resultsNamed.less";
+import "./resultsBoardNamed.less";
 
 export default function(props) {
   console.log("PROPS", props);
