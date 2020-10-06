@@ -8,6 +8,7 @@ table.named.results {
 		padding: 4px 6px;
 		border: 1px solid #eee;
 		border-right: 0;
+		border-left: 0;
 	}
 	td.state {
 		border-left: 0;
@@ -19,18 +20,28 @@ table.named.results {
 		color: #9a9a9a;
 	}
   td.candidate {
-  	background: green;
-  	color: white;
-
   	.perc {
   		float: right;
   		margin-left: 6px;
   	}
   }
-  td.GOP {
+  td.leading {
+  	background: #D7F0E2;
+  }
+  td.winner {
+  	color: white;
+  	background: #15B16E;
+  }
+  td.GOP.leading {
+  	background: #fad5d4;
+  }
+  td.Dem.leading {
+  	background: #d8eaf9;
+  }
+  td.GOP.winner {
   	background: #D61F21;
   }
-  td.Dem {
+  td.Dem.winner {
   	background: #237BBD;
   }
 }
