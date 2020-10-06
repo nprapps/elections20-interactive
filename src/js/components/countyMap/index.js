@@ -41,26 +41,22 @@ export class CountyMap extends Component {
       <div
         class={"county-map" + (isChonky ? " chonky" : "")}
         data-as="map"
-        aria-hidden="true"
-      >
+        aria-hidden="true">
         <div class="container horizontal" data-as="container">
           <svg
             class="patterns"
-            style="opacity: 0; position: absolute; left: -1000px"
-          >
+            style="opacity: 0; position: absolute; left: -1000px">
             <pattern
               id="pending-0"
               class="stripes"
               width="10"
               height="10"
               patternUnits="userSpaceOnUse"
-              patternTransform="rotate(-45)"
-            >
+              patternTransform="rotate(-45)">
               <path
                 d="M5,0L5,10"
                 stroke="rgba(0, 0, 0, .2)"
-                stroke-width="4"
-              ></path>
+                stroke-width="4"></path>
             </pattern>
           </svg>
           <div class="key" data-as="key">
@@ -73,8 +69,7 @@ export class CountyMap extends Component {
           <div
             class="map-container"
             data-as="mapContainer"
-            style="height: 65vh; width: 55.794vh;"
-          >
+            style="height: 65vh; width: 55.794vh;">
             <div class="map" data-as="map">
               <div ref={this.svgRef}></div>
             </div>
@@ -160,7 +155,6 @@ export class CountyMap extends Component {
       var candidates = mapData[d].candidates;
       var [top] = candidates.sort((a, b) => b.percent - a.percent);
       if (!top.votes) continue;
-      
 
       var path = this.svg.querySelector(`[id="fips-${fips}"]`);
       if (!path) continue;
@@ -197,8 +191,7 @@ export class CountyMap extends Component {
       <div class="key-row">
         <div
           class="swatch"
-          style={`background: ${this.palette[candidate.party]};`}
-        ></div>
+          style={`background: ${this.palette[candidate.party]};`}></div>
         <div class="name">{name}</div>
       </div>
     );
@@ -248,16 +241,14 @@ export class CountyMap extends Component {
       }
 
       // TODO: get the county name back in and check language around eevp
-      var countyName = result.county.countyName.replace(
-        /\s[a-z]/g,
-        match => match.toUpperCase()
+      var countyName = result.county.countyName.replace(/\s[a-z]/g, match =>
+        match.toUpperCase()
       );
+      var perReporting = result.eevp ? result.eevp.toFixed(1) : 0;
       tooltip.innerHTML = `
         <div class="name">${countyName}</div>
         <div class="result">${candText}</div>
-        <div class="reporting">${result.eevp.toFixed(
-          1
-        )}% reporting</div>
+        <div class="reporting">${perReporting}% reporting</div>
       `;
     }
     // Add population back in
