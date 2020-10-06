@@ -1,11 +1,6 @@
 import { h, Component, Fragment } from "preact";
 import gopher from "../gopher.js";
-import {
-  determineResults,
-  decideLabel,
-  getMetaData,
-  calculatePrecinctsReporting
-} from "../util.js";
+import { calculatePrecinctsReporting } from "../util.js";
 import { RacewideTable } from "../racewideTable";
 import { CountyMap } from "../countyMap";
 import { fmtComma } from "../util.js";

@@ -1,48 +1,15 @@
 // TODO: make all of this easier to re-use in smaller chunks
 // TODO: clean up shareable parts of getCleanedData and bring in here?
-export function determineResults(race) {
-  if (race.length === 1) {
-    return { result1: race[0], uncontested: true };
-  }
-
-  let result1;
-  let result2;
-
-  // TODO: check switching away from loopArr didn't break anything
-  for (var i = 0; i < race.length; i++) {
-    var result = race[i];
-    if ((result.party === "Dem" || result.party === "Yes") && !result1) {
-      result1 = result;
-    } else if ((result.party === "GOP" || result.party === "No") && !result2) {
-      result2 = result;
-    }
-
-    if (result1 && result2) {
-      break;
+export function getLeadingCandidate(candidates) {
+  var leading = null;
+  var votes = 0;
+  for (var c of candidates) {
+    if (c.votes > votes) {
+      leading = c.id;
+      votes = c.votes;
     }
   }
-
-  // Handle when there're two candidates of one party, and
-  // ensure that the same candidate isn't used twice
-  if (!result1) {
-    result1 = race.filter((r) => r.id != result2.id)[0];
-  } else if (!result2) {
-    result2 = race.filter((r) => r.id != result1.id)[0];
-  }
-
-  let sortedResults = [result1, result2];
-
-  // If both candidates are GOP, put the leader on the right side
-  // Otherwise, put the leader on the left side.
-  if (result1.party === result2.party) {
-    sortedResults = sortedResults.sort(function (a, b) {
-      return sortedResults[0].party === "GOP"
-        ? a.votepct - b.votepct
-        : b.votepct - a.votepct;
-    });
-  }
-
-  return { result1: sortedResults[0], result2: sortedResults[1] };
+  return leading;
 }
 
 export function decideLabel(race) {
@@ -81,40 +48,6 @@ export function decideLabel(race) {
   } else {
     return race.statepostal;
   }
-}
-
-export function getMetaData(results) {
-  const result1 = results.result1;
-  const result2 = results.result2;
-
-  let winningResult;
-  if (result1.npr_winner || results.uncontested) {
-    winningResult = result1;
-  } else if (result2.npr_winner) {
-    winningResult = result2;
-  }
-
-  if (winningResult) {
-    var called = true;
-  }
-
-  if (
-    winningResult &&
-    result1.meta.current_party &&
-    winningResult.party !== result1.meta.current_party
-  ) {
-    var change = true;
-  }
-
-  if (
-    called ||
-    result1.votecount > 0 ||
-    (!results.uncontested && result2.votecount > 0)
-  ) {
-    var reporting = true;
-  }
-
-  return { winningResult, called, reporting, change };
 }
 
 export function calculatePrecinctsReporting(pct) {
