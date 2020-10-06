@@ -11,12 +11,9 @@ export function determineResults(race) {
   // TODO: check switching away from loopArr didn't break anything
   for (var i = 0; i < race.length; i++) {
     var result = race[i];
-    if ((result.party === 'Dem' || result.party === 'Yes') && !result1) {
+    if ((result.party === "Dem" || result.party === "Yes") && !result1) {
       result1 = result;
-    } else if (
-      (result.party === 'GOP' || result.party === 'No') &&
-      !result2
-    ) {
+    } else if ((result.party === "GOP" || result.party === "No") && !result2) {
       result2 = result;
     }
 
@@ -28,9 +25,9 @@ export function determineResults(race) {
   // Handle when there're two candidates of one party, and
   // ensure that the same candidate isn't used twice
   if (!result1) {
-    result1 = race.filter(r => r.id != result2.id)[0];
+    result1 = race.filter((r) => r.id != result2.id)[0];
   } else if (!result2) {
-    result2 = race.filter(r => r.id != result1.id)[0];
+    result2 = race.filter((r) => r.id != result1.id)[0];
   }
 
   let sortedResults = [result1, result2];
@@ -39,7 +36,7 @@ export function determineResults(race) {
   // Otherwise, put the leader on the left side.
   if (result1.party === result2.party) {
     sortedResults = sortedResults.sort(function (a, b) {
-      return sortedResults[0].party === 'GOP'
+      return sortedResults[0].party === "GOP"
         ? a.votepct - b.votepct
         : b.votepct - a.votepct;
     });
@@ -49,17 +46,17 @@ export function determineResults(race) {
 }
 
 export function decideLabel(race) {
-  if (race.officename === 'U.S. House') {
-    return race.statepostal + '-' + race.seatnum;
+  if (race.officename === "U.S. House") {
+    return race.statepostal + "-" + race.seatnum;
   } else if (
-    race.officename === 'President' &&
-    race.level === 'district' &&
-    race.reportingunitname !== 'At Large'
+    race.officename === "President" &&
+    race.level === "district" &&
+    race.reportingunitname !== "At Large"
   ) {
-    return race.statepostal + '-' + race.reportingunitname.slice('-1');
+    return race.statepostal + "-" + race.reportingunitname.slice("-1");
   } else if (race.is_ballot_measure) {
     // The AP provides ballot measure names in inconsistent formats
-    const splitName = race.seatname.split(' - ');
+    const splitName = race.seatname.split(" - ");
     const isHyphenatedMeasureName = Boolean(
       race.seatname.match(/^[A-Z\d]+-[A-Z\d]+ /)
     );
@@ -69,8 +66,8 @@ export function decideLabel(race) {
       return `${race.statepostal}: ${race.seatname}`;
     } else if (splitName.length === 1 && isHyphenatedMeasureName) {
       // Sometimes there's a compound identifier, such as '18-1 Legalize Marijuana'
-      const [number, ...identifierParts] = race.seatname.split(' ');
-      const identifier = identifierParts.join(' ');
+      const [number, ...identifierParts] = race.seatname.split(" ");
+      const identifier = identifierParts.join(" ");
       return `${race.statepostal}-${number}: ${identifier}`;
     } else if (splitName.length === 2) {
       // Usually, there's an identifier with a ` - ` delimiter, eg:
@@ -78,7 +75,7 @@ export function decideLabel(race) {
       // '1464 - Campaign Finance'
       return `${race.statepostal}-${splitName[0]}: ${splitName[1]}`;
     } else {
-      console.error('Cannot properly parse the ballot measure name');
+      console.error("Cannot properly parse the ballot measure name");
       return `${race.statepostal} - ${race.seatname}`;
     }
   } else {
@@ -122,20 +119,22 @@ export function getMetaData(results) {
 
 export function calculatePrecinctsReporting(pct) {
   if (pct > 0 && pct < 0.005) {
-    return '<1';
+    return "<1";
   } else if (pct > 0.995 && pct < 1) {
-    return '>99';
+    return ">99";
   } else {
     return Math.round(pct * 100);
   }
 }
 
+// TODO: get this from strings.sheet.json instead
 export function getViewFromRace(race) {
-  var viewMappings = {"P": "president", "S": "senate", "H": "house", "G": "governor"};
-  return viewMappings[race]
+  var viewMappings = { P: "president", S: "senate", H: "house", G: "governor" };
+  return viewMappings[race];
 }
 
 // Helper functions
 
-export const toTitleCase = str => str.replace(/(\b\w)/g, g => g.toUpperCase());
-export const fmtComma = s => s.toLocaleString("en-US").replace(/\.0+$/, "");
+export const toTitleCase = (str) =>
+  str.replace(/(\b\w)/g, (g) => g.toUpperCase());
+export const fmtComma = (s) => s.toLocaleString("en-US").replace(/\.0+$/, "");
