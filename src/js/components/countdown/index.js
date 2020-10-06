@@ -1,3 +1,10 @@
+/*
+ THIS FILE IS DEPRECATED
+ We probably won't use this component in the final presentation.
+ If you find yourself using it, remove this warning and talk to
+ the team about it.
+*/
+
 import gopher from "../gopher.js";
 import { Component, h } from "preact";
 

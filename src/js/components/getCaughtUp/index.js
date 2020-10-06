@@ -1,4 +1,10 @@
-// Polyfills that aren't covered by `babel-preset-env`
+/*
+ THIS FILE IS DEPRECATED
+ We probably won't use this component in the final presentation.
+ If you find yourself using it, remove this warning and talk to
+ the team about it.
+*/
+
 
 // import { h, createProjector } from 'maquette';
 import { h, Component } from "preact";
