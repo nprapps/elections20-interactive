@@ -5,7 +5,6 @@ import InactiveSenateRaces from "inactive_senate_races.sheet.json";
 export class BalanceOfPower extends Component {
   constructor(props) {
     super();
-    console.log(InactiveSenateRaces);
     this.onData = this.onData.bind(this);
   }
 
@@ -29,46 +28,46 @@ export class BalanceOfPower extends Component {
       return;
     }
     var results = this.getCongressBOP(this.state.data);
-    // TODO: add in last updated to footer and senate footnote
-
+    
+    // TODO: add in check icon
     return (
-      <div class={"leaderboard " + this.props.race}>
+      <div class="leaderboard">
+        <div class="results-header-group net-gain">
+          <h2 class={"party " + results.netGainParty.toLowerCase()} title="">
+            <label class={results.netGainParty == "none" ? "hidden" : ""}>
+              Net change
+            </label>
+            <abbr title="">
+              {results.netGainParty != "none"
+                ? results.netGainParty + " +" + results.netGain
+                : "No change"}
+            </abbr>
+          </h2>
+        </div>
         <div class="results-header-group dem">
-          <h2 class="party">Dem.: {results.Dem.total} </h2>
-          <p class="detail">
-            Net gains: 
-            <span class="change party">
-              { (results.Dem.gains > 0 ? '+' : '') + results.Dem.gains}
-            </span>
-            <br />
-            Need: <span class="needed party">{results.Dem.need}</span>
-          </p>
+          <h2 class="party">
+            <label>Dem.</label>
+            <abbr>{results.Dem.total}</abbr>
+          </h2>
         </div>
         <div class="results-header-group gop">
-          <h2 class="party">GOP: {results.GOP.total} </h2>
-          <p class="detail">
-            Net gains: 
-            <span class="change party">
-              {(results.GOP.gains > 0 ? '+' : '') + results.GOP.gains}
-            </span>
-            <br />
-            Need: <span class="needed party">{results.GOP.need}</span>
-          </p>
+          <h2 class="party">
+            <label>
+              <i class="icon icon-ok"></i>GOP
+            </label>
+            <abbr>{results.GOP.total}</abbr>
+          </h2>
         </div>
         <div class="results-header-group other">
-          <h2 class="party">Ind.: {results.Ind.total}</h2>
-          <p class="detail">
-            Net gains:
-            <span class="change party">
-              {(results.Ind.gains > 0 ? '+' : '') + results.Ind.gains}
-            </span>
-          </p>
+          <h2 class="party">
+            <label>Ind.</label>
+            <abbr>{results.Ind.total}</abbr>
+          </h2>
         </div>
         <div class="results-header-group not-called">
           <h2 class="party">
-            Not Yet
-            <br />
-            Called: {results.notCalled}
+            <label>Not Yet Called</label>
+            <abbr>{results.notCalled}</abbr>
           </h2>
         </div>
       </div>
@@ -76,19 +75,19 @@ export class BalanceOfPower extends Component {
   }
 
   getCongressBOP(data) {
-    // TODO: Do we need to handle uncontested elections?
+    // TODO: Do we need to handle uncontested elections? Do they have winner marked?
     // Hardcoded # of seats needed for majority in Senate/house
-    var isSenate = this.props.race == 'senate';
+    var isSenate = this.props.race == "senate";
     var seatsNeeded = isSenate ? 51 : 218;
 
-    var inactiveGOP = isSenate ? parseInt(InactiveSenateRaces['GOP'].numSeats) : 0;
-    var inactiveDem = isSenate ? parseInt(InactiveSenateRaces['Dem'].numSeats) : 0;
-    var inactiveInd = isSenate ? parseInt(InactiveSenateRaces['Ind'].numSeats) : 0;
+    var inactiveGOP = isSenate ? parseInt(InactiveSenateRaces["GOP"]) : 0;
+    var inactiveDem = isSenate ? parseInt(InactiveSenateRaces["Dem"]) : 0;
+    var inactiveInd = isSenate ? parseInt(InactiveSenateRaces["Other"]) : 0;
 
     var results = {
-      GOP: { total: inactiveGOP, previous: inactiveGOP, gains: 0 },
-      Dem: { total: inactiveDem, previous: inactiveDem, gains: 0 },
-      Ind: { total: inactiveInd, previous: inactiveInd, gains: 0 },
+      GOP: { total: inactiveGOP, gains: 0 },
+      Dem: { total: inactiveDem, gains: 0 },
+      Ind: { total: inactiveInd, gains: 0 },
     };
 
     var notCalled = 0;
@@ -103,15 +102,18 @@ export class BalanceOfPower extends Component {
       } else {
         notCalled += 1;
       }
-      results[race.previousParty].previous += 1;
     }
 
-    for (var key in results) {
-      results[key].need = Math.max(seatsNeeded - results[key].previous, 0);
+    // TODO: check how this is calculated/that this holds up
+    // Handle Ind?
+    results.netGainParty = "none";
+    if (results.GOP.gains > results.Dem.gains) {
+      results.netGainParty = "GOP";
+    } else if (results.Dem.gains > results.GOP.gains) {
+      results.netGainParty = "Dem";
     }
-
+    results.netGain = Math.abs(results.GOP.gains) + Math.abs(results.Dem.gains);
     results.notCalled = notCalled;
-    console.log(results)
     return results;
   }
 
