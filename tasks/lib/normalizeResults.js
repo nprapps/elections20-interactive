@@ -99,7 +99,8 @@ var mergeOthers = function(candidates, raceID) {
     id: `other-${raceID}`,
     votes: 0,
     avotes: 0,
-    electoral: 0
+    electoral: 0,
+    count: remaining.length
   }
   for (var c of remaining) {
     other.votes += c.votes || 0;
@@ -177,6 +178,7 @@ module.exports = function(resultArray, overrides = {}) {
           ballot = mergeOthers(ballot, raceMeta.id);
         }
 
+        var winners = new Set();
         ballot.forEach(function(c) {
           // assign percentages
           c.percent = Math.round((c.votes / total) * ROUNDING) / ROUNDING;
@@ -187,7 +189,13 @@ module.exports = function(resultArray, overrides = {}) {
               delete c.winner;
             }
           }
+          if (c.winner) winners.add(c.winner);
         });
+
+        // set the winner and runoff flags
+        unitMeta.called = winners.has("X");
+        unitMeta.runoff = winners.has("R");
+
         unitMeta.candidates = ballot;
         output.push(unitMeta);
       }
