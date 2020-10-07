@@ -1,5 +1,6 @@
 import { h, Component, Fragment } from "preact";
 import gopher from "../gopher.js";
+import { calculatePrecinctsReporting } from "../util.js";
 import "./results.less";
 
 export default function ResultsTableCandidates(props) {
@@ -20,7 +21,7 @@ export default function ResultsTableCandidates(props) {
     <div class="results-table statewide">
       <div class="results-header">
         {seatName ? <caption> {seatName}</caption> : ""}
-        <span class="reporting">{props.data.eevp || 0} % in</span>
+        <span class="reporting">{props.data.eevp || 0}% in</span>
       </div>
       <div class={"board " + (isUncontested ? "uncontested" : "")} role="table">
         <div class="thead" role="rowgroup">
