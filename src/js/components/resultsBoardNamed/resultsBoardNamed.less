@@ -4,6 +4,23 @@ table.named.results {
 	font-size: 11px;
 	border-collapse: collapse;
 
+	.open-label {
+		display: none;
+		background: #eee;
+		text-align: center;
+		font-style: italic;
+	}
+
+	tr.open {
+		.candidate {
+			display: none;
+		}
+
+		.open-label {
+			display: table-cell;
+		}
+	}
+
 	td {
 		padding: 4px 6px;
 		border: 1px solid #eee;
@@ -50,6 +67,7 @@ table.named.results {
   }
   td.runoff-label {
   	font-size: 8px;
+  	text-transform: uppercase;
   	border: 0;
   }
 }

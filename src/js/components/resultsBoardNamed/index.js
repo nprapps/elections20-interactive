@@ -12,9 +12,18 @@ export default function(props) {
   return (
     <table class="named results table">
       {props.races.map(r => (
-        <tr>
+        <tr class={((r.eevp == 0 || r.reporting == 0) && !r.called && !r.runoff) ? "open" : ""}>
+
+          {/* State */}
           <td class="state">{r.state}{r.seatNumber ? "-" + r.seatNumber : ""}</td>
-          <td class="reporting">{r.eevp ? (r.eevp + "% in"): (r.reporting && r.precincts) ? (((r.reporting / r.precincts)*100) + "% in") : ""}</td>
+
+          {/* EEVP */}
+          <td class="reporting">{(r.eevp && (r.eevp > 0 || r.called || r.runoff)) ? (r.eevp + "% in") : (r.eevp && r.eevp == 0) ? "" : (r.reporting > 0 || r.called || r.runoff) ? ((r.reporting / r.precincts * 100) + "% in") : ""}</td>
+
+          {/* Open */}
+          <td class="open-label" colspan="2">Polls still open</td>
+
+          {/* Candidates */}
           {r.candidates[0].leading = true}
           {r.candidates.slice(0,2).sort((a,b) => (sortValue(a.party) - sortValue(b.party))).map(c => (
             <td class={"candidate " + c.party + (r.eevp > 50 & c.leading ? " leading" : "") + (c.winner == "X" ? " winner" : "") + (r.runoff ? " runoff" : "")}>
@@ -22,7 +31,9 @@ export default function(props) {
               <span class="perc">{Math.round(c.percent*100)}%</span>
             </td>
           ))}
-          <td class="runoff-label">{r.runoff ? "RUNOFF" : ""}</td>
+
+          {/* Runoff */}
+          <td class="runoff-label">{r.runoff ? "Runoff" : ""}</td>
         </tr>
       ))}
     </table>
