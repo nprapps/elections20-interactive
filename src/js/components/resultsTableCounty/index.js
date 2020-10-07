@@ -67,7 +67,6 @@ export default function (props) {
       class={
         "results-counties " + sortMetric["key"].split("_").join("-")
       }>
-      <h2>Results By County</h2>
       <table class={`results-table candidates-${availableCandidates.length}`}>
         <thead>
           <tr>
