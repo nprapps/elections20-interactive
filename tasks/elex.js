@@ -48,8 +48,29 @@ module.exports = function(grunt) {
 
     grunt.log.writeln("Merging in external data...");
 
-    // merge in per-county census/historical data
+    // build DB of external flags
+    var flagged = {};
+    if (grunt.data.json.flags) grunt.data.json.flags.forEach(function(row) {
+      if (!flagged[row.raceID]) flagged[row.raceID] = [];
+      flagged[row.raceID].push(row);
+    });
+
+    // merge in per-county census/historical data and flags
     results.forEach(function(r) {
+
+      // add flags to races that match the filters in the sheet
+      if (flagged[r.id]) {
+        var matchingFlags = flagged[r.id].filter(function(f) {
+          return f.fips ? f.fips == r.fips :
+            f.state ? f.state == r.state :
+            true;
+        });
+        if (matchingFlags.length) {
+          r.flags = matchingFlags.map(f => f.flag);
+        }
+      }
+
+      // remaining steps are county-specific
       if (!r.fips) return;
 
       // get the winner from the previous election
