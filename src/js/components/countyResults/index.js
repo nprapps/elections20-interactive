@@ -325,9 +325,7 @@ export class CountyResults extends Component {
   }
 
   calculateVoteMargin(results) {
-    if (!results.reporting) {
-      return "-";
-    }
+    // TODO: re-do what to do here if there isn't someone ahead?
     var winnerMargin = results[0].percent - results[1].percent;
 
     let prefix;
