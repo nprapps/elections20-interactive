@@ -279,7 +279,6 @@ export class CountyResults extends Component {
     }
 
     // First candidate should be leading/winner since we sort by votes.
-    console.log(results.candidates[0], results)
     return results.candidates[0];
   }
 
@@ -325,7 +324,7 @@ export class CountyResults extends Component {
   }
 
   calculateVoteMargin(results) {
-    if (!results.reporting) {
+    if (!results[0].votes) {
       return "-";
     }
     var winnerMargin = results[0].percent - results[1].percent;
