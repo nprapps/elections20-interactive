@@ -104,3 +104,29 @@
 @link-color:              #5076b8;
 @link-hover-color:        #bccae5;
 @link-hp-color:           #444;
+
+// TODO: should these live here?
+:root {
+  --foreground: #333;
+  --secondary: #787878;
+  --background: white;
+  --shaded: #efefef;
+  --outline: var(--background);
+  --accent: var(--secondary);
+  --accent-fade: fade(#888, 30%);
+  --dem: @true;
+  --gop: @rigorous;
+  --dem-fade: fade(@true, 30%);
+  --gop-fade: fade(@rigorous, 30%);
+  --link: @true;
+  --link-secondary: var(--foreground);
+  --font-size: 14px;
+  --side-margin: 15px;
+  --divider: #999;
+  --divider-minor: #dadada;
+  --background-faded: rgba(255, 255, 255, 0);
+
+  @media @mobile-above {
+    --side-margin: 20px;
+  }
+}

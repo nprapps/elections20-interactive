@@ -6,7 +6,7 @@ export class ResultsTableCandidates extends Component {
   constructor(props) {
     super();
 
-    console.log(props.data);
+    // TODO: mugshots
     this.state = { data: props.data, tableClass: props.className };
   }
 
@@ -22,20 +22,19 @@ export class ResultsTableCandidates extends Component {
       totalVotes += results.candidates[i].votes;
     }
 
-    // TODO: check if the sorting removed here is still necessary
-    // if (results.candidates.length > 2) {
-    //   results.candidates = this.sortResults(results.candidates);
-    // }
-
     return (
+      
       <div class="results-table statewide">
-        {seatName ? <caption> {seatName}</caption> : ""}
+        <div class="results-header">
+          {seatName ? <caption> {seatName}</caption> : ""}
+          <span class="reporting">{this.state.data.eevp || 0} % in</span>
+        </div>
         <div
           class={
             "board " + (results.candidates.length < 2 ? "uncontested" : "")
           }
           role="table">
-          <div class="thead results-header" role="rowgroup">
+          <div class="thead" role="rowgroup">
             <div class="tr" role="row">
               <div role="columnheader" class="th name" colspan="2">
                 Candidate
@@ -58,11 +57,6 @@ export class ResultsTableCandidates extends Component {
 
   renderRow(result, index, mugshot = "") {
     var highest = index == 0;
-    if (highest) {
-      result.votes = 19876;
-      result.percent = 0.75;
-      result.winner = "X";
-    }
 
     var classes = [];
     if (result.winner) classes.push("winner");
