@@ -22,7 +22,7 @@ var translation = {
     type: "raceType",
     seatNumber: "seatNum",
     seat: "seatName",
-    description: "description"
+    description: "description",
   },
   unit: {
     level: "level",
@@ -32,7 +32,7 @@ var translation = {
     updated: "lastUpdated",
     reporting: "precinctsReporting",
     precincts: "precinctsTotal",
-    eevp: "eevp"
+    eevp: "eevp",
   },
   candidate: {
     first: "first",
@@ -43,14 +43,14 @@ var translation = {
     avotes: "avotes",
     electoral: "electWon",
     winner: "winner",
-    incumbent: "incumbent"
-  }
-}
+    incumbent: "incumbent",
+  },
+};
 
 var translate = {};
 
 Object.keys(translation).forEach(type => {
-  translate[type] = function(input) {
+  translate[type] = function (input) {
     var output = {};
     for (var [k, v] of Object.entries(translation[type])) {
       if (v in input) {
@@ -61,17 +61,16 @@ Object.keys(translation).forEach(type => {
   };
 });
 
-
 var majorParties = new Set(["GOP", "Dem"]);
-var sortCandidates = function(votes, candidates) {
-  var compare = function(a, b) {
+var sortCandidates = function (votes, candidates) {
+  var compare = function (a, b) {
     // if no votes yet
     if (votes == 0) {
       // put major parties first
       if (
         (majorParties.has(a.party) && majorParties.has(b.party)) ||
-        a.party == b.party) 
-      {
+        a.party == b.party
+      ) {
         return a.last < b.last ? -1 : 1;
       } else {
         // one of them is not GOP/Dem
@@ -84,11 +83,11 @@ var sortCandidates = function(votes, candidates) {
       // sort strictly on votes
       return b.votes - a.votes;
     }
-  }
+  };
   candidates.sort(compare);
 };
 
-var mergeOthers = function(candidates, raceID) {
+var mergeOthers = function (candidates, raceID) {
   // always take the top two
   var merged = candidates.slice(0, 2);
   var remaining = candidates.slice(2);
@@ -100,8 +99,8 @@ var mergeOthers = function(candidates, raceID) {
     votes: 0,
     avotes: 0,
     electoral: 0,
-    count: remaining.length
-  }
+    count: remaining.length,
+  };
   for (var c of remaining) {
     other.votes += c.votes || 0;
     other.avotes += c.avotes || 0;
@@ -114,7 +113,7 @@ var mergeOthers = function(candidates, raceID) {
   return merged;
 };
 
-module.exports = function(resultArray, overrides = {}) {
+module.exports = function (resultArray, overrides = {}) {
   // AP data is structured as race->reportingunits, where each "race" includes both state and FIPS
   // we will instead restructure into groupings by geography
   var output = [];
@@ -122,7 +121,6 @@ module.exports = function(resultArray, overrides = {}) {
   var { calls = {}, candidates = {}, rosters = {} } = overrides;
 
   for (var response of resultArray) {
-
     for (var race of response.races) {
       var raceMeta = translate.race(race);
 
@@ -135,10 +133,13 @@ module.exports = function(resultArray, overrides = {}) {
         var unitMeta = {
           ...raceMeta,
           ...translate.unit(unit),
-          level
-        }
+          level,
+        };
 
-        var sheetMetadata = overrides.house[raceMeta.id] || overrides.senate[raceMeta.id];
+        var sheetMetadata =
+          overrides.house[raceMeta.id] ||
+          overrides.senate[raceMeta.id] ||
+          overrides.governors[raceMeta.id];
         unitMeta.previousParty = sheetMetadata ? sheetMetadata.party : null;
         unitMeta.updated = Date.parse(unitMeta.updated);
 
@@ -146,7 +147,7 @@ module.exports = function(resultArray, overrides = {}) {
 
         var total = 0;
         var parties = new Set();
-        var ballot = unit.candidates.map(function(c) {
+        var ballot = unit.candidates.map(function (c) {
           c = translate.candidate(c);
           // assign overrides from the sheet by candidate ID
           var override = candidates[c.id];
@@ -170,7 +171,7 @@ module.exports = function(resultArray, overrides = {}) {
         sortCandidates(total, ballot);
 
         // create "other" merged candidate if:
-        // - More than two candidates and 
+        // - More than two candidates and
         // - Independent candidate(s) exist and
         // - they're not marked as exceptions in a sheet
         // TODO: handle "jungle primary" races (LA and CA)
@@ -179,7 +180,7 @@ module.exports = function(resultArray, overrides = {}) {
         }
 
         var winners = new Set();
-        ballot.forEach(function(c) {
+        ballot.forEach(function (c) {
           // assign percentages
           c.percent = Math.round((c.votes / total) * ROUNDING) / ROUNDING;
           if (call) {
@@ -199,11 +200,8 @@ module.exports = function(resultArray, overrides = {}) {
         unitMeta.candidates = ballot;
         output.push(unitMeta);
       }
-
     }
-
-  };
+  }
 
   return output;
-
 };
