@@ -1,6 +1,6 @@
 import { h, Component, Fragment } from "preact";
 import gopher from "../gopher.js";
-import { RacewideTable } from "../racewideTable";
+import { ResultsTableCandidates } from "../resultsTableCandidates";
 import { CountyResults } from "../countyResults";
 
 const STATES_WITHOUT_COUNTY_INFO = ["AK"];
@@ -60,7 +60,7 @@ export class StatewideResults extends Component {
     }
     return (
       <Fragment>
-        <RacewideTable
+        <ResultsTableCandidates
           data={race}
           className={
             this.state.activeView === "senate"

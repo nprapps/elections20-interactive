@@ -1,7 +1,7 @@
 import { h, Component, Fragment } from "preact";
 import gopher from "../gopher.js";
 import { calculatePrecinctsReporting } from "../util.js";
-import { RacewideTable } from "../racewideTable";
+import { ResultsTableCandidates } from "../resultsTableCandidates";
 import { CountyMap } from "../countyMap";
 import { fmtComma } from "../util.js";
 

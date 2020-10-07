@@ -1,6 +1,6 @@
 import { h, Component, Fragment } from "preact";
 import gopher from "../gopher.js";
-import { RacewideTable } from "../racewideTable";
+import { ResultsTableCandidates } from "../resultsTableCandidates";
 
 export default class HouseResults extends Component {
   constructor(props) {
@@ -41,7 +41,7 @@ export default class HouseResults extends Component {
       <div class="results-house">
         <div class="results-wrapper">
           {this.state.houseKeys.map((race) => (
-            <RacewideTable
+            <ResultsTableCandidates
               data={this.state.house.filter((a) => a.seatNumber == race)[0]}
               className={"house-race"}
             />
