@@ -25,7 +25,7 @@ module.exports = function(file) {
     }, function(done) {
       var self = this;
       var options = {
-        paths: [ path.dirname(file) ],
+        paths: [ path.dirname(file), "src/css" ],
         plugins: [ npmImporter ]
       };
 
