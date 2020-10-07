@@ -1,6 +1,6 @@
 table.named.results {
 	font-family: 'Gotham SSm', Helvetica, Arial, sans-serif;
-	color: #666666;
+	color: #666;
 	font-size: 11px;
 	border-collapse: collapse;
 
@@ -19,12 +19,6 @@ table.named.results {
 		font-style: italic;
 		color: #9a9a9a;
 	}
-  td.candidate {
-  	.perc {
-  		float: right;
-  		margin-left: 6px;
-  	}
-  }
   td.leading {
   	background: #D7F0E2;
   }
@@ -43,5 +37,19 @@ table.named.results {
   }
   td.Dem.winner {
   	background: #237BBD;
+  }
+  td.candidate {
+  	.perc {
+  		float: right;
+  		margin-left: 6px;
+  	}
+
+  	&.runoff {
+  		background: white;
+  	}
+  }
+  td.runoff-label {
+  	font-size: 8px;
+  	border: 0;
   }
 }
