@@ -2,19 +2,17 @@ import { h, Component, Fragment } from "preact";
 import gopher from "../gopher.js";
 import { calculatePrecinctsReporting } from "../util.js";
 
-export class ResultsTableCandidates extends Component {
+export default class ResultsTableCandidates extends Component {
   constructor(props) {
     super();
-
     // TODO: mugshots
-    this.state = { data: props.data, tableClass: props.className };
   }
 
   render() {
-    if (!this.state.data) {
+    if (!this.props.data) {
       return "";
     }
-    var results = this.state.data;
+    var results = this.props.data;
     const seatName = results.office === "H" ? results.seat : null;
 
     let totalVotes = 0;
@@ -22,15 +20,18 @@ export class ResultsTableCandidates extends Component {
       totalVotes += results.candidates[i].votes;
     }
 
+    var isUncontested = results.candidates.length < 2;
+    console.log(this.props)
+
     return (
       <div class="results-table statewide">
         <div class="results-header">
           {seatName ? <caption> {seatName}</caption> : ""}
-          <span class="reporting">{this.state.data.eevp || 0} % in</span>
+          <span class="reporting">{this.props.data.eevp || 0} % in</span>
         </div>
         <div
           class={
-            "board " + (results.candidates.length < 2 ? "uncontested" : "")
+            "board " + (isUncontested ? "uncontested" : "")
           }
           role="table">
           <div class="thead" role="rowgroup">
@@ -47,21 +48,28 @@ export class ResultsTableCandidates extends Component {
             </div>
           </div>
           <div class="tbody" role="rowgroup">
-            {results.candidates.map((c, index) => this.renderRow(c, index))}
+            {results.candidates.map((c, index) => <ResultsTableCandidatesRow data={c} highest={index == 0} uncontested={isUncontested}/>)}
           </div>
         </div>
       </div>
     );
   }
+}
 
-  renderRow(result, index, mugshot = "") {
-    var highest = index == 0;
+export class ResultsTableCandidatesRow extends Component {
+  constructor(props) {
+    super();
+    console.log(props)
+    // TODO: mugshots
+  }
+
+  render() {
+    var result = this.props.data;
+    var mugshot;
 
     var classes = [];
     if (result.winner) classes.push("winner");
     if (result.incumbent) classes.push("incumbent");
-
-    console.log(result);
 
     return (
       <Fragment>
@@ -81,7 +89,7 @@ export class ResultsTableCandidates extends Component {
                 <div class="bar-container">
                   <div
                     class="bar"
-                    style={`width:  ${ highest? result.percent * 100 : 0}%`}></div>
+                    style={`width:  ${ this.props.highest? result.percent * 100 : 0}%`}></div>
                 </div>
               ) : (
                 ""
@@ -113,7 +121,7 @@ export class ResultsTableCandidates extends Component {
               </span> : ""
             }
             </div>
-            {this.state.data.candidates.length > 1 ? (
+            {!this.props.uncontested ? (
               <div role="cell" class="td percentage">
                 {result.percent ? (result.percent * 100).toFixed(1) : "-"}
               </div>

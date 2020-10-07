@@ -1,6 +1,6 @@
 import { h, Component, Fragment } from "preact";
 import gopher from "../gopher.js";
-import { ResultsTableCandidates } from "../resultsTableCandidates";
+import ResultsTableCandidates from "../resultsTableCandidates";
 import { CountyResults } from "../countyResults";
 
 const STATES_WITHOUT_COUNTY_INFO = ["AK"];
