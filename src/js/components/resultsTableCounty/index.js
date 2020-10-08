@@ -1,7 +1,7 @@
 import { h, Fragment } from "preact";
 import "./resultsTableCounty.less";
 import { fmtComma } from "../util.js";
-import { calculatePrecinctsReporting } from "../util.js";
+import { reportingPercentage } from "../util.js";
 
 const availableMetrics = [
   {
@@ -165,7 +165,7 @@ function renderCountyRow(results, sortMetric) {
         <span class="precincts mobile">{results.county.countyName}</span>
       </td>
       <td class="precincts amt">
-        {calculatePrecinctsReporting(results.reporting / results.precincts) +
+        {reportingPercentage(results.reporting / results.precincts) +
           "% in"}
       </td>
       {availableCandidates.map(key => renderCountyCell(key))}

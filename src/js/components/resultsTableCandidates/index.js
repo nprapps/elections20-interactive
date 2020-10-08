@@ -1,6 +1,6 @@
 import { h, Component, Fragment } from "preact";
 import gopher from "../gopher.js";
-import { calculatePrecinctsReporting } from "../util.js";
+import { reportingPercentage } from "../util.js";
 import "./results.less";
 
 export default function ResultsTableCandidates(props) {

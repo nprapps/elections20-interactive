@@ -50,7 +50,7 @@ export function decideLabel(race) {
   }
 }
 
-export function calculatePrecinctsReporting(pct) {
+export function reportingPercentage(pct) {
   if (pct > 0 && pct < 0.005) {
     return "<1";
   } else if (pct > 0.995 && pct < 1) {
@@ -71,3 +71,8 @@ export function getViewFromRace(race) {
 export const toTitleCase = (str) =>
   str.replace(/(\b\w)/g, (g) => g.toUpperCase());
 export const fmtComma = (s) => s.toLocaleString("en-US").replace(/\.0+$/, "");
+
+export function cssClass(...names) {
+  names = names.filter(n => n);
+  return names.join(" ");
+}
