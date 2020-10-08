@@ -7,8 +7,10 @@ export default function ResultsTableCandidates(props) {
   if (!props.data) {
     return "";
   }
+  
   var results = props.data;
-  const seatName = results.office === "H" ? results.seat : null;
+  var notStatewide = results.office === "H" || results.office === "I";
+  const seatName = notStatewide ? results.seat : null;
 
   let totalVotes = 0;
   for (let i = 0; i < results.candidates.length; i++) {
@@ -16,10 +18,9 @@ export default function ResultsTableCandidates(props) {
   }
 
   var isUncontested = results.candidates.length < 2;
-  var reporting =
-    results.office === "H"
-      ? `${reportingPercentage(props.data.reportingPercent)}% reporting`
-      : `${reportingPercentage(props.data.eevp)}% in`;
+  var reporting = notStatewide
+    ? `${reportingPercentage(props.data.reportingPercent)}% reporting`
+    : `${reportingPercentage(props.data.eevp)}% in`;
 
   return (
     <div class="results-table statewide">
