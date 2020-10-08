@@ -53,21 +53,15 @@ table.results {
 		}
 	}
 	td.reporting {
-		border-left: 0;
-		padding-left: 0;
 		font-size: 9px;
 		font-style: italic;
 		color: #9a9a9a;
 	}
   td.candidate {
-  	.perc {
-  		float: right;
-  		margin-left: 6px;
-  	}
-
-  	&.runoff {
-  		background: white;
-  	}
+  	.perc, .name {
+			display: inline-block;
+			min-width: 25px;
+		}
   	&.leading {
 	  	background: #D7F0E2;
 	  }
@@ -87,6 +81,9 @@ table.results {
 	  &.Dem.winner {
 	  	background: #237BBD;
 	  }
+	  &.runoff {
+  		background: white !important;
+  	}
   }
   td.electoral {
   	&.winner {
@@ -119,18 +116,16 @@ table.results.president {
   	// transform: rotate(-90deg);
   	// transform-origin: left;
 
-		&.state-hed {
+		// &.state-hed {
 			// padding-left: 6px;
-			transform: rotate(0);
-			text-align: left;
-		}
+			// transform: rotate(0);
+			// text-align: left;
+		// }
 	}
-	td.candidate .perc, .electoral {
+	.electoral {
 		float: none;
 		text-align: center;
 		margin: 0;
-	}
-	.electoral {
 		color: #9a9a9a;
 	}
 }

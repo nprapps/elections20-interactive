@@ -36,9 +36,9 @@ export default function ResultsBoardPresident(props) {
         <h3 class="board-hed">{props.hed}</h3>
         <table class="president results table">
         	<tr>
-        		<th colspan="2" class="state-hed">State</th>
-        		<th>Biden</th>
-        		<th>Trump</th>
+        		<th>State</th>
+        		<th>Dem.</th>
+        		<th>Rep.</th>
         		<th>Votes</th>
         	</tr>
 
@@ -54,9 +54,6 @@ export default function ResultsBoardPresident(props) {
                 {/* State */}
                 <td class={"state " + (winner[0] ? ("winner " + winner[0].party) : "")}>{states[r.state].ap}</td>
 
-                {/* EEVP */}
-                <td class="reporting">{percentIn}</td>
-
                 {/* Open */}
                 <td class="open-label" colspan="4">Last polls close at {states[r.state].closingTime} ET</td>
 
@@ -65,6 +62,9 @@ export default function ResultsBoardPresident(props) {
 
                 {/* Electoral votes */}
                 <td class={"electoral " + (winner[0] ? ("winner " + winner[0].party) : "")}>{r.electoral}</td>
+
+                {/* EEVP */}
+                <td class="reporting">{percentIn}</td>
 
                 {/* Runoff */}
                 <td class="runoff-label">{r.runoff ? "Runoff" : ""}</td>
