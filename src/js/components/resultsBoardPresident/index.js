@@ -8,7 +8,7 @@ var sortParty = function(p) {
 };
 
 function CandidateCells(race) {
-  var sorted = race.candidates.slice(0, 2).sort((a, b) => sortParty(a.party) - sortParty(b.party));
+  var sorted = race.candidates.slice(0, 3).sort((a, b) => sortParty(a.party) - sortParty(b.party));
   var leading = race.candidates[0];
   var reporting = race.eevp || race.reportingPercent;
 
