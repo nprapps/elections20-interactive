@@ -26,7 +26,7 @@
       <% Object.keys(json.states).sort().forEach(function(s) { %>
         <div>
           <a href="#/states/<%= s %>">
-            <%= json.states[s] %>
+            <%= json.states[s].name %>
           </a>
         </div>
       <% }); %>
