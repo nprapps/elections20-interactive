@@ -1,15 +1,14 @@
 import { Component, h, Fragment } from "preact";
+import Scrapple from "@twilburn/scrapple";
 
-import { BigBoardCore } from "./components/bigBoard";
-import { GetCaughtUp } from "./components/getCaughtUp";
-import { StateResults } from "./components/stateResults";
-import { CountyResults } from "./components/countyResults";
-import BoardSenate from "./components/boardSenate";
+import BoardGovernor from "./components/boardGovernor";
 import BoardHouse from "./components/boardHouse";
 import BoardPresident from "./components/boardPresident";
-import BoardGovernor from "./components/boardGovernor";
+import BoardSenate from "./components/boardSenate";
+import CountyResults from "./components/countyResults";
+import StateResults from "./components/stateResults";
 
-import Scrapple from "@twilburn/scrapple";
+var guid = 0;
 
 export default class App extends Component {
   constructor() {
@@ -26,10 +25,10 @@ export default class App extends Component {
     this.addView("/house", BoardHouse);
     this.addView("/governor", BoardGovernor);
     this.addView("/senate", BoardSenate);
+    this.addView("/states/:state", StateResults);
+    this.addView("/states/:state/:subview", StateResults);
     this.addRoute("/ballots", "renderBallots");
-    this.addRoute("/states/:state", "renderState");
     this.addRoute("/states/:state/detail/:race", "renderCounty");
-    this.addRoute("/states/:state/:subview", "renderState");
   }
 
   addRoute(path, route) {
@@ -39,8 +38,8 @@ export default class App extends Component {
   }
 
   addView(path, View) {
-    this.router.add(path, ({ params }) => {
-      this.setState({ route: null, params, View });
+    this.router.add(path, ({ url, params }) => {
+      this.setState({ route: null, params, View, url });
     });
   }
 
@@ -50,18 +49,6 @@ export default class App extends Component {
         <h1>Ballot Initiatives</h1>
         <div class="placeholder">Selected Ballots</div>
       </>
-    );
-  }
-
-  renderState(props, state) {
-    let currentState = state.params.state;
-    // Default to key view
-    let subview = state.params.subview || "president";
-    let key = currentState + subview;
-    return (
-      <div id="state-results">
-        <StateResults state={currentState} activeView={subview} key={key} />
-      </div>
     );
   }
 
@@ -85,7 +72,7 @@ export default class App extends Component {
     // use a View component
     if (!state.route && state.View) {
       console.log(`Loaded page component: ${state.View.name}`);
-      return <state.View {...state.params} />
+      return <state.View {...state.params} key={state.url}/>
     }
 
     // otherwise call a route method

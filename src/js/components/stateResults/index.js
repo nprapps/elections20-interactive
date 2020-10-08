@@ -1,176 +1,126 @@
 // import { h, createProjector } from 'maquette';
-import { h, Component } from "preact";
+import { h, Component, Fragment } from "preact";
 import gopher from "../gopher.js";
 import KeyRaces from "../stateViewKeyRaces";
 import HouseResults from "../stateViewHouse";
-import { StatewideResults } from "../statewide";
+import ResultsTableCandidates from "../resultsTableCandidates";
+import CountyResults from "../countyResults";
 import stateLookup from "states.sheet.json";
+import strings from "strings.sheet.json";
 import { getViewFromRace, toTitleCase } from "../util.js";
 
 // TODO: check on the use of all of these
 const STATES_WITHOUT_COUNTY_INFO = ["AK"];
 const STATES_WITH_POTENTIAL_RUNOFFS = ["GA", "LA", "MS"];
 
-export class StateResults extends Component {
+export default class StateResults extends Component {
   constructor(props) {
     super();
 
     this.state = {
-      activeView: props.activeView
+      active: "key"
     };
     this.onData = this.onData.bind(this);
-    this.onResultsData = this.onResultsData.bind(this);
-    this.switchResultsView = this.switchResultsView.bind(this);
   }
 
-  onData(json) {
-    this.setState(json);
-  }
-
-  onResultsData(json) {
-    var activeRaces = new Set(["key"]);
-    var raceIds = {};
-    // TODO: add back in legend item suppression
-    // TODO: handle special senate elections?
-    Object.keys(json).forEach(function (item) {
-      if (json[item].office != "I") {
-        var office = getViewFromRace(json[item].office);
-        activeRaces.add(office);
-        if (!raceIds[office]) {
-          raceIds[office] = [];
-        }
-        raceIds[office].push(json[item].id);
-      }
-    });
-    this.setState({
-      races: json,
-      activeRaces: Array.from(activeRaces),
-      ids: raceIds
-    });
+  onData(races) {
+    this.setState({ races });
   }
 
   // Lifecycle: Called whenever our component is created
   async componentDidMount() {
-    gopher.watch(`/data/states/${this.props.state}.json`, this.onResultsData);
+    gopher.watch(`/data/states/${this.props.state}.json`, this.onData);
   }
 
   // Lifecycle: Called just before our component will be destroyed
   componentWillUnmount() {
     // stop when not renderable
-    gopher.unwatch(`/data/states/${this.props.state}.json`, this.onResultsData);
+    gopher.unwatch(`/data/states/${this.props.state}.json`, this.onData);
   }
 
-  render() {
-    if (!this.props.state || !this.state.races) {
+  render(props, state) {
+    if (!this.state.races) {
       return <div> Loading... </div>;
     }
 
     let stateName = stateLookup[this.props.state].name;
 
-    let resultsType = `${this.state.activeView.toUpperCase()} Results`;
+    let office = props.subview || "key";
+    let viewTitle = office == "key" ? "Key Results" : strings[`office-${office}`];
+
     return (
-      <div class="results">
+      <div class="results" id="state-results">
         <header id="state-header">
-          <div class="state-icon">
-            <i class={"stateface stateface-" + this.props.state}></i>
-          </div>
           <h1>
             <img
               class="icon"
               src={"../../assets/states/" + this.props.state + ".svg"}
             ></img>
             <span class="state-name">{stateName}</span>
-            {resultsType}
+            {viewTitle}
           </h1>
-          {this.renderTabSwitcher()}
+          {this.renderTabSwitcher(office)}
         </header>
-        <div class="results-elements">{this.renderResults()}</div>
+        <div class="results-elements">{this.renderResults(office)}</div>
       </div>
     );
   }
 
-  renderResults() {
-    // Render race data elements, depending on which race-type tab is active
-    let resultsElements;
-
-    if (this.state.activeView === "key") {
+  // TODO: This feels like it should be cleaner, somehow
+  renderResults(view) {
+    if (view === "key") {
       return <KeyRaces state={this.props.state} />;
-    } else if (this.state.activeView === "house") {
-      return <HouseResults state={this.props.state} />;
-    } else if (
-      this.state.activeView.match(/senate/) ||
-      this.state.activeView == "governor" ||
-      this.state.activeView == "president"
-    ) {
+    } else if (view === "H") {
+      var races = this.state.races.filter(r => r.office == "H");
       return (
-        <StatewideResults
-          data={this.state.races.filter(
-            (a) => getViewFromRace(a.office) == this.state.activeView
-          )}
-          state={this.props.state}
-          view={this.state.activeView}
-          ids={this.state.ids[this.state.activeView]}
-        />
+        <div class="results-house">
+          <div class="results-wrapper">
+            {races.map((race) => (
+              <ResultsTableCandidates
+                data={race}
+                class="house-race"
+              />
+            ))}
+          </div>
+        </div>
       );
+    } else {
+      var races = this.state.races.filter(r => r.office == view);
+      return races.map(r => <>
+        <ResultsTableCandidates data={r} />
+        <CountyResults state={this.props.state} raceid={r.id} />
+      </>);
     }
   }
 
-  renderTabSwitcher() {
+  renderTabSwitcher(view) {
     // Create the tab switcher, between different race types
-    const elements = this.state.activeRaces.flatMap((tab, i) => [
-      this.createTabElement(tab)
-    ]);
+    var available = new Set(this.state.races.map(r => r.office));
+    var tabs = "PGSHI".split("").filter(o => available.has(o)).map(function(data) {
+      return {
+        data,
+        label: strings[`office-${data}`]
+      }
+    });
+
+    tabs.unshift({
+      data: "key",
+      label: "Key Results"
+    });
+
+    var elements = tabs.map(t => (
+      <li class={view == t.data ? "active" : "inactive"}>
+        <a
+          href={`#/states/${this.props.state}/${t.data}`}
+          class="race-type-nav"
+        >{t.label}</a>
+      </li>
+    ));
 
     return (
       <nav class="race-calendar">
         <ul>{elements}</ul>
       </nav>
     );
-  }
-
-  // TODO: use built in uppercase fxn here
-  createTabElement(tab) {
-    return (
-      <li class={this.state.activeView === tab.toLowerCase() ? "active" : ""}>
-        <a
-          href={`./#/states/${this.props.state}/${tab.toLowerCase()}`}
-          name="race-type-nav"
-        >
-          {toTitleCase(tab)}
-        </a>
-      </li>
-    );
-  }
-
-  switchResultsView(e) {
-    const newTarget = e.target.dataset.hook;
-
-    this.setState({
-      activeView: newTarget
-    });
-
-    // // When switching tabs, if the user is below the header then
-    // // scroll back up to the top of the header. Otherwise, they're
-    // // stuck in the middle of a results view.
-    // TODO: replicate this
-    // const headerHeight = document.getElementById('state-header').offsetHeight;
-    // if (parentScrollAboveIframeTop < -headerHeight) {
-    //   window.pymChild.scrollParentTo('state-results');
-    // }
-
-    // // The legend (shared from the big boards) is mostly irrelevant,
-    // // except on the Key Results view
-    // let unncessaryLegendItems = ['held', 'precincts', 'runoff'];
-    // if (ballotInitiativesPresent) { unncessaryLegendItems = unncessaryLegendItems.concat(['yes', 'no']); }
-    // if (STATES_WITH_POTENTIAL_RUNOFFS.includes(statepostal)) { unncessaryLegendItems = unncessaryLegendItems.concat('runoff'); }
-
-    // if (resultsView === 'key') {
-    //   unncessaryLegendItems.forEach(cls => { showLegendItem(cls, true); });
-    // } else {
-    //   unncessaryLegendItems.forEach(cls => { showLegendItem(cls, false); });
-    // }
-
-    // // Track both which tab is switched to, and what element linked to it
-    // window.ANALYTICS.trackEvent('switch-state-tab', `${resultsView}-via-${e.target.getAttribute('name')}`);
   }
 }

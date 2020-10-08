@@ -3,7 +3,7 @@ import gopher from "../gopher.js";
 import { CountyMap } from "../countyMap";
 import  ResultsTableCounty from "../resultsTableCounty";
 
-export class CountyResults extends Component {
+export default class CountyResults extends Component {
   constructor(props) {
     super();
 
