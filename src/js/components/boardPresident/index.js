@@ -1,6 +1,6 @@
 import { h, Component, Fragment } from "preact";
 import gopher from "../gopher.js";
-import Results from "../resultsBoardNamed";
+import Results from "../resultsBoardPresident";
 
 export default class BoardPresident extends Component {
   constructor(props) {
@@ -26,10 +26,15 @@ export default class BoardPresident extends Component {
   }
 
   render() {
+    var { races } = this.state;
+    if (!races) {
+      return "";
+    }
+
     return <>
       <h1>President</h1>
       <div class="placeholder">Map or dataviz</div>
-      <div class="placeholder">Results by state</div>
+      <Results races={races}/>
     </>
   }
 }
