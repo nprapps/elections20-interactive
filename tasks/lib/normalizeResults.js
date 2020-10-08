@@ -120,6 +120,12 @@ module.exports = function (resultArray, overrides = {}) {
 
   var { calls = {}, candidates = {}, rosters = {} } = overrides;
 
+  var nprMetadata = {
+    ...overrides.house,
+    ...overrides.senate,
+    ...overrides.governors
+  };
+
   for (var response of resultArray) {
     for (var race of response.races) {
       var raceMeta = translate.race(race);
@@ -144,10 +150,7 @@ module.exports = function (resultArray, overrides = {}) {
           unitMeta.reportingPercent = unitMeta.reporting / unitMeta.precincts;
         }
 
-        var sheetMetadata =
-          overrides.house[raceMeta.id] ||
-          overrides.senate[raceMeta.id] ||
-          overrides.governors[raceMeta.id];
+        var sheetMetadata = nprMetadata[raceMeta.id];
         unitMeta.previousParty = sheetMetadata ? sheetMetadata.party : null;
         unitMeta.updated = Date.parse(unitMeta.updated);
 
