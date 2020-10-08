@@ -37,8 +37,8 @@ export class CountyMap extends Component {
 
   render() {
     var isChonky = specialStates.has(this.props.state);
-    console.log(this.props.data[0].candidates);
-
+    
+    // Fix bug here where 3rd party candidate can make it into legend
     return (
       <div
         class={"county-map" + (isChonky ? " chonky" : "")}
@@ -58,6 +58,30 @@ export class CountyMap extends Component {
               <path
                 d="M5,0L5,10"
                 stroke="rgba(0, 0, 0, .2)"
+                stroke-width="4"></path>
+            </pattern>
+            <pattern
+              id="pending-Dem"
+              class="stripes"
+              width="10"
+              height="10"
+              patternUnits="userSpaceOnUse"
+              patternTransform="rotate(-45)">
+              <path
+                d="M5,0L5,10"
+                stroke="rgba(35,123,189, 200)"
+                stroke-width="4"></path>
+            </pattern>
+            <pattern
+              id="pending-GOP"
+              class="stripes"
+              width="10"
+              height="10"
+              patternUnits="userSpaceOnUse"
+              patternTransform="rotate(-45)">
+              <path
+                d="M5,0L5,10"
+                stroke="rgba( 214, 32, 33, 200)"
                 stroke-width="4"></path>
             </pattern>
           </svg>
@@ -169,13 +193,17 @@ export class CountyMap extends Component {
       if (!path) continue;
       path.classList.add("painted");
       var pigment = this.palette[top.party];
-      // TODO: eevp or precints reporting here and below
+
       var hitThreshold = mapData[d].reporting / mapData[d].precincts > 0.5;
       var paint = "#bbb";
-      if (hitThreshold) {
+      var leadingCandidate = mapData[d].candidates[0];
+
+      if (hitThreshold && leadingCandidate.winner) {
         paint = pigment ? pigment : "#bbb";
+      } else if (hitThreshold){
+        paint = `url(#pending-${leadingCandidate.party})`;
       } else {
-        paint = `url(#pending-${this.guid})`;
+        paint = `url(#pending-0)`;
         incomplete = true;
       }
 
