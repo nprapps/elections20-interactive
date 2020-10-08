@@ -76,13 +76,16 @@ export default class ResultsTableCounty extends Component {
   }
 
   scrollToRef(ref) {
-    // TODO: how will this work with embeds?
-    
+    // TODO: fix buggy first click behavior
+    if (!this.state.collapsed) {
+      ref.current.scrollIntoView(true, { block: "nearest" });
+    }
   }
 
   toggleCollapsed() {
     const currentState = this.state.collapsed;
     this.setState({ collapsed: !currentState });
+    this.scrollToRef(this.tableRef);
   }
 
   updateSort(metricName) {
@@ -92,11 +95,12 @@ export default class ResultsTableCounty extends Component {
   }
 
   render() {
-    const sortKeys = this.sortCountyResults(
+    const sortedData = this.sortCountyResults(
       this.props.data,
       this.state.sortMetric
     );
-    const availableCandidates = this.props.data[0].candidates
+    // Order by party
+    const orderedCandidates = this.props.data[0].candidates
       .slice(0, 2)
       .sort((a, b) => (a.party < b.party ? -1 : 1));
 
@@ -106,8 +110,8 @@ export default class ResultsTableCounty extends Component {
           "results-counties " +
           this.state.sortMetric["key"].split("_").join("-")
         }>
-        <table class={`results-table candidates-${availableCandidates.length}`}>
-          <thead>
+        <table class={`results-table candidates-${orderedCandidates.length}`}>
+          <thead ref={this.tableRef}>
             <tr>
               <th class="county" onclick={() => this.updateSort("County")}>
                 <div>
@@ -119,7 +123,7 @@ export default class ResultsTableCounty extends Component {
                   <span></span>
                 </div>
               </th>
-              {availableCandidates.map(cand => this.renderCandidateTH(cand))}
+              {orderedCandidates.map(cand => CandidateHeaderCell(cand))}
               <th class="vote margin" key="margin">
                 <div>
                   <span>Vote margin</span>
@@ -137,15 +141,10 @@ export default class ResultsTableCounty extends Component {
               </th>
             </tr>
           </thead>
-          <tbody
-            class={this.state.collapsed ? "collapsed" : null}
-            ref={this.tableRef}>
-            {sortKeys.map(key =>
-              this.renderCountyRow(
-                this.props.data.filter(a => a.fips == key[0])[0],
-                this.state.sortMetric
-              )
-            )}
+          <tbody class={this.state.collapsed ? "collapsed" : null}>
+            {sortedData.map(c => (
+              <ResultsRowCounty row={c} metric={this.state.displayedMetric} />
+            ))}
           </tbody>
         </table>
         <button
@@ -159,181 +158,180 @@ export default class ResultsTableCounty extends Component {
     );
   }
 
-  renderCandidateTH(candidate) {
-    return (
-      <th class="vote" key={candidate.party}>
-        <div>
-          <span>{candidate.last}</span>
-        </div>
-      </th>
-    );
+  sortCountyResults() {
+    var sortMetric = this.state.sortMetric;
+    var topToBottom = this.state.topToBottom;
+
+    return this.props.data.sort(function (a, b) {
+      // TODO: get this working if needed?
+      // if (sortMetric["key"] === "past_margin") {
+      //   // always put Democratic wins on top
+      //   if (a[1][0] === "D" && b[1][0] === "R") return -1;
+      //   if (a[1][0] === "R" && b[1][0] === "D") return 1;
+
+      //   const aMargin = parseInt(a[1].split("+")[1]);
+      //   const bMargin = parseInt(b[1].split("+")[1]);
+
+      //   // if Republican, sort in ascending order
+      //   // if Democratic, sort in descending order
+      //   if (a[1][0] === "R") {
+      //     return aMargin - bMargin;
+      //   } else {
+      //     return bMargin - aMargin;
+      //   }
+      // }
+
+      let sorterA;
+      let sorterB;
+      if (sortMetric["census"]) {
+        sorterA = a.county.census[sortMetric["key"]];
+        sorterB = b.county.census[sortMetric["key"]];
+      } else {
+        sorterA = a.county[sortMetric["key"]];
+        sorterB = a.county[sortMetric["key"]];
+      }
+
+      if (sortMetric["alpha"]) {
+        if (topToBottom) {
+          return sorterA > sorterB ? -1 : 1;
+        } else {
+          return sorterA > sorterB ? 1 : -1;
+        }
+      } else {
+        return topToBottom ? sorterB - sorterA : sorterA - sorterB;
+      }
+    });
   }
+}
 
-  renderCountyRow(results) {
-    var availableCandidates = results.candidates
-      .slice(0, 2)
-      .sort((a, b) => (a.party < b.party ? -1 : 1));
+function CandidateHeaderCell(candidate) {
+  return (
+    <th class="vote" key={candidate.party}>
+      <div>
+        <span>{candidate.last}</span>
+      </div>
+    </th>
+  );
+}
 
-    // Default to population.
-    let extraMetric = results.county.census.population;
-
-    if (this.state.displayedMetric["census"]) {
-      extraMetric = results.county.census[this.state.displayedMetric["key"]];
-    } else {
-      // TODO: get the rest of these working, if we decide to use them
-      extraMetric = results.county[this.state.displayedMetric["key"]];
-    }
-    extraMetric = parseInt(extraMetric);
-
-    if (this.state.displayedMetric["comma_filter"]) {
-      extraMetric = fmtComma(extraMetric);
-    }
-
-    if (this.state.displayedMetric["percent_filter"]) {
-      extraMetric = (extraMetric * 100).toFixed(1) + "%";
-    }
-
-    if (this.state.displayedMetric["prepend"]) {
-      extraMetric = this.state.sortMetric["prepend"] + extraMetric;
-    }
-
-    if (this.state.displayedMetric["append"]) {
-      extraMetric = extraMetric.toFixed(1) + this.state.sortMetric["append"];
-    }
-
-    var winner = this.determineWinner(results);
-
-    return (
-      <tr>
-        <td class="county">
-          <span class="precincts mobile">{results.county.countyName}</span>
-        </td>
-        <td class="precincts amt">
-          {reportingPercentage(results.reporting / results.precincts) + "% in"}
-        </td>
-        {availableCandidates.map(key => this.renderCountyCell(key))}
-        {this.renderMarginCell(results.candidates, winner)}
-        <td> {extraMetric} </td>
-      </tr>
-    );
-  }
-
-  renderCountyCell(candidate) {
-    // TODO: add in independent class
-    return (
-      <td
-        class={`vote ${candidate.party.toLowerCase()} ${
-          candidate.winner ? "winner" : ""
-        }`}
-        key={candidate.id}>
-        {(candidate.percent * 100).toFixed(1) + "%"}
-      </td>
-    );
-  }
-
-  renderMarginCell(candidates, winner) {
-    var party;
-    if (winner) {
-      party = ["Dem", "GOP"].includes(winner.party)
-        ? winner.party.toLowerCase()
-        : "ind";
-    }
-
-    var cell = (
-      <td class={`vote margin ${party}`}>
-        {this.calculateVoteMargin(candidates, winner)}
-      </td>
-    );
-    return cell;
-  }
-
+function ResultsRowCounty(props) {
   // TODO: figure out if this can be done a cleaner way
   // DO we want to mark someone as a winner if 100% are reporting but it hasn't been called?
-  determineWinner(results) {
+  var determineWinner = results => {
     if (parseInt(results.reporting) / parseInt(results.precincts) < 1) {
       return null;
     }
 
     // First candidate should be leading/winner since we sort by votes.
     return results.candidates[0];
+  };
+
+  var row = props.row;
+  var displayMetric = props.metric;
+
+  var availableCandidates = row.candidates
+    .slice(0, 2)
+    .sort((a, b) => (a.party < b.party ? -1 : 1));
+
+  // Default to population.
+  let extraMetric;
+  if (displayMetric["census"]) {
+    extraMetric = row.county.census[displayMetric["key"]];
+  } else {
+    // TODO: get the rest of these working, if we decide to use them
+    extraMetric = row.county[displayMetric["key"]];
+  }
+  extraMetric = parseInt(extraMetric);
+
+  if (displayMetric["comma_filter"]) {
+    extraMetric = fmtComma(extraMetric);
   }
 
-  sortCountyResults() {
-    var sortMetric = this.state.sortMetric;
-    var topToBottom = this.state.topToBottom;
-    var values = [];
-
-    for (let county of this.props.data) {
-      let sorter;
-      if (this.state.sortMetric["census"]) {
-        sorter = county.county.census[sortMetric["key"]];
-      } else {
-        sorter = county.county[sortMetric["key"]];
-      }
-      values.push([county.fips, sorter]);
-    }
-
-    values.sort(function (a, b) {
-      // TODO: get this working if needed?
-      if (sortMetric["key"] === "past_margin") {
-        // always put Democratic wins on top
-        if (a[1][0] === "D" && b[1][0] === "R") return -1;
-        if (a[1][0] === "R" && b[1][0] === "D") return 1;
-
-        const aMargin = parseInt(a[1].split("+")[1]);
-        const bMargin = parseInt(b[1].split("+")[1]);
-
-        // if Republican, sort in ascending order
-        // if Democratic, sort in descending order
-        if (a[1][0] === "R") {
-          return aMargin - bMargin;
-        } else {
-          return bMargin - aMargin;
-        }
-      }
-
-      if (sortMetric["alpha"]) {
-        if (topToBottom) {
-          return a[1] > b[1] ? -1 : 1;
-        } else {
-          return a[1] > b[1] ? 1 : -1;
-        }
-      } else {
-        return topToBottom ? b[1] - a[1] : a[1] - b[1];
-      }
-    });
-    return values;
+  if (displayMetric["percent_filter"]) {
+    extraMetric = (extraMetric * 100).toFixed(1) + "%";
   }
 
-  calculateVoteMargin(results) {
-    // TODO: re-do what to do here if there isn't someone ahead?
-    if (!results[0].votes) {
-      return "-";
-    }
-    var winnerMargin = results[0].percent - results[1].percent;
-
-    let prefix;
-    if (results[0].party === "Dem") {
-      prefix = "D";
-    } else if (results[0].party === "GOP") {
-      prefix = "R";
-    } else {
-      prefix = "I";
-    }
-
-    return prefix + " +" + Math.round(winnerMargin * 100);
+  if (displayMetric["prepend"]) {
+    extraMetric = this.state.sortMetric["prepend"] + extraMetric;
   }
+
+  if (displayMetric["append"]) {
+    extraMetric = extraMetric.toFixed(1) + displayMetric["append"];
+  }
+
+  var winner = determineWinner(row);
+
+  return (
+    <tr>
+      <td class="county">
+        <span class="precincts mobile">{row.county.countyName}</span>
+      </td>
+      <td class="precincts amt">
+        {reportingPercentage(row.reporting / row.precincts) + "% in"}
+      </td>
+      {availableCandidates.map(c => CandidatePercentCell(c))}
+      {MarginCell(row.candidates, winner)}
+      <td> {extraMetric} </td>
+    </tr>
+  );
+}
+
+// Display a candidate % cell
+function CandidatePercentCell(candidate) {
+  // TODO: add in independent class
+  var displayPercent = (candidate.percent * 100).toFixed(1);
+  return (
+    <td
+      class={`vote ${candidate.party.toLowerCase()} ${
+        candidate.winner ? "winner" : ""
+      }`}
+      key={candidate.id}>
+      {`${displayPercent}%`}
+    </td>
+  );
+}
+
+function MarginCell(candidates, winner) {
+  var party;
+  if (winner) {
+    party = ["Dem", "GOP"].includes(winner.party)
+      ? winner.party.toLowerCase()
+      : "ind";
+  }
+
+  return (
+    <td class={`vote margin ${party}`}>{calculateVoteMargin(candidates)}</td>
+  );
+}
+
+function calculateVoteMargin(candidates) {
+  // TODO: re-do what to do here if there isn't someone ahead or it's low vote count
+  if (!candidates[0].votes) {
+    return "-";
+  }
+  var winnerMargin = candidates[0].percent - candidates[1].percent;
+
+  let prefix;
+  if (candidates[0].party === "Dem") {
+    prefix = "D";
+  } else if (candidates[0].party === "GOP") {
+    prefix = "R";
+  } else {
+    prefix = "I";
+  }
+
+  return prefix + " +" + Math.round(winnerMargin * 100);
 }
 
 // this.onMetricClick add me back in if we add the table toggles
-function renderMetricLi(metric) {
-  return (
-    <li
-      class={
-        "sortButton " + metric === this.state.sortMetric ? "selected" : ""
-      }>
-      <span class="metric">{[metric["name"]]}</span>
-      {metric.name !== "% College-Educated" ? <span class="pipe">|</span> : ""}
-    </li>
-  );
-}
+// function renderMetricLi(metric) {
+//   return (
+//     <li
+//       class={
+//         "sortButton " + metric === this.state.sortMetric ? "selected" : ""
+//       }>
+//       <span class="metric">{[metric["name"]]}</span>
+//       {metric.name !== "% College-Educated" ? <span class="pipe">|</span> : ""}
+//     </li>
+//   );
+// }
