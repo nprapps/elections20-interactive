@@ -33,7 +33,11 @@ export default class BoardGovernor extends Component {
 
     return <>
       <h1>Governor</h1>
-      <Results races={races}/>
+      <div class="board-container">
+        <Results races={races}/>
+        <Results races={races}/>
+        <Results races={races}/>
+      </div>
     </>;
   }
 }

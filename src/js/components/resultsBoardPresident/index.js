@@ -1,7 +1,7 @@
 import { h, Fragment } from "preact";
 import { cssClass, reportingPercentage } from "../util";
 
-import "../resultsBoardNamed/resultsBoardNamed.less";
+import "../resultsBoardNamed/resultsBoard.less";
 
 var sortParty = function(p) {
   return p == "GOP" ? Infinity : p == "Dem" ? -Infinity : 0;
@@ -20,21 +20,21 @@ function CandidateCells(race) {
 
     return (
       <td class={className.join(" ")}>
-        <span class="perc">{Math.round(c.percent*100)}%</span>
+        <div class="perc">{Math.round(c.percent*100)}%</div>
       </td>
     );
   });
 }
 
 export default function ResultsBoardPresident(props) {
+  console.log("props",props)
 
   return (
     <table class="president results table">
     	<tr>
-    		<th>State</th>
-    		<th></th>
-    		<th>Biden</th>
-    		<th>Trump</th>
+    		<th colspan="2" class="state-hed">State</th>
+    		<th>Dem.</th>
+    		<th>Rep.</th>
     		<th>Ind.</th>
     	</tr>
 
@@ -53,7 +53,7 @@ export default function ResultsBoardPresident(props) {
             <td class="reporting">{percentIn}</td>
 
             {/* Open */}
-            <td class="open-label" colspan="3">Polls still open</td>
+            <td class="open-label" colspan="4">Last polls close at TK ET</td>
 
             {/* Candidates */}
             {CandidateCells(r)}

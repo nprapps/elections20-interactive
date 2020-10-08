@@ -34,7 +34,11 @@ export default class BoardPresident extends Component {
     return <>
       <h1>President</h1>
       <div class="placeholder">Map or dataviz</div>
-      <Results races={races}/>
+      <div class="board-container">
+        <Results races={races}/>
+        <Results races={races}/>
+        <Results races={races}/>
+      </div>
     </>
   }
 }

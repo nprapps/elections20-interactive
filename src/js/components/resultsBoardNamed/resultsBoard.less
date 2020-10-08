@@ -1,4 +1,9 @@
+.board-container {
+	display: flex;
+}
+
 table.results {
+	flex: 1;
 	font-family: 'Gotham SSm', Helvetica, Arial, sans-serif;
 	color: #666;
 	font-size: 11px;
@@ -12,7 +17,7 @@ table.results {
 	}
 
 	tr.open {
-		.candidate {
+		.candidate, .reporting {
 			display: none;
 		}
 
@@ -70,4 +75,30 @@ table.results {
   	text-transform: uppercase;
   	border: 0;
   }
+}
+
+table.results.president {
+	th {
+		font-size: 11px;
+		font-family: 'Knockout 31 4r','Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
+		text-transform: uppercase;
+		font-weight: normal;
+		letter-spacing: 0.05em;
+  	-webkit-font-smoothing: antialiased;
+  	padding-bottom: 4px;
+  	// text-align: left;
+  	// transform: rotate(-90deg);
+  	// transform-origin: left;
+
+		&.state-hed {
+			padding-left: 6px;
+			transform: rotate(0);
+			text-align: left;
+		}
+	}
+	td.candidate .perc {
+		float: none;
+		text-align: center;
+		margin: 0;
+	}
 }

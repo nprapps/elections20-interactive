@@ -35,7 +35,11 @@ export default class BoardHouse extends Component {
     return <>
       <h1>Key House Results</h1>
       <BalanceOfPower race="house" />
-      <Results races={races}/>
+      <div class="board-container">
+        <Results races={races}/>
+        <Results races={races}/>
+        <Results races={races}/>
+      </div>
     </>
   }
 }
