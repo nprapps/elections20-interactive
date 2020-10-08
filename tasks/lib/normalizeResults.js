@@ -118,7 +118,7 @@ module.exports = function (resultArray, overrides = {}) {
   // we will instead restructure into groupings by geography
   var output = [];
 
-  var { calls = {}, candidates = {}, rosters = {} } = overrides;
+  var { calls = [], candidates = {}, rosters = {} } = overrides;
 
   var nprMetadata = {
     ...overrides.house,
@@ -190,7 +190,7 @@ module.exports = function (resultArray, overrides = {}) {
           ballot = mergeOthers(ballot, raceMeta.id);
         }
 
-        var [ call ] = overrides.calls.filter(function(row) {
+        var [ call ] = calls.filter(function(row) {
           if (row.raceID != unitMeta.id) return false;
           if (row.state && row.state != unitMeta.state) return false;
           if (row.fips && row.fips != unitMeta.fips) return false;
