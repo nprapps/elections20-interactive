@@ -1,5 +1,6 @@
 import { h, Fragment } from "preact";
 import { cssClass, reportingPercentage } from "../util";
+import states from "states.sheet.json";
 
 import "./resultsBoard.less";
 
@@ -45,13 +46,13 @@ export default function ResultsBoardNamed(props) {
               <tr class={hasResult ? "closed" : "open"}>
 
                 {/* State */}
-                <td class={"state " + (winner[0] ? ("winner " + winner[0].party) : "")}>{r.state}{r.seatNumber ? "-" + r.seatNumber : ""}</td>
+                <td class={"state " + (winner[0] ? ("winner " + winner[0].party) : "")}>{states[r.state].ap} {r.seatNumber ? r.seatNumber : ""}</td>
 
                 {/* EEVP */}
                 <td class="reporting">{percentIn}</td>
 
                 {/* Open */}
-                <td class="open-label" colspan="3">Last polls close at TK ET</td>
+                <td class="open-label" colspan="3">Last polls close at {states[r.state].closingTime} ET</td>
 
                 {/* Candidates */}
                 {CandidateCells(r)}
