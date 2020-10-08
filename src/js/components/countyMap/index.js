@@ -1,8 +1,7 @@
-// Polyfills that aren't covered by `babel-preset-env`
-
-// import { h, createProjector } from 'maquette';
 import { h, Component, createRef } from "preact";
 import gopher from "../gopher.js";
+import { fmtComma, reportingPercentage } from "../util.js";
+import "./countyMap.less";
 
 var specialStates = new Set(["IA", "MA", "OK", "WA"]);
 
@@ -15,6 +14,8 @@ export class CountyMap extends Component {
 
     this.state = {};
     this.svgRef = createRef();
+    this.containerRef = createRef();
+    this.mapContainerRef = createRef();
     this.tooltipRef = createRef();
     this.guid = 0;
   }
@@ -36,45 +37,41 @@ export class CountyMap extends Component {
 
   render() {
     var isChonky = specialStates.has(this.props.state);
+    console.log(this.props.data[0].candidates);
 
     return (
       <div
         class={"county-map" + (isChonky ? " chonky" : "")}
         data-as="map"
-        aria-hidden="true"
-      >
-        <div class="container horizontal" data-as="container">
+        aria-hidden="true">
+        <div ref={this.containerRef} class="container" data-as="container">
           <svg
             class="patterns"
-            style="opacity: 0; position: absolute; left: -1000px"
-          >
+            style="opacity: 0; position: absolute; left: -1000px">
             <pattern
               id="pending-0"
               class="stripes"
               width="10"
               height="10"
               patternUnits="userSpaceOnUse"
-              patternTransform="rotate(-45)"
-            >
+              patternTransform="rotate(-45)">
               <path
                 d="M5,0L5,10"
                 stroke="rgba(0, 0, 0, .2)"
-                stroke-width="4"
-              ></path>
+                stroke-width="4"></path>
             </pattern>
           </svg>
           <div class="key" data-as="key">
             <div class="key-grid">
-              {this.props.data[0].candidates.map((candidate) =>
+              {this.props.data[0].candidates.map(candidate =>
                 this.createLegend(candidate)
               )}
             </div>
           </div>
           <div
+            ref={this.mapContainerRef}
             class="map-container"
-            data-as="mapContainer"
-            style="height: 65vh; width: 55.794vh;"
-          >
+            data-as="mapContainer">
             <div class="map" data-as="map">
               <div ref={this.svgRef}></div>
             </div>
@@ -96,44 +93,51 @@ export class CountyMap extends Component {
       p.setAttribute("vector-effect", "non-scaling-stroke");
     });
 
-    var width = svg.getAttribute("width") * 1;
-    var height = svg.getAttribute("height") * 1;
-
-    svg.addEventListener("click", (e) => this.onClick(e));
-    svg.addEventListener("mousemove", (e) => this.onMove(e));
-    svg.addEventListener("mouseleave", (e) => this.onMove(e));
-    // var embedded = document.body.classList.contains("embedded");
-
-    // Move this to own function called in render?
-    // if (width > height * 1.4) {
-    //   var ratio = height / width;
-    //   elements.mapContainer.style.width = "100%";
-    //   elements.mapContainer.style.paddingBottom = `${100 * ratio}%`;
-    // } //else {
-    //   var ratio = width / height;
-    //   if (embedded) {
-    //     var w = 500;
-    //     var h = w * ratio;
-    //     if (w > window.innerWidth) {
-    //       w = window.innerWidth - 32;
-    //       h = w * ratio;
-    //     }
-    //     elements.mapContainer.style.height = w + "px";
-    //     elements.mapContainer.style.width = h + "px";
-    //   } else {
-    //     var basis = height > width * 1.1 ? 65 : 55;
-    //     elements.mapContainer.style.height = basis + "vh";
-    //     elements.mapContainer.style.width = `${basis * ratio}vh`;
-    //   }
-    // }
-    // // elements.aspect.style.paddingBottom = height / width * 100 + "%";
-    // elements.container.classList.toggle("horizontal", width < height);
+    svg.addEventListener("click", e => this.onClick(e));
+    svg.addEventListener("mousemove", e => this.onMove(e));
+    svg.addEventListener("mouseleave", e => this.onMove(e));
 
     this.svg = svg;
 
     this.paint();
 
+    this.updateDimensions();
+
     return svg;
+  }
+
+  updateDimensions() {
+    var width = this.svg.getAttribute("width") * 1;
+    var height = this.svg.getAttribute("height") * 1;
+
+    // TODO: fix this
+    var embedded = false; //document.body.classList.contains("embedded");
+    var mapContainer = this.mapContainerRef.current;
+
+    if (width > height * 1.4) {
+      var ratio = height / (width * 2);
+      mapContainer.style.width = "100%";
+      mapContainer.style.paddingBottom = `${100 * ratio}%`;
+    } else {
+      var ratio = width / height;
+      if (embedded) {
+        var w = 500;
+        var h = w * ratio;
+        if (w > window.innerWidth) {
+          w = window.innerWidth - 32;
+          h = w * ratio;
+        }
+        mapContainer.style.width = w + "px";
+        mapContainer.style.height = h + "px";
+      } else {
+        var basis = height > width * 1.1 ? 65 : 55;
+        mapContainer.style.width = basis + "vh";
+        mapContainer.style.height = `${basis * ratio}vh`;
+      }
+    }
+
+    // elements.aspect.style.paddingBottom = height / width * 100 + "%";
+    this.containerRef.current.classList.toggle("horizontal", width < height);
   }
 
   paint() {
@@ -166,7 +170,7 @@ export class CountyMap extends Component {
       path.classList.add("painted");
       var pigment = this.palette[top.party];
       // TODO: eevp or precints reporting here and below
-      var hitThreshold = mapData[d].reporting/mapData[d].precincts > .5;
+      var hitThreshold = mapData[d].reporting / mapData[d].precincts > 0.5;
       var paint = "#bbb";
       if (hitThreshold) {
         paint = pigment ? pigment : "#bbb";
@@ -197,8 +201,7 @@ export class CountyMap extends Component {
       <div class="key-row">
         <div
           class="swatch"
-          style={`background: ${this.palette[candidate.party]};`}
-        ></div>
+          style={`background: ${this.palette[candidate.party]};`}></div>
         <div class="name">{name}</div>
       </div>
     );
@@ -219,7 +222,7 @@ export class CountyMap extends Component {
     var fips = county.id.replace("fips-", "");
 
     if (fips.length > 0) {
-      // TODO: add back in some version of this to communicate county change
+      // TODO: add back in some version of this to communicate county change?
       // this.dispatch("map-click", { fips });
       this.highlightCounty(fips);
     }
@@ -236,30 +239,31 @@ export class CountyMap extends Component {
     var result = this.fipsLookup[fips];
     if (result) {
       var candText = "";
-      if (result.eevp > 50) {
+      if (result.reportingPercent > 0.5) {
         var leadingCandidate = result.candidates[0];
         var prefix = leadingCandidate.winner ? "Winner: " : "Leading: ";
-        var candText =
-          prefix +
-          leadingCandidate.last +
-          " (" +
-          (leadingCandidate.percent * 100 || 0).toFixed(1) +
-          "%)";
+        var candText = `${prefix}${leadingCandidate.last} (${
+          leadingCandidate.percent
+            ? reportingPercentage(leadingCandidate.percent)
+            : 0
+        }%)`;
       }
 
       // TODO: get the county name back in and check language around eevp
-      var countyName = result.county.countyName.replace(/\s[a-z]/g, (match) =>
+      var countyName = result.county.countyName.replace(/\s[a-z]/g, match =>
         match.toUpperCase()
       );
-      var perReporting = result.reporting/result.precincts * 100 ;
+      var perReporting = reportingPercentage(result.reportingPercent);
       tooltip.innerHTML = `
         <div class="name">${countyName}</div>
         <div class="result">${candText}</div>
         <div class="reporting">${perReporting}% reporting</div>
-        <div class="pop">Pop. ${result.county.census.population.toLocaleString()}</div>
+        <div class="pop">Pop. ${fmtComma(
+          result.county.census.population * 1
+        )}</div>
       `;
     }
-    
+
     var bounds = this.svgRef.current.getBoundingClientRect();
     var x = e.clientX - bounds.left;
     var y = e.clientY - bounds.top;
