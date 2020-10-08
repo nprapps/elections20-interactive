@@ -16,12 +16,16 @@ export default function ResultsTableCandidates(props) {
   }
 
   var isUncontested = results.candidates.length < 2;
+  var reporting =
+    results.office === "H"
+      ? `${reportingPercentage(props.data.reportingPercent)}% reporting`
+      : `${reportingPercentage(props.data.eevp)}% in`;
 
   return (
     <div class="results-table statewide">
       <div class="results-header">
         {seatName ? <caption> {seatName}</caption> : ""}
-        <span class="reporting">{props.data.eevp * 100 || 0}% in</span>
+        <span class="reporting">{reporting}</span>
       </div>
       <div class={"board " + (isUncontested ? "uncontested" : "")} role="table">
         <div class="thead" role="rowgroup">
@@ -61,9 +65,7 @@ export function ResultsTableCandidatesRow(props) {
     <Fragment>
       <div class="row-wrapper" role="presentation">
         <div class={`${classes.join(" ")}`} role="row">
-          <div
-            aria-hidden="true"
-            class={`td flourishes ${imgClass}`}>
+          <div aria-hidden="true" class={`td flourishes ${imgClass}`}>
             <div
               class={`"mugshot ${imgClass}`}
               style={`background-image: url( ${mugshot})`}></div>
