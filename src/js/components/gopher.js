@@ -29,14 +29,20 @@ export class Gopher extends EventTarget {
     var headers = {};
     if (entry.etag) headers["If-None-Match"] = entry.etag;
     if (entry.modified) headers["If-Modified-Since"] = entry.modified;
-    var response = await fetch(entry.url, { headers });
-    if (response.status == 304) return;
-    entry.etag = response.headers.get("etag") || entry.etag;
-    entry.modified = response.headers.get("last-modified") || entry.modified;
-    var json = await response.json();
-    entry.last = json;
-    entry.callbacks.forEach((c) => c(json));
-    return json;
+    try {
+      var response = await fetch(entry.url, { headers });
+      if (response.status == 304) return;
+      entry.etag = response.headers.get("etag") || entry.etag;
+      entry.modified = response.headers.get("last-modified") || entry.modified;
+      var json = await response.json();
+      entry.last = json;
+      entry.callbacks.forEach((c) => c(json));
+      return json;
+    } catch (e) {
+      // log failures, but tolerate them
+      console.error(e);
+      return;
+    }
   }
 
   watch(url, callback) {
@@ -83,7 +89,6 @@ export class Gopher extends EventTarget {
       return this.sync(entry);
     });
     await Promise.all(requests);
-    await new Promise(ok => setTimeout(ok, 1000));
     this.dispatchEvent("sync-end");
     this.schedule();
   }
