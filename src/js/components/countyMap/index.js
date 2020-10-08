@@ -5,7 +5,7 @@ import "./countyMap.less";
 
 var specialStates = new Set(["IA", "MA", "OK", "WA"]);
 
-export class CountyMap extends Component {
+export default class CountyMap extends Component {
   constructor(props) {
     super();
 

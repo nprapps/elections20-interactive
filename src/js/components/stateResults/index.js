@@ -17,9 +17,7 @@ export default class StateResults extends Component {
   constructor(props) {
     super();
 
-    this.state = {
-      active: "key"
-    };
+    this.state = {};
     this.onData = this.onData.bind(this);
   }
 

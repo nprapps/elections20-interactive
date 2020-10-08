@@ -45,15 +45,16 @@ export default function ResultsBoardPresident(props) {
             var reporting = r.eevp || r.reportingPercent;
             var percentIn = reporting ? reportingPercentage(reporting) + "% in" : "";
             var winner = r.candidates.filter(c => c.winner == "X");
+            var stateDetail = states[r.state] || {};
 
             return (
               <tr class={hasResult ? "closed" : "open"}>
 
                 {/* State */}
-                <td class={"state " + (winner[0] ? ("winner " + winner[0].party) : "")}>{states[r.state].ap}</td>
+                <td class={"state " + (winner[0] ? ("winner " + winner[0].party) : "")}>{stateDetail.ap}</td>
 
                 {/* Open */}
-                <td class="open-label" colspan="4">Last polls close at {states[r.state].closingTime} ET</td>
+                <td class="open-label" colspan="4">Last polls close at {stateDetail.closingTime} ET</td>
 
                 {/* Candidates */}
                 {CandidateCells(r)}

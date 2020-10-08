@@ -1,7 +1,7 @@
 import { h, Component, Fragment } from "preact";
 import gopher from "../gopher.js";
-import { CountyMap } from "../countyMap";
-import  ResultsTableCounty from "../resultsTableCounty";
+import CountyMap from "../countyMap";
+import ResultsTableCounty from "../resultsTableCounty";
 
 export default class CountyResults extends Component {
   constructor(props) {
