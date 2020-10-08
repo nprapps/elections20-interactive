@@ -35,8 +35,6 @@ export default class BoardGovernor extends Component {
       <h1>Governor</h1>
       <div class="board-container">
         <Results races={races}/>
-        <Results races={races}/>
-        <Results races={races}/>
       </div>
     </>;
   }

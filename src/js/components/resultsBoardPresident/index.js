@@ -30,39 +30,44 @@ export default function ResultsBoardPresident(props) {
   console.log("props",props)
 
   return (
-    <table class="president results table">
-    	<tr>
-    		<th colspan="2" class="state-hed">State</th>
-    		<th>Dem.</th>
-    		<th>Rep.</th>
-    		<th>Ind.</th>
-    	</tr>
+    <>
+      <div>
+        <h3 class="board-hed">{props.hed}</h3>
+        <table class="president results table">
+        	<tr>
+        		<th colspan="2" class="state-hed">State</th>
+        		<th>Dem.</th>
+        		<th>Rep.</th>
+        		<th>Ind.</th>
+        	</tr>
 
-      {props.races.map(function(r) {
-        var hasResult = r.eevp || r.reporting || r.called || r.runoff;
-        var reporting = r.eevp || r.reportingPercent;
-        var percentIn = reporting ? reportingPercentage(reporting) + "% in" : "";
+          {props.races.map(function(r) {
+            var hasResult = r.eevp || r.reporting || r.called || r.runoff;
+            var reporting = r.eevp || r.reportingPercent;
+            var percentIn = reporting ? reportingPercentage(reporting) + "% in" : "";
 
-        return (
-          <tr class={hasResult ? "closed" : "open"}>
+            return (
+              <tr class={hasResult ? "closed" : "open"}>
 
-            {/* State */}
-            <td class="state">{r.state}</td>
+                {/* State */}
+                <td class="state">{r.state}</td>
 
-            {/* EEVP */}
-            <td class="reporting">{percentIn}</td>
+                {/* EEVP */}
+                <td class="reporting">{percentIn}</td>
 
-            {/* Open */}
-            <td class="open-label" colspan="4">Last polls close at TK ET</td>
+                {/* Open */}
+                <td class="open-label" colspan="4">Last polls close at TK ET</td>
 
-            {/* Candidates */}
-            {CandidateCells(r)}
+                {/* Candidates */}
+                {CandidateCells(r)}
 
-            {/* Runoff */}
-            <td class="runoff-label">{r.runoff ? "Runoff" : ""}</td>
-          </tr>
-        );
-    })}
-    </table>
+                {/* Runoff */}
+                <td class="runoff-label">{r.runoff ? "Runoff" : ""}</td>
+              </tr>
+            );
+        })}
+        </table>
+      </div>
+    </>
   )
 }

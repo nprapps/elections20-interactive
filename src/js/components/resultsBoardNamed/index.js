@@ -31,32 +31,37 @@ export default function ResultsBoardNamed(props) {
   console.log("props",props)
 
   return (
-    <table class="named results table">
-      {props.races.map(function(r) {
-        var hasResult = r.eevp || r.reporting || r.called || r.runoff;
-        var reporting = r.eevp || r.reportingPercent;
-        var percentIn = reporting ? reportingPercentage(reporting) + "% in" : "";
+    <>
+      <div>
+        <h3 class="board-hed">{props.hed}</h3>
+        <table class="named results table">
+          {props.races.map(function(r) {
+            var hasResult = r.eevp || r.reporting || r.called || r.runoff;
+            var reporting = r.eevp || r.reportingPercent;
+            var percentIn = reporting ? reportingPercentage(reporting) + "% in" : "";
 
-        return (
-          <tr class={hasResult ? "closed" : "open"}>
+            return (
+              <tr class={hasResult ? "closed" : "open"}>
 
-            {/* State */}
-            <td class="state">{r.state}{r.seatNumber ? "-" + r.seatNumber : ""}</td>
+                {/* State */}
+                <td class="state">{r.state}{r.seatNumber ? "-" + r.seatNumber : ""}</td>
 
-            {/* EEVP */}
-            <td class="reporting">{percentIn}</td>
+                {/* EEVP */}
+                <td class="reporting">{percentIn}</td>
 
-            {/* Open */}
-            <td class="open-label" colspan="3">Last polls close at TK ET</td>
+                {/* Open */}
+                <td class="open-label" colspan="3">Last polls close at TK ET</td>
 
-            {/* Candidates */}
-            {CandidateCells(r)}
+                {/* Candidates */}
+                {CandidateCells(r)}
 
-            {/* Runoff */}
-            <td class="runoff-label">{r.runoff ? "Runoff" : ""}</td>
-          </tr>
-        );
-      })}
-    </table>
+                {/* Runoff */}
+                <td class="runoff-label">{r.runoff ? "Runoff" : ""}</td>
+              </tr>
+            );
+          })}
+        </table>
+      </div>
+    </>
   )
 }

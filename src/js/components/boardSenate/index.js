@@ -37,9 +37,9 @@ export default class BoardSenate extends Component {
         <h1>Senate</h1>
         <BalanceOfPower race="senate" />
         <div class="board-container">
-          <Results races={races}/>
-          <Results races={races}/>
-          <Results races={races}/>
+          <Results races={races} hed="Dem. Likely"/>
+          <Results races={races} hed="Tossup"/>
+          <Results races={races} hed="Rep. Likely"/>
         </div>
       </Fragment>
     );

@@ -36,9 +36,9 @@ export default class BoardHouse extends Component {
       <h1>Key House Results</h1>
       <BalanceOfPower race="house" />
       <div class="board-container">
-        <Results races={races}/>
-        <Results races={races}/>
-        <Results races={races}/>
+        <Results races={races} hed="Dem. Likely"/>
+        <Results races={races} hed="Tossup"/>
+        <Results races={races} hed="Rep. Likely"/>
       </div>
     </>
   }

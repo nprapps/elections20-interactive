@@ -35,9 +35,9 @@ export default class BoardPresident extends Component {
       <h1>President</h1>
       <div class="placeholder">Map or dataviz</div>
       <div class="board-container">
-        <Results races={races}/>
-        <Results races={races}/>
-        <Results races={races}/>
+        <Results races={races} hed="Dem. Likely"/>
+        <Results races={races} hed="Tossup"/>
+        <Results races={races} hed="Rep. Likely"/>
       </div>
     </>
   }
