@@ -45,12 +45,13 @@ export default function ResultsBoardPresident(props) {
             var hasResult = r.eevp || r.reporting || r.called || r.runoff;
             var reporting = r.eevp || r.reportingPercent;
             var percentIn = reporting ? reportingPercentage(reporting) + "% in" : "";
+            var winner = r.candidates.filter(c => c.winner == "X");
 
             return (
               <tr class={hasResult ? "closed" : "open"}>
 
                 {/* State */}
-                <td class="state">{r.state}</td>
+                <td class={"state " + (winner[0] ? ("winner " + winner[0].party) : "")}>{r.state}</td>
 
                 {/* EEVP */}
                 <td class="reporting">{percentIn}</td>
@@ -62,7 +63,7 @@ export default function ResultsBoardPresident(props) {
                 {CandidateCells(r)}
 
                 {/* Electoral votes */}
-                <td class="electoral">{r.electoral}</td>
+                <td class={"electoral " + (winner[0] ? ("winner " + winner[0].party) : "")}>{r.electoral}</td>
 
                 {/* Runoff */}
                 <td class="runoff-label">{r.runoff ? "Runoff" : ""}</td>

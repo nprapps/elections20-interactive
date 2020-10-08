@@ -39,12 +39,13 @@ export default function ResultsBoardNamed(props) {
             var hasResult = r.eevp || r.reporting || r.called || r.runoff;
             var reporting = r.eevp || r.reportingPercent;
             var percentIn = reporting ? reportingPercentage(reporting) + "% in" : "";
+            var winner = r.candidates.filter(c => c.winner == "X");
 
             return (
               <tr class={hasResult ? "closed" : "open"}>
 
                 {/* State */}
-                <td class="state">{r.state}{r.seatNumber ? "-" + r.seatNumber : ""}</td>
+                <td class={"state " + (winner[0] ? ("winner " + winner[0].party) : "")}>{r.state}{r.seatNumber ? "-" + r.seatNumber : ""}</td>
 
                 {/* EEVP */}
                 <td class="reporting">{percentIn}</td>

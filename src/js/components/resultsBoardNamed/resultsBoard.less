@@ -40,32 +40,25 @@ table.results {
 	td.state {
 		border-left: 0;
 		color: #444;
+
+		&.winner {
+			font-weight: bold;
+			color: green;
+		}
+		&.winner.Dem {
+			color: #237BBD;
+		}
+		&.winner.GOP {
+			color: #D61F21;
+		}
 	}
 	td.reporting {
 		border-left: 0;
+		padding-left: 0;
 		font-size: 9px;
 		font-style: italic;
 		color: #9a9a9a;
 	}
-  td.leading {
-  	background: #D7F0E2;
-  }
-  td.winner {
-  	color: white;
-  	background: #15B16E;
-  }
-  td.GOP.leading {
-  	background: #fad5d4;
-  }
-  td.Dem.leading {
-  	background: #d8eaf9;
-  }
-  td.GOP.winner {
-  	background: #D61F21;
-  }
-  td.Dem.winner {
-  	background: #237BBD;
-  }
   td.candidate {
   	.perc {
   		float: right;
@@ -75,6 +68,36 @@ table.results {
   	&.runoff {
   		background: white;
   	}
+  	&.leading {
+	  	background: #D7F0E2;
+	  }
+	  &.winner {
+	  	color: white;
+	  	background: #15B16E;
+	  }
+	  &.GOP.leading {
+	  	background: #fad5d4;
+	  }
+	  &.Dem.leading {
+	  	background: #d8eaf9;
+	  }
+	  &.GOP.winner {
+	  	background: #D61F21;
+	  }
+	  &.Dem.winner {
+	  	background: #237BBD;
+	  }
+  }
+  td.electoral {
+  	&.winner {
+  		color: green;
+  	}
+  	&.winner.Dem {
+			color: #237BBD;
+		}
+		&.winner.GOP {
+			color: #D61F21;
+		}
   }
   td.runoff-label {
   	font-size: 8px;
