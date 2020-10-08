@@ -1,13 +1,32 @@
 import { h, Fragment } from "preact";
+import { cssClass, reportingPercentage } from "../util";
 
 import "../resultsBoardNamed/resultsBoardNamed.less";
 
-export default function(props) {
-  console.log("props",props)
+var sortParty = function(p) {
+  return p == "GOP" ? Infinity : p == "Dem" ? -Infinity : 0;
+};
 
-  var sortValue = function(p) {
-    return p == "GOP" ? Infinity : p == "Dem" ? -Infinity : 0;
-  } 
+function CandidateCells(race) {
+  var sorted = race.candidates.slice(0, 2).sort((a, b) => sortParty(a.party) - sortParty(b.party));
+  var leading = race.candidates[0];
+  var reporting = race.eevp || race.reportingPercent;
+
+  return sorted.map(function(c) {
+    var className = ["candidate", c.party];
+    if (reporting > .5 && c == leading) className.push("leading");
+    if (c.winner == "X") className.push("winner");
+    if (race.runoff) className.push("runoff");
+
+    return (
+      <td class={className.join(" ")}>
+        <span class="perc">{Math.round(c.percent*100)}%</span>
+      </td>
+    );
+  });
+}
+
+export default function ResultsBoardPresident(props) {
 
   return (
     <table class="president results table">
@@ -19,30 +38,31 @@ export default function(props) {
     		<th>Ind.</th>
     	</tr>
 
-      {props.races.map(r => (
-        <tr class={((r.eevp == 0 || r.reporting == 0) && !r.called && !r.runoff) ? "open" : ""}>
+      {props.races.map(function(r) {
+        var hasResult = r.eevp || r.reporting || r.called || r.runoff;
+        var reporting = r.eevp || r.reportingPercent;
+        var percentIn = reporting ? reportingPercentage(reporting) + "% in" : "";
 
-          {/* State */}
-          <td class="state">{r.state}</td>
+        return (
+          <tr class={hasResult ? "closed" : "open"}>
 
-          {/* EEVP */}
-          <td class="reporting">{(r.eevp && (r.eevp > 0 || r.called || r.runoff)) ? (r.eevp + "% in") : (r.eevp && r.eevp == 0) ? "" : (r.reporting > 0 || r.called || r.runoff) ? ((r.reporting / r.precincts * 100) + "% in") : ""}</td>
+            {/* State */}
+            <td class="state">{r.state}</td>
 
-          {/* Open */}
-          <td class="open-label" colspan="3">Polls still open</td>
+            {/* EEVP */}
+            <td class="reporting">{percentIn}</td>
 
-          {/* Candidates */}
-          {r.candidates[0].leading = true}
-          {r.candidates.slice(0,3).sort((a,b) => (sortValue(a.party) - sortValue(b.party))).map(c => (
-            <td class={"candidate " + c.party + (((r.eevp > 50 || (!r.eevp && ((r.reporting / r.precincts) > 0.5)))) && c.leading ? " leading" : "") + (c.winner == "X" ? " winner" : "") + (r.runoff ? " runoff" : "")}>
-              {Math.round(c.percent*100)}%
-            </td>
-          ))}
+            {/* Open */}
+            <td class="open-label" colspan="3">Polls still open</td>
 
-          {/* Runoff */}
-          <td class="runoff-label">{r.runoff ? "Runoff" : ""}</td>
-        </tr>
-      ))}
+            {/* Candidates */}
+            {CandidateCells(r)}
+
+            {/* Runoff */}
+            <td class="runoff-label">{r.runoff ? "Runoff" : ""}</td>
+          </tr>
+        );
+    })}
     </table>
   )
 }

@@ -136,6 +136,14 @@ module.exports = function (resultArray, overrides = {}) {
           level,
         };
 
+        // normalize reporting data
+        if (unitMeta.eevp) {
+          unitMeta.eevp /= 100;
+        }
+        if (unitMeta.precincts) {
+          unitMeta.reportingPercent = unitMeta.reporting / unitMeta.precincts;
+        }
+
         var sheetMetadata =
           overrides.house[raceMeta.id] ||
           overrides.senate[raceMeta.id] ||
