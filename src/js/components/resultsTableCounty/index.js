@@ -75,12 +75,10 @@ export default class ResultsTableCounty extends Component {
     };
   }
 
-  // scrollToRef(ref) {
-  //   // TODO: will this work with embeds?
-  //   // if (this.state.collapsed) {
-  //     ref.current.scrollIntoView({ behavior: "smooth" });
-  //   // }
-  // }
+  scrollToRef(ref) {
+    // TODO: how will this work with embeds?
+    
+  }
 
   toggleCollapsed() {
     const currentState = this.state.collapsed;
@@ -250,7 +248,7 @@ export default class ResultsTableCounty extends Component {
   }
 
   // TODO: figure out if this can be done a cleaner way
-  // And test on results with values that aren't just 0
+  // DO we want to mark someone as a winner if 100% are reporting but it hasn't been called?
   determineWinner(results) {
     if (parseInt(results.reporting) / parseInt(results.precincts) < 1) {
       return null;
@@ -276,7 +274,7 @@ export default class ResultsTableCounty extends Component {
     }
 
     values.sort(function (a, b) {
-      // TODO: get this working
+      // TODO: get this working if needed?
       if (sortMetric["key"] === "past_margin") {
         // always put Democratic wins on top
         if (a[1][0] === "D" && b[1][0] === "R") return -1;
@@ -327,7 +325,7 @@ export default class ResultsTableCounty extends Component {
   }
 }
 
-// this.onMetricClick add me back in
+// this.onMetricClick add me back in if we add the table toggles
 function renderMetricLi(metric) {
   return (
     <li
