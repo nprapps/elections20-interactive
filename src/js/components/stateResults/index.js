@@ -65,8 +65,7 @@ export class StateResults extends Component {
       return <div> Loading... </div>;
     }
 
-    // TODO: Grab state name from a mapping or include it in json
-    let stateName = stateLookup[this.props.state];
+    let stateName = stateLookup[this.props.state].name;
 
     let resultsType = `${this.state.activeView.toUpperCase()} Results`;
     return (
