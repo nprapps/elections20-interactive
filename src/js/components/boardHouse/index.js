@@ -1,6 +1,7 @@
 import { h, Component, Fragment } from "preact";
 import gopher from "../gopher.js";
 import Results from "../resultsBoardNamed";
+import { BalanceOfPower } from "../balanceOfPower";
 
 export default class BoardHouse extends Component {
   constructor(props) {
@@ -33,7 +34,7 @@ export default class BoardHouse extends Component {
 
     return <>
       <h1>Key House Results</h1>
-      <div class="placeholder">Balance of Power</div>
+      <BalanceOfPower race="house" />
       <Results races={races}/>
     </>
   }

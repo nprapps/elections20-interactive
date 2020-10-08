@@ -29,7 +29,7 @@ export class BalanceOfPower extends Component {
     }
     var results = this.getCongressBOP(this.state.data);
     
-    // TODO: add in check icon
+    // TODO: add in check icon 
     return (
       <div class="leaderboard">
         <div class="results-header-group net-gain">
@@ -53,7 +53,7 @@ export class BalanceOfPower extends Component {
         <div class="results-header-group gop">
           <h2 class="party">
             <label>
-              <i class="icon icon-ok"></i>GOP
+              GOP
             </label>
             <abbr>{results.GOP.total}</abbr>
           </h2>
