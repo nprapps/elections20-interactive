@@ -1,7 +1,7 @@
 import { h, Component, Fragment } from "preact";
 import gopher from "../gopher.js";
 import { CountyMap } from "../countyMap";
-import ResultsTableCounty from "../resultsTableCounty";
+import  ResultsTableCounty from "../resultsTableCounty";
 
 export class CountyResults extends Component {
   constructor(props) {
@@ -44,10 +44,6 @@ export class CountyResults extends Component {
     if (!this.state.data || !this.state.stateData) {
       return "";
     }
-    // const stateResults = this.state.data.filter(
-    //   c => !(c.first === "" && c.last === "Other")
-    // );
-    // Render a county-level table below
 
     return (
       <div class="results-elements">
