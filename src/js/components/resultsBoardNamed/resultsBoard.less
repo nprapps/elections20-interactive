@@ -22,7 +22,7 @@ table.results {
 	}
 
 	tr.open {
-		.candidate, .reporting {
+		.candidate, .reporting, .electoral {
 			display: none;
 		}
 
@@ -91,20 +91,23 @@ table.results.president {
 		font-weight: normal;
 		letter-spacing: 0.05em;
   	-webkit-font-smoothing: antialiased;
-  	padding-bottom: 4px;
+  	padding: 6px 4px;
   	// text-align: left;
   	// transform: rotate(-90deg);
   	// transform-origin: left;
 
 		&.state-hed {
-			padding-left: 6px;
+			// padding-left: 6px;
 			transform: rotate(0);
 			text-align: left;
 		}
 	}
-	td.candidate .perc {
+	td.candidate .perc, .electoral {
 		float: none;
 		text-align: center;
 		margin: 0;
+	}
+	.electoral {
+		color: #9a9a9a;
 	}
 }

@@ -8,7 +8,7 @@ var sortParty = function(p) {
 };
 
 function CandidateCells(race) {
-  var sorted = race.candidates.slice(0, 3).sort((a, b) => sortParty(a.party) - sortParty(b.party));
+  var sorted = race.candidates.slice(0, 2).sort((a, b) => sortParty(a.party) - sortParty(b.party));
   var leading = race.candidates[0];
   var reporting = race.eevp || race.reportingPercent;
 
@@ -36,9 +36,9 @@ export default function ResultsBoardPresident(props) {
         <table class="president results table">
         	<tr>
         		<th colspan="2" class="state-hed">State</th>
-        		<th>Dem.</th>
-        		<th>Rep.</th>
-        		<th>Ind.</th>
+        		<th>Biden</th>
+        		<th>Trump</th>
+        		<th>Votes</th>
         	</tr>
 
           {props.races.map(function(r) {
@@ -60,6 +60,9 @@ export default function ResultsBoardPresident(props) {
 
                 {/* Candidates */}
                 {CandidateCells(r)}
+
+                {/* Electoral votes */}
+                <td class="electoral">{r.electoral}</td>
 
                 {/* Runoff */}
                 <td class="runoff-label">{r.runoff ? "Runoff" : ""}</td>
