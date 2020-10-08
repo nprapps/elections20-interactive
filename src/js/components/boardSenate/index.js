@@ -1,7 +1,7 @@
 import { h, Component, Fragment } from "preact";
 import gopher from "../gopher.js";
 import Results from "../resultsBoardNamed";
-import { BalanceOfPower } from "../BalanceOfPower";
+import { BalanceOfPower } from "../balanceOfPower";
 
 export default class BoardSenate extends Component {
   constructor(props) {
