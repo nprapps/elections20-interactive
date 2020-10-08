@@ -151,8 +151,6 @@ module.exports = function (resultArray, overrides = {}) {
         unitMeta.previousParty = sheetMetadata ? sheetMetadata.party : null;
         unitMeta.updated = Date.parse(unitMeta.updated);
 
-        var call = overrides.calls[raceMeta.id];
-
         var total = 0;
         var parties = new Set();
         var ballot = unit.candidates.map(function (c) {
@@ -163,6 +161,7 @@ module.exports = function (resultArray, overrides = {}) {
             for (var k in override) {
               if (override[k]) c[k] = override[k];
             }
+            console.log(`Applying candidate overrides for #${c.id} (${c.first} ${c.last})`);
           }
           total += c.votes;
           parties.add(c.party);
@@ -173,6 +172,7 @@ module.exports = function (resultArray, overrides = {}) {
         var roster = rosters[raceMeta.id];
         if (roster) {
           roster = new Set(roster.toString().split(/,\s*/));
+          console.log(`Overriding the roster for race #${unitMeta.id} - ${roster.size} candidates`);
           ballot = ballot.filter(c => roster.has(c.id));
         }
 
@@ -187,12 +187,21 @@ module.exports = function (resultArray, overrides = {}) {
           ballot = mergeOthers(ballot, raceMeta.id);
         }
 
+        var [ call ] = overrides.calls.filter(function(row) {
+          if (row.raceID != unitMeta.id) return false;
+          if (row.state && row.state != unitMeta.state) return false;
+          if (row.fips && row.fips != unitMeta.fips) return false;
+          return true;
+        });
+
+        if (call) console.log(`Overriding winner (${call.candidate}) for race #${unitMeta.id}`);
+
         var winners = new Set();
         ballot.forEach(function (c) {
           // assign percentages
           c.percent = Math.round((c.votes / total) * ROUNDING) / ROUNDING;
           if (call) {
-            if (call == c.id) {
+            if (call.candidate == c.id) {
               c.winner = "X";
             } else {
               delete c.winner;
