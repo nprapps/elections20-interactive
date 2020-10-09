@@ -56,6 +56,7 @@ export default class CountyResults extends Component {
         <ResultsTableCounty
           state={this.props.state.toUpperCase()}
           data={this.state.data}
+          sortOrder={this.props.order}
         />
         <CountyDataViz data={this.state.data}/>
       </div>
