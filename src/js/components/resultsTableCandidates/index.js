@@ -56,7 +56,7 @@ export function ResultsTableCandidatesRow(props) {
   var result = props.data;
   var mugshot;
 
-  var classes = ["tr", "candidate", result.party.toLowerCase()];
+  var classes = ["tr", "candidate", result.party || result.last];
   if (result.winner) classes.push("winner");
   if (result.incumbent) classes.push("incumbent");
   if (!mugshot) classes.push("noimg");

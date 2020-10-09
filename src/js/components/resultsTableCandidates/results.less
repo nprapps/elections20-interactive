@@ -1,4 +1,4 @@
-@import "values";
+@import "../../../css/values";
 
 .results-table.statewide {
   display: block;
@@ -131,43 +131,50 @@
         background: var(--shaded);
         height: 4em;
 
+        .bar {
+          background: var(--ind);
+          height: @bar-height;
+        }
+
         &.noimg {
           border-radius: 0;
         }
 
         &.winner {
-          background: var(--accent-fade);
+          background: var(--ind-fade);
 
-          &.gop {
+          .bar {
+            background: var(--ind);
+          }
+
+          &.GOP, &.No {
             background: var(--gop-fade);
-
-            .bar {
-              background: var(--gop);
-            }
           }
 
-          &.dem {
+          &.Dem {
             background: var(--dem-fade);
-
-            .bar {
-              background: var(--dem);
-            }
           }
 
-          // &.other {
-          //   background: var(--ind-fade);
-          // }
+          &.Other {
+            background: var(--accent-fade);
+          }
         }
 
-        &.gop {
+        &.GOP, &.No {
           .bar {
             background: var(--gop);
           }
         }
 
-        &.dem {
+        &.Dem {
           .bar {
             background: var(--dem);
+          }
+        }
+
+        &.Other {
+          .bar {
+            background: var(--accent);
           }
         }
       }
@@ -215,11 +222,6 @@
         top: 0;
         left: @mug-size + @flourish-margin;
         right: 0;
-      }
-
-      .bar {
-        height: @bar-height;
-        background: var(--accent);
       }
     }
 
