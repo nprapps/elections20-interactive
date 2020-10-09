@@ -205,7 +205,7 @@ module.exports = function (resultArray, overrides = {}) {
 
         if (call) console.log(`Overriding winner (${call.candidate}) for race #${unitMeta.id}`);
 
-        var winners = new Set();
+        var winner = null;
         ballot.forEach(function (c) {
           // assign percentages
           c.percent = Math.round((c.votes / total) * ROUNDING) / ROUNDING;
@@ -216,12 +216,16 @@ module.exports = function (resultArray, overrides = {}) {
               delete c.winner;
             }
           }
-          if (c.winner) winners.add(c.winner);
+          if (c.winner) winner = c.winner;
         });
 
         // set the winner and runoff flags
-        unitMeta.called = winners.has("X");
-        unitMeta.runoff = winners.has("R");
+        if (winner) {
+          unitMeta.called = true;
+          unitMeta.runoff = winner.winner == "R";
+          unitMeta.winnerParty = winner.party;
+        }
+
 
         unitMeta.candidates = ballot;
         output.push(unitMeta);

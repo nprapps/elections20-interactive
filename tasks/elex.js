@@ -89,8 +89,8 @@ module.exports = function(grunt) {
       // remaining steps are county-specific
       if (!r.fips) return;
 
-      // get the winner from the previous election
-      var prior = grunt.data.csv.prior_results
+      // get the winner from the previous presidential election
+      var president16 = grunt.data.csv.prior_results
         .filter(p => p.fipscode == r.fips)
         .sort((a, b) => b.votepct - a.votepct)
         .slice(0, 2)
@@ -109,7 +109,7 @@ module.exports = function(grunt) {
 
       var countyName = grunt.data.csv.county_names[r.fips] || "At large";
 
-      r.county = { prior, census, unemployment, countyName};
+      r.county = { president16, census, unemployment, countyName};
     });
 
     grunt.log.writeln("Generating data files...");
