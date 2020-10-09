@@ -7,7 +7,7 @@ import ResultsTableCandidates from "../resultsTableCandidates";
 import CountyResults from "../countyResults";
 import stateLookup from "states.sheet.json";
 import strings from "strings.sheet.json";
-import { getViewFromRace, toTitleCase } from "../util.js";
+import { getViewFromRace, formatters } from "../util.js";
 
 // TODO: check on the use of all of these
 const STATES_WITHOUT_COUNTY_INFO = ["AK"];

@@ -1,15 +1,11 @@
 import { h, Fragment } from "preact";
-import { cssClass, reportingPercentage } from "../util";
+import { reportingPercentage, sortByParty } from "../util";
 import states from "states.sheet.json";
 
 import "./resultsBoard.less";
 
-var sortParty = function(p) {
-  return p == "GOP" ? Infinity : p == "Dem" ? -Infinity : 0;
-} 
-
 function CandidateCells(race) {
-  var sorted = race.candidates.slice(0, 2).sort((a, b) => sortParty(a.party) - sortParty(b.party));
+  var sorted = race.candidates.slice(0, 2).sort(sortByParty);
   var leading = race.candidates[0];
   var reporting = race.eevp || race.reportingPercent;
 
@@ -28,7 +24,6 @@ function CandidateCells(race) {
 }
 
 export default function ResultsBoardNamed(props) {
-  console.log("props",props)
 
   return (
     <>
