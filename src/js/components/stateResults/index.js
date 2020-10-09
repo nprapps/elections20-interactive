@@ -50,7 +50,8 @@ export default class StateResults extends Component {
     let stateName = stateLookup[this.props.state].name;
 
     let office = props.subview || "key";
-    let viewTitle = office == "key" ? "Key Results" : strings[`office-${office}`];
+    let viewTitle =
+      office == "key" ? "Key Results" : strings[`office-${office}`];
 
     return (
       <div class="results" id="state-results">
@@ -58,8 +59,7 @@ export default class StateResults extends Component {
           <h1>
             <img
               class="icon"
-              src={"../../assets/states/" + this.props.state + ".svg"}
-            ></img>
+              src={"../../assets/states/" + this.props.state + ".svg"}></img>
             <span class="state-name">{stateName}</span>
             {viewTitle}
           </h1>
@@ -70,7 +70,6 @@ export default class StateResults extends Component {
     );
   }
 
-  // TODO: This feels like it should be cleaner, somehow
   renderResults(view) {
     if (view === "key") {
       return <KeyRaces state={this.props.state} />;
@@ -79,45 +78,54 @@ export default class StateResults extends Component {
       return (
         <div class="results-house">
           <div class="results-wrapper">
-            {races.map((race) => (
-              <ResultsTableCandidates
-                data={race}
-                class="house-race"
-              />
+            {races.map(race => (
+              <ResultsTableCandidates data={race} class="house-race" />
             ))}
           </div>
         </div>
       );
     } else {
       var races = this.state.races.filter(r => r.office == view);
-      return races.map(r => <>
-        <ResultsTableCandidates data={r} />
-        <CountyResults state={this.props.state} raceid={r.id} />
-      </>);
+      return races.map((r) => this.getRaceWithCountyResults(r));
     }
+  }
+
+  getRaceWithCountyResults(race) {
+    var order = race.candidates.map((c) => c.party);
+
+    return (
+      <>
+        <ResultsTableCandidates data={race} />
+        <CountyResults state={this.props.state} raceid={race.id} order={order} />
+      </>
+    );
   }
 
   renderTabSwitcher(view) {
     // Create the tab switcher, between different race types
     var available = new Set(this.state.races.map(r => r.office));
-    var tabs = "PGSHI".split("").filter(o => available.has(o)).map(function(data) {
-      return {
-        data,
-        label: strings[`office-${data}`]
-      }
-    });
+    var tabs = "PGSHI"
+      .split("")
+      .filter(o => available.has(o))
+      .map(function (data) {
+        return {
+          data,
+          label: strings[`office-${data}`],
+        };
+      });
 
     tabs.unshift({
       data: "key",
-      label: "Key Results"
+      label: "Key Results",
     });
 
     var elements = tabs.map(t => (
       <li class={view == t.data ? "active" : "inactive"}>
         <a
           href={`#/states/${this.props.state}/${t.data}`}
-          class="race-type-nav"
-        >{t.label}</a>
+          class="race-type-nav">
+          {t.label}
+        </a>
       </li>
     ));
 

@@ -1,6 +1,6 @@
 import { h, Fragment, Component, createRef } from "preact";
 import "./resultsTableCounty.less";
-import { reportingPercentage, formatters, sortByParty } from "../util.js";
+import { reportingPercentage, formatters, sortByParty, sortByOrder } from "../util.js";
 var { chain, comma, percent, dollars } = formatters;
 
 const availableMetrics = {
@@ -81,8 +81,8 @@ export default class ResultsTableCounty extends Component {
 
     // Order by party
     const orderedCandidates = this.props.data[0].candidates
-      .slice(0, 2)
-      .sort(sortByParty);
+      .slice(0, 3)
+      .sort((a,b) => sortByOrder(a,b, this.props.sortOrder));
 
     return (
       <div
