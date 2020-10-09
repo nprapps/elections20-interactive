@@ -25,15 +25,21 @@ export default class StateResults extends Component {
     this.setState({ races });
   }
 
-  // Lifecycle: Called whenever our component is created
-  async componentDidMount() {
+  componentDidMount() {
     gopher.watch(`/data/states/${this.props.state}.json`, this.onData);
   }
 
-  // Lifecycle: Called just before our component will be destroyed
   componentWillUnmount() {
     // stop when not renderable
     gopher.unwatch(`/data/states/${this.props.state}.json`, this.onData);
+  }
+
+  shouldComponentUpdate(newProps, newState) {
+    if (this.props.state != newProps.state) {
+      gopher.unwatch(`/data/states/${this.props.state}.json`, this.onData);
+      gopher.watch(`/data/states/${newProps.state}.json`, this.onData);
+      this.setState({ races: null });
+    }
   }
 
   render(props, state) {

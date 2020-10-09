@@ -64,7 +64,7 @@ export default class App extends Component {
     // use a View component
     if (!state.route && state.View) {
       console.log(`Loaded page component: ${state.View.name}`);
-      return <state.View {...state.params} key={state.url}/>
+      return <state.View {...state.params} />
     }
 
     // otherwise call a route method
