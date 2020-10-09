@@ -6,46 +6,46 @@ import { reportingPercentage } from "../util.js";
 var formatters = {
   percent: v => Math.round(v * 100) + "%",
   comma: v => (v * 1).toLocaleString(),
-  dollars: v => "$" + v
-}
+  dollars: v => "$" + v,
+};
 
 const availableMetrics = {
   population: {
     name: "Population",
     census: true,
-    format: formatters.comma
+    format: formatters.comma,
   },
   past_margin: {
     name: "2016 Presidential Margin",
   },
   unemployment: {
     name: "Unemployment",
-    format: formatters.percent
+    format: formatters.percent,
   },
   percent_white: {
     name: "% White",
     census: true,
-    format: formatters.percent
+    format: formatters.percent,
   },
   percent_black: {
     name: "% Black",
     census: true,
-    format: formatters.percent
+    format: formatters.percent,
   },
   percent_hispanic: {
     name: "% Hispanic",
     census: true,
-    format: formatters.percent
+    format: formatters.percent,
   },
   median_income: {
     name: "Median Income",
     census: true,
-    format: v => formatters.dollar(formatters.comma(v))
+    format: v => formatters.dollar(formatters.comma(v)),
   },
   percent_bachelors: {
     name: "% College-Educated",
     census: true,
-    format: formatters.percent
+    format: formatters.percent,
   },
   countyName: {
     name: "County",
@@ -84,6 +84,7 @@ export default class ResultsTableCounty extends Component {
 
   render() {
     var sortedData = this.sortCountyResults();
+    
     // Order by party
     const orderedCandidates = this.props.data[0].candidates
       .slice(0, 2)
@@ -92,13 +93,14 @@ export default class ResultsTableCounty extends Component {
     return (
       <div
         class={
-          "results-counties " +
-          this.state.sortMetric.key.split("_").join("-")
+          "results-counties " + this.state.sortMetric.key.split("_").join("-")
         }>
         <table class={`results-table candidates-${orderedCandidates.length}`}>
           <thead ref={this.tableRef}>
             <tr>
-              <th class="county sortable" onclick={() => this.updateSort("countyName")}>
+              <th
+                class="county sortable"
+                onclick={() => this.updateSort("countyName")}>
                 <div>
                   <span>County</span>
                 </div>
@@ -116,9 +118,7 @@ export default class ResultsTableCounty extends Component {
               </th>
               <th
                 class="comparison sortable"
-                onclick={() =>
-                  this.updateSort(this.state.displayedMetric.key)
-                }>
+                onclick={() => this.updateSort(this.state.displayedMetric.key)}>
                 <div>
                   <span>{this.state.displayedMetric.name}</span>
                 </div>
@@ -133,7 +133,7 @@ export default class ResultsTableCounty extends Component {
         </table>
 
         <button
-          class={`toggle-table ${ sortedData.length > 10 ? '' : 'hidden'}`}
+          class={`toggle-table ${sortedData.length > 10 ? "" : "hidden"}`}
           onclick={this.toggleCollapsed}
           data-more="Show all"
           data-less="Show less">
@@ -156,8 +156,7 @@ export default class ResultsTableCounty extends Component {
     var { sortMetric, order } = this.state;
 
     var data = this.props.data.slice();
-    data.sort(function(a, b) {
-
+    data.sort(function (a, b) {
       let sorterA, sorterB;
 
       if (sortMetric.census) {
@@ -243,9 +242,7 @@ function CandidatePercentCell(candidate) {
   var displayPercent = (candidate.percent * 100).toFixed(1);
   return (
     <td
-      class={`vote ${candidate.party.toLowerCase()} ${
-        candidate.winner ? "winner" : ""
-      }`}
+      class={`vote ${candidate.party} ${candidate.winner ? "winner" : ""}`}
       key={candidate.id}>
       {`${displayPercent}%`}
     </td>
@@ -255,9 +252,7 @@ function CandidatePercentCell(candidate) {
 function MarginCell(candidates, winner) {
   var party;
   if (winner) {
-    party = ["Dem", "GOP"].includes(winner.party)
-      ? winner.party.toLowerCase()
-      : "ind";
+    party = ["Dem", "GOP"].includes(winner.party) ? winner.party : "ind";
   }
 
   return (

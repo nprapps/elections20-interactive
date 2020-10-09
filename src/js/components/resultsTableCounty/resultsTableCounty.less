@@ -61,6 +61,18 @@ table.results-table {
     &.vote {
       text-align: center;
     }
+
+    &.margin {
+      &.Dem {
+        color: var(--dem);
+      }
+      &.GOP {
+        color: var(--gop);
+      }
+      &.Other {
+        color: var(--ind);
+      }
+    }
   }
 
   tfoot td {
@@ -82,24 +94,17 @@ table.results-table {
   }
 
   .winner {
-    td {
-      color: #fff;
-      background-color: #f1f1f1;
+    color: #fff;
+    background-color: #f1f1f1;
+
+    &.Dem {
+      background-color: var(--dem);
     }
-    &.dem td {
-      background-color: @dem;
+    &.GOP {
+      background-color: var(--gop);
     }
-    &.gop td {
-      background-color: @gop;
-    }
-    &.ind td {
-      background-color: @ind;
-    }
-    &.no td {
-      background-color: @gop;
-    }
-    &.yes td {
-      background-color: @ind;
+    &.Other {
+      background-color: var(--ind);
     }
 
     .icon {
