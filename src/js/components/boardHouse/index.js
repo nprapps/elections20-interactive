@@ -2,6 +2,7 @@ import { h, Component, Fragment } from "preact";
 import gopher from "../gopher.js";
 import Results from "../resultsBoardNamed";
 import { BalanceOfPower } from "../balanceOfPower";
+import house from "house.sheet.json";
 
 export default class BoardHouse extends Component {
   constructor(props) {
@@ -32,13 +33,21 @@ export default class BoardHouse extends Component {
       return "";
     }
 
+    var buckets = {};
+
+    races.forEach(function(r) {
+      var rating = house[r.id].rating;
+      if (!buckets[rating]) buckets[rating] = [];
+      buckets[rating].push(r);
+    });
+
     return <>
       <h1>Key House Results</h1>
       <BalanceOfPower race="house" />
       <div class="board-container">
-        <Results races={races} hed="Dem. Likely"/>
-        <Results races={races} hed="Tossup"/>
-        <Results races={races} hed="Rep. Likely"/>
+        <Results races={buckets["lean-d"]} hed="Dem. Lean"/>
+        <Results races={buckets["toss-up"]} hed="Tossup"/>
+        <Results races={buckets["lean-r"]} hed="Rep. Lean"/>
       </div>
     </>
   }
