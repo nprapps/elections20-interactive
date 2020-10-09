@@ -147,8 +147,9 @@ export default class ResultsTableCounty extends Component {
             ))}
           </tbody>
         </table>
+
         <button
-          class="toggle-table"
+          class={`toggle-table ${ sortedData.length > 10 ? '' : 'hidden'}`}
           onclick={this.toggleCollapsed}
           data-more="Show more"
           data-less="Show less">
