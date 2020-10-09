@@ -23,13 +23,14 @@
 
     <div class="state-nav link-block">
 
-      <% Object.keys(json.states).sort().forEach(function(s) { %>
+      <% for (var s in json.states) { %>
+      <% if (json.states[s].district) continue; %>
         <div>
           <a href="#/states/<%= s %>">
             <%= json.states[s].name %>
           </a>
         </div>
-      <% }); %>
+      <% } %>
     </div>
 
 </footer>
