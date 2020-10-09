@@ -40,7 +40,7 @@ export class Gopher extends EventTarget {
       return json;
     } catch (e) {
       // log failures, but tolerate them
-      console.error(e);
+      console.error(`Fetch failed for ${entry.url}`)
       return;
     }
   }

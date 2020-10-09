@@ -216,7 +216,7 @@ module.exports = function (resultArray, overrides = {}) {
               delete c.winner;
             }
           }
-          if (c.winner) winner = c.winner;
+          if (c.winner) winner = c;
         });
 
         // set the winner and runoff flags
