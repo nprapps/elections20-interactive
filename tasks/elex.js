@@ -32,6 +32,13 @@ module.exports = function(grunt) {
       {
         date: "2020-11-03",
         params: {
+          officeID: "P",
+          level: "district"
+        }
+      },
+      {
+        date: "2020-11-03",
+        params: {
           officeID: "H,I",
           level: "state"
         }
@@ -45,6 +52,15 @@ module.exports = function(grunt) {
     rawResults = rawResults.filter(r => r);
     // turn AP into normalized race objects
     var results = normalize(rawResults, grunt.data.json);
+
+    // remove state-level P results for ME and NE
+    results = results.filter(function(r) {
+      if (r.id != 0) return true;
+      if (r.state == "ME" || r.state == "NE") {
+        return r.level != "state";
+      }
+      return true;
+    });
 
     grunt.log.writeln("Merging in external data...");
 
@@ -105,7 +121,7 @@ module.exports = function(grunt) {
     // separate by geography for easier grouping
     var geo = {
       national: results.filter(r => r.level == "national"),
-      state: results.filter(r => r.level == "state"),
+      state: results.filter(r => r.level == "state" || r.level == "district"),
       county: results.filter(r => r.level == "county")
     };
 

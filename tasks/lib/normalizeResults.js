@@ -30,6 +30,7 @@ var translation = {
     fips: "fipsCode",
     electoral: "electTotal",
     updated: "lastUpdated",
+    name: "reportingunitName",
     reporting: "precinctsReporting",
     precincts: "precinctsTotal",
     eevp: "eevp",
