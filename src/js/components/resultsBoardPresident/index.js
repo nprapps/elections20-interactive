@@ -38,7 +38,7 @@ export default function ResultsBoardPresident(props) {
         	<tr>
         		<th>State</th>
         		<th>Dem.</th>
-        		<th>Rep.</th>
+        		<th>GOP</th>
         		<th>E.V.</th>
         	</tr>
 

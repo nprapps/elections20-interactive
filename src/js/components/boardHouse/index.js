@@ -47,7 +47,7 @@ export default class BoardHouse extends Component {
       <div class="board-container">
         <Results races={buckets["lean-d"]} hed="Dem. Lean"/>
         <Results races={buckets["toss-up"]} hed="Tossup"/>
-        <Results races={buckets["lean-r"]} hed="Rep. Lean"/>
+        <Results races={buckets["lean-r"]} hed="GOP Lean"/>
       </div>
     </>
   }

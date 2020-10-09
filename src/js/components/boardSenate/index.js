@@ -58,7 +58,7 @@ export default class BoardSenate extends Component {
         <div class="board-container">
           <Results races={buckets.likelyD} hed="Dem. Solid/Likely"/>
           <Results races={buckets.tossup} hed="Lean/Tossup"/>
-          <Results races={buckets.likelyR} hed="Rep. Solid/Likely"/>
+          <Results races={buckets.likelyR} hed="GOP Solid/Likely"/>
         </div>
       </Fragment>
     );
