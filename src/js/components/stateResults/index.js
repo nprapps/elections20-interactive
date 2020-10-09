@@ -68,8 +68,8 @@ export default class StateResults extends Component {
   renderResults(view) {
     if (view === "key") {
       return <KeyRaces state={this.props.state} />;
-    } else if (view === "H") {
-      var races = this.state.races.filter(r => r.office == "H");
+    } else if (view === "H" || view === "I") {
+      var races = this.state.races.filter(r => r.office == view);
       return (
         <div class="results-house">
           <div class="results-wrapper">
