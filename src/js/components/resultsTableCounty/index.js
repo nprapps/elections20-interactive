@@ -12,59 +12,52 @@ var formatters = {
 const availableMetrics = {
   population: {
     name: "Population",
-    key: "population",
     census: true,
     format: formatters.comma
   },
   past_margin: {
     name: "2016 Presidential Margin",
-    key: "past_margin",
     census: false,
   },
   unemployment: {
     name: "Unemployment",
-    key: "unemployment",
     census: false,
     format: formatters.percent
   },
   percent_white: {
     name: "% White",
-    key: "percent_white",
     census: true,
     format: formatters.percent
   },
   percent_black: {
     name: "% Black",
-    key: "percent_black",
     census: true,
     format: formatters.percent
   },
   percent_hispanic: {
     name: "% Hispanic",
-    key: "percent_hispanic",
     census: true,
     format: formatters.percent
   },
   median_income: {
     name: "Median Income",
-    key: "median_income",
     census: true,
     comma_filter: true,
     format: formatters.dollar
   },
   percent_bachelors: {
     name: "% College-Educated",
-    key: "percent_bachelors",
     census: true,
     format: formatters.percent
   },
   countyName: {
     name: "County",
-    key: "countyName",
     census: false,
     alpha: true,
   },
 };
+
+for (var k in availableMetrics) availableMetrics[k].key = k;
 
 export default class ResultsTableCounty extends Component {
   constructor(props) {
@@ -109,7 +102,7 @@ export default class ResultsTableCounty extends Component {
         <table class={`results-table candidates-${orderedCandidates.length}`}>
           <thead ref={this.tableRef}>
             <tr>
-              <th class="county" onclick={() => this.updateSort("countyName")}>
+              <th class="county sortable" onclick={() => this.updateSort("countyName")}>
                 <div>
                   <span>County</span>
                 </div>
@@ -126,7 +119,7 @@ export default class ResultsTableCounty extends Component {
                 </div>
               </th>
               <th
-                class="comparison"
+                class="comparison sortable"
                 onclick={() =>
                   this.updateSort(this.state.displayedMetric.key)
                 }>
@@ -278,15 +271,16 @@ function MarginCell(candidates, winner) {
 
 function calculateVoteMargin(candidates) {
   // TODO: re-do what to do here if there isn't someone ahead or it's low vote count
-  if (!candidates[0].votes) {
+  var [a, b] = candidates;
+  if (!a.votes) {
     return "-";
   }
-  var winnerMargin = candidates[0].percent - candidates[1].percent;
+  var winnerMargin = a.percent - b.percent;
 
   let prefix;
-  if (candidates[0].party === "Dem") {
+  if (a.party === "Dem") {
     prefix = "D";
-  } else if (candidates[0].party === "GOP") {
+  } else if (a.party === "GOP") {
     prefix = "R";
   } else {
     prefix = "I";
