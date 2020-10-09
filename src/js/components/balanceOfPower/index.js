@@ -1,10 +1,14 @@
 import { h, Component, Fragment } from "preact";
 import gopher from "../gopher.js";
 import InactiveSenateRaces from "inactive_senate_races.sheet.json";
+import "./balanceOfPower.less";
 
 export class BalanceOfPower extends Component {
   constructor(props) {
     super();
+
+    this.isSenate = props.race == "senate";
+    this.seatsNeeded = this.isSenate ? 51 : 218;
     this.onData = this.onData.bind(this);
   }
 
@@ -28,8 +32,8 @@ export class BalanceOfPower extends Component {
       return;
     }
     var results = this.getCongressBOP(this.state.data);
-    
-    // TODO: add in check icon 
+
+    // TODO: add in check icon
     return (
       <div class="leaderboard">
         <div class="results-header-group net-gain">
@@ -46,15 +50,13 @@ export class BalanceOfPower extends Component {
         </div>
         <div class="results-header-group dem">
           <h2 class="party">
-            <label>Dem.</label>
+            <label> Dem. {this.getWinnerIcon(results.Dem.total)}</label>
             <abbr>{results.Dem.total}</abbr>
           </h2>
         </div>
         <div class="results-header-group gop">
           <h2 class="party">
-            <label>
-              GOP
-            </label>
+            <label> GOP {this.getWinnerIcon(results.GOP.total)}</label>
             <abbr>{results.GOP.total}</abbr>
           </h2>
         </div>
@@ -74,15 +76,34 @@ export class BalanceOfPower extends Component {
     );
   }
 
+  getWinnerIcon(total) {
+    if (total >= this.seatsNeeded) {
+      return (
+        <span class="winner-icon" role="img" aria-label="check mark">
+          <svg
+            aria-hidden="true"
+            focusable="false"
+            role="img"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 512 512">
+            <path
+              fill="#333"
+              d="M173.898 439.404l-166.4-166.4c-9.997-9.997-9.997-26.206 0-36.204l36.203-36.204c9.997-9.998 26.207-9.998 36.204 0L192 312.69 432.095 72.596c9.997-9.997 26.207-9.997 36.204 0l36.203 36.204c9.997 9.997 9.997 26.206 0 36.204l-294.4 294.401c-9.998 9.997-26.207 9.997-36.204-.001z"></path>
+          </svg>
+        </span>
+      );
+    }
+  }
+
   getCongressBOP(data) {
     // TODO: Do we need to handle uncontested elections? Do they have winner marked?
     // Hardcoded # of seats needed for majority in Senate/house
-    var isSenate = this.props.race == "senate";
-    var seatsNeeded = isSenate ? 51 : 218;
 
-    var inactiveGOP = isSenate ? parseInt(InactiveSenateRaces["GOP"]) : 0;
-    var inactiveDem = isSenate ? parseInt(InactiveSenateRaces["Dem"]) : 0;
-    var inactiveInd = isSenate ? parseInt(InactiveSenateRaces["Other"]) : 0;
+    var inactiveGOP = this.isSenate ? parseInt(InactiveSenateRaces["GOP"]) : 0;
+    var inactiveDem = this.isSenate ? parseInt(InactiveSenateRaces["Dem"]) : 0;
+    var inactiveInd = this.isSenate
+      ? parseInt(InactiveSenateRaces["Other"])
+      : 0;
 
     var results = {
       GOP: { total: inactiveGOP, gains: 0 },
@@ -120,6 +141,6 @@ export class BalanceOfPower extends Component {
   getWinner(race, party) {
     // Is this the right way to determine winner?
     // Can this be replaced by a util fxn?
-    return race.candidates.filter(c => c.winner && c.winner == "X")[0];
+    return race.candidates.filter(c => c.winner && c.winner != "N")[0];
   }
 }
