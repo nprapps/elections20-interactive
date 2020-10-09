@@ -32,24 +32,35 @@ table.results {
 	}
 
 	td {
-		padding: 4px 6px;
+		padding: 6px 8px;
 		border: 1px solid #eee;
 		border-right: 0;
 		border-left: 0;
 	}
+
 	td.state a {
+		text-decoration: none;
+		color: #444;
+	}
+
+	td.state {
+		// font-weight: bold;
 		text-decoration: none;
 		border-left: 0;
 		color: #444;
 
-		&.winner {
+		&:hover {
+			text-decoration: underline;
+		}
+
+		&.winner a {
 			font-weight: bold;
 			color: green;
 		}
-		&.winner.Dem {
+		&.winner.Dem a {
 			color: #237BBD;
 		}
-		&.winner.GOP {
+		&.winner.GOP a {
 			color: #D61F21;
 		}
 	}
@@ -62,6 +73,10 @@ table.results {
   	.perc, .name {
 			display: inline-block;
 			min-width: 25px;
+		}
+		.perc {
+			float: right;
+			margin-left: 6px;
 		}
   	&.leading {
 	  	background: #D7F0E2;
@@ -128,5 +143,8 @@ table.results.president {
 		text-align: center;
 		margin: 0;
 		color: #9a9a9a;
+	}
+	.perc {
+		margin-left: 0;
 	}
 }
