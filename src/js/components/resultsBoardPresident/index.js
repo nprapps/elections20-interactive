@@ -53,7 +53,11 @@ export default function ResultsBoardPresident(props) {
               <tr class={hasResult ? "closed" : "open"}>
 
                 {/* State */}
-                <td class={"state " + (winner[0] ? ("winner " + winner[0].party) : "")}>{stateDetail.ap} {r.district && r.district !== "AL" ? r.district : ""}</td>
+                <td class={"state " + (winner[0] ? ("winner " + winner[0].party) : "")}>
+                  <a href={"#/states/" + r.state + "/" + r.office}>
+                    {stateDetail.ap} {r.district && r.district !== "AL" ? r.district : ""}
+                  </a>
+                </td>
 
                 {/* Open */}
                 <td class="open-label" colspan="4">Last polls close at {stateDetail.closingTime} ET</td>

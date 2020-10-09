@@ -45,7 +45,11 @@ export default function ResultsBoardNamed(props) {
               <tr class={hasResult ? "closed" : "open"}>
 
                 {/* State */}
-                <td class={"state " + (winner[0] ? ("winner " + winner[0].party) : "")}>{states[r.state].ap} {r.seatNumber && !r.description.includes("at large") ? r.seatNumber : ""}</td>
+                <td class={"state " + (winner[0] ? ("winner " + winner[0].party) : "")}>
+                  <a href={"#/states/" + r.state + "/" + r.office}>
+                    {states[r.state].ap} {r.seatNumber && !r.description.includes("at large") ? r.seatNumber : ""}
+                  </a>
+                </td>
 
                 {/* Open */}
                 <td class="open-label" colspan="3">Last polls close at {states[r.state].closingTime} ET</td>
