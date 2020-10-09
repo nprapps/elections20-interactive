@@ -139,9 +139,9 @@ export default class ResultsTableCounty extends Component {
         <button
           class={`toggle-table ${ sortedData.length > 10 ? '' : 'hidden'}`}
           onclick={this.toggleCollapsed}
-          data-more="Show more"
+          data-more="Show all"
           data-less="Show less">
-          {this.state.collapsed ? "Show more" : "Show less"}
+          {this.state.collapsed ? `Show all ▼` : `Show less ▲`}
         </button>
       </div>
     );
