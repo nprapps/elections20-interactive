@@ -1,6 +1,6 @@
 import { h, Component, createRef } from "preact";
 import gopher from "../gopher.js";
-import { fmtComma, reportingPercentage } from "../util.js";
+import { formatters, reportingPercentage } from "../util.js";
 import "./countyMap.less";
 
 var specialStates = new Set(["IA", "MA", "OK", "WA"]);
@@ -286,9 +286,7 @@ export default class CountyMap extends Component {
         <div class="name">${countyName}</div>
         <div class="result">${candText}</div>
         <div class="reporting">${perReporting}% reporting</div>
-        <div class="pop">Pop. ${fmtComma(
-          result.county.census.population * 1
-        )}</div>
+        <div class="pop">Pop. ${formatters.comma(result.county.census.population)}</div>
       `;
     }
 

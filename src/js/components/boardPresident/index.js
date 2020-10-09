@@ -15,14 +15,11 @@ export default class BoardPresident extends Component {
     this.setState({ races });
   }
 
-  // Lifecycle: Called whenever our component is created
-  async componentDidMount() {
+  componentDidMount() {
     gopher.watch(`./data/president.json`, this.onData);
   }
 
-  // Lifecycle: Called just before our component will be destroyed
   componentWillUnmount() {
-    // stop when not renderable
     gopher.unwatch(`./data/president.json`, this.onData);
   }
 

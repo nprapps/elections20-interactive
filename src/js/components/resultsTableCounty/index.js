@@ -1,56 +1,50 @@
 import { h, Fragment, Component, createRef } from "preact";
 import "./resultsTableCounty.less";
-import { fmtComma } from "../util.js";
-import { reportingPercentage } from "../util.js";
-
-var formatters = {
-  percent: v => Math.round(v * 100) + "%",
-  comma: v => (v * 1).toLocaleString(),
-  dollars: v => "$" + v,
-};
+import { reportingPercentage, formatters, sortByParty } from "../util.js";
+var { chain, comma, percent, dollars } = formatters;
 
 const availableMetrics = {
   population: {
     name: "Population",
     census: true,
-    format: formatters.comma,
+    format: comma
   },
   past_margin: {
-    name: "2016 Presidential Margin",
+    name: "2016 Presidential Margin"
   },
   unemployment: {
     name: "Unemployment",
-    format: formatters.percent,
+    format: percent
   },
   percent_white: {
     name: "% White",
     census: true,
-    format: formatters.percent,
+    format: percent
   },
   percent_black: {
     name: "% Black",
     census: true,
-    format: formatters.percent,
+    format: percent
   },
   percent_hispanic: {
     name: "% Hispanic",
     census: true,
-    format: formatters.percent,
+    format: percent
   },
   median_income: {
     name: "Median Income",
     census: true,
-    format: v => formatters.dollar(formatters.comma(v)),
+    format: chain(comma, dollars)
   },
   percent_bachelors: {
     name: "% College-Educated",
     census: true,
-    format: formatters.percent,
+    format: percent
   },
   countyName: {
     name: "County",
-    alpha: true,
-  },
+    alpha: true
+  }
 };
 
 for (var k in availableMetrics) availableMetrics[k].key = k;
@@ -65,7 +59,7 @@ export default class ResultsTableCounty extends Component {
       sortMetric: availableMetrics.population,
       displayedMetric: availableMetrics.population,
       collapsed: true,
-      order: -1,
+      order: -1
     };
   }
 
@@ -84,23 +78,25 @@ export default class ResultsTableCounty extends Component {
 
   render() {
     var sortedData = this.sortCountyResults();
-    
+
     // Order by party
     const orderedCandidates = this.props.data[0].candidates
       .slice(0, 2)
-      .sort((a, b) => (a.party < b.party ? -1 : 1));
+      .sort(sortByParty);
 
     return (
       <div
         class={
           "results-counties " + this.state.sortMetric.key.split("_").join("-")
-        }>
+        }
+      >
         <table class={`results-table candidates-${orderedCandidates.length}`}>
           <thead ref={this.tableRef}>
             <tr>
               <th
                 class="county sortable"
-                onclick={() => this.updateSort("countyName")}>
+                onclick={() => this.updateSort("countyName")}
+              >
                 <div>
                   <span>County</span>
                 </div>
@@ -110,7 +106,7 @@ export default class ResultsTableCounty extends Component {
                   <span></span>
                 </div>
               </th>
-              {orderedCandidates.map(cand => CandidateHeaderCell(cand))}
+              {orderedCandidates.map((cand) => CandidateHeaderCell(cand))}
               <th class="vote margin">
                 <div>
                   <span>Vote margin</span>
@@ -118,7 +114,8 @@ export default class ResultsTableCounty extends Component {
               </th>
               <th
                 class="comparison sortable"
-                onclick={() => this.updateSort(this.state.displayedMetric.key)}>
+                onclick={() => this.updateSort(this.state.displayedMetric.key)}
+              >
                 <div>
                   <span>{this.state.displayedMetric.name}</span>
                 </div>
@@ -126,8 +123,12 @@ export default class ResultsTableCounty extends Component {
             </tr>
           </thead>
           <tbody class={this.state.collapsed ? "collapsed" : null}>
-            {sortedData.map(c => (
-              <ResultsRowCounty row={c} metric={this.state.displayedMetric} />
+            {sortedData.map((c) => (
+              <ResultsRowCounty
+                candidates={orderedCandidates}
+                row={c}
+                metric={this.state.displayedMetric}
+              />
             ))}
           </tbody>
         </table>
@@ -136,7 +137,8 @@ export default class ResultsTableCounty extends Component {
           class={`toggle-table ${sortedData.length > 10 ? "" : "hidden"}`}
           onclick={this.toggleCollapsed}
           data-more="Show all"
-          data-less="Show less">
+          data-less="Show less"
+        >
           {this.state.collapsed ? `Show all ▼` : `Show less ▲`}
         </button>
       </div>
@@ -187,39 +189,27 @@ function CandidateHeaderCell(candidate) {
 }
 
 function ResultsRowCounty(props) {
-  // TODO: figure out if this can be done a cleaner way
-  // DO we want to mark someone as a winner if 100% are reporting but it hasn't been called?
-  var determineWinner = results => {
-    if (parseInt(results.reporting) / parseInt(results.precincts) < 1) {
-      return null;
-    }
+  var { candidates, row, metric } = props;
 
-    // First candidate should be leading/winner since we sort by votes.
-    return results.candidates[0];
-  };
+  var winner = row.called ? row.candidates[0] : null;
 
-  var row = props.row;
-  var displayMetric = props.metric;
-
-  var availableCandidates = row.candidates
-    .slice(0, 2)
-    .sort((a, b) => (a.party < b.party ? -1 : 1));
+  var orderedCandidates = candidates.map(function (header) {
+    var [match] = row.candidates.filter((c) => header.id == c.id);
+    return match || {};
+  });
 
   // Default to population.
-  let extraMetric;
-  if (displayMetric.census) {
-    extraMetric = row.county.census[displayMetric.key];
+  let metricValue;
+  if (metric.census) {
+    metricValue = row.county.census[metric.key];
   } else {
     // TODO: get the rest of these working, if we decide to use them
-    extraMetric = row.county[displayMetric.key];
-  }
-  extraMetric = parseInt(extraMetric);
-
-  if (displayMetric.format) {
-    extraMetric = displayMetric.format(extraMetric);
+    metricValue = row.county[metric.key];
   }
 
-  var winner = determineWinner(row);
+  if (metric.format) {
+    metricValue = metric.format(metricValue);
+  }
 
   return (
     <tr>
@@ -229,9 +219,9 @@ function ResultsRowCounty(props) {
       <td class="precincts amt">
         {reportingPercentage(row.reporting / row.precincts) + "% in"}
       </td>
-      {availableCandidates.map(c => CandidatePercentCell(c))}
+      {orderedCandidates.map((c) => CandidatePercentCell(c))}
       {MarginCell(row.candidates, winner)}
-      <td> {extraMetric} </td>
+      <td> {metricValue} </td>
     </tr>
   );
 }
@@ -243,7 +233,8 @@ function CandidatePercentCell(candidate) {
   return (
     <td
       class={`vote ${candidate.party} ${candidate.winner ? "winner" : ""}`}
-      key={candidate.id}>
+      key={candidate.id}
+    >
       {`${displayPercent}%`}
     </td>
   );

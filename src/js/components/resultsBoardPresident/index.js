@@ -1,5 +1,5 @@
 import { h, Fragment } from "preact";
-import { cssClass, reportingPercentage } from "../util";
+import { reportingPercentage } from "../util";
 import states from "states.sheet.json";
 
 import "../resultsBoardNamed/resultsBoard.less";
