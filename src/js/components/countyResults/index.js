@@ -2,6 +2,7 @@ import { h, Component, Fragment } from "preact";
 import gopher from "../gopher.js";
 import CountyMap from "../countyMap";
 import ResultsTableCounty from "../resultsTableCounty";
+import { CountyDataViz } from "../countyDataViz";
 
 export default class CountyResults extends Component {
   constructor(props) {
@@ -56,6 +57,7 @@ export default class CountyResults extends Component {
           state={this.props.state.toUpperCase()}
           data={this.state.data}
         />
+        <CountyDataViz data={this.state.data}/>
       </div>
     );
   }
