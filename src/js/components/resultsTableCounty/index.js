@@ -17,11 +17,9 @@ const availableMetrics = {
   },
   past_margin: {
     name: "2016 Presidential Margin",
-    census: false,
   },
   unemployment: {
     name: "Unemployment",
-    census: false,
     format: formatters.percent
   },
   percent_white: {
@@ -42,8 +40,7 @@ const availableMetrics = {
   median_income: {
     name: "Median Income",
     census: true,
-    comma_filter: true,
-    format: formatters.dollar
+    format: v => formatters.dollar(formatters.comma(v))
   },
   percent_bachelors: {
     name: "% College-Educated",
@@ -52,7 +49,6 @@ const availableMetrics = {
   },
   countyName: {
     name: "County",
-    census: false,
     alpha: true,
   },
 };
