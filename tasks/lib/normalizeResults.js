@@ -151,6 +151,11 @@ module.exports = function (resultArray, overrides = {}) {
           unitMeta.reportingPercent = unitMeta.reporting / unitMeta.precincts;
         }
 
+        // create a district property if necessary
+        if (level == "district") {
+          unitMeta.district = unitMeta.name == "At Large" ? "AL" : unitMeta.name.replace(/district /i, "");
+        }
+
         var sheetMetadata = nprMetadata[raceMeta.id];
         unitMeta.previousParty = sheetMetadata ? sheetMetadata.party : null;
         unitMeta.updated = Date.parse(unitMeta.updated);
