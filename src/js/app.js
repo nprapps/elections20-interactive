@@ -5,6 +5,7 @@ import BoardGovernor from "./components/boardGovernor";
 import BoardHouse from "./components/boardHouse";
 import BoardPresident from "./components/boardPresident";
 import BoardSenate from "./components/boardSenate";
+import BoardBallot from "./components/boardBallot";
 import CountyResults from "./components/countyResults";
 import StateResults from "./components/stateResults";
 
@@ -25,9 +26,9 @@ export default class App extends Component {
     this.addView("/house", BoardHouse);
     this.addView("/governor", BoardGovernor);
     this.addView("/senate", BoardSenate);
+    this.addView("/ballots", BoardBallot);
     this.addView("/states/:state", StateResults);
     this.addView("/states/:state/:subview", StateResults);
-    this.addRoute("/ballots", "renderBallots");
     this.addRoute("/states/:state/detail/:race", "renderCounty");
   }
 
@@ -41,15 +42,6 @@ export default class App extends Component {
     this.router.add(path, ({ url, params }) => {
       this.setState({ route: null, params, View, url });
     });
-  }
-
-  renderBallots(props, state) {
-    return (
-      <>
-        <h1>Ballot Initiatives</h1>
-        <div class="placeholder">Selected Ballots</div>
-      </>
-    );
   }
 
   renderCounty(props, state, race) {
