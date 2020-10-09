@@ -31,7 +31,7 @@ export default class BoardPresident extends Component {
       return "";
     }
 
-    var filtered = races.filter(r => r.district !== "AL").sort((a,b) => a.state > b.state ? 1 : a.state < b.state ? -1 : 0);
+    var filtered = races.sort((a,b) => a.state > b.state ? 1 : a.state < b.state ? -1 : 0);
 
     return <>
       <h1>President</h1>
