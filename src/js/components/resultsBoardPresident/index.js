@@ -28,6 +28,8 @@ function CandidateCells(race) {
 }
 
 export default function ResultsBoardPresident(props) {
+  console.log("props",props)
+
   return (
     <>
       <div>
@@ -37,7 +39,7 @@ export default function ResultsBoardPresident(props) {
         		<th>State</th>
         		<th>Dem.</th>
         		<th>Rep.</th>
-        		<th>Votes</th>
+        		<th>E.V.</th>
         	</tr>
 
           {props.races.map(function(r) {
@@ -51,7 +53,7 @@ export default function ResultsBoardPresident(props) {
               <tr class={hasResult ? "closed" : "open"}>
 
                 {/* State */}
-                <td class={"state " + (winner[0] ? ("winner " + winner[0].party) : "")}>{stateDetail.ap}</td>
+                <td class={"state " + (winner[0] ? ("winner " + winner[0].party) : "")}>{stateDetail.ap} {r.district ? r.district : ""}</td>
 
                 {/* Open */}
                 <td class="open-label" colspan="4">Last polls close at {stateDetail.closingTime} ET</td>
