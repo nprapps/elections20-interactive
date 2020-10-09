@@ -28,7 +28,7 @@ function CandidateCells(race) {
 }
 
 export default function ResultsBoardPresident(props) {
-  console.log("props",props)
+  // console.log("props",props)
 
   return (
     <>

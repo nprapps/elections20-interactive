@@ -1,6 +1,7 @@
 import { h, Component, Fragment } from "preact";
 import gopher from "../gopher.js";
 import Results from "../resultsBoardNamed";
+import states from "states.sheet.json";
 
 export default class BoardGovernor extends Component {
   constructor(props) {
@@ -31,10 +32,14 @@ export default class BoardGovernor extends Component {
       return "";
     }
 
+    races.forEach(r => r.name = states[r.state].name);
+
+    var sorted = races.sort((a,b) => a.name > b.name ? 1 : a.name < b.name ? -1 : 0);
+
     return <>
       <h1>Governor</h1>
       <div class="board-container">
-        <Results races={races}/>
+        <Results races={sorted}/>
       </div>
     </>;
   }

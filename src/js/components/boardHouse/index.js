@@ -3,6 +3,7 @@ import gopher from "../gopher.js";
 import Results from "../resultsBoardNamed";
 import { BalanceOfPower } from "../balanceOfPower";
 import house from "house.sheet.json";
+import states from "states.sheet.json";
 
 export default class BoardHouse extends Component {
   constructor(props) {
@@ -33,9 +34,13 @@ export default class BoardHouse extends Component {
       return "";
     }
 
+    races.forEach(r => r.name = states[r.state].name);
+
+    var sorted = races.sort((a,b) => a.name > b.name ? 1 : a.name < b.name ? -1 : parseInt(a.seatNumber) > parseInt(b.seatNumber) ? 1 : parseInt(a.seatNumber) < parseInt(b.seatNumber) ? -1 : 0);
+
     var buckets = {};
 
-    races.forEach(function(r) {
+    sorted.forEach(function(r) {
       var rating = house[r.id].rating;
       if (!buckets[rating]) buckets[rating] = [];
       buckets[rating].push(r);

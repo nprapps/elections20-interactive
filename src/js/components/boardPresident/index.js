@@ -29,15 +29,27 @@ export default class BoardPresident extends Component {
       return "";
     }
 
+    races.forEach(function(r) {
+      r.name = states[r.state].name;
+      r.districtDisplay = (r.district !== "AL") ? r.district : "";
+    });
+
+    var sorted = races.sort(function(a,b) {
+      if (a.name > b.name) return 1;
+      if (a.name < b.name) return -1;
+      if (a.districtDisplay > b.districtDisplay) return 1;
+      if (a.districtDisplay < b.districtDisplay) return -1;
+      return 0;
+    });
+
     var buckets = {
       likelyD: [],
       tossup: [],
       likelyR: []
     };
 
-    races.forEach(function(r) {
-      var district = (r.district !== "AL") ? r.district : "";
-      var stateName = r.state + (district ? "-" + r.district : "");
+    sorted.forEach(function(r) {
+      var stateName = r.state + (r.districtDisplay ? "-" + r.districtDisplay : "");
       var rating = states[stateName].rating;
 
       if (rating == "solid-d" || rating == "likely-d") {

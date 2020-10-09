@@ -3,6 +3,7 @@ import gopher from "../gopher.js";
 import Results from "../resultsBoardNamed";
 import { BalanceOfPower } from "../balanceOfPower";
 import senate from "senate.sheet.json";
+import states from "states.sheet.json";
 
 export default class BoardSenate extends Component {
   constructor(props) {
@@ -33,13 +34,17 @@ export default class BoardSenate extends Component {
       return "";
     }
 
+    races.forEach(r => r.name = states[r.state].name);
+
+    var sorted = races.sort((a,b) => a.name > b.name ? 1 : a.name < b.name ? -1 : 0);
+
     var buckets = {
       likelyD: [],
       tossup: [],
       likelyR: []
     };
 
-    races.forEach(function(r) {
+    sorted.forEach(function(r) {
       var rating = senate[r.id].rating;
 
       if (rating == "solid-d" || rating == "likely-d") {
