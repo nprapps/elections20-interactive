@@ -1,12 +1,14 @@
 import { h, Component, createRef } from "preact";
 import gopher from "../gopher.js";
+
+import { CountyChart } from "./countyChart.js";
 // import "./countyDataViz.less";
 
 export class CountyDataViz extends Component {
   constructor(props) {
     super();
 
-    this.graphicRef = createRef();
+    this.charts = ["unemployment"];
   }
 
   // Lifecycle: Called whenever our component is created
@@ -20,8 +22,11 @@ export class CountyDataViz extends Component {
   render() {
     return (
       <div class="graphic">
+        <h2>County Trends</h2>
         <ul></ul>
-        <div class="graphic-wrapper" ref={this.graphicRef}></div>
+        {this.charts.map(c => (
+          <CountyChart data={this.props.data} variable={c} />
+        ))}
       </div>
     );
   }
