@@ -27,6 +27,7 @@ var scaleFactory = function(domain, range) {
       }
     }
   }
+  return scale;
 }
 
 export class CountyChart extends Component {
@@ -62,9 +63,9 @@ export class CountyChart extends Component {
   }
 
   render() {
-    if (!(this.cleanedData.length >= 10)) {
-      return <div>Too few counties to display trends</div>;
-    }
+    // if (!(this.cleanedData.length >= 10)) {
+    //   return <div>Too few counties to display trends</div>;
+    // }
     // TODO: Move this elsewhere?
     var width = window.innerWidth / 3;
     var aspectWidth = 12;
