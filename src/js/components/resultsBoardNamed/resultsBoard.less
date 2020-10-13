@@ -1,3 +1,5 @@
+@import "values";
+
 .board-container {
 	display: flex;
 }
@@ -58,10 +60,10 @@ table.results {
 			color: green;
 		}
 		&.winner.Dem a {
-			color: #237BBD;
+			color: @dem;
 		}
 		&.winner.GOP a {
-			color: #D61F21;
+			color: @gop;
 		}
 	}
 	td.reporting {
@@ -70,32 +72,32 @@ table.results {
 		color: #9a9a9a;
 	}
   td.candidate {
+  	.perc {
+  		float: right;
+  		margin-left: 8px;
+  	}
   	.perc, .name {
 			display: inline-block;
 			min-width: 25px;
 		}
-		// .perc {
-			// float: right;
-			// margin-left: 6px;
-		// }
   	&.leading {
-	  	background: #D7F0E2;
+	  	background: @indDim;
 	  }
 	  &.winner {
 	  	color: white;
-	  	background: #15B16E;
+	  	background: @ind;
 	  }
 	  &.GOP.leading {
-	  	background: #fad5d4;
+	  	background: @gopDim;
 	  }
 	  &.Dem.leading {
-	  	background: #d8eaf9;
+	  	background: @demDim;
 	  }
 	  &.GOP.winner {
-	  	background: #D61F21;
+	  	background: @gop;
 	  }
 	  &.Dem.winner {
-	  	background: #237BBD;
+	  	background: @dem;
 	  }
 	  &.runoff {
   		background: white !important;
@@ -103,19 +105,27 @@ table.results {
   }
   td.electoral {
   	&.winner {
-  		color: green;
+  		color: @ind;
   	}
   	&.winner.Dem {
-			color: #237BBD;
+			color: @dem;
 		}
 		&.winner.GOP {
-			color: #D61F21;
+			color: @gop;
 		}
   }
   td.runoff-label {
   	font-size: 8px;
   	text-transform: uppercase;
   	border: 0;
+  	color: @ind;
+
+  	&.Dem {
+  		color: @dem;
+  	}
+  	&.GOP {
+  		color: @gop;
+  	}
   }
 }
 
@@ -126,17 +136,12 @@ table.results.president {
 		text-transform: uppercase;
 		font-weight: normal;
 		letter-spacing: 0.05em;
-  	-webkit-font-smoothing: antialiased;
-  	padding: 4px 8px;
-  	// text-align: left;
-  	// transform: rotate(-90deg);
-  	// transform-origin: left;
+	  -webkit-font-smoothing: antialiased;
+	  padding: 4px 8px;
 
-		// &.state-hed {
-			// padding-left: 6px;
-			// transform: rotate(0);
-			// text-align: left;
-		// }
+	  &.state-hed {
+	  	text-align: left;
+	  }
 	}
 	.electoral {
 		float: none;
@@ -145,6 +150,7 @@ table.results.president {
 		color: #9a9a9a;
 	}
 	td.candidate .perc {
+		text-align: center;
 		margin-left: 0;
 	}
 }
