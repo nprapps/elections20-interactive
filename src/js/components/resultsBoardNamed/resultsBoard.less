@@ -27,7 +27,7 @@ table.results {
 		letter-spacing: 0.05em;
 	  -webkit-font-smoothing: antialiased;
 	  padding: 4px 8px;
-	  border-bottom: 1px solid #eee;
+	  border-bottom: 1px solid #ddd;
 
 	  &.state-hed, &.reporting-hed, &.name-hed {
 	  	text-align: left;
@@ -78,14 +78,14 @@ table.results {
 		}
 
 		&.winner a {
-			font-weight: bold;
-			color: @ind;
+			// font-weight: bold;
+			// color: @ind;
 		}
 		&.winner.Dem a {
-			color: @dem;
+			// color: @dem;
 		}
 		&.winner.GOP a, &.winner.No a {
-			color: @gop;
+			// color: @gop;
 		}
 	}
 	td.reporting {
@@ -139,20 +139,8 @@ table.results {
 	  	}
 	  }
 	  &.runoff {
-  		background: white !important;
+  		background: @background !important;
   	}
-  }
-  td.electoral {
-    border-right: @border;
-  	&.winner {
-  		color: @ind;
-  	}
-  	&.winner.Dem {
-			color: @dem;
-		}
-		&.winner.GOP {
-			color: @gop;
-		}
   }
   td.runoff-label {
   	font-size: 8px;
@@ -176,16 +164,25 @@ table.results.president {
 	td {
 		text-align: left;
 	}
-	td.electoral {
-		float: none;
-		text-align: center;
-		margin: 0;
-		color: #9a9a9a;
-	}
 	td.state {
 		// font-weight: bold;
 		border-right: 0;
 	}
+	 td.electoral {
+    border-right: @border;
+    text-align: center;
+		color: #9a9a9a;
+
+  	&.winner {
+  		color: @ind;
+  	}
+  	&.winner.Dem {
+			color: @dem;
+		}
+		&.winner.GOP {
+			color: @gop;
+		}
+  }
 	td.candidate {
 		text-align: center;
 		color: #666;

@@ -24,7 +24,7 @@ function CandidateCells(race) {
 }
 
 export default function ResultsBoardNamed(props) {
-  console.log("props",props)
+  // console.log("props",props)
 
   return (
     <>
