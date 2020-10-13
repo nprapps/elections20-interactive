@@ -1,6 +1,7 @@
 import { h, Component, Fragment } from "preact";
 import gopher from "../gopher.js";
 import Results from "../resultsBoardPresident";
+import TestBanner from "../testBanner";
 import states from "states.sheet.json";
 
 export default class BoardPresident extends Component {
@@ -11,8 +12,8 @@ export default class BoardPresident extends Component {
     this.onData = this.onData.bind(this);
   }
 
-  onData(races) {
-    this.setState({ races });
+  onData(data) {
+    this.setState({ races: data.results, test: data.test });
   }
 
   componentDidMount() {
@@ -24,7 +25,7 @@ export default class BoardPresident extends Component {
   }
 
   render() {
-    var { races } = this.state;
+    var { races, test } = this.state;
     if (!races) {
       return "";
     }
@@ -63,7 +64,7 @@ export default class BoardPresident extends Component {
 
     return <>
       <h1>President</h1>
-      <div class="placeholder">Map or dataviz</div>
+      { test ? <TestBanner /> : "" }
       <div class="board-container">
         <Results races={buckets.likelyD} hed="Dem. Likely"/>
         <Results races={buckets.tossup} hed="Lean/Tossup"/>

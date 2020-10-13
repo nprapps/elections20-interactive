@@ -5,6 +5,8 @@ import KeyRaces from "../stateViewKeyRaces";
 import HouseResults from "../stateViewHouse";
 import ResultsTableCandidates from "../resultsTableCandidates";
 import CountyResults from "../countyResults";
+import TestBanner from "../testBanner";
+
 import stateLookup from "states.sheet.json";
 import strings from "strings.sheet.json";
 import { getViewFromRace, formatters } from "../util.js";
@@ -21,8 +23,8 @@ export default class StateResults extends Component {
     this.onData = this.onData.bind(this);
   }
 
-  onData(races) {
-    this.setState({ races });
+  onData(data) {
+    this.setState({ races: data.results, test: data.test });
   }
 
   componentDidMount() {
@@ -43,7 +45,9 @@ export default class StateResults extends Component {
   }
 
   render(props, state) {
-    if (!this.state.races) {
+    var { races, test } = this.state;
+
+    if (!races) {
       return <div> Loading... </div>;
     }
 
@@ -65,6 +69,7 @@ export default class StateResults extends Component {
           </h1>
           {this.renderTabSwitcher(office)}
         </header>
+        { test ? <TestBanner /> : "" }
         <div class="results-elements">{this.renderResults(office)}</div>
       </div>
     );

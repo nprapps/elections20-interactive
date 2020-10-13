@@ -25,7 +25,7 @@ module.exports = function(grunt) {
     var envString = Object.keys(env).map(k => `Environment=${k}="${env[k]}"`).join("\n");
     template = template.replace("%ENV%", envString);
 
-    grunt.file.write("elections20-primaries.service", template);
+    grunt.file.write("elections.service", template);
 
   });
 };

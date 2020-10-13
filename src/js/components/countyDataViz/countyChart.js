@@ -1,8 +1,34 @@
 import { h, Component, Fragment, createRef } from "preact";
 import gopher from "../gopher.js";
-// import "./countyDataViz.less";
 import { scaleLinear } from "d3";
 import "./countyData.less";
+
+var scaleFactory = function(domain, range) {
+  var [rangeStart, rangeEnd] = range;
+  var rangeSize = rangeEnd - rangeStart;
+  var [domainStart, domainEnd] = domain;
+  var domainSize = domainEnd - domainStart;
+  var scale = function(input) {
+    var normalized = (input - rangeStart) / rangeSize;
+    return normalized * domainSize + domainStart;
+  }
+  scale.range = () => range;
+  var tickIntervals = [1, 2, 5, 10, 20, 25, 50, 100, 200, 250, 500, 1000];
+  scale.ticks = function() {
+    for (var interval of tickIntervals) {
+      var count = domainSize / tickIntervals;
+      if (count > 3 && count < 10) {
+        var ticks = [];
+        var min = Math.floor(domainStart / interval) * interval;
+        var max = Math.ceil(domainEnd / interval) * interval;
+        for (var i = min; i <= max; i += interval) {
+          ticks.push(i);
+        }
+        return ticks;
+      }
+    }
+  }
+}
 
 export class CountyChart extends Component {
   constructor(props) {
@@ -56,8 +82,8 @@ export class CountyChart extends Component {
       })
     );
     maxY = Math.ceil(maxY / 10) * 10;
-    this.xScale = scaleLinear().domain([0, 100]).range([0, this.chartWidth]);
-    this.yScale = scaleLinear().domain([0, maxY]).range([this.chartHeight, 0]);
+    this.xScale = scaleFactory([0, 100], [0, this.chartWidth]);
+    this.yScale = scaleFactory([0, maxY], [this.chartHeight, 0]);
 
     return (
       <div class="graphic">
@@ -109,6 +135,7 @@ export class CountyChart extends Component {
     const [yStart, yEnd] = this.yScale.range();
     const ticksY = this.yScale.ticks();
     const ticksX = this.xScale.ticks();
+    const [orderLeft, orderRight] = this.props.order;
 
     return (
       <>

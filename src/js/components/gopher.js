@@ -36,13 +36,13 @@ export class Gopher extends EventTarget {
       entry.modified = response.headers.get("last-modified") || entry.modified;
       var json = await response.json();
       entry.last = json;
-      entry.callbacks.forEach((c) => c(json));
-      return json;
     } catch (e) {
       // log failures, but tolerate them
       console.error(`Fetch failed for ${entry.url}`)
       return;
     }
+    entry.callbacks.forEach((c) => c(json));
+    return json;
   }
 
   watch(url, callback) {

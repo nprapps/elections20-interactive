@@ -31,7 +31,7 @@ var { nav, states } = grunt.data.json;
 
         <ul class="states menu-contents" id="states-menu">
           <% for (var state of Object.keys(states)) {%>
-          <% if (state.district) continue; %>
+          <% if (states[state].district) continue; %>
           <li>
             <a href="#/states/<%= state %>"><%= states[state].name %></a>
           </li>
