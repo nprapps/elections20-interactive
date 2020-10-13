@@ -43,7 +43,7 @@ export default function ResultsBoardNamed(props) {
                 {/* State */}
                 <td class={"state " + (winner[0] ? ("winner " + winner[0].party) : "")}>
                   <a href={"#/states/" + r.state + "/" + r.office}>
-                    {states[r.state].ap} {r.seatNumber && !r.description.includes("at large") ? r.seatNumber : ""}
+                    {states[r.state].ap} {r.seatNumber && r.description && !r.description.includes("at large") ? r.seatNumber : ""}
                   </a>
                 </td>
 

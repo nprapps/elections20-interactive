@@ -13,8 +13,8 @@ export default class BoardSenate extends Component {
     this.onData = this.onData.bind(this);
   }
 
-  onData(races) {
-    this.setState({ races });
+  onData(data) {
+    this.setState({ races: data.results });
   }
 
   // Lifecycle: Called whenever our component is created

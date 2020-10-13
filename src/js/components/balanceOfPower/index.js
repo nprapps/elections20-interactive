@@ -13,7 +13,7 @@ export class BalanceOfPower extends Component {
   }
 
   onData(json) {
-    this.setState({ data: json });
+    this.setState({ data: json.results });
   }
 
   // Lifecycle: Called whenever our component is created

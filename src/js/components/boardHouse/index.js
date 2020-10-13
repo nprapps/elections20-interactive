@@ -13,8 +13,9 @@ export default class BoardHouse extends Component {
     this.onData = this.onData.bind(this);
   }
 
-  onData(races) {
-    this.setState({ races });
+  onData(data) {
+    console.log(data);
+    this.setState({ races: data.results });
   }
 
   // Lifecycle: Called whenever our component is created
@@ -41,7 +42,7 @@ export default class BoardHouse extends Component {
     var buckets = {};
 
     sorted.forEach(function(r) {
-      var rating = house[r.id].rating;
+      var rating = house[r.id] ? house[r.id].rating : "";
       if (!buckets[rating]) buckets[rating] = [];
       buckets[rating].push(r);
     });

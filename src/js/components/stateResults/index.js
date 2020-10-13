@@ -21,8 +21,8 @@ export default class StateResults extends Component {
     this.onData = this.onData.bind(this);
   }
 
-  onData(races) {
-    this.setState({ races });
+  onData(data) {
+    this.setState({ races: data.results });
   }
 
   componentDidMount() {
