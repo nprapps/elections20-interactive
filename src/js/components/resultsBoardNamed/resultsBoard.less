@@ -18,13 +18,15 @@ table.results {
 
 	.open-label {
 		display: none;
-		background: #eee;
-		text-align: center;
+		// background: white;
+		// text-align: center;
 		font-style: italic;
+		font-size: 9px;
+		color: #9a9a9a;
 	}
 
 	tr.open {
-		.candidate, .reporting, .electoral {
+		.candidate, .reporting {
 			display: none;
 		}
 
@@ -72,6 +74,9 @@ table.results {
 		color: #9a9a9a;
 	}
   td.candidate {
+  	// background: #F7F7F7;
+  	// border: 1px solid #eee;
+
   	.perc {
   		float: right;
   		margin-left: 8px;
@@ -82,28 +87,39 @@ table.results {
 		}
   	&.leading {
 	  	background: @indDim;
+	  	border-right: 0;
+	  	border-left: 0;
 	  }
 	  &.winner {
 	  	color: white;
 	  	background: @ind;
 	  }
-	  &.GOP.leading {
-	  	background: @gopDim;
+	  &.GOP {
+	  	color: @gop;
+	  	&.leading {
+	  		color: white;
+	  		background: @gopDim;
+	  	}
+	  	&.winner {
+	  		background: @gop;
+	  	}
 	  }
-	  &.Dem.leading {
-	  	background: @demDim;
-	  }
-	  &.GOP.winner {
-	  	background: @gop;
-	  }
-	  &.Dem.winner {
-	  	background: @dem;
+	  &.Dem {
+	  	color: @dem;
+	  	&.leading {
+	  		color: white;
+	  		background: @demDim;
+	  	}
+	  	&.winner {
+	  		background: @dem;
+	  	}
 	  }
 	  &.runoff {
   		background: white !important;
   	}
   }
   td.electoral {
+    border-right: 1px solid #eee;
   	&.winner {
   		color: @ind;
   	}
@@ -149,8 +165,16 @@ table.results.president {
 		margin: 0;
 		color: #9a9a9a;
 	}
-	td.candidate .perc {
+	td.candidate {
 		text-align: center;
-		margin-left: 0;
+		color: #666;
+
+		.perc {
+			float: none;
+			margin-left: 0;
+		}
+	}
+	td.reporting {
+		text-align: center;
 	}
 }
