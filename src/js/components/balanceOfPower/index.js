@@ -18,13 +18,13 @@ export default class BalanceOfPower extends Component {
 
   // Lifecycle: Called whenever our component is created
   async componentDidMount() {
-    gopher.watch(`/data/${this.props.race}.json`, this.onData);
+    gopher.watch(`./data/${this.props.race}.json`, this.onData);
   }
 
   // Lifecycle: Called just before our component will be destroyed
   componentWillUnmount() {
     // stop when not renderable
-    gopher.unwatch(`/data/${this.props.race}.json`, this.onData);
+    gopher.unwatch(`./data/${this.props.race}.json`, this.onData);
   }
 
   render() {
