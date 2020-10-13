@@ -14,18 +14,19 @@ var scaleFactory = function(domain, range) {
   scale.range = () => range;
   var tickIntervals = [1, 2, 5, 10, 20, 25, 50, 100, 200, 250, 500, 1000];
   scale.ticks = function() {
+    var ticks = [];
     for (var interval of tickIntervals) {
       var count = domainSize / tickIntervals;
       if (count > 3 && count < 10) {
-        var ticks = [];
         var min = Math.floor(domainStart / interval) * interval;
         var max = Math.ceil(domainEnd / interval) * interval;
         for (var i = min; i <= max; i += interval) {
           ticks.push(i);
         }
-        return ticks;
+        break;
       }
     }
+    return ticks;
   }
   return scale;
 }
