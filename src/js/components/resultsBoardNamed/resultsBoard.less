@@ -37,7 +37,7 @@ table.results {
 
 	td {
 		padding: 4px 8px;
-		border: 1px solid #eee;
+		border: 1px solid #ddd;
 		border-right: 0;
 		border-left: 0;
 	}
@@ -51,7 +51,7 @@ table.results {
 		// font-weight: bold;
 		text-decoration: none;
 		border-left: 0;
-		border-right: 1px solid #eee;
+		border-right: 1px solid #ddd;
 		color: #444;
 
 		&:hover {
@@ -75,8 +75,9 @@ table.results {
 		color: #9a9a9a;
 	}
   td.candidate {
-  	// background: #F7F7F7;
-  	// border: 1px solid #eee;
+  	background: #F7F7F7;
+  	border-right: 1px solid #ddd;
+  	// color: @ind;
 
   	.perc {
   		float: right;
@@ -87,31 +88,34 @@ table.results {
 			min-width: 25px;
 		}
   	&.leading {
+  		color: #666;
 	  	background: @indDim;
-	  	border-right: 0;
-	  	border-left: 0;
+	  	// border-right: 0;
+	  	// border-left: 0;
 	  }
 	  &.winner {
 	  	color: white;
 	  	background: @ind;
 	  }
 	  &.GOP {
-	  	color: @gop;
+	  	// color: @gop;
 	  	&.leading {
-	  		color: white;
+	  		color: #666;
 	  		background: @gopDim;
 	  	}
 	  	&.winner {
+	  		color: white;
 	  		background: @gop;
 	  	}
 	  }
 	  &.Dem {
-	  	color: @dem;
+	  	// color: @dem;
 	  	&.leading {
-	  		color: white;
+	  		color: #666;
 	  		background: @demDim;
 	  	}
 	  	&.winner {
+	  		color: white;
 	  		background: @dem;
 	  	}
 	  }
@@ -120,7 +124,7 @@ table.results {
   	}
   }
   td.electoral {
-    border-right: 1px solid #eee;
+    border-right: 1px solid #ddd;
   	&.winner {
   		color: @ind;
   	}
@@ -172,6 +176,8 @@ table.results.president {
 	td.candidate {
 		text-align: center;
 		color: #666;
+		// background: none;
+		// border-right: 0;
 
 		.perc {
 			float: none;
