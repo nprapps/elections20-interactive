@@ -1,5 +1,8 @@
 @import "values";
 
+@border: 1px solid white;
+@background: #efefef;
+
 .board-container {
 	display: flex;
 }
@@ -16,6 +19,21 @@ table.results {
 	font-size: 11px;
 	border-collapse: collapse;
 
+	th {
+		font-size: 11px;
+		font-family: 'Knockout 31 4r','Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
+		text-transform: uppercase;
+		font-weight: normal;
+		letter-spacing: 0.05em;
+	  -webkit-font-smoothing: antialiased;
+	  padding: 4px 8px;
+	  border-bottom: 1px solid #eee;
+
+	  &.state-hed, &.reporting-hed, &.name-hed {
+	  	text-align: left;
+	  }
+	}
+
 	.open-label {
 		display: none;
 		// background: white;
@@ -23,6 +41,7 @@ table.results {
 		font-style: italic;
 		font-size: 9px;
 		color: #9a9a9a;
+		// padding-left: 0;
 	}
 
 	tr.open {
@@ -37,7 +56,7 @@ table.results {
 
 	td {
 		padding: 4px 8px;
-		border: 1px solid #ddd;
+		border: @border;
 		border-right: 0;
 		border-left: 0;
 	}
@@ -51,7 +70,7 @@ table.results {
 		// font-weight: bold;
 		text-decoration: none;
 		border-left: 0;
-		border-right: 1px solid #ddd;
+		border-right: @border;
 		color: #444;
 
 		&:hover {
@@ -75,8 +94,8 @@ table.results {
 		color: #9a9a9a;
 	}
   td.candidate {
-  	background: #F7F7F7;
-  	border-right: 1px solid #ddd;
+  	background: @background;
+  	border: @border;
   	// color: @ind;
 
   	.perc {
@@ -124,7 +143,7 @@ table.results {
   	}
   }
   td.electoral {
-    border-right: 1px solid #ddd;
+    border-right: @border;
   	&.winner {
   		color: @ind;
   	}
@@ -138,31 +157,24 @@ table.results {
   td.runoff-label {
   	font-size: 8px;
   	text-transform: uppercase;
-  	border: 0;
-  	color: @ind;
+  	font-weight: bold;
+  	// border: 0;
 
-  	&.Dem {
+  	.flip-label {
+      color: @ind;
+  	}
+  	&.Dem .flip-label{
   		color: @dem;
   	}
-  	&.GOP, &.No {
+  	&.GOP .flip-label, &.No.flip-label {
   		color: @gop;
   	}
   }
 }
 
 table.results.president {
-	th {
-		font-size: 11px;
-		font-family: 'Knockout 31 4r','Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
-		text-transform: uppercase;
-		font-weight: normal;
-		letter-spacing: 0.05em;
-	  -webkit-font-smoothing: antialiased;
-	  padding: 4px 8px;
-
-	  &.state-hed {
-	  	text-align: left;
-	  }
+	td {
+		text-align: left;
 	}
 	td.electoral {
 		float: none;
@@ -184,8 +196,5 @@ table.results.president {
 			float: none;
 			margin-left: 0;
 		}
-	}
-	td.reporting {
-		text-align: center;
 	}
 }

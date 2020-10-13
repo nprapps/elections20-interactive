@@ -40,7 +40,8 @@ export default function ResultsBoardPresident(props) {
         		<th>E.V.</th>
             <th>Dem.</th>
         		<th>GOP</th>
-            <th>% in</th>
+            <th class="reporting-hed">% in</th>
+            <th></th>
         	</tr>
 
           {props.races.map(function(r) {
@@ -73,7 +74,7 @@ export default function ResultsBoardPresident(props) {
                 <td class="reporting">{percentIn}</td>
 
                 {/* Runoff */}
-                <td class="runoff-label">{r.runoff ? "Runoff" : ""}</td>
+                <td class="runoff-label">{r.runoff ? "R.O." : ""}</td>
               </tr>
             );
         })}

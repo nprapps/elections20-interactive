@@ -31,6 +31,13 @@ export default function ResultsBoardNamed(props) {
       <div>
         <h3 class="board-hed">{props.hed}</h3>
         <table class="named results table">
+          <tr>
+            <th class="state-hed">State</th>
+            <th colspan="2" class="name-hed">Top candidates</th>
+            <th class="reporting-hed">% in</th>
+            <th></th>
+          </tr>
+
           {props.races.map(function(r) {
             var hasResult = r.eevp || r.reporting || r.called || r.runoff;
             var reporting = r.eevp || r.reportingPercent;
@@ -62,8 +69,8 @@ export default function ResultsBoardNamed(props) {
 
                 {/* Runoff or Flip */}
                 <td class={"runoff-label " + (flipped ? winner[0].party : "")}>
-                  {r.runoff ? "Runoff" : ""}
-                  {flipped ? "Flip" : ""}
+                  {r.runoff ? "R.O." : ""}
+                  <span class="flip-label">{flipped ? "Flip" : ""}</span>
                 </td>
               </tr>
             );
