@@ -1,6 +1,5 @@
 import { h, Component, Fragment, createRef } from "preact";
 import gopher from "../gopher.js";
-import { scaleLinear } from "d3";
 import "./countyData.less";
 
 var scaleFactory = function(domain, range) {

@@ -41,12 +41,14 @@ export class Gopher extends EventTarget {
       console.error(`Fetch failed for ${entry.url}`)
       return;
     }
+    this.dispatchEvent("change", entry.url);
     entry.callbacks.forEach((c) => c(json));
     return json;
   }
 
   watch(url, callback) {
-    var entry = this.urls.get(url) || this.addURL(url);
+    var normalized = new URL(url, window.location.href).toString();
+    var entry = this.urls.get(normalized) || this.addURL(normalized);
     entry.callbacks.push(callback);
     this.watchCount++;
     this.sync(entry);
