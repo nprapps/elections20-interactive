@@ -56,6 +56,7 @@ module.exports = function (grunt) {
     "sheets",
     "docs",
     "clean",
+    "elex",
     "static",
     "publish",
     "cron:240:publish"
@@ -64,6 +65,7 @@ module.exports = function (grunt) {
     "sheets",
     "docs",
     "clean",
+    "elex",
     "static",
     "publish:live",
     "cron:30:publishLive"
