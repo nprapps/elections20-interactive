@@ -38,6 +38,8 @@ export default function ResultsBoardNamed(props) {
             var winner = r.candidates.filter(c => c.winner == "X");
             var incumbent = r.candidates.filter(c => c.incumbent);
             var flipped = winner[0] && incumbent[0] && (r.previousParty !== winner[0].party);
+            var seatLabel = (r.office == "H" || r.office == "S") && r.seatNumber && r.description && !r.description.includes("at large") ? " " + r.seatNumber : "";
+            var ballotLabel = r.office == "I" ? " " + r.seat : "";
 
             return (
               <tr class={hasResult ? "closed" : "open"}>
@@ -45,7 +47,7 @@ export default function ResultsBoardNamed(props) {
                 {/* State */}
                 <td class={"state " + (winner[0] ? ("winner " + winner[0].party) : "")}>
                   <a href={"#/states/" + r.state + "/" + r.office}>
-                    {states[r.state].ap} {r.seatNumber && r.description && !r.description.includes("at large") ? r.seatNumber : ""}
+                    {states[r.state].ap + seatLabel + ballotLabel}
                   </a>
                 </td>
 

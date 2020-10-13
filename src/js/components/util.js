@@ -17,9 +17,9 @@ export function reportingPercentage(pct) {
 
 export function sortByParty(a, b) {
   var getPartyValue = (c) =>
-    c.party == "GOP"
+    c.party == "GOP" || c.party == "No"
       ? Infinity
-      : c.party == "Dem"
+      : c.party == "Dem" || c.party == "Yes"
       ? -Infinity
       : c.party ? c.party.charCodeAt(0) : 0;
 

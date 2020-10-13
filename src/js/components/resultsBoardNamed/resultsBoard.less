@@ -60,12 +60,12 @@ table.results {
 
 		&.winner a {
 			font-weight: bold;
-			color: green;
+			color: @ind;
 		}
 		&.winner.Dem a {
 			color: @dem;
 		}
-		&.winner.GOP a {
+		&.winner.GOP a, &.winner.No a {
 			color: @gop;
 		}
 	}
@@ -97,7 +97,7 @@ table.results {
 	  	color: white;
 	  	background: @ind;
 	  }
-	  &.GOP {
+	  &.GOP, &.No {
 	  	// color: @gop;
 	  	&.leading {
 	  		color: #666;
@@ -144,7 +144,7 @@ table.results {
   	&.Dem {
   		color: @dem;
   	}
-  	&.GOP {
+  	&.GOP, &.No {
   		color: @gop;
   	}
   }
@@ -171,7 +171,8 @@ table.results.president {
 		color: #9a9a9a;
 	}
 	td.state {
-		// border-right: 0;
+		// font-weight: bold;
+		border-right: 0;
 	}
 	td.candidate {
 		text-align: center;
