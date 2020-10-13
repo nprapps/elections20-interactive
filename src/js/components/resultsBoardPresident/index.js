@@ -36,7 +36,7 @@ export default function ResultsBoardPresident(props) {
         <h3 class="board-hed">{props.hed}</h3>
         <table class="president results table">
         	<tr>
-        		<th>State</th>
+        		<th colspan="2" class="state-hed">State</th>
         		<th>Dem.</th>
         		<th>GOP</th>
         		<th>E.V.</th>
