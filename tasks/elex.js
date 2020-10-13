@@ -126,7 +126,7 @@ module.exports = function(grunt) {
     };
 
     // national results
-    await fs.writeFile("build/data/national.json", serialize(geo.national));
+    await fs.writeFile("build/data/national.json", serialize({ test, results: geo.national }));
 
     // state-level results
     await fs.mkdir("build/data/states", { recursive: true });
@@ -137,7 +137,7 @@ module.exports = function(grunt) {
       states[state].push(result);
     });
     for (var state in states) {
-      await fs.writeFile(`build/data/states/${state}.json`, serialize(states[state]));
+      await fs.writeFile(`build/data/states/${state}.json`, serialize({ test, results: states[state] }));
     }
 
     // county files
@@ -150,7 +150,7 @@ module.exports = function(grunt) {
       countyRaces[key].push(result);
     });
     for (var key in countyRaces) {
-      await fs.writeFile(`build/data/counties/${key}.json`, serialize(countyRaces[key]));
+      await fs.writeFile(`build/data/counties/${key}.json`, serialize({ test, results: countyRaces[key] }));
     }
 
     // sliced by office
@@ -163,13 +163,14 @@ module.exports = function(grunt) {
     }
 
     for (var office in byOffice) {
-      await fs.writeFile(`build/data/${office}.json`, serialize(byOffice[office]));
+      await fs.writeFile(`build/data/${office}.json`, serialize({ test, results: byOffice[office] }));
     }
 
     // top-level results fusion
     var gcu = grunt.data.archieml.longform.getCaughtUp;
     "headline text".split(" ").forEach(p => gcu[p] = grunt.template.renderMarkdown(gcu[p]));
     var top = {
+      test,
       gcu,
       senate: [],
       house: [],

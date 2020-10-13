@@ -14,12 +14,12 @@ export default class CountyResults extends Component {
   }
 
   onCountyData(json) {
-    var office = json[0].office;
-    this.setState({ data: json, office });
+    var office = json.results[0].office;
+    this.setState({ data: json.results, office });
   }
 
   onStateData(json) {
-    this.setState({ stateData: json });
+    this.setState({ stateData: json.results });
   }
 
   // Lifecycle: Called whenever our component is created

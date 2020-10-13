@@ -3,7 +3,7 @@ import gopher from "../gopher.js";
 import InactiveSenateRaces from "inactive_senate_races.sheet.json";
 import "./balanceOfPower.less";
 
-export class BalanceOfPower extends Component {
+export default class BalanceOfPower extends Component {
   constructor(props) {
     super();
 
@@ -13,7 +13,7 @@ export class BalanceOfPower extends Component {
   }
 
   onData(json) {
-    this.setState({ data: json });
+    this.setState({ data: json.results });
   }
 
   // Lifecycle: Called whenever our component is created

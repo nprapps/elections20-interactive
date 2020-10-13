@@ -21,7 +21,7 @@ export function sortByParty(a, b) {
       ? Infinity
       : c.party == "Dem"
       ? -Infinity
-      : c.party.charCodeAt(0);
+      : c.party ? c.party.charCodeAt(0) : 0;
 
   return getPartyValue(a) - getPartyValue(b);
 }
