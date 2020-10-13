@@ -2,16 +2,19 @@ import { h, Component, Fragment, createRef } from "preact";
 import gopher from "../gopher.js";
 // import "./countyDataViz.less";
 import { scaleLinear } from "d3";
-import "./countyData.less"
+import "./countyData.less";
 
 export class CountyChart extends Component {
   constructor(props) {
     super();
 
-    console.log(props.data)
     // TODO: don't show charts if not more than 5 counties are called? What to do
     // about Hawaii and other places with few counties?
-    this.cleanedData = this.getCleanedData(props.data, props.variable);
+    this.cleanedData = this.getCleanedData(
+      props.data,
+      props.variable,
+      props.order
+    );
 
     this.tooltipRef = createRef();
 
@@ -26,8 +29,7 @@ export class CountyChart extends Component {
   }
 
   // Lifecycle: Called whenever our component is created
-  componentDidMount() {
-  }
+  componentDidMount() {}
 
   // Lifecycle: Called just before our component will be destroyed
   componentWillUnmount() {
@@ -38,6 +40,7 @@ export class CountyChart extends Component {
     if (!(this.cleanedData.length >= 10)) {
       return <div>Too few counties to display trends</div>;
     }
+    // TODO: Move this elsewhere?
     var width = window.innerWidth / 3;
     var aspectWidth = 12;
     var aspectHeight = 9;
@@ -76,17 +79,29 @@ export class CountyChart extends Component {
     );
   }
 
-  getCleanedData(data, variable) {
+  getCleanedData(data, variable, order) {
     // Only show on chart if winner declared
-    // TODO: something fancier on calculation for more/less dem
+
+    var lead = order[0];
+    var second = order[1];
     var filtered = data.filter(d => d.winnerParty);
     var cleaned = filtered.map(f => ({
       name: f.county.countyName,
-      x: (100 - f.candidates.filter(c => c.party == "GOP")[0].percent * 100),
+      x: this.getX(f, lead, second),
       y: f.county[variable], // Will need to fix this
       party: f.candidates[0].party,
     }));
     return cleaned;
+  }
+
+  getX(county, lead, second) {
+    // TODO: Verify this is correct
+    var leadPer =
+      county.candidates.filter(c => c.party == lead)[0].percent * 100;
+    var secondPer =
+      county.candidates.filter(c => c.party == second)[0].percent * 100;
+
+    return (leadPer / (leadPer + secondPer)) * 100;
   }
 
   createAxes() {
@@ -116,10 +131,24 @@ export class CountyChart extends Component {
         </g>{" "}
         <line x1={xStart} x2={xEnd} y1={yStart} y2={yStart} stroke="#ccc" />
         <line x1={xStart} x2={xStart} y1={yEnd} y2={yStart} stroke="#ccc" />
-        <line x1={xStart} x2={xEnd} y1={yStart/2} y2={yStart/2} stroke="#ccc" />
-        <line x1={xEnd/2} x2={xEnd/2} y1={yEnd} y2={yStart} stroke="#ccc" />
-        <text class="x axis-label" text-anchor="start" x={xStart} y={yStart + 15}>{`← More ${this.props.order[0]}`}</text>
-        <text class="x axis-label" text-anchor="end" x={xEnd} y={yStart + 15}>{`More ${this.props.order[1]} →`}</text>
+        <line
+          x1={xStart}
+          x2={xEnd}
+          y1={yStart / 2}
+          y2={yStart / 2}
+          stroke="#ccc"
+        />
+        <line x1={xEnd / 2} x2={xEnd / 2} y1={yEnd} y2={yStart} stroke="#ccc" />
+        <text
+          class="x axis-label"
+          text-anchor="start"
+          x={xStart}
+          y={yStart + 15}>{`← More ${this.props.order[1]}`}</text>
+        <text
+          class="x axis-label"
+          text-anchor="end"
+          x={xEnd}
+          y={yStart + 15}>{`More ${this.props.order[0]} →`}</text>
       </>
     );
   }

@@ -21,7 +21,7 @@ export class CountyDataViz extends Component {
 
   render() {
     return (
-      <div class="graphic">
+      <div class="trends">
         <h2>County Trends</h2>
         <ul></ul>
         {this.charts.map(c => (
