@@ -36,6 +36,8 @@ export default function ResultsBoardNamed(props) {
             var reporting = r.eevp || r.reportingPercent;
             var percentIn = reporting ? reportingPercentage(reporting) + "% in" : "";
             var winner = r.candidates.filter(c => c.winner == "X");
+            var incumbent = r.candidates.filter(c => c.incumbent);
+            var flipped = winner[0] && incumbent[0] && (r.previousParty !== winner[0].party);
 
             return (
               <tr class={hasResult ? "closed" : "open"}>
@@ -56,8 +58,11 @@ export default function ResultsBoardNamed(props) {
                 {/* EEVP */}
                 <td class="reporting">{percentIn}</td>
 
-                {/* Runoff */}
-                <td class="runoff-label">{r.runoff ? "Runoff" : ""}</td>
+                {/* Runoff or Flip */}
+                <td class={"runoff-label " + (flipped ? winner[0].party : "")}>
+                  {r.runoff ? "Runoff" : ""}
+                  {flipped ? "Flip" : ""}
+                </td>
               </tr>
             );
           })}
