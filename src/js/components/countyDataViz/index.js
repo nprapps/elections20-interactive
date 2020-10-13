@@ -20,6 +20,9 @@ export class CountyDataViz extends Component {
   }
 
   render() {
+    if (!this.props.data || !this.enoughCountiesIn(this.props.data)) {
+      return '';
+    }
     return (
       <div class="trends">
         <h2>County Trends</h2>
@@ -29,5 +32,9 @@ export class CountyDataViz extends Component {
         ))}
       </div>
     );
+  }
+
+  enoughCountiesIn(data) {
+    return data.filter(d => d.reportingPercent >= .5).length >= 10;
   }
 }

@@ -8,25 +8,24 @@ var scaleFactory = function(domain, range) {
   var [domainStart, domainEnd] = domain;
   var domainSize = domainEnd - domainStart;
   var scale = function(input) {
-    var normalized = (input - rangeStart) / rangeSize;
-    return normalized * domainSize + domainStart;
+    var normalized = (input - domainStart) / domainSize;
+    return normalized * rangeSize + rangeStart;
   }
   scale.range = () => range;
   var tickIntervals = [1, 2, 5, 10, 20, 25, 50, 100, 200, 250, 500, 1000];
   scale.ticks = function() {
-    var ticks = [];
     for (var interval of tickIntervals) {
-      var count = domainSize / tickIntervals;
+      var count = domainSize / interval;
       if (count > 3 && count < 10) {
+        var ticks = [];
         var min = Math.floor(domainStart / interval) * interval;
         var max = Math.ceil(domainEnd / interval) * interval;
         for (var i = min; i <= max; i += interval) {
           ticks.push(i);
         }
-        break;
+        return ticks;
       }
     }
-    return ticks;
   }
   return scale;
 }
@@ -64,9 +63,9 @@ export class CountyChart extends Component {
   }
 
   render() {
-    // if (!(this.cleanedData.length >= 10)) {
-    //   return <div>Too few counties to display trends</div>;
-    // }
+    if (!this.cleanedData) {
+      return '';
+    }
     // TODO: Move this elsewhere?
     var width = window.innerWidth / 3;
     var aspectWidth = 12;
@@ -107,11 +106,10 @@ export class CountyChart extends Component {
   }
 
   getCleanedData(data, variable, order) {
-    // Only show on chart if winner declared
-
     var lead = order[0];
     var second = order[1];
-    var filtered = data.filter(d => d.winnerParty);
+    // TODO: is this the right cutoff?
+    var filtered = data.filter(d => d.reportingPercent >= .5);
     var cleaned = filtered.map(f => ({
       name: f.county.countyName,
       x: this.getX(f, lead, second),
@@ -197,6 +195,7 @@ export class CountyChart extends Component {
         <g className="dots">
           {this.cleanedData.map((t, i) => {
             const y = this.yScale(t.y);
+            console.log(t.y, this.yScale(t.y))
             const x = this.xScale(t.x);
             return (
               <circle
