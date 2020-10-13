@@ -4,12 +4,15 @@ import censusdata
 detail_tables = {'B01003_001E' : 'population', "B02001_001E": "race_total", "B02001_003E": "black_total", "B03002_001E": "race_hispanic_total", "B03002_003E": "white_alone", "B03002_012E" : "hispanic_total"}
 subject_tables = {"S1501_C02_015E": "percent_bachelors", "S1901_C01_012E": "median_income"}
 
-columns = ['fips']
+columns = ['key']
 columns.extend(list(detail_tables.values()) + list(subject_tables.values()))
 pd.set_option('max_colwidth', 800)
 
 def main():
+  print("getting all data")
   data = getAllCounties()
+
+  print("processing data")
   processed_data = processData(data)
 
   processed_data.to_csv('data/census_data.csv', index=False)
@@ -21,6 +24,7 @@ def getAllCounties():
 
   # For every state, get all counties
   for state in states:
+    print("getting: ", state)
     state_fips = states[state].geo[0][1]
     counties = censusdata.geographies(censusdata.censusgeo([('state', state_fips), ('county', '*')]), 'acs5', 2018)
 
@@ -54,9 +58,9 @@ def getFips(geo_data):
 
 # Do the calculations we need to do on census data
 def processData(data):
-  data['percent_black'] = data['black_total']/data['race_total']
-  data['percent_white'] = data['white_alone'] / data['race_hispanic_total']
-  data['percent_hispanic'] = data['hispanic_total'] / data['race_hispanic_total']
+  data['percent_black'] = data['black_total']/data['race_total'] * 100
+  data['percent_white'] = data['white_alone'] / data['race_hispanic_total'] * 100
+  data['percent_hispanic'] = data['hispanic_total'] / data['race_hispanic_total'] * 100
   return data
 
 if __name__ == "__main__":
