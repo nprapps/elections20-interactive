@@ -63,7 +63,7 @@ export default class StateResults extends Component {
           <h1>
             <img
               class="icon"
-              src={"../../assets/states/" + this.props.state + ".svg"}></img>
+              src={"../assets/states/" + this.props.state + ".svg"}></img>
             <span class="state-name">{stateName}</span>
             {viewTitle}
           </h1>
