@@ -1,6 +1,7 @@
 import { h, Component, Fragment } from "preact";
 import gopher from "../gopher.js";
 import Results from "../resultsBoardNamed";
+import TestBanner from "../testBanner";
 
 export default class BoardBallot extends Component {
   constructor(props) {
@@ -11,7 +12,7 @@ export default class BoardBallot extends Component {
   }
 
   onData(data) {
-    this.setState({ races: data.results });
+    this.setState({ races: data.results, test: data.test });
   }
 
   // Lifecycle: Called whenever our component is created
@@ -26,13 +27,14 @@ export default class BoardBallot extends Component {
   }
 
   render() {
-    var { races } = this.state;
+    var { races, test } = this.state;
     if (!races) {
       return "";
     }
 
     return <>
       <h1>Ballot Initiatives</h1>
+      { test ? <TestBanner /> : "" }
       <div class="board-container">
         <Results races={races}/>
       </div>

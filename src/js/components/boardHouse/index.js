@@ -1,7 +1,8 @@
 import { h, Component, Fragment } from "preact";
 import gopher from "../gopher.js";
 import Results from "../resultsBoardNamed";
-import { BalanceOfPower } from "../balanceOfPower";
+import BalanceOfPower from "../balanceOfPower";
+import TestBanner from "../testBanner";
 import house from "house.sheet.json";
 import states from "states.sheet.json";
 
@@ -15,7 +16,7 @@ export default class BoardHouse extends Component {
 
   onData(data) {
     console.log(data);
-    this.setState({ races: data.results });
+    this.setState({ races: data.results, test: data.test });
   }
 
   // Lifecycle: Called whenever our component is created
@@ -30,7 +31,7 @@ export default class BoardHouse extends Component {
   }
 
   render() {
-    var { races } = this.state;
+    var { races, test } = this.state;
     if (!races) {
       return "";
     }
@@ -49,6 +50,7 @@ export default class BoardHouse extends Component {
 
     return <>
       <h1>Key House Results</h1>
+      { test ? <TestBanner /> : "" }
       <BalanceOfPower race="house" />
       <div class="board-container">
         <Results races={buckets["lean-d"]} hed="Dem. Lean"/>

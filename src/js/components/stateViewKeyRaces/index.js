@@ -12,16 +12,16 @@ export default class KeyRaces extends Component {
     this.onData = this.onData.bind(this);
   }
 
-  onData(races) {
+  onData(data) {
     var grouped = {};
-    for (var r of races) {
+    for (var r of data.results) {
       if (!grouped[r.office]) grouped[r.office] = [];
       grouped[r.office].push(r);
     }
 
     //TODO: filter house races for "featured"
 
-    this.setState({ races, grouped });
+    this.setState({ races: data.results, grouped });
   }
 
   componentDidMount() {

@@ -2,6 +2,7 @@ import { h, Component, Fragment } from "preact";
 import gopher from "../gopher.js";
 import Results from "../resultsBoardNamed";
 import states from "states.sheet.json";
+import TestBanner from "../testBanner";
 
 export default class BoardGovernor extends Component {
   constructor(props) {
@@ -12,7 +13,7 @@ export default class BoardGovernor extends Component {
   }
 
   onData(data) {
-    this.setState({ races: data.results });
+    this.setState({ races: data.results, test: data.test });
   }
 
   // Lifecycle: Called whenever our component is created
@@ -27,7 +28,7 @@ export default class BoardGovernor extends Component {
   }
 
   render() {
-    var { races } = this.state;
+    var { races, test } = this.state;
     if (!races) {
       return "";
     }
@@ -38,6 +39,7 @@ export default class BoardGovernor extends Component {
 
     return <>
       <h1>Governor</h1>
+      { test ? <TestBanner /> : "" }
       <div class="board-container">
         <Results races={sorted}/>
       </div>
