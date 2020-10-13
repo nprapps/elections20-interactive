@@ -1,12 +1,31 @@
 @import "../../../css/values";
 
 circle {
+  fill-opacity: 0.3;
+  stroke-opacity: 0.6;
+
   &.GOP {
-    fill: var(--gop)
+    fill: var(--gop);
+    stroke: var(--gop);
   }
 
   &.Dem {
-    fill: var(--dem)
+    fill: var(--dem);
+    stroke: var(--dem);
   }
-  
+}
+
+.graphic {
+  h4 {
+    font-weight: normal;
+    color: #777;
+    font-size: 12px;
+    line-height: 1.6;
+    text-transform: uppercase;
+  }
+
+  text.axis-label {
+    fill: #787878;
+    font-size: 12px;
+  }
 }

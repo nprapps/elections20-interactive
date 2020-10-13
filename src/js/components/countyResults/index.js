@@ -58,7 +58,7 @@ export default class CountyResults extends Component {
           data={this.state.data}
           sortOrder={this.props.order}
         />
-        <CountyDataViz data={this.state.data}/>
+        <CountyDataViz data={this.state.data} order={this.props.order}/>
       </div>
     );
   }

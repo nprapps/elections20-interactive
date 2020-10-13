@@ -27,6 +27,21 @@ export function sortByParty(a, b) {
 }
 
 /*
+  Sort a list of candidates by party, with Dems always first and GOP always last
+*/
+
+export function sortByOrder(a, b, order) {
+  var getPartyValue = (c) => {
+    if (!order.includes(c.party)) {
+      return Infinity
+    }
+    return order.indexOf(c.party)
+  }
+
+  return getPartyValue(a) - getPartyValue(b);
+}
+
+/*
   Text formatting functions, collected in a single object
   Use `chain(a, b, c)` to combine formatters as `c(b(a(value)))`
 */

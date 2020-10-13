@@ -8,6 +8,7 @@ export class CountyChart extends Component {
   constructor(props) {
     super();
 
+    console.log(props.data)
     // TODO: don't show charts if not more than 5 counties are called? What to do
     // about Hawaii and other places with few counties?
     this.cleanedData = this.getCleanedData(props.data, props.variable);
@@ -34,6 +35,9 @@ export class CountyChart extends Component {
   }
 
   render() {
+    if (!(this.cleanedData.length >= 10)) {
+      return <div>Too few counties to display trends</div>;
+    }
     var width = window.innerWidth / 3;
     var aspectWidth = 12;
     var aspectHeight = 9;
@@ -54,6 +58,7 @@ export class CountyChart extends Component {
 
     return (
       <div class="graphic">
+        <h4>{this.props.variable}</h4>
         <ul></ul>
         <div class="graphic-wrapper">
           <svg
@@ -111,6 +116,10 @@ export class CountyChart extends Component {
         </g>{" "}
         <line x1={xStart} x2={xEnd} y1={yStart} y2={yStart} stroke="#ccc" />
         <line x1={xStart} x2={xStart} y1={yEnd} y2={yStart} stroke="#ccc" />
+        <line x1={xStart} x2={xEnd} y1={yStart/2} y2={yStart/2} stroke="#ccc" />
+        <line x1={xEnd/2} x2={xEnd/2} y1={yEnd} y2={yStart} stroke="#ccc" />
+        <text class="x axis-label" text-anchor="start" x={xStart} y={yStart + 15}>{`← More ${this.props.order[0]}`}</text>
+        <text class="x axis-label" text-anchor="end" x={xEnd} y={yStart + 15}>{`More ${this.props.order[1]} →`}</text>
       </>
     );
   }
@@ -136,7 +145,7 @@ export class CountyChart extends Component {
               <circle
                 cx={x}
                 cy={y}
-                r="4"
+                r="5"
                 stroke="#ccc"
                 stroke-width="1"
                 class={t.party}
