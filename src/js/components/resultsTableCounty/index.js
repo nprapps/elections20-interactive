@@ -161,13 +161,8 @@ export default class ResultsTableCounty extends Component {
     data.sort(function (a, b) {
       let sorterA, sorterB;
 
-      if (sortMetric.census) {
-        sorterA = a.county.census[sortMetric.key];
-        sorterB = b.county.census[sortMetric.key];
-      } else {
-        sorterA = a.county[sortMetric.key];
-        sorterB = b.county[sortMetric.key];
-      }
+      sorterA = a.county[sortMetric.key];
+      sorterB = b.county[sortMetric.key];
 
       if (sortMetric.alpha) {
         return sorterA == sorterB ? 0 : sorterA < sorterB ? order : order * -1;
@@ -198,14 +193,7 @@ function ResultsRowCounty(props) {
     return match || {};
   });
 
-  // Default to population.
-  let metricValue;
-  if (metric.census) {
-    metricValue = row.county.census[metric.key];
-  } else {
-    // TODO: get the rest of these working, if we decide to use them
-    metricValue = row.county[metric.key];
-  }
+  var metricValue = row.county[metric.key];
 
   if (metric.format) {
     metricValue = metric.format(metricValue);

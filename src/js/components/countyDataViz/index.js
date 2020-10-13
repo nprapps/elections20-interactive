@@ -8,7 +8,7 @@ export class CountyDataViz extends Component {
   constructor(props) {
     super();
 
-    this.charts = ["unemployment"];
+    this.charts = [{key: "unemployment", header: "Unemployment"}, {key: "percent_white", header: "% White"}];
   }
 
   // Lifecycle: Called whenever our component is created
@@ -28,7 +28,7 @@ export class CountyDataViz extends Component {
         <h2>County Trends</h2>
         <ul></ul>
         {this.charts.map(c => (
-          <CountyChart data={this.props.data} variable={c} order={this.props.order}/>
+          <CountyChart data={this.props.data} variable={c.key} order={this.props.order} title={c.header}/>
         ))}
       </div>
     );

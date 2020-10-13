@@ -87,7 +87,7 @@ export class CountyChart extends Component {
 
     return (
       <div class="graphic">
-        <h4>{this.props.variable}</h4>
+        <h4>{this.props.title}</h4>
         <ul></ul>
         <div class="graphic-wrapper">
           <svg
@@ -113,7 +113,7 @@ export class CountyChart extends Component {
     var cleaned = filtered.map(f => ({
       name: f.county.countyName,
       x: this.getX(f, lead, second),
-      y: f.county[variable], // Will need to fix this
+      y: f.county[variable],
       party: f.candidates[0].party,
     }));
     return cleaned;
@@ -133,28 +133,11 @@ export class CountyChart extends Component {
     const [xStart, xEnd] = this.xScale.range();
     const [yStart, yEnd] = this.yScale.range();
     const ticksY = this.yScale.ticks();
-    const ticksX = this.xScale.ticks();
     const [orderLeft, orderRight] = this.props.order;
 
     return (
       <>
-        <g className="ticks">
-          {ticksY.map((t, i) => {
-            const y = this.yScale(t);
-            return (
-              <Fragment key={i}>
-                <text
-                  x={xStart - 20}
-                  y={y}
-                  fill="#999"
-                  textAnchor="middle"
-                  fontSize={10}>
-                  {t}
-                </text>
-              </Fragment>
-            );
-          })}
-        </g>{" "}
+       
         <line x1={xStart} x2={xEnd} y1={yStart} y2={yStart} stroke="#ccc" />
         <line x1={xStart} x2={xStart} y1={yEnd} y2={yStart} stroke="#ccc" />
         <line
@@ -183,7 +166,6 @@ export class CountyChart extends Component {
     const [xStart, xEnd] = this.xScale.range();
     const [yStart, yEnd] = this.yScale.range();
     const ticksY = this.yScale.ticks();
-    const ticksX = this.xScale.ticks();
 
     var dots = [
       { x: 10, y: 20 },
@@ -195,7 +177,6 @@ export class CountyChart extends Component {
         <g className="dots">
           {this.cleanedData.map((t, i) => {
             const y = this.yScale(t.y);
-            console.log(t.y, this.yScale(t.y))
             const x = this.xScale(t.x);
             return (
               <circle

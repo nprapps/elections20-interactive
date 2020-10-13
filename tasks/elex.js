@@ -109,7 +109,7 @@ module.exports = function(grunt) {
 
       var countyName = grunt.data.csv.county_names[r.fips] || "At large";
 
-      r.county = { president16, census, unemployment, countyName};
+      r.county = { president16, ...census, unemployment, countyName};
     });
 
     grunt.log.writeln("Generating data files...");
