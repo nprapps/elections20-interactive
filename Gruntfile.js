@@ -58,7 +58,7 @@ module.exports = function (grunt) {
     "clean",
     "static",
     "publish",
-    "cron:30:publish"
+    "cron:240:publish"
   ]);
   grunt.registerTask("deploy-live", "Deploy HTML to live on a timer", [
     "sheets",

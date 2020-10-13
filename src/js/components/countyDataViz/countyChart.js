@@ -34,7 +34,6 @@ export class CountyChart extends Component {
   constructor(props) {
     super();
 
-    console.log(props.data)
     // TODO: don't show charts if not more than 5 counties are called? What to do
     // about Hawaii and other places with few counties?
     this.cleanedData = this.getCleanedData(props.data, props.variable);
@@ -49,15 +48,6 @@ export class CountyChart extends Component {
       bottom: 25,
       left: 50,
     };
-  }
-
-  // Lifecycle: Called whenever our component is created
-  componentDidMount() {
-  }
-
-  // Lifecycle: Called just before our component will be destroyed
-  componentWillUnmount() {
-    // stop when not renderable
   }
 
   render() {
