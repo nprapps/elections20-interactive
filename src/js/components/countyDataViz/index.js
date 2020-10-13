@@ -8,7 +8,14 @@ export class CountyDataViz extends Component {
   constructor(props) {
     super();
 
-    this.charts = [{key: "unemployment", header: "Unemployment"}, {key: "percent_white", header: "% White"}];
+    this.charts = [
+      { key: "unemployment", header: "unemployment" },
+      { key: "percent_white", header: "% White" },
+      { key: "percent_black", header: "% Black" },
+      { key: "population", header: "population" },
+      { key: "median_income", header: "median income" },
+      { key: "percent_bachelors", header: "% Graduate Degree" },
+    ];
   }
 
   // Lifecycle: Called whenever our component is created
@@ -21,20 +28,25 @@ export class CountyDataViz extends Component {
 
   render() {
     if (!this.props.data || !this.enoughCountiesIn(this.props.data)) {
-      return '';
+      return "";
     }
     return (
       <div class="trends">
         <h2>County Trends</h2>
         <ul></ul>
         {this.charts.map(c => (
-          <CountyChart data={this.props.data} variable={c.key} order={this.props.order} title={c.header}/>
+          <CountyChart
+            data={this.props.data}
+            variable={c.key}
+            order={this.props.order}
+            title={c.header}
+          />
         ))}
       </div>
     );
   }
 
   enoughCountiesIn(data) {
-    return data.filter(d => d.reportingPercent >= .5).length >= 10;
+    return data.filter(d => d.reportingPercent >= 0.5).length >= 10;
   }
 }

@@ -286,7 +286,7 @@ export default class CountyMap extends Component {
         <div class="name">${countyName}</div>
         <div class="result">${candText}</div>
         <div class="reporting">${perReporting}% reporting</div>
-        <div class="pop">Pop. ${formatters.comma(result.county.census.population)}</div>
+        <div class="pop">Pop. ${formatters.comma(result.county.population)}</div>
       `;
     }
 

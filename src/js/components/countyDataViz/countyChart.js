@@ -2,18 +2,18 @@ import { h, Component, Fragment, createRef } from "preact";
 import gopher from "../gopher.js";
 import "./countyData.less";
 
-var scaleFactory = function(domain, range) {
+var scaleFactory = function (domain, range) {
   var [rangeStart, rangeEnd] = range;
   var rangeSize = rangeEnd - rangeStart;
   var [domainStart, domainEnd] = domain;
   var domainSize = domainEnd - domainStart;
-  var scale = function(input) {
+  var scale = function (input) {
     var normalized = (input - domainStart) / domainSize;
     return normalized * rangeSize + rangeStart;
-  }
+  };
   scale.range = () => range;
   var tickIntervals = [1, 2, 5, 10, 20, 25, 50, 100, 200, 250, 500, 1000];
-  scale.ticks = function() {
+  scale.ticks = function () {
     for (var interval of tickIntervals) {
       var count = domainSize / interval;
       if (count > 3 && count < 10) {
@@ -26,9 +26,9 @@ var scaleFactory = function(domain, range) {
         return ticks;
       }
     }
-  }
+  };
   return scale;
-}
+};
 
 export class CountyChart extends Component {
   constructor(props) {
@@ -43,6 +43,8 @@ export class CountyChart extends Component {
     );
 
     this.tooltipRef = createRef();
+    this.onMove = this.onMove.bind(this);
+    this.onLeave = this.onLeave.bind(this);
 
     this.chartWidth;
     this.chartHeight;
@@ -64,7 +66,7 @@ export class CountyChart extends Component {
 
   render() {
     if (!this.cleanedData) {
-      return '';
+      return "";
     }
     // TODO: Move this elsewhere?
     var width = window.innerWidth / 3;
@@ -81,9 +83,16 @@ export class CountyChart extends Component {
         return d.y;
       })
     );
+    var minY = Math.min.apply(
+      Math,
+      this.cleanedData.map(function (d) {
+        return d.y;
+      })
+    );
     maxY = Math.ceil(maxY / 10) * 10;
+    minY = Math.floor(minY / 10) * 10;
     this.xScale = scaleFactory([0, 100], [0, this.chartWidth]);
-    this.yScale = scaleFactory([0, maxY], [this.chartHeight, 0]);
+    this.yScale = scaleFactory([minY, maxY], [this.chartHeight, 0]);
 
     return (
       <div class="graphic">
@@ -99,7 +108,7 @@ export class CountyChart extends Component {
               {this.createDots()}
             </g>
           </svg>
-          <div id="tooltip" ref={this.tooltipRef}></div>
+          <div class="tooltip" ref={this.tooltipRef}></div>
         </div>
       </div>
     );
@@ -109,14 +118,45 @@ export class CountyChart extends Component {
     var lead = order[0];
     var second = order[1];
     // TODO: is this the right cutoff?
-    var filtered = data.filter(d => d.reportingPercent >= .5);
+    var filtered = data.filter(d => d.reportingPercent >= 0.5);
     var cleaned = filtered.map(f => ({
       name: f.county.countyName,
       x: this.getX(f, lead, second),
       y: f.county[variable],
       party: f.candidates[0].party,
+      fips: f.fips,
+      population: f.county.population,
+      countyName: f.county.countyName,
     }));
     return cleaned;
+  }
+
+  onLeave(e) {
+    var tooltip = this.tooltipRef.current;
+    tooltip.classList.remove("shown");
+  }
+
+  onMove(e) {
+    var tooltip = this.tooltipRef.current;
+    console.log(e.target.dataset.fips);
+    if (!e.target.dataset.fips) {
+      console.log("here");
+      tooltip.classList.remove("shown");
+      return;
+    }
+
+    var data = this.cleanedData.filter(d => d.fips == e.target.dataset.fips)[0];
+
+    tooltip.innerHTML = `
+        <div class="name">${data.countyName}</div>
+        <div class="pop">Pop. ${data.population}</div>
+        <div class="reporting">${data.y}${this.props.title}</div>
+      `;
+
+    tooltip.style.left = e.clientX - 90 + "px";
+    tooltip.style.top = e.clientY + 20 + "px";
+
+    tooltip.classList.add("shown");
   }
 
   getX(county, lead, second) {
@@ -137,7 +177,6 @@ export class CountyChart extends Component {
 
     return (
       <>
-       
         <line x1={xStart} x2={xEnd} y1={yStart} y2={yStart} stroke="#ccc" />
         <line x1={xStart} x2={xStart} y1={yEnd} y2={yStart} stroke="#ccc" />
         <line
@@ -148,6 +187,13 @@ export class CountyChart extends Component {
           stroke="#ccc"
         />
         <line x1={xEnd / 2} x2={xEnd / 2} y1={yEnd} y2={yStart} stroke="#ccc" />
+        <text
+          class="x axis-label"
+          text-anchor="end"
+          transform="rotate(-90)"
+          x={0}
+          dy=".35em"
+          y={-10}>{`Higher ${this.props.title} →`}</text>
         <text
           class="x axis-label"
           text-anchor="start"
@@ -180,12 +226,15 @@ export class CountyChart extends Component {
             const x = this.xScale(t.x);
             return (
               <circle
+                onmousemove={this.onMove}
+                onmouseout={this.onLeave}
                 cx={x}
                 cy={y}
                 r="5"
                 stroke="#ccc"
                 stroke-width="1"
                 class={t.party}
+                data-fips={t.fips}
               />
             );
           })}
