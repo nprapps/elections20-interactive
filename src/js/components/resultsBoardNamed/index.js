@@ -17,14 +17,14 @@ function CandidateCells(race) {
 
     return (
       <td class={className.join(" ")}>
-        <div class="perc">{Math.round(c.percent*100)}%</div> <div class="name">{c.last} {c.incumbent ? <span>●</span> : ""}</div>
+        <div class="name">{c.last} {c.incumbent ? <span>●</span> : ""}</div> <div class="perc">{Math.round(c.percent*100)}%</div> 
       </td>
     );
   });
 }
 
 export default function ResultsBoardNamed(props) {
-  // console.log("props",props)
+  console.log("props",props)
 
   return (
     <>
@@ -52,11 +52,11 @@ export default function ResultsBoardNamed(props) {
                 {/* Open */}
                 <td class="open-label" colspan="3">Last polls close at {states[r.state].closingTime} ET</td>
 
-                {/* Candidates */}
-                {CandidateCells(r)}
-
                 {/* EEVP */}
                 <td class="reporting">{percentIn}</td>
+                
+                {/* Candidates */}
+                {CandidateCells(r)}
 
                 {/* Runoff or Flip */}
                 <td class={"runoff-label " + (flipped ? winner[0].party : "")}>
