@@ -25,20 +25,20 @@ export default class CountyResults extends Component {
   // Lifecycle: Called whenever our component is created
   async componentDidMount() {
     gopher.watch(
-      `/data/counties/${this.props.state}-${this.props.raceid}.json`,
+      `./data/counties/${this.props.state}-${this.props.raceid}.json`,
       this.onCountyData
     );
-    gopher.watch(`/data/states/${this.props.state}.json`, this.onStateData);
+    gopher.watch(`./data/states/${this.props.state}.json`, this.onStateData);
   }
 
   // Lifecycle: Called just before our component will be destroyed
   componentWillUnmount() {
     // stop when not renderable
     gopher.unwatch(
-      `/data/counties/${this.props.state}-${this.props.raceid}.json`,
+      `./data/counties/${this.props.state}-${this.props.raceid}.json`,
       this.onData
     );
-    gopher.unwatch(`/data/states/${this.props.state}.json`, this.onStateData);
+    gopher.unwatch(`./data/states/${this.props.state}.json`, this.onStateData);
   }
 
   render() {

@@ -28,18 +28,18 @@ export default class StateResults extends Component {
   }
 
   componentDidMount() {
-    gopher.watch(`/data/states/${this.props.state}.json`, this.onData);
+    gopher.watch(`./data/states/${this.props.state}.json`, this.onData);
   }
 
   componentWillUnmount() {
     // stop when not renderable
-    gopher.unwatch(`/data/states/${this.props.state}.json`, this.onData);
+    gopher.unwatch(`./data/states/${this.props.state}.json`, this.onData);
   }
 
   shouldComponentUpdate(newProps, newState) {
     if (this.props.state != newProps.state) {
-      gopher.unwatch(`/data/states/${this.props.state}.json`, this.onData);
-      gopher.watch(`/data/states/${newProps.state}.json`, this.onData);
+      gopher.unwatch(`./data/states/${this.props.state}.json`, this.onData);
+      gopher.watch(`./data/states/${newProps.state}.json`, this.onData);
       this.setState({ races: null });
     }
   }
