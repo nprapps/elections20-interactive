@@ -98,10 +98,14 @@ export default class StateResults extends Component {
   getRaceWithCountyResults(race) {
     var order = race.candidates.map((c) => c.party);
 
+    var countyResults;
+    if (!STATES_WITHOUT_COUNTY_INFO.includes(this.props.state)) {
+      countyResults = <CountyResults state={this.props.state} raceid={race.id} order={order} />;
+    }
     return (
       <>
         <ResultsTableCandidates data={race} />
-        <CountyResults state={this.props.state} raceid={race.id} order={order} />
+        {countyResults}
       </>
     );
   }
