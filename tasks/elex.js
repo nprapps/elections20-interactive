@@ -86,30 +86,51 @@ module.exports = function(grunt) {
         }
       }
 
-      // remaining steps are county-specific
-      if (!r.fips) return;
 
-      // get the winner from the previous presidential election
-      var president16 = grunt.data.csv.prior_results
-        .filter(p => p.fipscode == r.fips)
-        .sort((a, b) => b.votepct - a.votepct)
-        .slice(0, 2)
-        .map(function(r) {
-          return {
-            last: r.last,
-            party: r.party,
-            percent: r.votepct * 1
-          }
-        });
+      // Add electoral college winners to states
+      if (r.id == 0 && (r.level == "state" || r.level == "district")) {
+        var state16 = grunt.data.csv.prior_states
+          .filter(s => s.state == r.state)
+          .sort((a, b) => b.votes - a.votes)
+          .filter(s => s.votes)
+          .map(function(c) {
+            return {
+              last: c.last,
+              party: c.party,
+              electoral: c.votes
+            };
+          });
 
-      var census = grunt.data.csv.census_data[r.fips];
+        r.president16 = state16;
+        r.previousParty = state16[0].party;
 
-      var bls = grunt.data.csv.unemployment_data[r.fips] || {};
-      var { unemployment } = bls;
+      } else {
+        // remaining steps are county-specific
+        if (!r.fips) return;
 
-      var countyName = grunt.data.csv.county_names[r.fips] || "At large";
+        // get the winner from the previous presidential election
+        var president16 = grunt.data.csv.prior_fips
+          .filter(p => p.fipscode == r.fips)
+          .sort((a, b) => b.votepct - a.votepct)
+          .slice(0, 2)
+          .map(function(c) {
+            return {
+              last: c.last,
+              party: c.party,
+              percent: c.votepct * 1
+            }
+          });
 
-      r.county = { president16, ...census, unemployment, countyName};
+        var census = grunt.data.csv.census_data[r.fips];
+
+        var bls = grunt.data.csv.unemployment_data[r.fips] || {};
+        var { unemployment } = bls;
+
+        var countyName = grunt.data.csv.county_names[r.fips] || "At large";
+
+        r.county = { president16, ...census, unemployment, countyName};
+
+      }
     });
 
     grunt.log.writeln("Generating data files...");

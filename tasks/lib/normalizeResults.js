@@ -157,7 +157,9 @@ module.exports = function (resultArray, overrides = {}) {
         }
 
         var sheetMetadata = nprMetadata[raceMeta.id];
-        unitMeta.previousParty = sheetMetadata ? sheetMetadata.party : null;
+        if (sheetMetadata && sheetMetadata.party) {
+          unitMeta.previousParty = sheetMetadata.party;
+        }
         unitMeta.updated = Date.parse(unitMeta.updated);
 
         var total = 0;
