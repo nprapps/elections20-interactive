@@ -29,7 +29,7 @@ export default class BoardBallot extends Component {
   }
 
   render() {
-    var { races, test } = this.state;
+    var { races, test, latest } = this.state;
     if (!races) {
       return "";
     }
