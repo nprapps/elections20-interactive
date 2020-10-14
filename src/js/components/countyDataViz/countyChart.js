@@ -34,18 +34,12 @@ export class CountyChart extends Component {
   constructor(props) {
     super();
 
-    // TODO: don't show charts if not more than 5 counties are called? What to do
-    // about Hawaii and other places with few counties?
-    this.cleanedData = this.getCleanedData(
-      props.data,
-      props.variable,
-      props.order
-    );
-
     this.tooltipRef = createRef();
+    this.svgRef = createRef();
     this.onMove = this.onMove.bind(this);
     this.onLeave = this.onLeave.bind(this);
 
+    this.ommittedCounties = 0;
     this.chartWidth;
     this.chartHeight;
     this.margins = {
@@ -65,7 +59,7 @@ export class CountyChart extends Component {
   }
 
   render() {
-    if (!this.cleanedData) {
+    if (!this.props.data) {
       return "";
     }
     // TODO: Move this elsewhere?
@@ -77,16 +71,18 @@ export class CountyChart extends Component {
       Math.ceil((width * aspectHeight) / aspectWidth) -
       this.margins.top -
       this.margins.bottom;
+
+    var v = this.props.variable;
     var maxY = Math.max.apply(
       Math,
-      this.cleanedData.map(function (d) {
-        return d.y;
+      this.props.data.map(function (d) {
+        return d[v];
       })
     );
     var minY = Math.min.apply(
       Math,
-      this.cleanedData.map(function (d) {
-        return d.y;
+      this.props.data.map(function (d) {
+        return d[v];
       })
     );
     maxY = Math.ceil(maxY / 10) * 10;
@@ -100,6 +96,7 @@ export class CountyChart extends Component {
         <ul></ul>
         <div class="graphic-wrapper">
           <svg
+            ref={this.svgRef}
             width={this.chartWidth + this.margins.left + this.margins.right}
             height={this.chartHeight + this.margins.top + this.margins.bottom}>
             <g
@@ -114,23 +111,6 @@ export class CountyChart extends Component {
     );
   }
 
-  getCleanedData(data, variable, order) {
-    var lead = order[0];
-    var second = order[1];
-    // TODO: is this the right cutoff?
-    var filtered = data.filter(d => d.reportingPercent >= 0.5);
-    var cleaned = filtered.map(f => ({
-      name: f.county.countyName,
-      x: this.getX(f, lead, second),
-      y: f.county[variable],
-      party: f.candidates[0].party,
-      fips: f.fips,
-      population: f.county.population,
-      countyName: f.county.countyName,
-    }));
-    return cleaned;
-  }
-
   onLeave(e) {
     var tooltip = this.tooltipRef.current;
     tooltip.classList.remove("shown");
@@ -138,35 +118,26 @@ export class CountyChart extends Component {
 
   onMove(e) {
     var tooltip = this.tooltipRef.current;
-    console.log(e.target.dataset.fips);
-    if (!e.target.dataset.fips) {
-      console.log("here");
-      tooltip.classList.remove("shown");
-      return;
-    }
-
-    var data = this.cleanedData.filter(d => d.fips == e.target.dataset.fips)[0];
+    var data = this.props.data.filter(d => d.fips == e.target.dataset.fips)[0];
 
     tooltip.innerHTML = `
         <div class="name">${data.countyName}</div>
         <div class="pop">Pop. ${data.population}</div>
-        <div class="reporting">${data.y}${this.props.title}</div>
+        <div class="reporting">${data[this.props.variable]} ${this.props.title}</div>
       `;
 
-    tooltip.style.left = e.clientX - 90 + "px";
-    tooltip.style.top = e.clientY + 20 + "px";
+    var bounds = this.svgRef.current.getBoundingClientRect();
+    var x = e.clientX - bounds.left;
+    var y = e.clientY - bounds.top;
+    if (x > bounds.width / 2) {
+      x -= tooltip.offsetWidth + 10;
+    } else {
+      x += 20;
+    }
+    tooltip.style.left = x + "px";
+    tooltip.style.top = y + "px";
 
     tooltip.classList.add("shown");
-  }
-
-  getX(county, lead, second) {
-    // TODO: Verify this is correct
-    var leadPer =
-      county.candidates.filter(c => c.party == lead)[0].percent * 100;
-    var secondPer =
-      county.candidates.filter(c => c.party == second)[0].percent * 100;
-
-    return (leadPer / (leadPer + secondPer)) * 100;
   }
 
   createAxes() {
@@ -221,8 +192,8 @@ export class CountyChart extends Component {
     return (
       <>
         <g className="dots">
-          {this.cleanedData.map((t, i) => {
-            const y = this.yScale(t.y);
+          {this.props.data.map((t, i) => {
+            const y = this.yScale(t[this.props.variable]);
             const x = this.xScale(t.x);
             return (
               <circle

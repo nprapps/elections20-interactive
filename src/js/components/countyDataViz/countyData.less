@@ -16,7 +16,7 @@ circle {
 }
 
 .graphic {
-  position: relative;
+  
   h4 {
     font-weight: normal;
     color: #777;
@@ -25,37 +25,42 @@ circle {
     text-transform: uppercase;
   }
 
+  .graphic-wrapper {
+    position: relative;
+  }
+
   text.axis-label {
     fill: #787878;
     font-size: 12px;
   }
 }
 
-
 .tooltip {
-    position: absolute;
-    border: 1px solid #bbb;
-    background-color: #eee;
-    padding: 6px 8px;
-    display: none;
-    pointer-events: none;
+  position: absolute;
+  border: 1px solid #bbb;
+  background-color: #eee;
+  padding: 6px 8px;
+  display: none;
+  pointer-events: none;
 
-    &.shown {
-      display: block;
-    }
+  &.shown {
+    display: block;
+  }
 
-    .name {
-      .gotham();
-      font-weight: bold;
-    }
+  .name {
+    .gotham();
+    font-weight: bold;
+  }
 
-    .pop,
-    .reporting,
-    .result {
-      font-size: .9rem;
-      .knockout();
-      color: #787878;
+  .pop,
+  .reporting,
+  .result {
+    font-size: 0.9rem;
+    .knockout();
+    color: #787878;
 
-      &:empty { display: none; }
+    &:empty {
+      display: none;
     }
   }
+}
