@@ -41,7 +41,7 @@ export default class BoardGovernor extends Component {
       <h1>Governor</h1>
       { test ? <TestBanner /> : "" }
       <div class="board-container">
-        <Results races={sorted} hed="none" office="Gov"/>
+        <Results races={sorted} office="Gov"/>
       </div>
     </>;
   }

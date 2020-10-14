@@ -1,23 +1,49 @@
 @import "values";
 
-@border: 1px solid #eee;
 @background: #efefef;
 
 .board-container {
 	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
 }
 .board-wrapper {
-	flex: 1;
-	margin-right: 25px;
+	flex: 0 0 33%;
 
-	&:last-child {
-		margin-right: 0;
+	@media @tablet {
+		flex: 0 0 50%;
+
+		&:nth-child(1) { 
+			order: 2; 
+		}
+		&:nth-child(2) { 
+			order: 1; 
+			flex: 0 0 100%;
+
+			.board-inner {
+				width: 50%;
+				margin: auto;
+			}
+		}
+		&:nth-child(3) { 
+			order: 3; 
+		}
+	}
+	@media @mobile {
+		flex: 0 0 100%;
+
+		&:nth-child(2) { 
+			.board-inner {
+				width: 100%;
+			}
+		}
 	}
 
 	&.Gov, &.Ballot {
 		columns: 2;
 	}
 }
+
 .board-hed {
 	font-family: 'Gotham SSm', Helvetica, Arial, sans-serif;
 	color: #444;
@@ -76,7 +102,7 @@ table.results {
 
 	td {
 		padding: 4px 8px;
-		border: @border;
+		border: 1px solid #eee;
 		border-right: 0;
 		border-left: 0;
 	}
@@ -115,7 +141,7 @@ table.results {
 	}
   td.candidate {
   	background: @background;
-  	border: @border;
+  	border: 1px solid white;
   	// color: @ind;
 
   	.perc {

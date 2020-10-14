@@ -36,7 +36,7 @@ export default class BoardBallot extends Component {
       <h1>Ballot Initiatives</h1>
       { test ? <TestBanner /> : "" }
       <div class="board-container">
-        <Results races={races} hed="none" office="Ballot"/>
+        <Results races={races} office="Ballot"/>
       </div>
     </>;
   }

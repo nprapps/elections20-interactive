@@ -29,53 +29,55 @@ export default function ResultsBoardNamed(props) {
   return (
     <>
       <div class={"board-wrapper " + props.office}>
-        <h3 class={"board-hed " + props.hed}>{props.hed}</h3>
-        <table class="named results table">
-{/*          <tr>
-            <th class="state-hed">State</th>
-            <th colspan="2" class="name-hed">Top candidates</th>
-            <th class="reporting-hed">% in</th>
-            <th></th>
-          </tr>*/}
+        <div class="board-inner">
+          <h3 class="board-hed">{props.hed}</h3>
+          <table class="named results table">
+  {/*          <tr>
+              <th class="state-hed">State</th>
+              <th colspan="2" class="name-hed">Top candidates</th>
+              <th class="reporting-hed">% in</th>
+              <th></th>
+            </tr>*/}
 
-          {props.races.map(function(r) {
-            var hasResult = r.eevp || r.reporting || r.called || r.runoff;
-            var reporting = r.eevp || r.reportingPercent;
-            var percentIn = reporting ? reportingPercentage(reporting) + "% in" : "";
-            var winner = r.candidates.filter(c => c.winner == "X");
-            var incumbent = r.candidates.filter(c => c.incumbent);
-            var flipped = winner[0] && incumbent[0] && (r.previousParty !== winner[0].party);
-            var seatLabel = (r.office == "H" || r.office == "S") && r.seatNumber && r.description && !r.description.includes("at large") ? " " + r.seatNumber : "";
-            var ballotLabel = r.office == "I" ? " " + r.seat : "";
+            {props.races.map(function(r) {
+              var hasResult = r.eevp || r.reporting || r.called || r.runoff;
+              var reporting = r.eevp || r.reportingPercent;
+              var percentIn = reporting ? reportingPercentage(reporting) + "% in" : "";
+              var winner = r.candidates.filter(c => c.winner == "X");
+              var incumbent = r.candidates.filter(c => c.incumbent);
+              var flipped = winner[0] && incumbent[0] && (r.previousParty !== winner[0].party);
+              var seatLabel = (r.office == "H" || r.office == "S") && r.seatNumber && r.description && !r.description.includes("at large") ? " " + r.seatNumber : "";
+              var ballotLabel = r.office == "I" ? " " + r.seat : "";
 
-            return (
-              <tr class={hasResult ? "closed" : "open"}>
+              return (
+                <tr class={hasResult ? "closed" : "open"}>
 
-                {/* State */}
-                <td class={"state " + (winner[0] ? ("winner " + winner[0].party) : "")}>
-                  <a href={"#/states/" + r.state + "/" + r.office}>
-                    {states[r.state].ap + seatLabel + ballotLabel}
-                  </a>
-                </td>
+                  {/* State */}
+                  <td class={"state " + (winner[0] ? ("winner " + winner[0].party) : "")}>
+                    <a href={"#/states/" + r.state + "/" + r.office}>
+                      {states[r.state].ap + seatLabel + ballotLabel}
+                    </a>
+                  </td>
 
-                {/* Open */}
-                <td class="open-label" colspan="3">Last polls close at {states[r.state].closingTime} ET</td>
-                
-                {/* Candidates */}
-                {CandidateCells(r)}
+                  {/* Open */}
+                  <td class="open-label" colspan="3">Last polls close at {states[r.state].closingTime} ET</td>
+                  
+                  {/* Candidates */}
+                  {CandidateCells(r)}
 
-                {/* EEVP */}
-                <td class="reporting">{percentIn}</td>
+                  {/* EEVP */}
+                  <td class="reporting">{percentIn}</td>
 
-                {/* Runoff or Flip */}
-                <td class={"runoff-label " + (flipped ? winner[0].party : "")}>
-                  {r.runoff ? "R.O." : ""}
-                  <span class="flip-label">{flipped ? "Flip" : ""}</span>
-                </td>
-              </tr>
-            );
-          })}
-        </table>
+                  {/* Runoff or Flip */}
+                  <td class={"runoff-label " + (flipped ? winner[0].party : "")}>
+                    {r.runoff ? "R.O." : ""}
+                    <span class="flip-label">{flipped ? "Flip" : ""}</span>
+                  </td>
+                </tr>
+              );
+            })}
+          </table>
+        </div>
       </div>
     </>
   )

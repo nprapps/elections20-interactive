@@ -63,9 +63,9 @@ export default class BoardSenate extends Component {
         { test ? <TestBanner /> : "" }
         <BalanceOfPower race="senate" />
         <div class="board-container">
-          <Results races={buckets.likelyD} hed="Dem. Solid/Likely"/>
-          <Results races={buckets.tossup} hed="Lean/Tossup"/>
-          <Results races={buckets.likelyR} hed="GOP Solid/Likely"/>
+          <Results races={buckets.likelyD} hed="Dem. Solid/Likely" office="Senate"/>
+          <Results races={buckets.tossup} hed="Lean/Tossup" office="Senate"/>
+          <Results races={buckets.likelyR} hed="GOP Solid/Likely" office="Senate"/>
         </div>
       </Fragment>
     );

@@ -53,9 +53,9 @@ export default class BoardHouse extends Component {
       { test ? <TestBanner /> : "" }
       <BalanceOfPower race="house" />
       <div class="board-container">
-        <Results races={buckets["lean-d"]} hed="Dem. Lean"/>
-        <Results races={buckets["toss-up"]} hed="Tossup"/>
-        <Results races={buckets["lean-r"]} hed="GOP Lean"/>
+        <Results races={buckets["lean-d"]} hed="Dem. Lean" office="House"/>
+        <Results races={buckets["toss-up"]} hed="Tossup" office="House"/>
+        <Results races={buckets["lean-r"]} hed="GOP Lean" office="House"/>
       </div>
     </>
   }
