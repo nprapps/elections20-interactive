@@ -24,19 +24,19 @@ function CandidateCells(race) {
 }
 
 export default function ResultsBoardNamed(props) {
-  // console.log("props",props)
+  console.log("props",props)
 
   return (
     <>
-      <div>
-        <h3 class="board-hed">{props.hed}</h3>
+      <div class={"board-wrapper " + props.office}>
+        <h3 class={"board-hed " + props.hed}>{props.hed}</h3>
         <table class="named results table">
-          <tr>
+{/*          <tr>
             <th class="state-hed">State</th>
             <th colspan="2" class="name-hed">Top candidates</th>
             <th class="reporting-hed">% in</th>
             <th></th>
-          </tr>
+          </tr>*/}
 
           {props.races.map(function(r) {
             var hasResult = r.eevp || r.reporting || r.called || r.runoff;

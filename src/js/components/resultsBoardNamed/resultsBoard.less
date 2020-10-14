@@ -1,19 +1,36 @@
 @import "values";
 
-@border: 1px solid white;
+@border: 1px solid #eee;
 @background: #efefef;
 
 .board-container {
 	display: flex;
 }
+.board-wrapper {
+	flex: 1;
+	margin-right: 25px;
+
+	&:last-child {
+		margin-right: 0;
+	}
+
+	&.Gov, &.Ballot {
+		columns: 2;
+	}
+}
 .board-hed {
 	font-family: 'Gotham SSm', Helvetica, Arial, sans-serif;
 	color: #444;
 	display: block;
+
+	&.none {
+		display: none;
+	}
 }
 
 table.results {
-	flex: 1;
+	// flex: 1;
+	width: 100%;
 	font-family: 'Gotham SSm', Helvetica, Arial, sans-serif;
 	color: #666;
 	font-size: 11px;
@@ -31,6 +48,9 @@ table.results {
 
 	  &.state-hed, &.reporting-hed, &.name-hed {
 	  	text-align: left;
+	  }
+	  &.electoral-hed {
+	  	text-align: right;
 	  }
 	}
 
@@ -70,7 +90,7 @@ table.results {
 		// font-weight: bold;
 		text-decoration: none;
 		border-left: 0;
-		border-right: @border;
+		border-right: 1px solid #eee;
 		color: #444;
 
 		&:hover {
@@ -169,8 +189,8 @@ table.results.president {
 		border-right: 0;
 	}
 	 td.electoral {
-    border-right: @border;
-    text-align: center;
+    border-right: 1px solid #eee;
+    text-align: right;
 		color: #9a9a9a;
 
   	&.winner {

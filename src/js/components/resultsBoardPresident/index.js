@@ -32,12 +32,12 @@ export default function ResultsBoardPresident(props) {
 
   return (
     <>
-      <div>
+      <div class="board-wrapper">
         <h3 class="board-hed">{props.hed}</h3>
         <table class="president results table">
         	<tr>
         		<th class="state-hed">State</th>
-        		<th>E.V.</th>
+        		<th class="electoral-hed">E.V.</th>
             <th>Dem.</th>
         		<th>GOP</th>
             <th class="reporting-hed">% in</th>
