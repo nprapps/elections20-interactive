@@ -8,8 +8,13 @@
   .gotham();
   font-size: var(--font-size);
   position: relative;
-  width: 50%;
+  width: 80%;
+  max-width: 650px;
   padding-right: 20px;
+
+  @media @mobile {
+    width: 100%;
+  }
 
   &[test]::before {
     display: block;
