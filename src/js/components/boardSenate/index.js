@@ -3,6 +3,7 @@ import gopher from "../gopher.js";
 import Results from "../resultsBoardNamed";
 import BalanceOfPower from "../balanceOfPower";
 import TestBanner from "../testBanner";
+import DateFormatter from "../dateFormatter";
 import senate from "senate.sheet.json";
 import states from "states.sheet.json";
 
@@ -15,7 +16,8 @@ export default class BoardSenate extends Component {
   }
 
   onData(data) {
-    this.setState({ races: data.results, test: data.test });
+    var latest = Math.max(...data.results.map(r => r.updated));
+    this.setState({ races: data.results, test: data.test, latest });
   }
 
   // Lifecycle: Called whenever our component is created
@@ -30,7 +32,7 @@ export default class BoardSenate extends Component {
   }
 
   render() {
-    var { races, test } = this.state;
+    var { races, test, latest } = this.state;
     if (!races) {
       return "";
     }
@@ -67,6 +69,7 @@ export default class BoardSenate extends Component {
           <Results races={buckets.tossup} hed="Lean/Tossup" office="Senate"/>
           <Results races={buckets.likelyR} hed="GOP Solid/Likely" office="Senate"/>
         </div>
+        Results as of <DateFormatter value={latest} />
       </Fragment>
     );
   }

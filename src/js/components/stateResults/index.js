@@ -6,6 +6,7 @@ import HouseResults from "../stateViewHouse";
 import ResultsTableCandidates from "../resultsTableCandidates";
 import CountyResults from "../countyResults";
 import TestBanner from "../testBanner";
+import DateFormatter from "../dateFormatter";
 
 import stateLookup from "states.sheet.json";
 import strings from "strings.sheet.json";
@@ -24,7 +25,14 @@ export default class StateResults extends Component {
   }
 
   onData(data) {
-    this.setState({ races: data.results, test: data.test });
+    var latest = Math.max(...data.results.map(r => r.updated));
+    this.updateTimestamp(latest);
+    this.setState({ races: data.results, test: data.test, latest });
+  }
+
+  updateTimestamp(timestamp, e) {
+    var latest = Math.max(this.state.latest, timestamp);
+    this.setState({ latest })
   }
 
   componentDidMount() {
@@ -45,7 +53,7 @@ export default class StateResults extends Component {
   }
 
   render(props, state) {
-    var { races, test } = this.state;
+    var { races, test, latest } = this.state;
 
     if (!races) {
       return <div> Loading... </div>;
@@ -58,7 +66,7 @@ export default class StateResults extends Component {
       office == "key" ? "Key Results" : strings[`office-${office}`];
 
     return (
-      <div class="results" id="state-results">
+      <div class="results" id="state-results" onupdatedtime={e => this.updateTimestamp(e.detail, e)}>
         <header id="state-header">
           <h1>
             <img
@@ -71,6 +79,7 @@ export default class StateResults extends Component {
         </header>
         { test ? <TestBanner /> : "" }
         <div class="results-elements">{this.renderResults(office)}</div>
+        Results as of <DateFormatter value={latest} />
       </div>
     );
   }

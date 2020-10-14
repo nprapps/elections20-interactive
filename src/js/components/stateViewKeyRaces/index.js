@@ -13,6 +13,10 @@ export default class KeyRaces extends Component {
   }
 
   onData(data) {
+    var updated = Math.max(...data.results.map(r => r.updated));
+    var event = new CustomEvent("updatedtime", { detail: updated, bubbles: true });
+    this.base.dispatchEvent(event);
+
     var grouped = {};
     for (var r of data.results) {
       if (!grouped[r.office]) grouped[r.office] = [];
