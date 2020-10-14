@@ -39,6 +39,7 @@ export class CountyChart extends Component {
     this.wrapperRef = createRef();
     this.onMove = this.onMove.bind(this);
     this.onLeave = this.onLeave.bind(this);
+    this.handleResize = this.handleResize.bind(this)
 
     this.chartWidth;
     this.chartHeight;
@@ -48,15 +49,13 @@ export class CountyChart extends Component {
       bottom: 25,
       left: 30,
     };
+
+    window.addEventListener('resize', this.handleResize)
   }
 
   // Lifecycle: Called whenever our component is created
   componentDidMount() {
-    this.setState({
-      dimensions: {
-        width: this.wrapperRef.current.offsetWidth,
-      },
-    });
+    this.handleResize();
   }
 
   // Lifecycle: Called just before our component will be destroyed
@@ -72,7 +71,6 @@ export class CountyChart extends Component {
     return (
       <div class="graphic">
         <h4>{this.props.title}</h4>
-        <ul></ul>
         <div class="graphic-wrapper" ref={this.wrapperRef}>
           {this.renderSVG()}
           <div class="tooltip" ref={this.tooltipRef}></div>
@@ -116,7 +114,7 @@ export class CountyChart extends Component {
     var height = this.chartHeight + this.margins.top + this.margins.bottom;
     var width = this.chartWidth + this.margins.left + this.margins.right;
     return (
-      <svg
+      <svg class="svg-flex"
         ref={this.svgRef}
         width={width}
         height={height}
@@ -234,5 +232,13 @@ export class CountyChart extends Component {
         </g>{" "}
       </>
     );
+  }
+
+  handleResize() {
+    this.setState({
+      dimensions: {
+        width: this.wrapperRef.current.offsetWidth,
+      },
+    });
   }
 }
