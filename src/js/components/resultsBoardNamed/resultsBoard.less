@@ -2,14 +2,20 @@
 
 @border: 1px solid #efefef;
 @background: #efefef;
+@padding: 4px 8px;
 
 .board-container {
 	display: flex;
 	flex-wrap: wrap;
-	justify-content: center;
+	justify-content: space-between;
+	margin-bottom: 30px;
 }
 .board-wrapper {
-	flex: 0 0 33%;
+	flex: 0 0 32%;
+
+	// &.last-child {
+	// 	margin-right: 0;
+	// }
 
 	@media @tablet {
 		flex: 0 0 50%;
@@ -57,6 +63,7 @@
 
 table.results {
 	// flex: 1;
+	margin-bottom: 20px;
 	width: 100%;
 	font-family: 'Gotham SSm', Helvetica, Arial, sans-serif;
 	color: #666;
@@ -70,7 +77,7 @@ table.results {
 		font-weight: normal;
 		letter-spacing: 0.05em;
 	  -webkit-font-smoothing: antialiased;
-	  padding: 4px 8px;
+	  padding: @padding;
 	  border-bottom: 1px solid #ddd;
 
 	  &.state-hed, &.reporting-hed, &.name-hed {
@@ -105,7 +112,7 @@ table.results {
 	}
 
 	td {
-		padding: 4px 8px;
+		padding: @padding;
 		border: @border;
 		border-right: 0;
 		border-left: 0;
@@ -143,6 +150,8 @@ table.results {
 		font-size: 9px;
 		font-style: italic;
 		color: #9a9a9a;
+		// padding-right: 0;
+		min-width: 54px;
 	}
   td.candidate {
   	background: @background;
@@ -157,7 +166,7 @@ table.results {
   		text-overflow: ellipsis;
   		overflow: hidden;
   		white-space: nowrap;
-  		max-width: 60px;
+  		max-width: 65px;
   	}
   	.incumbent {
   		margin-left: 4px;
@@ -206,11 +215,12 @@ table.results {
   		background: @background !important;
   	}
   }
-  td.runoff-label {
+  td.little-label {
   	font-size: 8px;
   	text-transform: uppercase;
   	font-weight: bold;
   	margin-right: 0;
+  	padding: 0;
   	// border: 0;
 
   	.flip-label {
@@ -238,16 +248,16 @@ table.results.president {
     text-align: right;
 		color: #9a9a9a;
 
-  	&.winner {
-  		color: @ind;
-  		font-weight: bold;
-  	}
-  	&.winner.Dem {
-			color: @dem;
-		}
-		&.winner.GOP {
-			color: @gop;
-		}
+  // 	&.winner {
+  // 		color: @ind;
+  // 		font-weight: bold;
+  // 	}
+  // 	&.winner.Dem {
+		// 	color: @dem;
+		// }
+		// &.winner.GOP {
+		// 	color: @gop;
+		// }
   }
 	td.candidate {
 		text-align: center;
