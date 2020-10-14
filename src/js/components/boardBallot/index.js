@@ -2,6 +2,7 @@ import { h, Component, Fragment } from "preact";
 import gopher from "../gopher.js";
 import Results from "../resultsBoardNamed";
 import TestBanner from "../testBanner";
+import DateFormatter from "../dateFormatter";
 
 export default class BoardBallot extends Component {
   constructor(props) {
@@ -12,7 +13,8 @@ export default class BoardBallot extends Component {
   }
 
   onData(data) {
-    this.setState({ races: data.results, test: data.test });
+    var latest = Math.max(...data.results.map(r => r.updated));
+    this.setState({ races: data.results, test: data.test, latest });
   }
 
   // Lifecycle: Called whenever our component is created
@@ -38,6 +40,7 @@ export default class BoardBallot extends Component {
       <div class="board-container">
         <Results races={races} office="Ballot"/>
       </div>
+      Results as of <DateFormatter value={latest} />
     </>;
   }
 }

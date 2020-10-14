@@ -11,6 +11,10 @@ export default class HouseResults extends Component {
   }
 
   onData(json) {
+    var updated = Math.max(...json.results.map(r => r.updated));
+    var event = new CustomEvent("updatedtime", { detail: updated, bubbles: true });
+    this.base.dispatchEvent(event);
+
     const sortedHouseResults = json
       .filter((r) => r.office == "H")
       .sort(function (a, b) {

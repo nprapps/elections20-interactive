@@ -14,6 +14,9 @@ export default class CountyResults extends Component {
   }
 
   onCountyData(json) {
+    var updated = Math.max(...json.results.map(r => r.updated));
+    var event = new CustomEvent("updatedtime", { detail: updated, bubbles: true });
+    this.base.dispatchEvent(event);
     var office = json.results[0].office;
     this.setState({ data: json.results, office });
   }

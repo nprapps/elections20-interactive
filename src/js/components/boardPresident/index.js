@@ -2,6 +2,7 @@ import { h, Component, Fragment } from "preact";
 import gopher from "../gopher.js";
 import Results from "../resultsBoardPresident";
 import TestBanner from "../testBanner";
+import DateFormatter from "../dateFormatter";
 import states from "states.sheet.json";
 
 export default class BoardPresident extends Component {
@@ -13,7 +14,8 @@ export default class BoardPresident extends Component {
   }
 
   onData(data) {
-    this.setState({ races: data.results, test: data.test });
+    var latest = Math.max(...data.results.map(r => r.updated));
+    this.setState({ races: data.results, test: data.test, latest });
   }
 
   componentDidMount() {
@@ -25,7 +27,7 @@ export default class BoardPresident extends Component {
   }
 
   render() {
-    var { races, test } = this.state;
+    var { races, test, latest } = this.state;
     if (!races) {
       return "";
     }
@@ -70,6 +72,7 @@ export default class BoardPresident extends Component {
         <Results races={buckets.tossup} hed="Lean/Tossup"/>
         <Results races={buckets.likelyR} hed="GOP Likely"/>
       </div>
+      Results as of <DateFormatter value={latest} />
     </>
   }
 }

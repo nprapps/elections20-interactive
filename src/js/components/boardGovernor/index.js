@@ -3,6 +3,7 @@ import gopher from "../gopher.js";
 import Results from "../resultsBoardNamed";
 import states from "states.sheet.json";
 import TestBanner from "../testBanner";
+import DateFormatter from "../dateFormatter";
 
 export default class BoardGovernor extends Component {
   constructor(props) {
@@ -13,7 +14,8 @@ export default class BoardGovernor extends Component {
   }
 
   onData(data) {
-    this.setState({ races: data.results, test: data.test });
+    var latest = Math.max(...data.results.map(r => r.updated));
+    this.setState({ races: data.results, test: data.test, latest });
   }
 
   // Lifecycle: Called whenever our component is created
@@ -28,7 +30,7 @@ export default class BoardGovernor extends Component {
   }
 
   render() {
-    var { races, test } = this.state;
+    var { races, test, latest } = this.state;
     if (!races) {
       return "";
     }
@@ -43,6 +45,7 @@ export default class BoardGovernor extends Component {
       <div class="board-container">
         <Results races={sorted} office="Gov"/>
       </div>
+      Results as of <DateFormatter value={latest} />
     </>;
   }
 }
