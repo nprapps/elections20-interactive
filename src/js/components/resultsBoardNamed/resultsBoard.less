@@ -43,9 +43,9 @@
 		}
 	}
 
-	// &.Gov, &.Ballot {
-	// 	columns: 2;
-	// }
+	&.Gov, &.Ballot {
+		columns: 2;
+	}
 }
 
 .board-hed {
@@ -224,9 +224,21 @@ table.results {
   		white-space: nowrap;
   		max-width: 65px;
 
-  		// @media @full {
-  		// 	max-width: 55px;
-  		// }
+  		@media @full {
+  			max-width: 55px;
+  		}
+  		@media @wide {
+  			max-width: 65px;
+  		}
+  		@media @tablet {
+  			max-width: 55px;
+  		}
+  		@media @mobile {
+  			max-width: 70px;
+  		}
+  		@media @tiny {
+  			max-width: 55px;
+  		}
   	}
   	.incumbent {
   		margin-left: 3px;
