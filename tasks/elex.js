@@ -89,11 +89,17 @@ module.exports = function(grunt) {
 
       // Add electoral college winners to states
       if (r.id == 0 && (r.level == "state" || r.level == "district")) {
+
         var state16 = grunt.data.csv.prior_states
-          .filter(s => s.state == r.state)
-          .sort((a, b) => b.votes - a.votes)
-          .filter(s => s.votes)
-          .map(function(c) {
+          .filter(s => s.votes && s.state == r.state)
+          .sort((a, b) => b.votes - a.votes);
+
+        if (r.level == "district") {
+          state16 = state16.filter(s => s.district == r.district);
+        }
+
+
+        var candidates = state16.map(function(c) {
             return {
               last: c.last,
               party: c.party,
@@ -101,8 +107,8 @@ module.exports = function(grunt) {
             };
           });
 
-        r.president16 = state16;
-        r.previousParty = state16[0].party;
+        r.president16 = candidates;
+        r.previousParty = candidates[0].party;
 
       } else {
         // remaining steps are county-specific
