@@ -9,3 +9,4 @@ data/*.docs.txt
 src/assets/synced
 src/assets/data
 env/*
+votecast.sh
