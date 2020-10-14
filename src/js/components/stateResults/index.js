@@ -22,6 +22,7 @@ export default class StateResults extends Component {
 
     this.state = {};
     this.onData = this.onData.bind(this);
+    this.handleSelect = this.handleSelect.bind(this);
   }
 
   onData(data) {
@@ -32,7 +33,7 @@ export default class StateResults extends Component {
 
   updateTimestamp(timestamp, e) {
     var latest = Math.max(this.state.latest, timestamp);
-    this.setState({ latest })
+    this.setState({ latest });
   }
 
   componentDidMount() {
@@ -66,7 +67,10 @@ export default class StateResults extends Component {
       office == "key" ? "Key Results" : strings[`office-${office}`];
 
     return (
-      <div class="results" id="state-results" onupdatedtime={e => this.updateTimestamp(e.detail, e)}>
+      <div
+        class="results"
+        id="state-results"
+        onupdatedtime={e => this.updateTimestamp(e.detail, e)}>
         <header id="state-header">
           <h1>
             <img
@@ -77,7 +81,7 @@ export default class StateResults extends Component {
           </h1>
           {this.renderTabSwitcher(office)}
         </header>
-        { test ? <TestBanner /> : "" }
+        {test ? <TestBanner /> : ""}
         <div class="results-elements">{this.renderResults(office)}</div>
         Results as of <DateFormatter value={latest} />
       </div>
@@ -100,16 +104,22 @@ export default class StateResults extends Component {
       );
     } else {
       var races = this.state.races.filter(r => r.office == view);
-      return races.map((r) => this.getRaceWithCountyResults(r));
+      return races.map(r => this.getRaceWithCountyResults(r));
     }
   }
 
   getRaceWithCountyResults(race) {
-    var order = race.candidates.map((c) => c.party);
+    var order = race.candidates.map(c => c.party);
 
     var countyResults;
     if (!STATES_WITHOUT_COUNTY_INFO.includes(this.props.state)) {
-      countyResults = <CountyResults state={this.props.state} raceid={race.id} order={order} />;
+      countyResults = (
+        <CountyResults
+          state={this.props.state}
+          raceid={race.id}
+          order={order}
+        />
+      );
     }
     return (
       <>
@@ -137,7 +147,7 @@ export default class StateResults extends Component {
       label: "Key Results",
     });
 
-    var elements = tabs.map(t => (
+    var tabElements = tabs.map(t => (
       <li class={view == t.data ? "active" : "inactive"}>
         <a
           href={`#/states/${this.props.state}/${t.data}`}
@@ -147,10 +157,32 @@ export default class StateResults extends Component {
       </li>
     ));
 
+    var dropdownElements = tabs.map(t => (
+      <option
+        value={`#/states/${this.props.state}/${t.data}`}
+        selected={view == t.data ? "true" : ""}>
+        {t.label}
+      </option>
+    ));
+
     return (
-      <nav class="race-calendar">
-        <ul>{elements}</ul>
-      </nav>
+      <>
+        <div class="mobile-calendar-wrapper">
+          <div class="select-label">Select a contest</div>
+          <div class="outer-mobile-calendar">
+            <select class="mobile-calendar" onchange={this.handleSelect}>
+              {dropdownElements}
+            </select>
+          </div>
+        </div>
+        <nav class="race-calendar">
+          <ul>{tabElements}</ul>
+        </nav>
+      </>
     );
+  }
+
+  handleSelect(el) {
+    window.location = el.target.value;
   }
 }
