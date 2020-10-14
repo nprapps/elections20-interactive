@@ -17,7 +17,11 @@ function CandidateCells(race) {
 
     return (
       <td class={className.join(" ")}>
-        <div class="name">{c.last} {c.incumbent ? <span>●</span> : ""}</div> <div class="perc">{Math.round(c.percent*100)}%</div> 
+        <div class="name">
+          <div class="last">{c.last}</div> 
+          <div class="incumbent">{c.incumbent ? <span>●</span> : ""}</div>
+        </div> 
+        <div class="perc">{Math.round(c.percent*100)}%</div> 
       </td>
     );
   });

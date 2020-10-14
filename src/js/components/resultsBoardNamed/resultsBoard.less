@@ -1,5 +1,6 @@
 @import "values";
 
+@border: 1px solid #efefef;
 @background: #efefef;
 
 .board-container {
@@ -75,6 +76,9 @@ table.results {
 	  &.state-hed, &.reporting-hed, &.name-hed {
 	  	text-align: left;
 	  }
+	  &.state-hed {
+	  	padding-left: 0;
+	  }
 	  &.electoral-hed {
 	  	text-align: right;
 	  }
@@ -102,7 +106,7 @@ table.results {
 
 	td {
 		padding: 4px 8px;
-		border: 1px solid #eee;
+		border: @border;
 		border-right: 0;
 		border-left: 0;
 	}
@@ -114,9 +118,10 @@ table.results {
 
 	td.state {
 		// font-weight: bold;
+		padding-left: 0;
 		text-decoration: none;
 		border-left: 0;
-		border-right: 1px solid #eee;
+		border-right: @border;
 		color: #444;
 
 		&:hover {
@@ -148,9 +153,22 @@ table.results {
   		float: right;
   		margin-left: 8px;
   	}
+  	.last {
+  		text-overflow: ellipsis;
+  		overflow: hidden;
+  		white-space: nowrap;
+  		max-width: 60px;
+  	}
+  	.incumbent {
+  		margin-left: 4px;
+  	}
+  	.last, .incumbent {
+  		display: inline-block;
+  		vertical-align: top;
+  	}
   	.perc, .name {
 			display: inline-block;
-			min-width: 25px;
+			// min-width: 25px;
 		}
   	&.leading {
   		color: #666;
@@ -192,6 +210,7 @@ table.results {
   	font-size: 8px;
   	text-transform: uppercase;
   	font-weight: bold;
+  	margin-right: 0;
   	// border: 0;
 
   	.flip-label {
@@ -215,12 +234,13 @@ table.results.president {
 		border-right: 0;
 	}
 	 td.electoral {
-    border-right: 1px solid #eee;
+    border-right: @border;
     text-align: right;
 		color: #9a9a9a;
 
   	&.winner {
   		color: @ind;
+  		font-weight: bold;
   	}
   	&.winner.Dem {
 			color: @dem;
