@@ -199,6 +199,9 @@ function ResultsRowCounty(props) {
     metricValue = metric.format(metricValue);
   }
 
+
+  var leadingParty = row.reportingPercent == 1 ? row.candidates[0].party : "";
+
   return (
     <tr>
       <td class="county">
@@ -207,7 +210,7 @@ function ResultsRowCounty(props) {
       <td class="precincts amt">
         {reportingPercentage(row.reporting / row.precincts) + "% in"}
       </td>
-      {orderedCandidates.map((c) => CandidatePercentCell(c))}
+      {orderedCandidates.map((c) => CandidatePercentCell(c, c.party == leadingParty))}
       {MarginCell(row.candidates, winner)}
       <td> {metricValue} </td>
     </tr>
@@ -215,12 +218,12 @@ function ResultsRowCounty(props) {
 }
 
 // Display a candidate % cell
-function CandidatePercentCell(candidate) {
+function CandidatePercentCell(candidate, leading) {
   // TODO: add in independent class
   var displayPercent = (candidate.percent * 100).toFixed(1);
   return (
     <td
-      class={`vote ${candidate.party} ${candidate.winner ? "winner" : ""}`}
+      class={`vote ${candidate.party} ${leading ? "winner" : ""}`}
       key={candidate.id}
     >
       {`${displayPercent}%`}

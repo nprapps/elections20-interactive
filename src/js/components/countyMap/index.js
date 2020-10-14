@@ -38,7 +38,7 @@ export default class CountyMap extends Component {
   render() {
     var isChonky = specialStates.has(this.props.state);
     
-    // Fix bug here where 3rd party candidate can make it into legend
+    // TODO: Fix bug here where 3rd party candidate can make it into legend
     return (
       <div
         class={"county-map" + (isChonky ? " chonky" : "")}
@@ -195,10 +195,10 @@ export default class CountyMap extends Component {
       var pigment = this.palette[top.party];
 
       var hitThreshold = mapData[d].reporting / mapData[d].precincts > 0.5;
+      var allReporting = mapData[d].reporting / mapData[d].precincts == 1;
       var paint = "#bbb";
-      var leadingCandidate = mapData[d].candidates[0];
 
-      if (hitThreshold && leadingCandidate.winner) {
+      if (allReporting) {
         paint = pigment ? pigment : "#bbb";
       } else if (hitThreshold){
         paint = `url(#pending-${leadingCandidate.party})`;
@@ -269,7 +269,7 @@ export default class CountyMap extends Component {
       var candText = "";
       if (result.reportingPercent > 0.5) {
         var leadingCandidate = result.candidates[0];
-        var prefix = leadingCandidate.winner ? "Winner: " : "Leading: ";
+        var prefix = "Leading: "; // TODO: when do we add winner in?
         var candText = `${prefix}${leadingCandidate.last} (${
           leadingCandidate.percent
             ? reportingPercentage(leadingCandidate.percent)
