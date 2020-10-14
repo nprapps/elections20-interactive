@@ -8,7 +8,6 @@
   display: inline-block;
 }
 
-
 .leaderboard {
   display: flex;
   align-items: flex-end;
@@ -18,10 +17,7 @@
   margin-bottom: 20px;
 
   @media @mobile {
-    -webkit-justify-content: flex-end;
-    justify-content: flex-end;
-    max-width: 300px;
-    width: 49%;
+    width: 100%;
   }
 
   .ballot &,
@@ -33,9 +29,9 @@
   &.house {
     width: 50%;
     max-width: 500px;
-    padding-left: .75rem;
-    padding-right: .75rem;
-    padding-bottom: .75rem;
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+    padding-bottom: 0.75rem;
   }
 
   .change {
