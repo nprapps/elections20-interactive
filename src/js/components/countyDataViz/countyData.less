@@ -16,17 +16,23 @@ circle {
 }
 
 .graphic {
-  
   h4 {
     font-weight: normal;
     color: #777;
     font-size: 12px;
     line-height: 1.6;
     text-transform: uppercase;
+    margin: auto;
+    text-align: center;
   }
 
   .graphic-wrapper {
+    display: inline-block;
     position: relative;
+    width: 100%;
+    padding-bottom: 100%; /* aspect ratio */
+    vertical-align: top;
+    overflow: hidden;
   }
 
   text.axis-label {
@@ -62,5 +68,24 @@ circle {
     &:empty {
       display: none;
     }
+  }
+}
+
+.chart-wrapper {
+  width: 33%;
+  display: inline-block;
+
+  @media @tablet {
+    width: 50%;
+  }
+  @media @mobile {
+    width: 100%;
+  }
+
+  svg {
+    display: inline-block;
+    position: absolute;
+    top: 10px;
+    left: 0;
   }
 }

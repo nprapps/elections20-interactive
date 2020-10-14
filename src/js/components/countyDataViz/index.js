@@ -37,7 +37,6 @@ export class CountyDataViz extends Component {
       this.props.order
     );
 
-    console.log(cleanedData)
     if (!(cleanedData.length >= 10)) {
       return;
     }
@@ -48,13 +47,14 @@ export class CountyDataViz extends Component {
         <h2>County Trends</h2>
         <ul></ul>
         {this.charts.map(c => (
-
-          <CountyChart
-            data={cleanedData}
-            variable={c.key}
-            order={this.props.order}
-            title={c.header}
-          />
+          <div class="chart-wrapper">
+            <CountyChart
+              data={cleanedData}
+              variable={c.key}
+              order={this.props.order}
+              title={c.header}
+            />
+          </div>
         ))}
         <div class="footnote">{footnote}</div>
       </div>

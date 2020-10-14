@@ -36,22 +36,28 @@ export class CountyChart extends Component {
 
     this.tooltipRef = createRef();
     this.svgRef = createRef();
+    this.wrapperRef = createRef();
     this.onMove = this.onMove.bind(this);
     this.onLeave = this.onLeave.bind(this);
 
-    this.ommittedCounties = 0;
     this.chartWidth;
     this.chartHeight;
     this.margins = {
       top: 20,
-      right: 25,
+      right: 5,
       bottom: 25,
-      left: 50,
+      left: 30,
     };
   }
 
   // Lifecycle: Called whenever our component is created
-  componentDidMount() {}
+  componentDidMount() {
+    this.setState({
+      dimensions: {
+        width: this.wrapperRef.current.offsetWidth,
+      },
+    });
+  }
 
   // Lifecycle: Called just before our component will be destroyed
   componentWillUnmount() {
@@ -62,8 +68,25 @@ export class CountyChart extends Component {
     if (!this.props.data) {
       return "";
     }
+
+    return (
+      <div class="graphic">
+        <h4>{this.props.title}</h4>
+        <ul></ul>
+        <div class="graphic-wrapper" ref={this.wrapperRef}>
+          {this.renderSVG()}
+          <div class="tooltip" ref={this.tooltipRef}></div>
+        </div>
+      </div>
+    );
+  }
+
+  renderSVG() {
+    if (!this.state.dimensions) {
+      return "";
+    }
     // TODO: Move this elsewhere?
-    var width = window.innerWidth / 3;
+    var width = this.state.dimensions.width;
     var aspectWidth = 12;
     var aspectHeight = 9;
     this.chartWidth = width - this.margins.left - this.margins.right;
@@ -90,24 +113,19 @@ export class CountyChart extends Component {
     this.xScale = scaleFactory([0, 100], [0, this.chartWidth]);
     this.yScale = scaleFactory([minY, maxY], [this.chartHeight, 0]);
 
+    var height = this.chartHeight + this.margins.top + this.margins.bottom;
+    var width = this.chartWidth + this.margins.left + this.margins.right;
     return (
-      <div class="graphic">
-        <h4>{this.props.title}</h4>
-        <ul></ul>
-        <div class="graphic-wrapper">
-          <svg
-            ref={this.svgRef}
-            width={this.chartWidth + this.margins.left + this.margins.right}
-            height={this.chartHeight + this.margins.top + this.margins.bottom}>
-            <g
-              transform={`translate(${this.margins.left}, ${this.margins.top})`}>
-              {this.createAxes()}
-              {this.createDots()}
-            </g>
-          </svg>
-          <div class="tooltip" ref={this.tooltipRef}></div>
-        </div>
-      </div>
+      <svg
+        ref={this.svgRef}
+        width={width}
+        height={height}
+        viewBox={`0 0 ${width} ${height}`}>
+        <g transform={`translate(${this.margins.left}, ${this.margins.top})`}>
+          {this.createAxes()}
+          {this.createDots()}
+        </g>
+      </svg>
     );
   }
 
@@ -117,13 +135,17 @@ export class CountyChart extends Component {
   }
 
   onMove(e) {
+    console.log
+    (this.tooltipRef.current)
     var tooltip = this.tooltipRef.current;
     var data = this.props.data.filter(d => d.fips == e.target.dataset.fips)[0];
 
     tooltip.innerHTML = `
         <div class="name">${data.countyName}</div>
         <div class="pop">Pop. ${data.population}</div>
-        <div class="reporting">${data[this.props.variable]} ${this.props.title}</div>
+        <div class="reporting">${data[this.props.variable]} ${
+      this.props.title
+    }</div>
       `;
 
     var bounds = this.svgRef.current.getBoundingClientRect();
