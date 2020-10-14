@@ -1,7 +1,7 @@
 import { h, Component, Fragment } from "preact";
 import gopher from "../gopher.js";
 import Results from "../resultsBoardNamed";
-import { BalanceOfPower } from "../balanceOfPower";
+import BalanceOfPower from "../balanceOfPower";
 import TestBanner from "../testBanner";
 import senate from "senate.sheet.json";
 import states from "states.sheet.json";

@@ -7,6 +7,7 @@ export default class BalanceOfPower extends Component {
   constructor(props) {
     super();
 
+    console.log("here")
     this.isSenate = props.race == "senate";
     this.seatsNeeded = this.isSenate ? 51 : 218;
     this.onData = this.onData.bind(this);
@@ -115,10 +116,12 @@ export default class BalanceOfPower extends Component {
     for (let race of data) {
       var winner = this.getWinner(race);
       if (winner) {
+        var winnerParty = this.getParty(winner.party);
+        var previousWinner = this.getParty(race.previousParty);
         results[winner.party].total += 1;
-        if (winner.party != race.previousParty) {
-          results[winner.party].gains += 1;
-          results[race.previousParty].gains -= 1;
+        if (winnerParty != previousWinner) {
+          results[winnerParty].gains += 1;
+          results[previousWinner].gains -= 1;
         }
       } else {
         notCalled += 1;
@@ -136,6 +139,13 @@ export default class BalanceOfPower extends Component {
     results.netGain = Math.abs(results.GOP.gains) + Math.abs(results.Dem.gains);
     results.notCalled = notCalled;
     return results;
+  }
+
+  getParty(party) {
+    if (["Dem", "GOP"].includes(party)) {
+      return party;
+    } 
+    return 'Ind';
   }
 
   getWinner(race, party) {
