@@ -19,7 +19,7 @@ export default function ResultsTableCandidates(props) {
 
   var isUncontested = results.candidates.length < 2;
   var reporting = notStatewide
-    ? `${reportingPercentage(props.data.reportingPercent)}% reporting`
+    ? `${reportingPercentage(props.data.reportingPercent || 0)}% reporting`
     : `${reportingPercentage(props.data.eevp || 0)}% in`;
 
   return (
