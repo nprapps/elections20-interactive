@@ -10,7 +10,6 @@ export default class CountyMap extends Component {
     super();
 
     this.fipsLookup = [];
-    this.palette = { Dem: "#237bbd", GOP: "#d62021" };
 
     this.state = {};
     this.svgRef = createRef();
@@ -36,14 +35,9 @@ export default class CountyMap extends Component {
   }
 
   render() {
-    var isChonky = specialStates.has(this.props.state);
-    
     // TODO: Fix bug here where 3rd party candidate can make it into legend
     return (
-      <div
-        class={"county-map" + (isChonky ? " chonky" : "")}
-        data-as="map"
-        aria-hidden="true">
+      <div class="county-map" data-as="map" aria-hidden="true">
         <div ref={this.containerRef} class="container" data-as="container">
           <svg
             class="patterns"
@@ -110,7 +104,7 @@ export default class CountyMap extends Component {
     this.svgRef.current.innerHTML = svgText;
     var svg = this.svgRef.current.getElementsByTagName("svg")[0];
 
-    svg.setAttribute("preserveAspectRatio", "xMaxYMid meet");
+    svg.setAttribute("preserveAspectRatio", "xMidYMid meet");
 
     var paths = svg.querySelectorAll("path");
     paths.forEach((p, i) => {
@@ -138,29 +132,25 @@ export default class CountyMap extends Component {
     var embedded = false; //document.body.classList.contains("embedded");
     var mapContainer = this.mapContainerRef.current;
 
+    var w;
+    var h;
     if (width > height * 1.4) {
       var ratio = height / (width * 2);
-      mapContainer.style.width = "100%";
-      mapContainer.style.paddingBottom = `${100 * ratio}%`;
+      w = Math.max(800, window.innerWidth);
+      var h = w * ratio;
+    } else if (width > height * 1.2) {
+      var ratio = height / (width * 3);
+      w = Math.max(800, window.innerWidth);
+      var h = w * ratio;
     } else {
       var ratio = width / height;
-      if (embedded) {
-        var w = 500;
-        var h = w * ratio;
-        if (w > window.innerWidth) {
-          w = window.innerWidth - 32;
-          h = w * ratio;
-        }
-        mapContainer.style.width = w + "px";
-        mapContainer.style.height = h + "px";
-      } else {
-        var basis = height > width * 1.1 ? 65 : 55;
-        mapContainer.style.width = basis + "vh";
-        mapContainer.style.height = `${basis * ratio}vh`;
-      }
+      var w = 450;
+      var h = w * ratio;
     }
 
-    // elements.aspect.style.paddingBottom = height / width * 100 + "%";
+    this.svg.setAttribute("width", w + "px");
+    this.svg.setAttribute("height", h + "px");
+
     this.containerRef.current.classList.toggle("horizontal", width < height);
   }
 
@@ -176,7 +166,7 @@ export default class CountyMap extends Component {
     for (var d of Object.keys(mapData)) {
       var [top] = mapData[d].candidates.sort((a, b) => b.percent - a.percent);
       if (top.votes) {
-        winners.add(top.party in this.palette ? top.party : "other");
+        winners.add(top.party);
         hasVotes = true;
       }
       this.fipsLookup[mapData[d].fips] = mapData[d];
@@ -192,34 +182,24 @@ export default class CountyMap extends Component {
       var path = this.svg.querySelector(`[id="fips-${fips}"]`);
       if (!path) continue;
       path.classList.add("painted");
-      var pigment = this.palette[top.party];
 
       var hitThreshold = mapData[d].reporting / mapData[d].precincts > 0.5;
       var allReporting = mapData[d].reporting / mapData[d].precincts == 1;
-      var paint = "#bbb";
 
-      if (allReporting) {
-        paint = pigment ? pigment : "#bbb";
-      } else if (hitThreshold){
-        paint = `url(#pending-${leadingCandidate.party})`;
+      if (!allReporting) {
+        var paint;
+        if (hitThreshold) {
+          paint = `url(#pending-${top.party})`;
+        } else {
+          paint = `url(#pending-0)`;
+          incomplete = true;
+        }
+        path.style.fill = paint;
       } else {
-        paint = `url(#pending-0)`;
-        incomplete = true;
+        path.classList.add("winner");
+        path.classList.add(top.party);
       }
-
-      path.style.fill = paint;
     }
-
-    // TODO: get tooltip working again
-    // if (hasVotes) {
-    //   var pKeys = Object.keys(this.palette);
-    //   var keyData = pKeys
-    //     .map(p => this.palette[p])
-    //     .sort((a, b) => (a.order < b.order ? -1 : 1));
-    //   var filtered = keyData.filter(p => winners.has(p.id));
-    //   keyData = filtered.length < 2 ? keyData.slice(0, 2) : filtered;
-    //   elements.key.innerHTML = key({ keyData, incomplete, guid: this.guid });
-    // }
   }
 
   createLegend(candidate) {
@@ -227,9 +207,7 @@ export default class CountyMap extends Component {
     var name = `${candidate.first} ${candidate.last}`;
     return (
       <div class="key-row">
-        <div
-          class="swatch"
-          style={`background: ${this.palette[candidate.party]};`}></div>
+        <div class={`swatch ${candidate.party}`}></div>
         <div class="name">{name}</div>
       </div>
     );
@@ -259,8 +237,9 @@ export default class CountyMap extends Component {
   onMove(e) {
     var tooltip = this.tooltipRef.current;
     var fips = e.target.id.replace("fips-", "");
+    tooltip.classList.remove("shown");
     if (!fips || e.type == "mouseleave") {
-      return tooltip.classList.remove("shown");
+      return;
     }
 
     // TODO: check syntax around leading candidate/winner
@@ -286,11 +265,13 @@ export default class CountyMap extends Component {
         <div class="name">${countyName}</div>
         <div class="result">${candText}</div>
         <div class="reporting">${perReporting}% reporting</div>
-        <div class="pop">Pop. ${formatters.comma(result.county.population)}</div>
+        <div class="pop">Pop. ${formatters.comma(
+          result.county.population
+        )}</div>
       `;
     }
 
-    var bounds = this.svgRef.current.getBoundingClientRect();
+    var bounds = this.svg.getBoundingClientRect();
     var x = e.clientX - bounds.left;
     var y = e.clientY - bounds.top;
     if (x > bounds.width / 2) {

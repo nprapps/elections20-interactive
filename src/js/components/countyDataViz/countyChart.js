@@ -1,6 +1,8 @@
 import { h, Component, Fragment, createRef } from "preact";
 import gopher from "../gopher.js";
 import "./countyData.less";
+import { formatters } from "../util.js";
+var { chain, comma, percent, dollars } = formatters;
 
 var scaleFactory = function (domain, range) {
   var [rangeStart, rangeEnd] = range;
@@ -39,7 +41,7 @@ export class CountyChart extends Component {
     this.wrapperRef = createRef();
     this.onMove = this.onMove.bind(this);
     this.onLeave = this.onLeave.bind(this);
-    this.handleResize = this.handleResize.bind(this)
+    this.handleResize = this.handleResize.bind(this);
 
     this.chartWidth;
     this.chartHeight;
@@ -50,7 +52,7 @@ export class CountyChart extends Component {
       left: 30,
     };
 
-    window.addEventListener('resize', this.handleResize)
+    window.addEventListener("resize", this.handleResize);
   }
 
   // Lifecycle: Called whenever our component is created
@@ -114,7 +116,8 @@ export class CountyChart extends Component {
     var height = this.chartHeight + this.margins.top + this.margins.bottom;
     var width = this.chartWidth + this.margins.left + this.margins.right;
     return (
-      <svg class="svg-flex"
+      <svg
+        class="svg-flex"
         ref={this.svgRef}
         width={width}
         height={height}
@@ -133,18 +136,16 @@ export class CountyChart extends Component {
   }
 
   onMove(e) {
-    console.log
-    (this.tooltipRef.current)
     var tooltip = this.tooltipRef.current;
+    tooltip.classList.remove("shown");
     var data = this.props.data.filter(d => d.fips == e.target.dataset.fips)[0];
 
+    // TODO: make the formmaters handle the correct var
+    var displayVar = parseFloat(data[this.props.variable]).toFixed(1);
     tooltip.innerHTML = `
         <div class="name">${data.countyName}</div>
-        <div class="pop">Pop. ${data.population}</div>
-        <div class="reporting">${data[this.props.variable]} ${
-      this.props.title
-    }</div>
-      `;
+        <div class="pop">Pop. ${comma(data.population)}</div>
+        <div class="reporting">${displayVar} ${this.props.title}</div>`;
 
     var bounds = this.svgRef.current.getBoundingClientRect();
     var x = e.clientX - bounds.left;
