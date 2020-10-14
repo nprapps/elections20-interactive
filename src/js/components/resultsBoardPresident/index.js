@@ -28,7 +28,7 @@ function CandidateCells(race) {
 }
 
 export default function ResultsBoardPresident(props) {
-  // console.log("props",props)
+  console.log("props",props)
 
   return (
     <>
@@ -49,6 +49,7 @@ export default function ResultsBoardPresident(props) {
             var reporting = r.eevp || r.reportingPercent;
             var percentIn = reporting ? reportingPercentage(reporting) + "% in" : "";
             var winner = r.candidates.filter(c => c.winner == "X");
+            var flipped = winner[0] && (r.previousParty !== winner[0].party);
             var stateDetail = states[r.state] || {};
 
             return (
@@ -73,8 +74,11 @@ export default function ResultsBoardPresident(props) {
                 {/* EEVP */}
                 <td class="reporting">{percentIn}</td>
 
-                {/* Runoff */}
-                <td class="runoff-label">{r.runoff ? "R.O." : ""}</td>
+                {/* Runoff or Flip */}
+                <td class={"runoff-label " + (flipped ? winner[0].party : "")}>
+                  {r.runoff ? "R.O." : ""}
+                  <span class="flip-label">{flipped ? "Flip" : ""}</span>
+                </td>
               </tr>
             );
         })}
