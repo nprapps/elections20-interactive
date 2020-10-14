@@ -1,5 +1,6 @@
 import { h, Component, Fragment } from "preact";
 import gopher from "../gopher.js";
+import ResultsTableCandidates from "../resultsTableCandidates";
 import Strings from "strings.sheet.json";
 
 export default class KeyRaces extends Component {
@@ -7,7 +8,6 @@ export default class KeyRaces extends Component {
     super();
 
     this.showHousesIfMoreThanN = 10;
-    this.statesWithoutCountyInfo = ["AK"]; // Get me passed in
     this.state = {};
     this.onData = this.onData.bind(this);
   }
@@ -48,8 +48,7 @@ export default class KeyRaces extends Component {
           <h2>{label}</h2>
           <div class="races">
             {data.map((r) => (
-              // TODO: set up the results table here instead
-              <div>{r.id}</div>
+              <ResultsTableCandidates data={r} />
             ))}
           </div>
         </div>
