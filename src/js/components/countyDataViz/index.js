@@ -37,7 +37,8 @@ export class CountyDataViz extends Component {
       this.props.order
     );
 
-    if (!cleanedData.length >= 10) {
+    console.log(cleanedData)
+    if (!(cleanedData.length >= 10)) {
       return;
     }
 
