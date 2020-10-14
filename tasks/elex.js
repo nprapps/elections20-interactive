@@ -8,6 +8,7 @@
 
 var { redeemTicket, apDate } = require("./lib/apResults");
 var normalize = require("./lib/normalizeResults");
+var augment = require("./lib/augmentResults");
 var fs = require("fs").promises;
 
 module.exports = function(grunt) {
@@ -46,98 +47,35 @@ module.exports = function(grunt) {
     ];
 
     // get results from AP
-    var requests = tickets.map(t => redeemTicket(t, { test, offline}));
-    var rawResults = await Promise.all(requests);
-    // remove empty responses
-    rawResults = rawResults.filter(r => r);
+    var rawResults = [];
+    for (var t of tickets) {
+      var response = await redeemTicket(t, { test, offline });
+      if (!response) continue;
+      // filter state results out of district requests
+      if (t.params.level == "district") {
+        response.races.forEach(function(race) {
+          if (!race.reportingUnits) return;
+          race.reportingUnits = race.reportingUnits.filter(u => u.level == "district");
+        });
+      }
+      rawResults.push(response);
+    }
     // turn AP into normalized race objects
     var results = normalize(rawResults, grunt.data.json);
 
-    // remove state-level P results for ME and NE
-    results = results.filter(function(r) {
-      if (r.id != 0) return true;
-      if (r.state == "ME" || r.state == "NE") {
-        return r.level != "state";
+    // filter generator for district-based EC votes
+    var stateOrDistrictFilter = function(level) {
+      return function(result) {
+        if (result.id != "0") return true;
+        if (result.state == "ME" || result.state == "NE") {
+          return result.level == level;
+        }
+        return true;
       }
-      return true;
-    });
+    }
 
     grunt.log.writeln("Merging in external data...");
-
-    // build DB of external flags
-    var flagged = {};
-    if (grunt.data.json.flags) grunt.data.json.flags.forEach(function(row) {
-      if (!flagged[row.raceID]) flagged[row.raceID] = [];
-      flagged[row.raceID].push(row);
-    });
-
-    // merge in per-county census/historical data and flags
-    results.forEach(function(r) {
-
-      // add flags to races that match the filters in the sheet
-      if (flagged[r.id]) {
-        var matchingFlags = flagged[r.id].filter(function(f) {
-          return f.fips ? f.fips == r.fips :
-            f.state ? f.state == r.state :
-            true;
-        });
-        if (matchingFlags.length) {
-          r.flags = matchingFlags.map(f => f.flag);
-        }
-      }
-
-
-      // Add electoral college winners to states
-      if (r.id == 0 && (r.level == "state" || r.level == "district")) {
-
-        var state16 = grunt.data.csv.prior_states
-          .filter(s => s.votes && s.state == r.state)
-          .sort((a, b) => b.votes - a.votes);
-
-        if (r.level == "district") {
-          state16 = state16.filter(s => s.district == r.district);
-        }
-
-
-        var candidates = state16.map(function(c) {
-            return {
-              last: c.last,
-              party: c.party,
-              electoral: c.votes
-            };
-          });
-
-        r.president16 = candidates;
-        r.previousParty = candidates[0].party;
-
-      } else {
-        // remaining steps are county-specific
-        if (!r.fips) return;
-
-        // get the winner from the previous presidential election
-        var president16 = grunt.data.csv.prior_fips
-          .filter(p => p.fipscode == r.fips)
-          .sort((a, b) => b.votepct - a.votepct)
-          .slice(0, 2)
-          .map(function(c) {
-            return {
-              last: c.last,
-              party: c.party,
-              percent: c.votepct * 1
-            }
-          });
-
-        var census = grunt.data.csv.census_data[r.fips];
-
-        var bls = grunt.data.csv.unemployment_data[r.fips] || {};
-        var { unemployment } = bls;
-
-        var countyName = grunt.data.csv.county_names[r.fips] || "At large";
-
-        r.county = { president16, ...census, unemployment, countyName};
-
-      }
-    });
+    augment(results, grunt.data);
 
     grunt.log.writeln("Generating data files...");
 
@@ -158,7 +96,7 @@ module.exports = function(grunt) {
     // state-level results
     await fs.mkdir("build/data/states", { recursive: true });
     var states = {};
-    geo.state.forEach(function(result) {
+    geo.state.filter(stateOrDistrictFilter("state")).forEach(function(result) {
       var { state } = result;
       if (!states[state]) states[state] = [];
       states[state].push(result);
@@ -182,7 +120,7 @@ module.exports = function(grunt) {
 
     // sliced by office
     var byOffice = {
-      president: geo.state.filter(r => r.office == "P"),
+      president: geo.state.filter(r => r.office == "P").filter(stateOrDistrictFilter("district")),
       house: geo.state.filter(r => r.office == "H"),
       senate: geo.state.filter(r => r.office == "S"),
       gov: geo.state.filter(r => r.office == "G"),
