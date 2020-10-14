@@ -23,7 +23,7 @@ export default class CountyMap extends Component {
   // Lifecycle: Called whenever our component is created
   async componentDidMount() {
     var response = await fetch(
-      "../assets/counties/" + this.props.state + ".svg"
+      "./assets/counties/" + this.props.state + ".svg"
     );
     var text = await response.text();
     var svg = await this.loadSVG(text);
