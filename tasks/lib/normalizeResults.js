@@ -200,12 +200,19 @@ module.exports = function (resultArray, overrides = {}) {
 
         var [ call ] = calls.filter(function(row) {
           if (row.raceID != unitMeta.id) return false;
-          if (row.state && row.state != unitMeta.state) return false;
-          if (row.fips && row.fips != unitMeta.fips) return false;
+          for (var p of ["state", "fips", "district"]) {
+            if (row[p] && row[p] != unitMeta[p]) return false;
+          }
           return true;
         });
 
-        if (call) console.log(`Overriding winner (${call.candidate}) for race #${unitMeta.id}`);
+        if (call) console.log(`Overriding winner (${
+          call.candidate
+        }) for race #${
+          unitMeta.id
+        } in ${
+          [call.state, call.fips, call.district].filter(s => s).join("-")
+        }`);
 
         var winner = null;
         ballot.forEach(function (c) {
