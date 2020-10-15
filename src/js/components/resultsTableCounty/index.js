@@ -1,52 +1,56 @@
 import { h, Fragment, Component, createRef } from "preact";
 import "./resultsTableCounty.less";
-import { reportingPercentage, formatters, sortByParty, sortByOrder } from "../util.js";
+import {
+  reportingPercentage,
+  formatters,
+  sortByParty,
+  sortByOrder,
+} from "../util.js";
 var { chain, comma, percent, dollars } = formatters;
 
 const availableMetrics = {
   population: {
     name: "Population",
     census: true,
-    format: comma
+    format: comma,
   },
   past_margin: {
-    name: "2016 Presidential Margin"
+    name: "2016 Presidential Margin",
   },
   unemployment: {
     name: "Unemployment",
-    format: percent
+    format: percent,
   },
   percent_white: {
     name: "% White",
     census: true,
-    format: percent
+    format: percent,
   },
   percent_black: {
     name: "% Black",
     census: true,
-    format: percent
+    format: percent,
   },
   percent_hispanic: {
     name: "% Hispanic",
     census: true,
-    format: percent
+    format: percent,
   },
   median_income: {
     name: "Median Income",
     census: true,
-    format: chain(comma, dollars)
+    format: chain(comma, dollars),
   },
   percent_bachelors: {
     name: "% College-Educated",
     census: true,
-    format: percent
+    format: percent,
   },
   countyName: {
     name: "County",
-    alpha: true
-  }
+    alpha: true,
+  },
 };
-
 for (var k in availableMetrics) availableMetrics[k].key = k;
 
 export default class ResultsTableCounty extends Component {
@@ -59,21 +63,19 @@ export default class ResultsTableCounty extends Component {
       sortMetric: availableMetrics.population,
       displayedMetric: availableMetrics.population,
       collapsed: true,
-      order: -1
+      order: -1,
     };
   }
 
   scrollToRef(ref) {
-    // TODO: fix buggy first click behavior
-    if (!this.state.collapsed) {
-      ref.current.scrollIntoView(true, { block: "nearest" });
-    }
+    ref.current.scrollIntoView(true, { block: "nearest" });
   }
 
   toggleCollapsed() {
     const currentState = this.state.collapsed;
-    this.setState({ collapsed: !currentState });
-    this.scrollToRef(this.tableRef);
+    this.setState({ collapsed: !currentState }, () => {
+      this.scrollToRef(this.tableRef);
+    });
   }
 
   render() {
@@ -82,21 +84,18 @@ export default class ResultsTableCounty extends Component {
     // Order by party
     const orderedCandidates = this.props.data[0].candidates
       .slice(0, 3)
-      .sort((a,b) => sortByOrder(a,b, this.props.sortOrder));
-
+      .sort((a, b) => sortByOrder(a, b, this.props.sortOrder));
     return (
       <div
         class={
           "results-counties " + this.state.sortMetric.key.split("_").join("-")
-        }
-      >
+        }>
         <table class={`results-table candidates-${orderedCandidates.length}`}>
           <thead ref={this.tableRef}>
             <tr>
               <th
                 class="county sortable"
-                onclick={() => this.updateSort("countyName")}
-              >
+                onclick={() => this.updateSort("countyName")}>
                 <div>
                   <span>County</span>
                 </div>
@@ -106,7 +105,7 @@ export default class ResultsTableCounty extends Component {
                   <span></span>
                 </div>
               </th>
-              {orderedCandidates.map((cand) => CandidateHeaderCell(cand))}
+              {orderedCandidates.map(cand => CandidateHeaderCell(cand))}
               <th class="vote margin">
                 <div>
                   <span>Vote margin</span>
@@ -114,8 +113,7 @@ export default class ResultsTableCounty extends Component {
               </th>
               <th
                 class="comparison sortable"
-                onclick={() => this.updateSort(this.state.displayedMetric.key)}
-              >
+                onclick={() => this.updateSort(this.state.displayedMetric.key)}>
                 <div>
                   <span>{this.state.displayedMetric.name}</span>
                 </div>
@@ -123,7 +121,7 @@ export default class ResultsTableCounty extends Component {
             </tr>
           </thead>
           <tbody class={this.state.collapsed ? "collapsed" : null}>
-            {sortedData.map((c) => (
+            {sortedData.map(c => (
               <ResultsRowCounty
                 candidates={orderedCandidates}
                 row={c}
@@ -137,8 +135,7 @@ export default class ResultsTableCounty extends Component {
           class={`toggle-table ${sortedData.length > 10 ? "" : "hidden"}`}
           onclick={this.toggleCollapsed}
           data-more="Show all"
-          data-less="Show less"
-        >
+          data-less="Show less">
           {this.state.collapsed ? `Show all ▼` : `Show less ▲`}
         </button>
       </div>
@@ -173,23 +170,13 @@ export default class ResultsTableCounty extends Component {
   }
 }
 
-function CandidateHeaderCell(candidate) {
-  return (
-    <th class="vote" key={candidate.party}>
-      <div>
-        <span>{candidate.last}</span>
-      </div>
-    </th>
-  );
-}
-
 function ResultsRowCounty(props) {
   var { candidates, row, metric } = props;
 
   var winner = row.called ? row.candidates[0] : null;
 
   var orderedCandidates = candidates.map(function (header) {
-    var [match] = row.candidates.filter((c) => header.id == c.id);
+    var [match] = row.candidates.filter(c => header.id == c.id);
     return match || {};
   });
 
@@ -198,7 +185,6 @@ function ResultsRowCounty(props) {
   if (metric.format) {
     metricValue = metric.format(metricValue);
   }
-
 
   var leadingParty = row.reportingPercent == 1 ? row.candidates[0].party : "";
 
@@ -210,31 +196,47 @@ function ResultsRowCounty(props) {
       <td class="precincts amt">
         {reportingPercentage(row.reporting / row.precincts) + "% in"}
       </td>
-      {orderedCandidates.map((c) => CandidatePercentCell(c, c.party == leadingParty))}
+      {orderedCandidates.map(c =>
+        CandidatePercentCell(c, c.party == leadingParty)
+      )}
       {MarginCell(row.candidates, winner)}
       <td> {metricValue} </td>
     </tr>
   );
 }
 
-// Display a candidate % cell
+function CandidateHeaderCell(candidate) {
+  return (
+    <th class="vote" key={candidate.party}>
+      <div>
+        <span>{candidate.last}</span>
+      </div>
+    </th>
+  );
+}
+
+/*
+ * Creates a candidate vote % cell. Colors with candidate party if candidate is leading.
+ */
 function CandidatePercentCell(candidate, leading) {
   // TODO: add in independent class
   var displayPercent = (candidate.percent * 100).toFixed(1);
   return (
     <td
       class={`vote ${candidate.party} ${leading ? "winner" : ""}`}
-      key={candidate.id}
-    >
+      key={candidate.id}>
       {`${displayPercent}%`}
     </td>
   );
 }
 
-function MarginCell(candidates, winner) {
+/*
+ * Creates the margin cell. Colors with candidate party if candidate is leading.
+ */
+function MarginCell(candidates, leading) {
   var party;
-  if (winner) {
-    party = ["Dem", "GOP"].includes(winner.party) ? winner.party : "ind";
+  if (leading) {
+    party = ["Dem", "GOP"].includes(leading.party) ? leading.party : "ind";
   }
 
   return (
@@ -242,8 +244,10 @@ function MarginCell(candidates, winner) {
   );
 }
 
+/*
+ * Calculate the vote margin to be displayed.
+ */
 function calculateVoteMargin(candidates) {
-  // TODO: re-do what to do here if there isn't someone ahead or it's low vote count
   var [a, b] = candidates;
   if (!a.votes) {
     return "-";
