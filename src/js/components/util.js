@@ -32,10 +32,10 @@ export function sortByParty(a, b) {
 
 export function sortByOrder(a, b, order) {
   var getPartyValue = (c) => {
-    if (!order.includes(c.party)) {
+    if (!order.includes(c)) {
       return Infinity
     }
-    return order.indexOf(c.party)
+    return order.indexOf(c)
   }
 
   return getPartyValue(a) - getPartyValue(b);

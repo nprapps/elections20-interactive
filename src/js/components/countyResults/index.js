@@ -10,19 +10,17 @@ export default class CountyResults extends Component {
 
     this.state = { activeView: props.view };
     this.onCountyData = this.onCountyData.bind(this);
-    this.onStateData = this.onStateData.bind(this);
   }
 
   onCountyData(json) {
     var updated = Math.max(...json.results.map(r => r.updated));
-    var event = new CustomEvent("updatedtime", { detail: updated, bubbles: true });
+    var event = new CustomEvent("updatedtime", {
+      detail: updated,
+      bubbles: true,
+    });
     this.base.dispatchEvent(event);
     var office = json.results[0].office;
     this.setState({ data: json.results, office });
-  }
-
-  onStateData(json) {
-    this.setState({ stateData: json.results });
   }
 
   // Lifecycle: Called whenever our component is created
@@ -31,7 +29,6 @@ export default class CountyResults extends Component {
       `./data/counties/${this.props.state}-${this.props.raceid}.json`,
       this.onCountyData
     );
-    gopher.watch(`./data/states/${this.props.state}.json`, this.onStateData);
   }
 
   // Lifecycle: Called just before our component will be destroyed
@@ -41,13 +38,18 @@ export default class CountyResults extends Component {
       `./data/counties/${this.props.state}-${this.props.raceid}.json`,
       this.onData
     );
-    gopher.unwatch(`./data/states/${this.props.state}.json`, this.onStateData);
   }
 
   render() {
-    if (!this.state.data || !this.state.stateData) {
+    if (!this.state.data) {
       return "";
     }
+
+    var dataViz;
+    if (!this.props.isSpecial)
+      dataViz = (
+        <CountyDataViz data={this.state.data} order={this.props.order} />
+      );
 
     return (
       <div class="results-elements">
@@ -56,7 +58,7 @@ export default class CountyResults extends Component {
           state={this.props.state.toUpperCase()}
           data={this.state.data}
         />
-        <CountyDataViz data={this.state.data} order={this.props.order}/>
+        {dataViz}
         <ResultsTableCounty
           state={this.props.state.toUpperCase()}
           data={this.state.data}

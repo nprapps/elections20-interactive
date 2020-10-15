@@ -109,7 +109,8 @@ export default class StateResults extends Component {
   }
 
   getRaceWithCountyResults(race) {
-    var order = race.candidates.map(c => c.party);
+    var order = race.candidates.map(c => c.last);
+    var isSpecial = !!race.seat;
 
     var countyResults;
     if (!STATES_WITHOUT_COUNTY_INFO.includes(this.props.state)) {
@@ -118,6 +119,7 @@ export default class StateResults extends Component {
           state={this.props.state}
           raceid={race.id}
           order={order}
+          isSpecial={isSpecial}
         />
       );
     }
