@@ -24,16 +24,25 @@ var { nav, states } = grunt.data.json;
 
     <ul class="menu-contents" id="main-menu">
 
-      <li> <a href="#">Live Coverage</a> </li>
-      <li> <a href="#/president">President</a> </li>
+      <li> <a href="#">
+        <span class="full label">Live Coverage</span>
+        <span class="abbrev label">Live</span>
+      </a> </li>
+      <li> <a href="#/president">
+        <span class="full label">President</span>
+        <span class="abbrev label">Pres.</span>
+      </a> </li>
       <li> <a href="#/house">House</a> </li>
       <li> <a href="#/senate">Senate</a> </li>
-      <li> <a href="#/governor">Governor</a> </li>
+      <li> <a href="#/governor">
+        <span class="full label">Governor</span>
+        <span class="abbrev label">Gov.</span>
+      </a> </li>
       <li> <a href="#/ballots">Ballot</a> </li>
 
       <li class="state-nav">
         <button class="menu-toggle" aria-controls="states-menu">
-          State results
+          State <span class="full label">results</span>
           <svg viewBox="0 0 5 5" preserveAspectRatio="none" aria-hidden="true">
             <path fill="currentColor" d="M1,1.5 L4,1.5 L2.5,4 Z" />
           </svg>
