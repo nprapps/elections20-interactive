@@ -32,7 +32,7 @@ export default function ResultsBoardPresident(props) {
 
   return (
     <>
-      <div class="board-wrapper">
+      <div class={"board-wrapper " + props.office}>
         <div class="board-inner">
           <h3 class="board-hed">{props.hed}</h3>
           <table class="president results table">

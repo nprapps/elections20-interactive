@@ -68,11 +68,11 @@ export default class BoardPresident extends Component {
       <h1>President</h1>
       { test ? <TestBanner /> : "" }
       <div class="board-container">
-        <Results races={buckets.likelyD} hed="Dem. Likely"/>
-        <Results races={buckets.tossup} hed="Lean/Tossup"/>
-        <Results races={buckets.likelyR} hed="GOP Likely"/>
+        <Results races={buckets.likelyD} hed="Dem. Likely" office="President"/>
+        <Results races={buckets.tossup} hed="Lean/Tossup" office="President"/>
+        <Results races={buckets.likelyR} hed="GOP Likely" office="President"/>
       </div>
-      Results as of <DateFormatter value={latest} />
+      Results as of <DateFormatter value={latest}/>
     </>
   }
 }
