@@ -1,5 +1,6 @@
 import { Component, h, Fragment } from "preact";
 import Scrapple from "@twilburn/scrapple";
+import "./components/ad";
 
 import BoardGovernor from "./components/boardGovernor";
 import BoardHouse from "./components/boardHouse";

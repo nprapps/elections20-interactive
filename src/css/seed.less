@@ -6,30 +6,26 @@
   padding: 0 15px;
 }
 
-.placeholder {
-  padding: 40px;
-  background: #DDD;
-  margin-bottom: 20px;
-  position: relative;
-  font-weight: bold;
-  .knockout();
-  font-size: 24px;
+.content.container {
+  display: flex;
+  justify-content: center;
 
-  &::before {
-    color: white;
-    display: block;
-    content: "PLACEHOLDER";
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    tranform-origin: center;
-    transform: translate(-50%, -50%) rotate(-20deg);
-    font-size: 150%;
-    filter: blur(2px);
+  .app {
+    flex: 0 1 1200px;
+  }
+
+  aside.sidebar {
+    flex: 0 0 340px;
+    padding: 0 20px;
+
+    @media (max-width: 1200px) {
+      display: none;
+    }
   }
 }
 
 @import "navbar";
-@import "about-box.less";
+@import "about-box";
+@import "ads";
 @import "footer";
 @import "state-results";

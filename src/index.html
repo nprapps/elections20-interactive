@@ -14,7 +14,15 @@
     <%= t.include("partials/_navbar.html") %> 
     <%= t.include("partials/_about-box.html") %> 
 
-    <main class="app constrained"></main>
+    <main class="content container">
+      <section class="app"></section>
+      <aside class="sidebar">
+        <google-ad data-size="tall"></google-ad>
+      </aside>
+    </main>
+
+
+    <google-ad data-size="wide"></google-ad>
 
     <script src="app.js" async></script>
     <%= t.include("partials/_footer.html") %>
