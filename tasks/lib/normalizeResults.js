@@ -90,6 +90,7 @@ var sortCandidates = function (votes, candidates) {
 
 var mergeOthers = function (candidates, raceID) {
   // always take the top two
+  var total = candidates.reduce((total, c) => total + c.votes, 0);
   var merged = candidates.slice(0, 2);
   var remaining = candidates.slice(2);
   var other = {
@@ -103,6 +104,11 @@ var mergeOthers = function (candidates, raceID) {
     count: remaining.length,
   };
   for (var c of remaining) {
+    // preserve candidates with >10% of the vote
+    if (c.votes / total > .1) {
+      merged.push(c);
+      continue;
+    }
     other.votes += c.votes || 0;
     other.avotes += c.avotes || 0;
     other.electoral += c.electoral || 0;
