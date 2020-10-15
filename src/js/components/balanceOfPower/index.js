@@ -7,7 +7,6 @@ export default class BalanceOfPower extends Component {
   constructor(props) {
     super();
 
-    console.log("here")
     this.isSenate = props.race == "senate";
     this.seatsNeeded = this.isSenate ? 51 : 218;
     this.onData = this.onData.bind(this);
@@ -99,7 +98,6 @@ export default class BalanceOfPower extends Component {
   getCongressBOP(data) {
     // TODO: Do we need to handle uncontested elections? Do they have winner marked?
     // Hardcoded # of seats needed for majority in Senate/house
-
     var inactiveGOP = this.isSenate ? parseInt(InactiveSenateRaces["GOP"]) : 0;
     var inactiveDem = this.isSenate ? parseInt(InactiveSenateRaces["Dem"]) : 0;
     var inactiveInd = this.isSenate
@@ -128,15 +126,17 @@ export default class BalanceOfPower extends Component {
       }
     }
 
-    // TODO: check how this is calculated/that this holds up
-    // Handle Ind?
+    // Get party with the largest gain.
+    var sorted = Object.keys(results)
+      .map(k => ({ party: k, gains: results[k].gains }))
+      .sort((a, b) => b.gains - a.gains)[0];
+
     results.netGainParty = "none";
-    if (results.GOP.gains > results.Dem.gains) {
-      results.netGainParty = "GOP";
-    } else if (results.Dem.gains > results.GOP.gains) {
-      results.netGainParty = "Dem";
+    if (sorted.gains > 0) {
+      results.netGainParty = sorted.party;
+      results.netGain = sorted.gains;
     }
-    results.netGain = Math.abs(results.GOP.gains) + Math.abs(results.Dem.gains);
+    
     results.notCalled = notCalled;
     return results;
   }
@@ -144,13 +144,13 @@ export default class BalanceOfPower extends Component {
   getParty(party) {
     if (["Dem", "GOP"].includes(party)) {
       return party;
-    } 
-    return 'Ind';
+    }
+    return "Ind";
   }
 
   getWinner(race, party) {
     // Is this the right way to determine winner?
     // Can this be replaced by a util fxn?
-    return race.candidates.filter(c => c.winner && c.winner != "N")[0];
+    return race.candidates.filter(c => c.winner == "X")[0];
   }
 }
