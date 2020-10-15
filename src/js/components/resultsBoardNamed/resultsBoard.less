@@ -11,8 +11,13 @@
 	justify-content: space-between;
 	margin-bottom: 30px;
 }
+
 .board-wrapper {
 	flex: 0 0 32%;
+
+	&.Ballot {
+		flex: 0 0 100%;
+	}
 
 	@media @wide {
 		flex: 0 0 49%;
@@ -42,10 +47,6 @@
 			}
 		}
 	}
-
-	// &.Gov, &.Ballot {
-	// 	columns: 2;
-	// }
 }
 
 .board-hed {
@@ -65,22 +66,6 @@ table.results {
 	color: #666;
 	font-size: 11px;
 	// border-collapse: collapse;
-
-	// @media @full {
-	// 	font-size: 10px;
-	// }
-	// @media @wide {
-	// 	font-size: 11px;
-	// }
-	// @media @tablet {
-	// 	font-size: 10px;
-	// }
-	// @media @mobile {
-	// 	font-size: 11px;
-	// }
-	// @media @tiny {
-	// 	font-size: 10px;
-	// }
 
 	tr {
 		display: flex;
@@ -122,22 +107,6 @@ table.results {
 	  -webkit-font-smoothing: antialiased;
 	  padding: @wide-padding;
 
-	  // @media @full {
-	  // 	padding: @thin-padding;
-	  // }
-	  // @media @wide {
-	  // 	padding: @wide-padding;
-	  // }
-	  // @media @tablet {
-	  // 	padding: @thin-padding;
-	  // }
-	  // @media @mobile {
-	  // 	padding: @wide-padding;
-	  // }
-	  // @media @tiny {
-	  // 	padding: @thin-padding;
-	  // }
-
 	  &.state-hed, &.reporting-hed, &.name-hed {
 	  	text-align: left;
 	  }
@@ -173,22 +142,6 @@ table.results {
 	td {
 		padding: @wide-padding;
 		border-bottom: @border;
-
-		// @media @full {
-	 //  	padding: @thin-padding;
-	 //  }
-	 //  @media @wide {
-	 //  	padding: @wide-padding;
-	 //  }
-	 //  @media @tablet {
-	 //  	padding: @thin-padding;
-	 //  }
-	 //  @media @mobile {
-	 //  	padding: @wide-padding;
-	 //  }
-	 //  @media @tiny {
-	 //  	padding: @thin-padding;
-	 //  }
 	}
 
 	td.state a {
@@ -248,48 +201,6 @@ table.results {
   		margin-left: 8px;
   	}
 
-  	.last {
-
-  		// max-width: 65px;
-
-  		// @media @full {
-  		// 	max-width: 55px;
-  		// }
-  		// @media @wide {
-  		// 	max-width: 65px;
-  		// }
-  		// @media @tablet {
-  		// 	max-width: 55px;
-  		// }
-  		// @media @mobile {
-  		// 	max-width: 70px;
-  		// }
-  		// @media @tiny {
-  		// 	max-width: 55px;
-  		// }
-  	}
-
-  	.perc {
-  		// float: right;
-  		// margin-left: 8px;
-
-  		// @media @full {
-  		// 	margin-left: 4px;
-  		// }
-  		// @media @wide {
-		  // 	margin-left: 8px;
-		  // }
-		  // @media @tablet {
-  		// 	margin-left: 4px;
-  		// }
-  		// @media @mobile {
-		  // 	margin-left: 8px;
-		  // }
-		  // @media @tiny {
-  		// 	margin-left: 4px;
-  		// }
-  	}
-
   	&.leading {
   		color: #666;
 	  	background: @indDim;
@@ -346,18 +257,22 @@ table.results {
   }
 }
 
-table.results.senate tr {
+
+.Senate table.results tr {
 	.state, th.state-hed {
 		flex: 0 0 46px;
 	}
 }
-
+.Ballot table.results tr {
+	.state, th.state-hed {
+		flex: 1;
+	}
+}
 table.results.president tr {
 	.state, th.state-hed {
 		flex: 0 0 53px;
 	}
 }
-
 
 
 table.results.president {
@@ -370,11 +285,11 @@ table.results.president {
 	  text-align: center;
 		color: #9a9a9a;
 
-	  // 	&.winner {
-	  // 		color: @ind;
-	  // 		font-weight: bold;
-	  // 	}
-	  // 	&.winner.Dem {
+  // 	&.winner {
+  // 		color: @ind;
+  // 		font-weight: bold;
+  // 	}
+  // 	&.winner.Dem {
 		// 	color: @dem;
 		// }
 		// &.winner.GOP {
