@@ -10,11 +10,10 @@ nav.results-nav {
   margin-bottom: 16px;
 
   .constrained {
-    padding: 0 20px;
+    padding: 8px 20px;
     display: flex;
     justify-content: flex-start;
     align-items: center;
-    height: 44px;
     flex-wrap: wrap;
     max-width: 100%;
   }
@@ -58,6 +57,7 @@ nav.results-nav {
     padding: 0;
     margin: 0;
     list-style-type: none;
+    background: white;
 
     @media @tablet {
       flex: 0 0 100%;
@@ -114,9 +114,10 @@ nav.results-nav {
   // toggle menus
   .menu-toggle {
 
-    &::after {
-      content: "⯆";
-      margin-left: 4px;
+    svg {
+      width: 1em;
+      height: 1em;
+      vertical-align: text-top;
     }
 
     // specific styles
@@ -135,6 +136,7 @@ nav.results-nav {
 
   .menu-contents {
     display: none;
+    background: white;
 
     &.show {
       display: block;
