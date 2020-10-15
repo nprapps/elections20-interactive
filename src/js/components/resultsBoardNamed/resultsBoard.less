@@ -86,29 +86,29 @@ table.results {
 		display: flex;
 
 		&.index-0 td {
-			border-top: @border;
+			border-top: 1px solid #ddd;
 		}
 
 		td {
 			overflow: hidden;
 		}
 
-		.state {
+		.state, .state-hed {
 			flex: 0 0 60px;
 		}
-		.electoral {
+		.electoral, .electoral-hed {
 			flex: 0 0 23px;
 		}
 		.open-label {
 			flex: 1;
 		}
-		.candidate {
+		.candidate, .party-hed {
 			flex: 1;
 		}
-		.reporting {
+		.reporting, .reporting-hed {
 			flex: 0 0 54px;
 		}
-		.little-label {
+		.little-label, .little-hed {
 			flex: 0 0 19px;
 		}
 	}
@@ -121,7 +121,6 @@ table.results {
 		letter-spacing: 0.05em;
 	  -webkit-font-smoothing: antialiased;
 	  padding: @wide-padding;
-	  border-bottom: 1px solid #ddd;
 
 	  // @media @full {
 	  // 	padding: @thin-padding;
@@ -146,7 +145,9 @@ table.results {
 	  	padding-left: 0;
 	  }
 	  &.electoral-hed {
-	  	text-align: right;
+	  	text-align: left;
+    	padding-left: 0;
+    	padding-right: 0;
 	  }
 	}
 
@@ -345,16 +346,18 @@ table.results {
   }
 }
 
-.senate {
-	table.results tr .state {
+table.results.senate tr {
+	.state, th.state-hed {
 		flex: 0 0 46px;
 	}
 }
-.president {
-	table.results tr .state {
+
+table.results.president tr {
+	.state, th.state-hed {
 		flex: 0 0 53px;
 	}
 }
+
 
 
 table.results.president {

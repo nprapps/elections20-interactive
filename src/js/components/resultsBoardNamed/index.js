@@ -30,10 +30,10 @@ export default function ResultsBoardNamed(props) {
 
   return (
     <>
-      <div class={"board-wrapper " + props.office}>
+      <div class={"board-wrapper "}>
         <div class="board-inner">
           <h3 class="board-hed">{props.hed}</h3>
-          <table class="named results table">
+          <table class={"named results table " + props.office}>
   {/*          <tr>
               <th class="state-hed">State</th>
               <th colspan="2" class="name-hed">Top candidates</th>

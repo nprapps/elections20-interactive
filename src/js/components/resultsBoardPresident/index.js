@@ -39,13 +39,13 @@ export default function ResultsBoardPresident(props) {
           	<tr>
               <th class="state-hed">State</th>
           		<th class="electoral-hed">E.V.</th>
-              <th>Dem.</th>
-          		<th>GOP</th>
+              <th class="party-hed">Dem.</th>
+          		<th class="party-hed">GOP</th>
               <th class="reporting-hed">% in</th>
-              <th></th>
+              <th class="little-hed"></th>
           	</tr>
 
-            {props.races.map(function(r) {
+            {props.races.map(function(r, i) {
               var hasResult = r.eevp || r.reporting || r.called || r.runoff;
               var reporting = r.eevp || r.reportingPercent;
               var percentIn = reporting ? reportingPercentage(reporting) + "% in" : "";
@@ -54,7 +54,7 @@ export default function ResultsBoardPresident(props) {
               var stateDetail = states[r.state] || {};
 
               return (
-                <tr class={hasResult ? "closed" : "open"}>
+                <tr class={(hasResult ? "closed" : "open") + " index-" + i}>
 
                   {/* State */}
                   <td class={"state " + (winner[0] ? ("winner " + winner[0].party) : "")}>
