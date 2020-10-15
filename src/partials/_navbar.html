@@ -15,7 +15,12 @@ var { nav, states } = grunt.data.json;
       <img src="./assets/logo-2020-e.svg" class="short" alt="2020 Elections" />
     </div>
 
-    <button class="menu-toggle" aria-controls="main-menu">More live results</button>
+    <button class="menu-toggle" aria-controls="main-menu">
+      More live results
+      <svg viewBox="0 0 5 5" preserveAspectRatio="none" aria-hidden="true">
+        <path fill="currentColor" d="M1,1.5 L4,1.5 L2.5,4 Z" />
+      </svg>
+    </button>
 
     <ul class="menu-contents" id="main-menu">
 
@@ -27,7 +32,12 @@ var { nav, states } = grunt.data.json;
       <li> <a href="#/ballots">Ballot</a> </li>
 
       <li class="state-nav">
-        <button class="menu-toggle" aria-controls="states-menu">State results</button>
+        <button class="menu-toggle" aria-controls="states-menu">
+          State results
+          <svg viewBox="0 0 5 5" preserveAspectRatio="none" aria-hidden="true">
+            <path fill="currentColor" d="M1,1.5 L4,1.5 L2.5,4 Z" />
+          </svg>
+        </button>
 
         <ul class="states menu-contents" id="states-menu">
           <% for (var state of Object.keys(states)) {%>
