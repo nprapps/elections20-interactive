@@ -12,8 +12,8 @@ export class CountyDataViz extends Component {
     this.charts = [
       { key: "unemployment", header: "unemployment" },
       { key: "percent_white", header: "% White" },
-      { key: "percent_black", header: "% Black" },
-      { key: "population", header: "population" },
+      // { key: "percent_black", header: "% Black" },
+      // { key: "population", header: "population" },
       { key: "median_income", header: "median income" },
       { key: "percent_bachelors", header: "% Graduate Degree" },
     ];
@@ -62,8 +62,8 @@ export class CountyDataViz extends Component {
   }
 
   getCleanedData(data, order) {
-    var lead = order[0];
-    var second = order[1];
+    var lead = order[0].party;
+    var second = order[1].party;
 
     // TODO: is this the right cutoff?
     var resultsIn = data.filter(d => d.reportingPercent >= 1);

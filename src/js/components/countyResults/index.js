@@ -46,10 +46,11 @@ export default class CountyResults extends Component {
     }
 
     var dataViz;
-    if (!this.props.isSpecial)
+    if (!this.props.isSpecial) {
       dataViz = (
         <CountyDataViz data={this.state.data} order={this.props.order} />
       );
+    }
 
     return (
       <div class="results-elements">

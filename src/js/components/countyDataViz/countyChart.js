@@ -87,11 +87,9 @@ export class CountyChart extends Component {
     }
     // TODO: Move this elsewhere?
     var width = this.state.dimensions.width;
-    var aspectWidth = 12;
-    var aspectHeight = 9;
     this.chartWidth = width - this.margins.left - this.margins.right;
     this.chartHeight =
-      Math.ceil((width * aspectHeight) / aspectWidth) -
+      width -
       this.margins.top -
       this.margins.bottom;
 
@@ -165,7 +163,7 @@ export class CountyChart extends Component {
     const [xStart, xEnd] = this.xScale.range();
     const [yStart, yEnd] = this.yScale.range();
     const ticksY = this.yScale.ticks();
-    const [orderLeft, orderRight] = this.props.order;
+    const [orderMore, orderLess] = this.props.order;
 
     return (
       <>
@@ -190,12 +188,12 @@ export class CountyChart extends Component {
           class="x axis-label"
           text-anchor="start"
           x={xStart}
-          y={yStart + 15}>{`← More ${this.props.order[1]}`}</text>
+          y={yStart + 15}>{`← More ${orderLess.party}`}</text>
         <text
           class="x axis-label"
           text-anchor="end"
           x={xEnd}
-          y={yStart + 15}>{`More ${this.props.order[0]} →`}</text>
+          y={yStart + 15}>{`More ${orderMore.party} →`}</text>
       </>
     );
   }
