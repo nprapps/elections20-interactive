@@ -64,7 +64,7 @@ table.results {
 	font-family: 'Gotham SSm', Helvetica, Arial, sans-serif;
 	color: #666;
 	font-size: 11px;
-	border-collapse: collapse;
+	// border-collapse: collapse;
 
 	// @media @full {
 	// 	font-size: 10px;
@@ -81,6 +81,37 @@ table.results {
 	// @media @tiny {
 	// 	font-size: 10px;
 	// }
+
+	tr {
+		display: flex;
+
+		&.index-0 td {
+			border-top: @border;
+		}
+
+		td {
+			overflow: hidden;
+		}
+
+		.state {
+			flex: 0 0 60px;
+		}
+		.electoral {
+			flex: 0 0 23px;
+		}
+		.open-label {
+			flex: 1;
+		}
+		.candidate {
+			flex: 1;
+		}
+		.reporting {
+			flex: 0 0 54px;
+		}
+		.little-label {
+			flex: 0 0 19px;
+		}
+	}
 
 	th {
 		font-size: 11px;
@@ -124,6 +155,8 @@ table.results {
 		font-style: italic;
 		font-size: 9px;
 		color: #9a9a9a;
+		padding-top: 5px;
+		// border-left: @border;
 	}
 
 	tr.open {
@@ -138,9 +171,7 @@ table.results {
 
 	td {
 		padding: @wide-padding;
-		border: @border;
-		border-right: 0;
-		border-left: 0;
+		border-bottom: @border;
 
 		// @media @full {
 	 //  	padding: @thin-padding;
@@ -167,8 +198,7 @@ table.results {
 	td.state {
 		padding-left: 0;
 		text-decoration: none;
-		border-left: 0;
-		border-right: @border;
+		// border-right: @border;
 		color: #444;
 
 		&:hover {
@@ -187,41 +217,38 @@ table.results {
 		// }
 	}
 	td.reporting {
-		// padding-right: 0;
 		font-size: 9px;
 		font-style: italic;
 		color: #9a9a9a;
-		width: 54px;
+		padding-top: 5px;
 	}
   td.candidate {
   	background: @background;
-  	border: 1px solid white;
+  	border-bottom: 1px solid white;
+  	border-right: 1px solid white;
+  	display: flex;
   	// color: @ind;
 
-  	.perc {
-  		float: right;
-  		margin-left: 8px;
-
-  		// @media @full {
-  		// 	margin-left: 4px;
-  		// }
-  		// @media @wide {
-		  // 	margin-left: 8px;
-		  // }
-		  // @media @tablet {
-  		// 	margin-left: 4px;
-  		// }
-  		// @media @mobile {
-		  // 	margin-left: 8px;
-		  // }
-		  // @media @tiny {
-  		// 	margin-left: 4px;
-  		// }
-  	}
-  	.last {
+  	.name {
+  		flex: 1;
   		text-overflow: ellipsis;
   		overflow: hidden;
   		white-space: nowrap;
+  	}
+  	.incumbent {
+  		margin-left: 4px;
+
+  		&.hide {
+  			display: none;
+  		}
+  	}
+  	.perc {
+  		flex: 0 0 25px;
+  		margin-left: 8px;
+  	}
+
+  	.last {
+
   		// max-width: 65px;
 
   		// @media @full {
@@ -240,16 +267,28 @@ table.results {
   		// 	max-width: 55px;
   		// }
   	}
-  	.incumbent {
-  		margin-left: 3px;
+
+  	.perc {
+  		// float: right;
+  		// margin-left: 8px;
+
+  		// @media @full {
+  		// 	margin-left: 4px;
+  		// }
+  		// @media @wide {
+		  // 	margin-left: 8px;
+		  // }
+		  // @media @tablet {
+  		// 	margin-left: 4px;
+  		// }
+  		// @media @mobile {
+		  // 	margin-left: 8px;
+		  // }
+		  // @media @tiny {
+  		// 	margin-left: 4px;
+  		// }
   	}
-  	.last, .incumbent {
-  		display: inline-block;
-  		vertical-align: top;
-  	}
-  	.perc, .name {
-			display: inline-block;
-		}
+
   	&.leading {
   		color: #666;
 	  	background: @indDim;
@@ -289,6 +328,10 @@ table.results {
   	text-transform: uppercase;
   	font-weight: bold;
   	width: 28px;
+  	padding-left: 0;
+  	padding-right: 0;
+  	padding-top: 6px;
+  	// border: 0;
 
   	.flip-label {
       color: @ind;
@@ -302,24 +345,33 @@ table.results {
   }
 }
 
+.senate {
+	table.results tr .state {
+		flex: 0 0 46px;
+	}
+}
+.president {
+	table.results tr .state {
+		flex: 0 0 53px;
+	}
+}
+
+
 table.results.president {
 	td {
 		text-align: left;
 	}
-	td.state {
-		// font-weight: bold;
-		border-right: 0;
-	}
-	 td.electoral {
-    border-right: @border;
-    text-align: right;
+  td.electoral {
+	  // border-right: @border;
+	  padding-left: 0;
+	  text-align: center;
 		color: #9a9a9a;
 
-  // 	&.winner {
-  // 		color: @ind;
-  // 		font-weight: bold;
-  // 	}
-  // 	&.winner.Dem {
+	  // 	&.winner {
+	  // 		color: @ind;
+	  // 		font-weight: bold;
+	  // 	}
+	  // 	&.winner.Dem {
 		// 	color: @dem;
 		// }
 		// &.winner.GOP {
@@ -331,8 +383,7 @@ table.results.president {
 		color: #666;
 
 		.perc {
-			float: none;
-			margin-left: 0;
+			margin: auto;
 		}
 	}
 }

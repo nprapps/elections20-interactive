@@ -17,10 +17,8 @@ function CandidateCells(race) {
 
     return (
       <td class={className.join(" ")}>
-        <div class="name">
-          <div class="last">{c.last}</div> 
-          <div class="incumbent">{c.incumbent ? <span>●</span> : ""}</div>
-        </div> 
+        <div class="name">{c.last}</div>
+        <div class={"incumbent" + (c.incumbent ? "" : " hide")}>{c.incumbent ? <span>●</span> : ""}</div>
         <div class="perc">{Math.round(c.percent*100)}%</div> 
       </td>
     );
@@ -43,7 +41,7 @@ export default function ResultsBoardNamed(props) {
               <th></th>
             </tr>*/}
 
-            {props.races.map(function(r) {
+            {props.races.map(function(r,i) {
               var hasResult = r.eevp || r.reporting || r.called || r.runoff;
               var reporting = r.eevp || r.reportingPercent;
               var percentIn = reporting ? reportingPercentage(reporting) + "% in" : "";
@@ -54,7 +52,7 @@ export default function ResultsBoardNamed(props) {
               var ballotLabel = r.office == "I" ? " " + r.seat : "";
 
               return (
-                <tr class={hasResult ? "closed" : "open"}>
+                <tr class={"tr " + (hasResult ? "closed" : "open") + " index-" + i}>
 
                   {/* State */}
                   <td class={"state " + (winner[0] ? ("winner " + winner[0].party) : "")}>
@@ -70,7 +68,7 @@ export default function ResultsBoardNamed(props) {
                   {CandidateCells(r)}
 
                   {/* EEVP */}
-                  <td class="reporting">{percentIn}</td>
+                  <td class={"reporting"}>{percentIn}</td>
 
                   {/* Runoff or Flip */}
                   <td class={"little-label " + (flipped ? winner[0].party : "")}>
