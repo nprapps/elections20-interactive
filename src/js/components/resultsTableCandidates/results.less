@@ -1,5 +1,16 @@
 @import "../../../css/values";
 
+.results-no-counties {
+  .results-table.statewide {
+    width: 100%;
+    display: inline-block;
+    max-width: none;
+    @media (min-width: 1100px) {
+      width: 50%;
+    }
+  }
+}
+
 .results-table.statewide {
   display: block;
   @mug-size: 4em;
@@ -8,7 +19,8 @@
   .gotham();
   font-size: var(--font-size);
   position: relative;
-  width: 50%;
+  width: 80%;
+  max-width: 650px;
   padding-right: 20px;
 
   @media @mobile {
@@ -151,7 +163,8 @@
             background: var(--ind);
           }
 
-          &.GOP, &.No {
+          &.GOP,
+          &.No {
             background: var(--gop-fade);
           }
 
@@ -164,7 +177,8 @@
           }
         }
 
-        &.GOP, &.No {
+        &.GOP,
+        &.No {
           .bar {
             background: var(--gop);
           }

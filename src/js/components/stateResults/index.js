@@ -89,7 +89,7 @@ export default class StateResults extends Component {
 
         <aside class="sidebar">
           <google-ad data-size="tall"></google-ad>
-        </aside>  
+        </aside>
       </div>
     );
   }
@@ -100,7 +100,7 @@ export default class StateResults extends Component {
     } else if (view === "H" || view === "I") {
       var races = this.state.races.filter(r => r.office == view);
       return (
-        <div class="results-house">
+        <div class="results-no-counties">
           <div class="results-wrapper">
             {races.map(race => (
               <ResultsTableCandidates data={race} class="house-race" />
@@ -118,6 +118,14 @@ export default class StateResults extends Component {
     var order = race.candidates;
     var isSpecial = !!race.seat;
 
+    var seatLabel =
+      (race.office == "H" || race.office == "S") &&
+      race.seatNumber &&
+      race.description &&
+      !race.description.includes("at large")
+        ? " " + race.seatNumber
+        : "";
+
     var countyResults;
     if (!STATES_WITHOUT_COUNTY_INFO.includes(this.props.state)) {
       countyResults = (
@@ -129,8 +137,15 @@ export default class StateResults extends Component {
         />
       );
     }
+
+    var specialHeader = isSpecial ? (
+      <h3 id="">{stateLookup[this.props.state].name + seatLabel}</h3>
+    ) : (
+      ""
+    );
     return (
       <>
+        {specialHeader}
         <ResultsTableCandidates data={race} />
         {countyResults}
       </>
