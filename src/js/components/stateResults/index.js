@@ -7,6 +7,7 @@ import ResultsTableCandidates from "../resultsTableCandidates";
 import CountyResults from "../countyResults";
 import TestBanner from "../testBanner";
 import DateFormatter from "../dateFormatter";
+import "./state-results.less";
 
 import stateLookup from "states.sheet.json";
 import strings from "strings.sheet.json";
@@ -68,22 +69,27 @@ export default class StateResults extends Component {
 
     return (
       <div
-        class="results"
-        id="state-results"
+        class="state-results results"
         onupdatedtime={e => this.updateTimestamp(e.detail, e)}>
-        <header id="state-header">
-          <h1>
-            <img
-              class="icon"
-              src={"./assets/states/" + this.props.state + ".svg"}></img>
-            <span class="state-name">{stateName}</span>
-            {viewTitle}
-          </h1>
-          {this.renderTabSwitcher(office)}
-        </header>
-        {test ? <TestBanner /> : ""}
-        <div class="results-elements">{this.renderResults(office)}</div>
-        Results as of <DateFormatter value={latest} />
+        <div class="content">
+          <header id="state-header">
+            <h1>
+              <img
+                class="icon"
+                src={"./assets/states/" + this.props.state + ".svg"}></img>
+              <span class="state-name">{stateName}</span>
+              {viewTitle}
+            </h1>
+            {this.renderTabSwitcher(office)}
+          </header>
+          {test ? <TestBanner /> : ""}
+          <div class="results-elements">{this.renderResults(office)}</div>
+          Results as of <DateFormatter value={latest} />
+        </div>
+
+        <aside class="sidebar">
+          <google-ad data-size="tall"></google-ad>
+        </aside>  
       </div>
     );
   }
