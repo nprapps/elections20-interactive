@@ -2,6 +2,7 @@ import { h, Component, Fragment } from "preact";
 import gopher from "../gopher.js";
 import Results from "../resultsBoardNamed";
 import states from "states.sheet.json";
+import gov from "governors.sheet.json";
 import TestBanner from "../testBanner";
 import DateFormatter from "../dateFormatter";
 
@@ -39,11 +40,31 @@ export default class BoardGovernor extends Component {
 
     var sorted = races.sort((a,b) => a.name > b.name ? 1 : a.name < b.name ? -1 : 0);
 
+    var buckets = {
+      likelyD: [],
+      tossup: [],
+      likelyR: []
+    };
+
+    sorted.forEach(function(r) {
+      var rating = gov[r.id].rating;
+
+      if (rating == "solid-d" || rating == "likely-d") {
+        buckets.likelyD.push(r);
+      } else if (rating == "lean-d" || rating == "toss-up" || rating == "lean-r") {
+        buckets.tossup.push(r);
+      } else if (rating == "solid-r" || rating == "likely-r") {
+        buckets.likelyR.push(r);
+      }
+    });
+
     return <>
       <h1>Governor</h1>
       { test ? <TestBanner /> : "" }
       <div class="board-container">
-        <Results races={sorted} office="Gov"/>
+        <Results races={buckets.likelyD} hed="Dem. Solid/Likely" office="Gov"/>
+        <Results races={buckets.tossup} hed="Lean/Tossup" office="Gov"/>
+        <Results races={buckets.likelyR} hed="GOP Solid/Likely" office="Gov"/>
       </div>
       Results as of <DateFormatter value={latest} />
     </>;
