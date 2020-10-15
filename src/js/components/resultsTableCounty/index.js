@@ -80,11 +80,8 @@ export default class ResultsTableCounty extends Component {
   render() {
     var sortedData = this.sortCountyResults();
 
-    // Order by party
-    const orderedCandidates = this.props.data[0].candidates
-      .slice(0, 3)
-      .sort((a, b) => sortByOrder(a.last, b.last, this.props.sortOrder));
-      console.log(orderedCandidates)
+    // Order by lead in overall state race
+    const orderedCandidates = this.props.sortOrder;
     return (
       <div
         class={
@@ -178,7 +175,7 @@ function ResultsRowCounty(props) {
   var orderedCandidates = candidates.map(function (header) {
     var [match] = row.candidates.filter(c => header.id == c.id);
     return match || {};
-  });
+  });;
 
   var metricValue = row.county[metric.key];
 
@@ -219,7 +216,6 @@ function CandidateHeaderCell(candidate) {
  * Creates a candidate vote % cell. Colors with candidate party if candidate is leading.
  */
 function CandidatePercentCell(candidate, leading) {
-  // TODO: add in independent class
   var displayPercent = (candidate.percent * 100).toFixed(1);
   return (
     <td

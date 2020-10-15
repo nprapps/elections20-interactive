@@ -70,9 +70,19 @@ table.results-table {
         color: var(--gop);
       }
       &.Other {
-        color: var(--ind);
+        color: @gray;
       }
     }
+    &.precincts {
+          border-left: none;
+          border-right: 1px solid #ccc;
+          color: @gray-light;
+          font-size: 10px;
+          font-style: italic;
+          text-align: right;
+          white-space: nowrap;
+          width: 10%;
+        }
   }
 
   tfoot td {
@@ -95,16 +105,13 @@ table.results-table {
 
   .winner {
     color: #fff;
-    background-color: #f1f1f1;
+    background-color: @gray;
 
     &.Dem {
       background-color: var(--dem);
     }
     &.GOP {
       background-color: var(--gop);
-    }
-    &.Other {
-      background-color: var(--ind);
     }
 
     .icon {

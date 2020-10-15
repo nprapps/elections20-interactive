@@ -115,7 +115,7 @@ export default class StateResults extends Component {
   }
 
   getRaceWithCountyResults(race) {
-    var order = race.candidates.map(c => c.last);
+    var order = race.candidates;
     var isSpecial = !!race.seat;
 
     var countyResults;

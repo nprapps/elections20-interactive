@@ -81,7 +81,7 @@ export default class CountyMap extends Component {
           </svg>
           <div class="key" data-as="key">
             <div class="key-grid">
-              {this.props.data[0].candidates.map(candidate =>
+              {this.props.sortOrder.map(candidate =>
                 this.createLegend(candidate)
               )}
             </div>
@@ -224,6 +224,7 @@ export default class CountyMap extends Component {
   }
 
   onClick(e) {
+    return;
     var county = e.target;
     var fips = county.id.replace("fips-", "");
 
