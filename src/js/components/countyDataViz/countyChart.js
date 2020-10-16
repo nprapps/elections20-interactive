@@ -86,15 +86,19 @@ export class CountyChart extends Component {
     if (!this.state.dimensions) {
       return "";
     }
-    
+
     var width = this.state.dimensions.width;
 
     return (
       <svg width={width} height="40" viewBox={`0 0 ${width} 40`}>
-        <line class="trend-line" x1="30" x2={width} y1="10" y2="10" preserveAspectRatio="xMaxYMid meet"></line>
-        <circle cx={30 + (width-30) * this.props.corr}
-                cy="10"
-                r="5"></circle>
+        <line
+          class="trend-line"
+          x1="30"
+          x2={width}
+          y1="10"
+          y2="10"
+          preserveAspectRatio="xMaxYMid meet"></line>
+        <circle cx={30 + (width - 30) * this.props.corr} cy="10" r="5"></circle>
         <text class="axis-label" text-anchor="start" x="30" y="30">
           ← Weaker
         </text>
@@ -127,8 +131,8 @@ export class CountyChart extends Component {
         return d[v];
       })
     );
-    maxY = Math.ceil(maxY / 10) * 10;
-    minY = Math.floor(minY / 10) * 10;
+    maxY = Math.ceil(maxY);
+    minY = Math.floor(minY);
     this.xScale = scaleFactory([0, 100], [0, this.chartWidth]);
     this.yScale = scaleFactory([minY, maxY], [this.chartHeight, 0]);
 
@@ -160,11 +164,12 @@ export class CountyChart extends Component {
     var data = this.props.data.filter(d => d.fips == e.target.dataset.fips)[0];
 
     // TODO: make the formmaters handle the correct var
-    var displayVar = parseFloat(data[this.props.variable]).toFixed(1);
+    var displayVar = parseFloat(data[this.props.variable]);
     tooltip.innerHTML = `
         <div class="name">${data.countyName}</div>
-        <div class="pop">Pop. ${comma(data.population)}</div>
-        <div class="reporting">${displayVar} ${this.props.title}</div>`;
+        <div class="reporting">${this.props.title}: ${
+      this.props.formatter ? this.props.formatter(displayVar) : displayVar
+    }</div>`;
 
     var bounds = this.svgRef.current.getBoundingClientRect();
     var x = e.clientX - bounds.left;

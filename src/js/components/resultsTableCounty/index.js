@@ -2,55 +2,11 @@ import { h, Fragment, Component, createRef } from "preact";
 import "./resultsTableCounty.less";
 import {
   reportingPercentage,
-  formatters,
   sortByOrder,
+  formatters,
+  availableMetrics,
 } from "../util.js";
-var { chain, comma, percent, dollars } = formatters;
-
-const availableMetrics = {
-  population: {
-    name: "Population",
-    census: true,
-    format: comma,
-  },
-  past_margin: {
-    name: "2016 Presidential Margin",
-  },
-  unemployment: {
-    name: "Unemployment",
-    format: percent,
-  },
-  percent_white: {
-    name: "% White",
-    census: true,
-    format: percent,
-  },
-  percent_black: {
-    name: "% Black",
-    census: true,
-    format: percent,
-  },
-  percent_hispanic: {
-    name: "% Hispanic",
-    census: true,
-    format: percent,
-  },
-  median_income: {
-    name: "Median Income",
-    census: true,
-    format: chain(comma, dollars),
-  },
-  percent_bachelors: {
-    name: "% College-Educated",
-    census: true,
-    format: percent,
-  },
-  countyName: {
-    name: "County",
-    alpha: true,
-  },
-};
-for (var k in availableMetrics) availableMetrics[k].key = k;
+var { percentDecimal } = formatters;
 
 export default class ResultsTableCounty extends Component {
   constructor(props) {
@@ -87,6 +43,7 @@ export default class ResultsTableCounty extends Component {
         class={
           "results-counties " + this.state.sortMetric.key.split("_").join("-")
         }>
+        {this.getSorter()}
         <table class={`results-table candidates-${orderedCandidates.length}`}>
           <thead ref={this.tableRef}>
             <tr>
@@ -97,9 +54,12 @@ export default class ResultsTableCounty extends Component {
                   <span>County</span>
                 </div>
               </th>
-              <th class="amt precincts">
+              <th
+                class="amt precincts"
+                onclick={() => this.updateSort("countyName")}>
                 <div>
                   <span></span>
+                  {this.getIcon("countyName")}
                 </div>
               </th>
               {orderedCandidates.map(cand => CandidateHeaderCell(cand))}
@@ -113,6 +73,7 @@ export default class ResultsTableCounty extends Component {
                 onclick={() => this.updateSort(this.state.displayedMetric.key)}>
                 <div>
                   <span>{this.state.displayedMetric.name}</span>
+                  {this.getIcon(this.state.displayedMetric.key)}
                 </div>
               </th>
             </tr>
@@ -139,13 +100,69 @@ export default class ResultsTableCounty extends Component {
     );
   }
 
-  updateSort(metricName) {
+  updateSort(metricName, opt_newMetric = false) {
     var sortMetric = availableMetrics[metricName];
     var order = sortMetric.alpha ? -1 : 1;
     if (sortMetric == this.state.sortMetric) {
       order = this.state.order * -1;
     }
-    this.setState({ sortMetric, order });
+    var state = { sortMetric, order };
+    if (opt_newMetric) state.displayedMetric = availableMetrics[metricName];
+    this.setState(state);
+  }
+
+  getIcon(metric) {
+    var svg;
+    if (metric == this.state.sortMetric.key) {
+      if (this.state.order < 0) {
+        svg = (
+          <svg
+            aria-hidden="true"
+            role="img"
+            xmlns="http://www.w3.org/2000/svg"
+            width="10"
+            height="16"
+            viewBox="0 0 320 512">
+            <path
+              fill="#999"
+              d="M279 224H41c-21.4 0-32.1-25.9-17-41L143 64c9.4-9.4 24.6-9.4 33.9 0l119 119c15.2 15.1 4.5 41-16.9 41z"
+              class=""></path>
+          </svg>
+        );
+      } else {
+        svg = (
+          <svg
+            aria-hidden="true"
+            role="img"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 320 512"
+            width="10"
+            height="16">
+            <path
+              fill="#999"
+              d="M41 288h238c21.4 0 32.1 25.9 17 41L177 448c-9.4 9.4-24.6 9.4-33.9 0L24 329c-15.1-15.1-4.4-41 17-41z"
+              class=""></path>
+          </svg>
+        );
+      }
+    } else {
+      svg = (
+        <svg
+          aria-hidden="true"
+          role="img"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 320 512"
+          width="10"
+          height="16"
+          class="">
+          <path
+            fill="#ccc"
+            d="M41 288h238c21.4 0 32.1 25.9 17 41L177 448c-9.4 9.4-24.6 9.4-33.9 0L24 329c-15.1-15.1-4.4-41 17-41zm255-105L177 64c-9.4-9.4-24.6-9.4-33.9 0L24 183c-15.1 15.1-4.4 41 17 41h238c21.4 0 32.1-25.9 17-41z"
+            class=""></path>
+        </svg>
+      );
+    }
+    return <span>{svg}</span>;
   }
 
   sortCountyResults() {
@@ -165,6 +182,32 @@ export default class ResultsTableCounty extends Component {
     });
     return data;
   }
+
+  getSorter() {
+    return (
+      <ul class="sorter">
+        <li class="label">Sort Counties By</li>
+        {Object.keys(availableMetrics).map(m =>
+          this.getSorterLi(availableMetrics[m])
+        )}
+      </ul>
+    );
+  }
+
+  getSorterLi(metric) {
+    if (metric.hideFromToggle) {
+      return;
+    }
+    var selected = metric == this.state.displayedMetric ? "selected" : "";
+    return (
+      <li
+        class={`sortButton ${selected}`}
+        onclick={() => this.updateSort(metric.key, true)}>
+        <span class="metric">{metric.name}</span>
+        {metric.last ? "" : <span class="pipe"> | </span>}
+      </li>
+    );
+  }
 }
 
 function ResultsRowCounty(props) {
@@ -175,7 +218,7 @@ function ResultsRowCounty(props) {
   var orderedCandidates = candidates.map(function (header) {
     var [match] = row.candidates.filter(c => header.id == c.id);
     return match || {};
-  });;
+  });
 
   var metricValue = row.county[metric.key];
 
@@ -216,12 +259,12 @@ function CandidateHeaderCell(candidate) {
  * Creates a candidate vote % cell. Colors with candidate party if candidate is leading.
  */
 function CandidatePercentCell(candidate, leading) {
-  var displayPercent = (candidate.percent * 100).toFixed(1);
+  var displayPercent = percentDecimal(candidate.percent);
   return (
     <td
       class={`vote ${candidate.party} ${leading ? "winner" : ""}`}
       key={candidate.id}>
-      {`${displayPercent}%`}
+      {`${displayPercent}`}
     </td>
   );
 }

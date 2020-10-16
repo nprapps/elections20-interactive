@@ -2,6 +2,7 @@ import { h, Component, createRef } from "preact";
 import gopher from "../gopher.js";
 
 import { CountyChart } from "./countyChart.js";
+import { availableMetrics } from "../util.js";
 // import "./countyDataViz.less";
 
 export class CountyDataViz extends Component {
@@ -9,28 +10,23 @@ export class CountyDataViz extends Component {
     super();
 
     this.ommittedCounties = 0;
-    this.charts = [
-      { key: "unemployment", header: "unemployment" },
-      { key: "percent_white", header: "% White" },
-      { key: "percent_black", header: "% Black" },
-      { key: "population", header: "population" },
-      { key: "median_income", header: "median income" },
-      { key: "percent_bachelors", header: "% Graduate Degree" },
-    ];
   }
 
   // Lifecycle: Called whenever our component is created
   async componentDidMount() {
     var cleanedData = this.getCleanedData(this.props.data, this.props.order);
 
-    for (var c in this.charts) {
-      this.charts[c].corr = this.getCorrs(this.charts[c].key, cleanedData);
+    var charts = [];
+    for (var m of Object.keys(availableMetrics)) {
+      var metric = availableMetrics[m];
+      metric.corr = this.getCorrs(metric.key, cleanedData);
+      charts.push(metric);
     }
 
     if (cleanedData.length >= 10) {
       this.setState({
         cleanedData,
-        charts: this.charts.sort((a, b) => b.corr - a.corr).slice(0, 4),
+        charts: charts.sort((a, b) => b.corr - a.corr).slice(0, 4),
       });
     }
   }
@@ -58,8 +54,9 @@ export class CountyDataViz extends Component {
               data={this.state.cleanedData}
               variable={c.key}
               order={this.props.order}
-              title={c.header}
+              title={c.name}
               corr={c.corr}
+              formatter={c.format}
             />
           </div>
         ))}

@@ -39,15 +39,28 @@ table.results-table {
     text-transform: uppercase;
     vertical-align: bottom;
     -webkit-font-smoothing: antialiased;
-  }
-  thead th,
-  tbody th {
-    border-bottom: 2px solid #eee;
+
+    span {
+      vertical-align: middle;
+    }
+    span:nth-child(2) {
+      float: right;
+    }
   }
 
   td {
     padding: 10px;
     border-bottom: 1px solid #eee;
+    border-right: 1px solid #eee;
+    &:last-child,
+    &:first-child {
+      border-right: none;
+    }
+  }
+
+  thead th,
+  tbody th {
+    border-bottom: 2px solid #eee;
   }
 
   th,
@@ -74,15 +87,15 @@ table.results-table {
       }
     }
     &.precincts {
-          border-left: none;
-          border-right: 1px solid #ccc;
-          color: @gray-light;
-          font-size: 10px;
-          font-style: italic;
-          text-align: right;
-          white-space: nowrap;
-          width: 10%;
-        }
+      border-left: none;
+      border-right: 1px solid #ccc;
+      color: @gray-light;
+      font-size: 10px;
+      font-style: italic;
+      text-align: right;
+      white-space: nowrap;
+      width: 10%;
+    }
   }
 
   tfoot td {
@@ -143,16 +156,79 @@ tbody.collapsed :nth-child(n + 11) {
   display: none;
 }
 
-.results-counties button {
-  background-color: #fff;
-  border: none;
-  box-shadow: none;
-  box-sizing: border-box;
-  color: #4774cc;
-  display: block;
-  font-weight: bold;
-  margin-top: 0;
-  margin-bottom: 22px;
-  padding: 10px;
-  text-transform: uppercase;
+.results-counties {
+  button {
+    background-color: #fff;
+    border: none;
+    box-shadow: none;
+    box-sizing: border-box;
+    color: #4774cc;
+    display: block;
+    font-weight: bold;
+    margin-top: 0;
+    margin-bottom: 22px;
+    padding: 10px;
+    text-transform: uppercase;
+  }
+
+  .sorter {
+    font-family: @gotham;
+    font-size: 12px;
+    list-style-type: none;
+    margin: 0 0 25px 0;
+    padding: 0;
+
+    // @media screen and (max-width: @screen-xs) { text-align: center; }
+
+    > li {
+      color: @gray-medium;
+      white-space: nowrap;
+      line-height: 25px;
+      display: inline-block;
+      margin: 0 2px 0 0;
+
+      &.label {
+        display: block;
+        font-size: 11px;
+        font-family: @knockout;
+        font-weight: normal;
+        text-transform: uppercase;
+        padding-top: 0;
+        line-height: 1.2;
+        letter-spacing: 0.05em;
+        -webkit-font-smoothing: antialiased;
+        margin-bottom: 6px;
+      }
+
+      &.sortButton {
+        .metric {
+          color: @link-color;
+          padding: 0 5px;
+
+          &:hover {
+            color: @link-hover-color;
+            cursor: pointer;
+          }
+        }
+        .pipe {
+          color: @gray-medium;
+        }
+
+        &.selected {
+          .metric {
+            color: @gray-dark;
+            font-weight: bold;
+
+            &:hover {
+              color: @gray-dark;
+            }
+          }
+        }
+
+        &:nth-child(2) .metric {
+          padding-left: 0;
+        }
+      }
+    }
+  }
 }

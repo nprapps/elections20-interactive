@@ -16,12 +16,14 @@ export function reportingPercentage(pct) {
 */
 
 export function sortByParty(a, b) {
-  var getPartyValue = (c) =>
+  var getPartyValue = c =>
     c.party == "GOP" || c.party == "No"
       ? Infinity
       : c.party == "Dem" || c.party == "Yes"
       ? -Infinity
-      : c.party ? c.party.charCodeAt(0) : 0;
+      : c.party
+      ? c.party.charCodeAt(0)
+      : 0;
 
   return getPartyValue(a) - getPartyValue(b);
 }
@@ -31,12 +33,12 @@ export function sortByParty(a, b) {
 */
 
 export function sortByOrder(a, b, order) {
-  var getPartyValue = (c) => {
+  var getPartyValue = c => {
     if (!order.includes(c)) {
-      return Infinity
+      return Infinity;
     }
-    return order.indexOf(c)
-  }
+    return order.indexOf(c);
+  };
 
   return getPartyValue(a) - getPartyValue(b);
 }
@@ -46,11 +48,56 @@ export function sortByOrder(a, b, order) {
   Use `chain(a, b, c)` to combine formatters as `c(b(a(value)))`
 */
 export var formatters = {
-  titleCase: (v) => v.replace(/(\b\w)/g, (s) => s.toUpperCase()),
-  percent: (v) => Math.round(v * 100) + "%",
-  comma: (v) => (v * 1).toLocaleString(),
-  dollars: (v) => "$" + v,
+  titleCase: v => v.replace(/(\b\w)/g, s => s.toUpperCase()),
+  percent: v => Math.round(v * 100) + "%",
+  comma: v => (v * 1).toLocaleString(),
+  dollars: v => "$" + v,
   chain: function (formats) {
-    return (value) => formats.reduce((v, fn) => fn(v), value);
-  }
+    return value => formats.reduce((v, fn) => fn(v), value);
+  },
+  percentDecimal: v => (v * 100).toFixed(1) + "%",
 };
+
+const availableMetrics = {
+  population: {
+    name: "Population",
+    format: formatters.comma,
+  },
+  // past_margin: {
+  //   name: "2016 Presidential Margin",
+  // },
+  unemployment: {
+    name: "Unemployment",
+    format: formatters.percentDecimal,
+  },
+  percent_white: {
+    name: "% White",
+    format: formatters.percentDecimal,
+  },
+  percent_black: {
+    name: "% Black",
+    format: formatters.percentDecimal,
+  },
+  percent_hispanic: {
+    name: "% Hispanic",
+    format: formatters.percentDecimal,
+  },
+  median_income: {
+    name: "Median Income",
+    format: formatters.chain([formatters.comma, formatters.dollars]),
+  },
+  percent_bachelors: {
+    name: "% College-Educated",
+    format: formatters.percent,
+    last: true,
+  },
+  countyName: {
+    name: "County",
+    alpha: true,
+    hideFromToggle: true,
+  },
+};
+
+for (var k in availableMetrics) availableMetrics[k].key = k;
+
+export { availableMetrics };
