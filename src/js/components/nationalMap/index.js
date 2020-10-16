@@ -23,19 +23,47 @@ export default class NationalMap extends Component {
     // stop when not renderable
   }
 
+  shouldComponentUpdate(props) {
+    this.paint(props);
+  }
+
   render() {
     return (
-      <div ref={this.svgRef}></div>
+      <div class="map">
+        <div ref={this.svgRef}></div>
+      </div>
     );
   }
 
   async loadSVG(svgText) {
     this.svgRef.current.innerHTML = svgText;
-    var svg = this.svgRef.current.getElementsByTagName("svg")[0];
-    return svg;
+    this.paint(this.props);
   }
 
-  
-  
+  paint(props) {
+    var mapData = props.races;
+    if (!this.svgRef.current) return;
+    var svg = this.svgRef.current.querySelector("svg");
 
+    mapData.forEach(function(r) {
+      console.log(r)
+      var eevp = r.eevp;
+      var state = r.state.toLowerCase();
+      var leader = r.candidates[0].party;
+      var winner = r.winnerParty;
+      var path = svg.querySelector(`.${state}`);
+      if (!path) return;
+
+      if (eevp > 0.5) {
+        path.classList.add("leader");
+        path.classList.add(leader);
+      }
+      if (winner) {
+        path.classList.remove("leader");
+        path.classList.remove(leader);
+        path.classList.add("winner");
+        path.classList.add(winner);
+      }
+    })
+  }
 }

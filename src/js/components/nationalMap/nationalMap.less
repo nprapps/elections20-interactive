@@ -1,0 +1,31 @@
+@import "values";
+
+.map {
+	max-width: 950px;
+	margin: auto;
+
+	g {
+		fill: #ddd;
+		stroke: white;
+
+		&.leader {
+			fill: @indDim;
+		}
+		&.leader.GOP {
+			fill: @gopDim;
+		}
+		&.leader.Dem {
+			fill: @demDim;
+		}
+
+		&.winner {
+			fill: @ind;
+		}
+		&.winner.GOP {
+			fill: @gop;
+		}
+		&.winner.Dem {
+			fill: @dem;
+		}
+	}
+}

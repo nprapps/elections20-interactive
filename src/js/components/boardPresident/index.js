@@ -68,7 +68,7 @@ export default class BoardPresident extends Component {
     return <>
       <h1>President</h1>
       { test ? <TestBanner /> : "" }
-      <NationalMap />
+      <NationalMap races={races}/>
       <div class="board-container">
         <Results races={buckets.likelyD} hed="Dem. Likely" office="President"/>
         <Results races={buckets.tossup} hed="Lean/Tossup" office="President"/>
