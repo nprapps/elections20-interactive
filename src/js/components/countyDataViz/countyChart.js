@@ -124,9 +124,9 @@ export class CountyChart extends Component {
         return d[v];
       })
     );
-    maxY = Math.ceil(maxY);
-    minY = Math.floor(minY);
-    this.xScale = scaleFactory([0, 100], [0, this.chartWidth]);
+    maxY = Math.ceil(maxY * 100)/100;
+    minY = Math.floor(minY * 100)/100;
+    this.xScale = scaleFactory([0, 1], [0, this.chartWidth]);
     this.yScale = scaleFactory([minY, maxY], [this.chartHeight, 0]);
 
     var height = this.chartHeight + this.margins.top + this.margins.bottom;

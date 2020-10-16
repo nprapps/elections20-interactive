@@ -116,7 +116,7 @@ export class CountyDataViz extends Component {
       county.candidates.filter(c => c.party == lead)[0].percent * 100;
     var secondPer = secondParty.percent * 100;
 
-    return (leadPer / (leadPer + secondPer)) * 100;
+    return (leadPer / (leadPer + secondPer));
   }
 
   getCorrs(v, data) {
