@@ -167,7 +167,7 @@ export default class StateResults extends Component {
 
     tabs.unshift({
       data: "key",
-      label: "Key Results",
+      label: "Key",
     });
 
     var tabElements = tabs.map(t => (

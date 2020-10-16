@@ -145,7 +145,7 @@
         height: 4em;
 
         .bar {
-          background: var(--ind);
+          background: @ind;
           height: @bar-height;
         }
 
@@ -154,19 +154,19 @@
         }
 
         &.winner {
-          background: var(--ind-fade);
+          background: @indDim;
 
           .bar {
-            background: var(--ind);
+            background: @ind;
           }
 
           &.GOP,
           &.No {
-            background: var(--gop-fade);
+            background: @gopDim;
           }
 
           &.Dem {
-            background: var(--dem-fade);
+            background: @demDim;
           }
 
           &.Other {
@@ -177,13 +177,13 @@
         &.GOP,
         &.No {
           .bar {
-            background: var(--gop);
+            background: @gop;
           }
         }
 
         &.Dem {
           .bar {
-            background: var(--dem);
+            background: @dem;
           }
         }
 

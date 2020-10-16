@@ -353,6 +353,7 @@
   nav.race-calendar {
     @border-color: #eee;
     .gotham();
+    margin-top: 8px;
 
     @media @mobile {
       display: none;
@@ -375,18 +376,21 @@
       display: flex;
       align-items: stretch;
       justify-content: flex-start;
-      border-bottom: 2px solid @border-color;
+      // border-bottom: 2px solid @border-color;
     }
 
     li {
       display: block;
-      padding: 3px 10px;
-      border-right: 2px solid @border-color;
-      font-size: 14px;
+      padding: 0px 11px;
+      border-right: 1px solid #666;
+      font-size: 12px;
 
       &:last-child,
       &:first-child {
         border-right: none;
+      }
+      &:first-child {
+        padding: 0;
       }
 
       span {
