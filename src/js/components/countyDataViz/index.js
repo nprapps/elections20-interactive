@@ -10,6 +10,13 @@ export class CountyDataViz extends Component {
     super();
 
     this.ommittedCounties = 0;
+
+    this.trendsRef = createRef();
+
+    this.toggleCollapsed = this.toggleCollapsed.bind(this);
+    this.state = {
+      collapsed: true,
+    };
   }
 
   // Lifecycle: Called whenever our component is created
@@ -18,6 +25,9 @@ export class CountyDataViz extends Component {
 
     var charts = [];
     for (var m of Object.keys(availableMetrics)) {
+      if (m == 'countyName') {
+        continue
+      }
       var metric = availableMetrics[m];
       metric.corr = this.getCorrs(metric.key, cleanedData);
       charts.push(metric);
@@ -26,7 +36,7 @@ export class CountyDataViz extends Component {
     if (cleanedData.length >= 10) {
       this.setState({
         cleanedData,
-        charts: charts.sort((a, b) => b.corr - a.corr).slice(0, 4),
+        charts: charts.sort((a, b) => b.corr - a.corr),
       });
     }
   }
@@ -46,8 +56,8 @@ export class CountyDataViz extends Component {
       : "";
     return (
       <div class="trends">
-        <h2>County Trends</h2>
-        <ul></ul>
+        <h2 ref={this.trendsRef}>County Trends</h2>
+        <div class={this.state.collapsed ? "collapsed" : null}>
         {this.state.charts.map(c => (
           <div class="chart-wrapper">
             <CountyChart
@@ -60,6 +70,14 @@ export class CountyDataViz extends Component {
             />
           </div>
         ))}
+        </div>
+        <button
+          class={`toggle-table ${this.state.cleanedData.length > 4 ? "" : "hidden"}`}
+          onclick={this.toggleCollapsed}
+          data-more="Show all"
+          data-less="Show less">
+          {this.state.collapsed ? `Show all ▼` : `Show less ▲`}
+        </button>
         <div class="footnote">{footnote}</div>
       </div>
     );
@@ -107,6 +125,17 @@ export class CountyDataViz extends Component {
       data.map(d => parseFloat(d[v]))
     );
     return Math.abs(correlation);
+  }
+
+  scrollToRef(ref) {
+    ref.current.scrollIntoView(true, { block: "nearest" });
+  }
+
+  toggleCollapsed() {
+    const currentState = this.state.collapsed;
+    this.setState({ collapsed: !currentState }, () => {
+      this.scrollToRef(this.trendsRef);
+    });
   }
 }
 

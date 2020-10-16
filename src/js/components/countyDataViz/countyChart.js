@@ -60,6 +60,10 @@ export class CountyChart extends Component {
     this.handleResize();
   }
 
+  componentDidUpdate() {
+    this.handleResize();
+  }
+
   // Lifecycle: Called just before our component will be destroyed
   componentWillUnmount() {
     // stop when not renderable
@@ -72,9 +76,8 @@ export class CountyChart extends Component {
 
     return (
       <div class="graphic">
-        <h4>{this.props.title}</h4>
+        {this.renderCorrelation()}
         <div class="graphic-wrapper" ref={this.wrapperRef}>
-          {this.renderCorrelation()}
           {this.renderSVG()}
           <div class="tooltip" ref={this.tooltipRef}></div>
         </div>
@@ -83,29 +86,19 @@ export class CountyChart extends Component {
   }
 
   renderCorrelation() {
-    if (!this.state.dimensions) {
-      return "";
-    }
-
-    var width = this.state.dimensions.width;
-
+    var relationships = [
+      "almost no",
+      "a weak",
+      "moderate",
+      "a strong",
+      "a very strong",
+    ];
+    var index = Math.ceil(this.props.corr * relationships.length) - 1;
     return (
-      <svg width={width} height="40" viewBox={`0 0 ${width} 40`}>
-        <line
-          class="trend-line"
-          x1="30"
-          x2={width}
-          y1="10"
-          y2="10"
-          preserveAspectRatio="xMaxYMid meet"></line>
-        <circle cx={30 + (width - 30) * this.props.corr} cy="10" r="5"></circle>
-        <text class="axis-label" text-anchor="start" x="30" y="30">
-          ← Weaker
-        </text>
-        <text class="axis-label" text-anchor="end" x={width - 5} y="30">
-          Stronger →
-        </text>
-      </svg>
+      <h4>
+        There is <span>{relationships[index]}</span> correlation between{" "}
+        <span> {this.props.title} </span> and party vote
+      </h4>
     );
   }
 
@@ -260,10 +253,13 @@ export class CountyChart extends Component {
   }
 
   handleResize() {
-    this.setState({
-      dimensions: {
-        width: this.wrapperRef.current.offsetWidth,
-      },
-    });
+    var newWidth = this.wrapperRef.current.offsetWidth;
+    if (!this.state.dimensions || newWidth != this.state.dimensions.width) {
+      this.setState({
+        dimensions: {
+          width: newWidth,
+        },
+      });
+    }
   }
 }
