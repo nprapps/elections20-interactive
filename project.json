@@ -13,7 +13,8 @@
     "src/css/seed.less": "build/style.css"
   },
   "scripts": {
-    "src/js/main.js": "build/app.js"
+    "src/js/main.js": "build/app.js",
+    "src/js/embed.js": "build/embed.js"
   },
   "title": "2020 Elections",
   "description": "",

@@ -2,6 +2,7 @@ import { h, Component, Fragment } from "preact";
 import gopher from "../gopher.js";
 import { reportingPercentage } from "../util.js";
 import "./results.less";
+import strings from "strings.sheet.json";
 
 export default function ResultsTableCandidates(props) {
   if (!props.data) {
@@ -10,7 +11,7 @@ export default function ResultsTableCandidates(props) {
   
   var results = props.data;
   var notStatewide = results.office === "H" || results.office === "I";
-  const seatName = notStatewide ? results.seat : null;
+  const seatName = notStatewide ? results.seat : props.title;
 
   let totalVotes = 0;
   for (let i = 0; i < results.candidates.length; i++) {
@@ -25,7 +26,7 @@ export default function ResultsTableCandidates(props) {
   return (
     <div class="results-table statewide">
       <div class="results-header">
-        {seatName ? <caption> {seatName}</caption> : ""}
+        {seatName ? <caption> {seatName}</caption> : <span />}
         <span class="reporting">{reporting}</span>
       </div>
       <div class={"board " + (isUncontested ? "uncontested" : "")} role="table">
