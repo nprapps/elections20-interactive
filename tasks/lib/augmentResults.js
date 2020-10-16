@@ -49,7 +49,7 @@ module.exports = function (results, data) {
 
       // get the winner margin from the previous presidential election
       var past_margin = {};
-      const [ top, second ] = data.csv.prior_fips
+      const [top, second] = data.csv.prior_fips
         .filter(p => p.fipscode == r.fips)
         .sort((a, b) => b.votepct - a.votepct)
         .slice(0, 2);
@@ -57,7 +57,9 @@ module.exports = function (results, data) {
       past_margin.margin = top.votepct - second.votepct;
 
       var census = data.csv.census_data[r.fips];
-      var covid = data.csv.covid_county_cases[r.fips];
+      var covid = data.csv.covid_county_cases[r.fips]
+        ? data.csv.covid_county_cases[r.fips] / census.population
+        : null;
 
       var bls = data.csv.unemployment_data[r.fips] || {};
       var { unemployment } = bls;
