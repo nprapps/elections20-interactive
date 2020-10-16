@@ -77,9 +77,6 @@
       }
 
       .active {
-        color: @gray-dark;
-        font-weight: bold;
-
         &:hover {
           color: @gray;
         }
@@ -165,7 +162,6 @@
       margin-bottom: 0;
     }
   }
-
 
   // county results tables
   .state-results .results-counties {
@@ -351,7 +347,7 @@
   }
 
   nav.race-calendar {
-    @border-color: #EEE;
+    @border-color: #eee;
     .gotham();
 
     @media @mobile {
@@ -360,6 +356,13 @@
 
     a {
       text-decoration: none;
+    }
+
+    li.active {
+      a {
+        color: #333333;
+        font-weight: bold;
+      }
     }
 
     ul {
@@ -395,33 +398,29 @@
 
     .date {
       display: block;
-      color: #AAA;
+      color: #aaa;
       font-size: 12px;
-    }
-
-    .active {
-      border-top: 2px solid #CCC;
     }
   }
 
   h1 {
     img.icon {
-    float: left;
-    margin-right: 14px;
-    max-width: 75px;
-    height: 60px;
-    opacity: 0.4;
-    outline: none;
-  }
+      float: left;
+      margin-right: 14px;
+      max-width: 75px;
+      height: 60px;
+      opacity: 0.4;
+      outline: none;
+    }
   }
 
-  .mobile-calendar-wrapper{
+  .mobile-calendar-wrapper {
     display: none;
 
     @media @mobile {
       display: block;
     }
-  } 
+  }
 
   .select-label {
     .knockout();
