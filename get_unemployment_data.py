@@ -9,7 +9,8 @@ def get_unemployment_data(year):
     xlsx = pd.read_excel(url, usecols=[1,2,4,9])
     xlsx = xlsx.iloc[5:]
     xlsx.columns = ['state_fips', 'county_fips', 'year', 'unemployment']
-    xlsx['fips'] = xlsx['state_fips'] + xlsx['county_fips']
+    xlsx['key'] = xlsx['state_fips'] + xlsx['county_fips']
+    xlsx['unemployment'] = xlsx['unemployment'].astype(float)/100
     xlsx = xlsx.drop(columns=['state_fips', 'county_fips'])
 
     xlsx.to_csv('data/unemployment_data.csv', index=False, encoding='utf-8',)

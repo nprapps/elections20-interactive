@@ -58,9 +58,10 @@ def getFips(geo_data):
 
 # Do the calculations we need to do on census data
 def processData(data):
-  data['percent_black'] = data['black_total']/data['race_total'] * 100
-  data['percent_white'] = data['white_alone'] / data['race_hispanic_total'] * 100
-  data['percent_hispanic'] = data['hispanic_total'] / data['race_hispanic_total'] * 100
+  data['percent_black'] = data['black_total']/data['race_total']
+  data['percent_white'] = data['white_alone'] / data['race_hispanic_total']
+  data['percent_hispanic'] = data['hispanic_total'] / data['race_hispanic_total']
+  data['percent_bachelors'] = data['percent_bachelors'].astype(float) / 100
   return data
 
 if __name__ == "__main__":
