@@ -2,7 +2,7 @@ import { h, Component, createRef } from "preact";
 import gopher from "../gopher.js";
 
 import { CountyChart } from "./countyChart.js";
-import { availableMetrics } from "../util.js";
+import { availableMetrics, getCountyVariable } from "../util.js";
 // import "./countyDataViz.less";
 
 export class CountyDataViz extends Component {
@@ -65,6 +65,7 @@ export class CountyDataViz extends Component {
                 title={c.name}
                 corr={c.corr}
                 formatter={c.format}
+                secondKey ={c.secondKey}
               />
             </div>
           ))}
@@ -88,7 +89,7 @@ export class CountyDataViz extends Component {
     var second = order[1].party;
 
     // TODO: is this the right cutoff?
-    var resultsIn = data.filter(d => d.reportingPercent >= 1);
+    var resultsIn = data.filter(d => d.reportingPercent >= .5);
 
     var filtered = resultsIn.filter(function (d) {
       var countyParties = d.candidates.map(c => c.party);
@@ -109,8 +110,6 @@ export class CountyDataViz extends Component {
   }
 
   getX(county, lead, second) {
-    // TODO: Verify this is correct
-    // What do do if one of leading parties statewide isn't leading in county?
     var secondParty = county.candidates.filter(c => c.party == second)[0];
     var leadPer =
       county.candidates.filter(c => c.party == lead)[0].percent * 100;
@@ -122,7 +121,7 @@ export class CountyDataViz extends Component {
   getCorrs(v, data) {
     var correlation = getPearsonCorrelation(
       data.map(d => d.x),
-      data.map(d => parseFloat(d[v]))
+      data.map(d => getCountyVariable(d, v))
     );
     return Math.abs(correlation);
   }

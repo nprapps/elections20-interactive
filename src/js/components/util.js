@@ -56,6 +56,18 @@ export var formatters = {
     return value => formats.reduce((v, fn) => fn(v), value);
   },
   percentDecimal: v => (v * 100).toFixed(1) + "%",
+  voteMargin: function (result) {
+    let prefix;
+    if (result.party === "Dem") {
+      prefix = "D";
+    } else if (result.party === "GOP") {
+      prefix = "R";
+    } else {
+      prefix = "I";
+    }
+
+    return prefix + " +" + Math.round(result.margin * 100);
+  },
 };
 
 const availableMetrics = {
@@ -63,9 +75,10 @@ const availableMetrics = {
     name: "Population",
     format: formatters.comma,
   },
-  // past_margin: {
-  //   name: "2016 Presidential Margin",
-  // },
+  past_margin: {
+    name: "2016 Presidential Margin",
+    format: formatters.voteMargin,
+  },
   unemployment: {
     name: "Unemployment",
     format: formatters.percentDecimal,
@@ -103,5 +116,14 @@ const availableMetrics = {
 };
 
 for (var k in availableMetrics) availableMetrics[k].key = k;
+
+export function getCountyVariable(data, variable) {
+  var value = data[variable];
+  // Have to special case past margin.
+  if (variable == "past_margin") {
+    value = value.margin * (value.party == "Dem" ? 1 : -1);
+  }
+  return value * 1;
+}
 
 export { availableMetrics };

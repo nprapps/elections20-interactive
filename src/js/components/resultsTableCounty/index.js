@@ -6,7 +6,7 @@ import {
   formatters,
   availableMetrics,
 } from "../util.js";
-var { percentDecimal } = formatters;
+var { percentDecimal, voteMargin } = formatters;
 
 export default class ResultsTableCounty extends Component {
   constructor(props) {
@@ -120,12 +120,12 @@ export default class ResultsTableCounty extends Component {
             aria-hidden="true"
             role="img"
             xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 320 512"
             width="10"
-            height="16"
-            viewBox="0 0 320 512">
+            height="16">
             <path
               fill="#999"
-              d="M279 224H41c-21.4 0-32.1-25.9-17-41L143 64c9.4-9.4 24.6-9.4 33.9 0l119 119c15.2 15.1 4.5 41-16.9 41z"
+              d="M41 288h238c21.4 0 32.1 25.9 17 41L177 448c-9.4 9.4-24.6 9.4-33.9 0L24 329c-15.1-15.1-4.4-41 17-41z"
               class=""></path>
           </svg>
         );
@@ -135,12 +135,12 @@ export default class ResultsTableCounty extends Component {
             aria-hidden="true"
             role="img"
             xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 320 512"
             width="10"
-            height="16">
+            height="16"
+            viewBox="0 0 320 512">
             <path
               fill="#999"
-              d="M41 288h238c21.4 0 32.1 25.9 17 41L177 448c-9.4 9.4-24.6 9.4-33.9 0L24 329c-15.1-15.1-4.4-41 17-41z"
+              d="M279 224H41c-21.4 0-32.1-25.9-17-41L143 64c9.4-9.4 24.6-9.4 33.9 0l119 119c15.2 15.1 4.5 41-16.9 41z"
               class=""></path>
           </svg>
         );
@@ -175,8 +175,24 @@ export default class ResultsTableCounty extends Component {
       sorterA = a.county[sortMetric.key];
       sorterB = b.county[sortMetric.key];
 
+      // Special sorting for county names and past margin.
       if (sortMetric.alpha) {
         return sorterA == sorterB ? 0 : sorterA < sorterB ? order : order * -1;
+      } else if (sortMetric.key == "past_margin") {
+        // always put Democratic wins on top
+        if (sorterA.party === "Dem" && sorterB.party === "GOP") return -1 * order;
+        if (sorterA.party === "GOP" && sorterB.party === "Dem") return 1 * order;
+
+        const aMargin = sorterA.margin * 1;
+        const bMargin = sorterB.margin * 1;
+
+        // if Republican, sort in ascending order
+        // if Democratic, sort in descending order
+        if (sorterA.party === "GOP") {
+          return (aMargin - bMargin) * order;
+        } else {
+          return (bMargin - aMargin) * order;
+        }
       }
       return (sorterA - sorterB) * order;
     });
@@ -213,8 +229,6 @@ export default class ResultsTableCounty extends Component {
 function ResultsRowCounty(props) {
   var { candidates, row, metric } = props;
 
-  var winner = row.called ? row.candidates[0] : null;
-
   var orderedCandidates = candidates.map(function (header) {
     var [match] = row.candidates.filter(c => header.id == c.id);
     return match || {};
@@ -239,7 +253,7 @@ function ResultsRowCounty(props) {
       {orderedCandidates.map(c =>
         CandidatePercentCell(c, c.party == leadingParty)
       )}
-      {MarginCell(row.candidates, winner)}
+      {MarginCell(row.candidates, leadingParty)}
       <td> {metricValue} </td>
     </tr>
   );
@@ -275,7 +289,7 @@ function CandidatePercentCell(candidate, leading) {
 function MarginCell(candidates, leading) {
   var party;
   if (leading) {
-    party = ["Dem", "GOP"].includes(leading.party) ? leading.party : "ind";
+    party = ["Dem", "GOP"].includes(leading) ? leading : "ind";
   }
 
   return (
@@ -292,15 +306,5 @@ function calculateVoteMargin(candidates) {
     return "-";
   }
   var winnerMargin = a.percent - b.percent;
-
-  let prefix;
-  if (a.party === "Dem") {
-    prefix = "D";
-  } else if (a.party === "GOP") {
-    prefix = "R";
-  } else {
-    prefix = "I";
-  }
-
-  return prefix + " +" + Math.round(winnerMargin * 100);
+  return voteMargin({ party: a.party, margin: winnerMargin });
 }

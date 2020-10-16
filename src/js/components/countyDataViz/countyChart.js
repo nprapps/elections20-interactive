@@ -1,7 +1,7 @@
 import { h, Component, Fragment, createRef } from "preact";
 import gopher from "../gopher.js";
 import "./countyData.less";
-import { formatters } from "../util.js";
+import { formatters, getCountyVariable } from "../util.js";
 var { chain, comma, percent, dollars } = formatters;
 
 var scaleFactory = function (domain, range) {
@@ -43,8 +43,6 @@ export class CountyChart extends Component {
     this.onLeave = this.onLeave.bind(this);
     this.handleResize = this.handleResize.bind(this);
 
-    this.chartWidth;
-    this.chartHeight;
     this.margins = {
       top: 20,
       right: 5,
@@ -108,29 +106,31 @@ export class CountyChart extends Component {
     }
     // TODO: Move this elsewhere?
     var width = this.state.dimensions.width;
-    this.chartWidth = width - this.margins.left - this.margins.right;
-    this.chartHeight = width - this.margins.top - this.margins.bottom;
+    var chartWidth = width - this.margins.left - this.margins.right;
+    var chartHeight = width - this.margins.top - this.margins.bottom;
 
     var v = this.props.variable;
     var maxY = Math.max.apply(
       Math,
       this.props.data.map(function (d) {
-        return d[v];
+        return getCountyVariable(d, v);
       })
     );
     var minY = Math.min.apply(
       Math,
       this.props.data.map(function (d) {
-        return d[v];
+        return getCountyVariable(d, v);
       })
     );
-    maxY = Math.ceil(maxY * 100)/100;
-    minY = Math.floor(minY * 100)/100;
-    this.xScale = scaleFactory([0, 1], [0, this.chartWidth]);
-    this.yScale = scaleFactory([minY, maxY], [this.chartHeight, 0]);
 
-    var height = this.chartHeight + this.margins.top + this.margins.bottom;
-    var width = this.chartWidth + this.margins.left + this.margins.right;
+    maxY = Math.ceil(maxY * 100) / 100;
+    minY = Math.floor(minY * 100) / 100;
+
+    this.xScale = scaleFactory([0, 1], [0, chartWidth]);
+    this.yScale = scaleFactory([minY, maxY], [chartHeight, 0]);
+
+    var height = chartHeight + this.margins.top + this.margins.bottom;
+    var width = chartWidth + this.margins.left + this.margins.right;
     return (
       <svg
         class="svg-flex"
@@ -156,8 +156,7 @@ export class CountyChart extends Component {
     tooltip.classList.remove("shown");
     var data = this.props.data.filter(d => d.fips == e.target.dataset.fips)[0];
 
-    // TODO: make the formmaters handle the correct var
-    var displayVar = parseFloat(data[this.props.variable]);
+    var displayVar = data[this.props.variable];
     tooltip.innerHTML = `
         <div class="name">${data.countyName}</div>
         <div class="reporting">${this.props.title}: ${
@@ -184,6 +183,13 @@ export class CountyChart extends Component {
     const ticksY = this.yScale.ticks();
     const [orderMore, orderLess] = this.props.order;
 
+    var yLabel;
+    if (this.props.variable == "past_margin") {
+      yLabel = 'More democratic →'
+    } else {
+      yLabel = `Higher ${this.props.title} →`;
+    }
+
     return (
       <>
         <line x1={xStart} x2={xEnd} y1={yStart} y2={yStart} stroke="#ccc" />
@@ -202,7 +208,7 @@ export class CountyChart extends Component {
           transform="rotate(-90)"
           x={0}
           dy=".35em"
-          y={-10}>{`Higher ${this.props.title} →`}</text>
+          y={-10}>{yLabel}</text>
         <text
           class="x axis-label"
           text-anchor="start"
@@ -231,7 +237,8 @@ export class CountyChart extends Component {
       <>
         <g className="dots">
           {this.props.data.map((t, i) => {
-            const y = this.yScale(t[this.props.variable]);
+            var value = getCountyVariable(t, this.props.variable);
+            const y = this.yScale(value);
             const x = this.xScale(t.x);
             return (
               <circle
