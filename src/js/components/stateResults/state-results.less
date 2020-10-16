@@ -376,13 +376,22 @@
 
     li {
       display: block;
-      padding: 10px 20px;
+      padding: 3px 10px;
       border-right: 2px solid @border-color;
-      border-top: 2px solid transparent;
-      line-height: 1.5em;
+      font-size: 14px;
 
-      &:last-child {
+      &:last-child,
+      &:first-child {
         border-right: none;
+      }
+
+      span {
+        clear: both;
+        color: #666;
+        font-family: "Gotham SSm", "Helvetica Neue", Helvetica, Arial,
+          sans-serif;
+        margin: 4px 0 0 0;
+        -webkit-font-smoothing: antialiased;
       }
     }
 

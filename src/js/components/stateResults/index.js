@@ -199,7 +199,12 @@ export default class StateResults extends Component {
           </div>
         </div>
         <nav class="race-calendar">
-          <ul>{tabElements}</ul>
+          <ul>
+            <li>
+              <span>Election results: </span>
+            </li>
+            {tabElements}
+          </ul>
         </nav>
       </>
     );
