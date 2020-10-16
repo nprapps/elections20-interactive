@@ -12,7 +12,7 @@ export default class NationalMap extends Component {
 
   // Lifecycle: Called whenever our component is created
   async componentDidMount() {
-    var response = await fetch("./assets/ico-geo.svg");
+    var response = await fetch("./assets/_map-geo.svg");
     var text = await response.text();
     var svg = await this.loadSVG(text);
     this.setState({ svg: svg });
@@ -46,24 +46,27 @@ export default class NationalMap extends Component {
     var svg = this.svgRef.current.querySelector("svg");
 
     mapData.forEach(function(r) {
-      console.log(r)
+      // console.log(r)
       var eevp = r.eevp;
-      var state = r.state.toLowerCase();
+      var district = r.district;
+      var state = r.state.toLowerCase() + (district ? "-" + district : "");
       var leader = r.candidates[0].party;
       var winner = r.winnerParty;
-      var path = svg.querySelector(`.${state}`);
-      if (!path) return;
+      var paths = svg.querySelectorAll(`.${state}`);
+      if (!paths) return;
 
-      if (eevp > 0.5) {
-        path.classList.add("leader");
-        path.classList.add(leader);
-      }
-      if (winner) {
-        path.classList.remove("leader");
-        path.classList.remove(leader);
-        path.classList.add("winner");
-        path.classList.add(winner);
-      }
+      paths.forEach(function(p) {
+        if (eevp > 0.5) {
+          p.classList.add("leader");
+          p.classList.add(leader);
+        }
+        if (winner) {
+          p.classList.remove("leader");
+          p.classList.remove(leader);
+          p.classList.add("winner");
+          p.classList.add(winner);
+        }
+      })
     })
   }
 }
