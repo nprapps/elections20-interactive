@@ -1,4 +1,4 @@
-import { h, Component, Fragment } from "preact";
+import { h, Component, Fragment, createRef } from "preact";
 import gopher from "../gopher.js";
 import Results from "../resultsBoardPresident";
 import TestBanner from "../testBanner";
@@ -10,6 +10,7 @@ export default class BoardPresident extends Component {
     super();
 
     this.state = {};
+    this.svgRef = createRef();
     this.onData = this.onData.bind(this);
   }
 
@@ -18,8 +19,13 @@ export default class BoardPresident extends Component {
     this.setState({ races: data.results, test: data.test, latest });
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     gopher.watch(`./data/president.json`, this.onData);
+
+    var response = await fetch("./assets/cartogram.svg");
+    var text = await response.text();
+    var svg = await this.loadSVG(text);
+    this.setState({ svg: svg });
   }
 
   componentWillUnmount() {
@@ -67,6 +73,7 @@ export default class BoardPresident extends Component {
     return <>
       <h1>President</h1>
       { test ? <TestBanner /> : "" }
+      <div ref={this.svgRef}></div>
       <div class="board-container">
         <Results races={buckets.likelyD} hed="Dem. Likely" office="President"/>
         <Results races={buckets.tossup} hed="Lean/Tossup" office="President"/>
@@ -74,5 +81,11 @@ export default class BoardPresident extends Component {
       </div>
       Results as of <DateFormatter value={latest}/>
     </>
+  }
+
+  async loadSVG(svgText) {
+    this.svgRef.current.innerHTML = svgText;
+    var svg = this.svgRef.current.getElementsByTagName("svg")[0];
+    return svg;
   }
 }
