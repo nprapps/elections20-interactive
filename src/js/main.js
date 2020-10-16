@@ -3,6 +3,9 @@
 import $ from "./lib/qsa";
 import { h, render, Fragment } from "preact";
 
+import Sidechain from "@nprapps/sidechain";
+var guest = Sidechain.registerGuest();
+
 import './nav.js';
 
 import App from "./app.js";

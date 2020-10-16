@@ -7,7 +7,8 @@
   <body>
     <script>
       // detect embed
-      if (window.top != window) {
+      var search = new URLSearchParams(window.location.search);
+      if (window.top != window || search.has("embedded")) {
         document.body.classList.add("embedded");
       }
     </script>

@@ -12,6 +12,7 @@
     "@babel/polyfill": "~7.0.0",
     "@babel/preset-react": "^7.10.4",
     "@nprapps/betty": "^1.0.9",
+    "@nprapps/sidechain": "^1.0.13",
     "@twilburn/scrapple": "^1.0.0",
     "async": "^2.0.0-rc.1",
     "aws-sdk": "^2.2.45",
