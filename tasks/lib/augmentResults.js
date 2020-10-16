@@ -67,13 +67,14 @@ module.exports = function(results, data) {
         });
 
       var census = data.csv.census_data[r.fips];
+      var covid = data.csv.covid_county_cases[r.fips];
 
       var bls = data.csv.unemployment_data[r.fips] || {};
       var { unemployment } = bls;
 
       var countyName = data.csv.county_names[r.fips] || "At large";
 
-      r.county = { president16, ...census, unemployment, countyName};
+      r.county = { president16, ...census, unemployment, covid, countyName};
 
     }
   });

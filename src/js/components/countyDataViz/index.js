@@ -25,10 +25,8 @@ export class CountyDataViz extends Component {
 
     var charts = [];
     for (var m of Object.keys(availableMetrics)) {
-      if (m == 'countyName') {
-        continue
-      }
       var metric = availableMetrics[m];
+      if (metric.hideFromToggle) continue;
       metric.corr = this.getCorrs(metric.key, cleanedData);
       charts.push(metric);
     }
@@ -58,21 +56,23 @@ export class CountyDataViz extends Component {
       <div class="trends">
         <h2 ref={this.trendsRef}>County Trends</h2>
         <div class={this.state.collapsed ? "collapsed" : null}>
-        {this.state.charts.map(c => (
-          <div class="chart-wrapper">
-            <CountyChart
-              data={this.state.cleanedData}
-              variable={c.key}
-              order={this.props.order}
-              title={c.name}
-              corr={c.corr}
-              formatter={c.format}
-            />
-          </div>
-        ))}
+          {this.state.charts.map(c => (
+            <div class="chart-wrapper">
+              <CountyChart
+                data={this.state.cleanedData}
+                variable={c.key}
+                order={this.props.order}
+                title={c.name}
+                corr={c.corr}
+                formatter={c.format}
+              />
+            </div>
+          ))}
         </div>
         <button
-          class={`toggle-table ${this.state.cleanedData.length > 4 ? "" : "hidden"}`}
+          class={`toggle-table ${
+            this.state.cleanedData.length > 4 ? "" : "hidden"
+          }`}
           onclick={this.toggleCollapsed}
           data-more="Show all"
           data-less="Show less">

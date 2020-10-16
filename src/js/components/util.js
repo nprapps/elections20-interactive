@@ -89,6 +89,10 @@ const availableMetrics = {
   percent_bachelors: {
     name: "% College-Educated",
     format: formatters.percent,
+  },
+  covid: {
+    name: "Covid Cases",
+    format: formatters.comma,
     last: true,
   },
   countyName: {
