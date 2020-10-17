@@ -5,13 +5,18 @@ import Results from "../resultsBoardPresident";
 import TestBanner from "../testBanner";
 import DateFormatter from "../dateFormatter";
 import states from "states.sheet.json";
+import "./boardPresident.less";
+import Tetris from "../tetris";
 
 export default class BoardPresident extends Component {
   constructor(props) {
     super();
 
-    this.state = {};
+    this.state = {
+      selectedTab: "ec-tetris"
+    };
     this.onData = this.onData.bind(this);
+    this.selectTab = this.selectTab.bind(this);
   }
 
   onData(data) {
@@ -19,7 +24,7 @@ export default class BoardPresident extends Component {
     this.setState({ races: data.results, test: data.test, latest });
   }
 
-  async componentDidMount() {
+  componentDidMount() {
     gopher.watch(`./data/president.json`, this.onData);
   }
 
@@ -27,7 +32,14 @@ export default class BoardPresident extends Component {
     gopher.unwatch(`./data/president.json`, this.onData);
   }
 
-  render() {
+  selectTab(e) {
+    var controls = e.target.getAttribute("aria-controls");
+    var panel = this.base.querySelector("#" + controls);
+    this.setState({ selectedTab: controls });
+    panel.focus();
+  }
+
+  render(props, state) {
     var { races, test, latest } = this.state;
     if (!races) {
       return "";
@@ -65,16 +77,54 @@ export default class BoardPresident extends Component {
       }
     });
 
-    return <>
+    var tabs = [
+      ["Tetris", "ec-tetris"],
+      ["Geographic map", "national-map"]
+    ];
+
+    var called = {
+      Dem: [],
+      GOP: []
+    }
+
+    races.forEach(r => r.called && called[r.winnerParty].push(r))
+
+    return <div class="president board">
       <h1>President</h1>
       { test ? <TestBanner /> : "" }
-      <NationalMap races={races}/>
+      <div class="tabs" role="tablist">
+        {tabs.map(([label, data]) => (
+          <button
+            role="tab"
+            aria-controls={data}
+            aria-selected={(state.selectedTab == data).toString()}
+            onClick={this.selectTab}
+          >{label}</button>
+        ))}
+      </div>
+      <div class="tabgroup">
+        <div
+          id="ec-tetris" role="tabpanel" tabindex="-1"
+          class={state.selectedTab == "ec-tetris" ? "active" : "inactive"}
+        >
+          <div class="tetris-container">
+            <Tetris races={called.Dem} width={9} class="D" />
+            <Tetris races={called.GOP} width={9} class="R" />
+          </div>
+        </div>
+        <div
+          id="national-map" role="tabpanel" tabindex="-1"
+          class={state.selectedTab == "national-map" ? "active" : "inactive"}
+        >
+          <NationalMap races={races} />
+        </div>
+      </div>
       <div class="board-container">
         <Results races={buckets.tossup} hed="Lean/Tossup" office="President" addClass="middle" />
         <Results races={buckets.likelyD} hed="Dem. Likely" office="President" addClass="first" />
         <Results races={buckets.likelyR} hed="GOP Likely" office="President" addClass="last" />
       </div>
       Results as of <DateFormatter value={latest}/>
-    </>
+    </div>
   }
 }

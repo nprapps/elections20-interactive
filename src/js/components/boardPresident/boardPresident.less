@@ -1,0 +1,52 @@
+@import "values";
+
+.board.president {
+  .tabs {
+    display: flex;
+
+    [role="tab"] {
+      border-bottom: 2px solid transparent;
+
+      &[aria-selected="true"] {
+        border-bottom-color: blue;
+      }
+    }
+  }
+
+  [role="tabpanel"] {
+    display: none;
+
+    &.active {
+      display: block;
+    }
+  }
+
+  .tetris-container {
+    display: flex;
+    justify-content: space-around;
+
+    svg {
+      display: block;
+
+      --primary: #007;
+      --secondary: #00A;
+
+      text {
+        .knockout();
+      }
+
+      &.R {
+        --primary: #700;
+        --secondary: #A00;
+      }
+
+      .a {
+        fill: var(--primary);
+      }
+
+      .b {
+        fill: var(--secondary);
+      }
+    }
+  }
+}
