@@ -70,9 +70,9 @@ export default class BoardPresident extends Component {
       { test ? <TestBanner /> : "" }
       <NationalMap races={races}/>
       <div class="board-container">
-        <Results races={buckets.likelyD} hed="Dem. Likely" office="President"/>
-        <Results races={buckets.tossup} hed="Lean/Tossup" office="President"/>
-        <Results races={buckets.likelyR} hed="GOP Likely" office="President"/>
+        <Results races={buckets.tossup} hed="Lean/Tossup" office="President" addClass="middle" />
+        <Results races={buckets.likelyD} hed="Dem. Likely" office="President" addClass="first" />
+        <Results races={buckets.likelyR} hed="GOP Likely" office="President" addClass="last" />
       </div>
       Results as of <DateFormatter value={latest}/>
     </>

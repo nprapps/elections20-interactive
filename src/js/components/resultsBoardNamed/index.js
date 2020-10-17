@@ -30,10 +30,10 @@ export default function ResultsBoardNamed(props) {
 
   return (
     <>
-      <div class={"board-wrapper " + props.office}>
+      <div class={["board-wrapper", props.office, props.addClass].join(" ")}>
         <div class="board-inner">
           <h3 class="board-hed">{props.hed}</h3>
-          <table class="named results table">
+          <table class="named results table" role="table">
   {/*          <tr>
               <th class="state-hed">State</th>
               <th colspan="2" class="name-hed">Top candidates</th>
@@ -52,26 +52,26 @@ export default function ResultsBoardNamed(props) {
               var ballotLabel = r.office == "I" ? " " + r.seat : "";
 
               return (
-                <tr class={"tr " + (hasResult ? "closed" : "open") + " index-" + i}>
+                <tr class={"tr " + (hasResult ? "closed" : "open") + " index-" + i} role="row">
 
                   {/* State */}
-                  <td class={"state " + (winner[0] ? ("winner " + winner[0].party) : "")}>
+                  <td class={"state " + (winner[0] ? ("winner " + winner[0].party) : "")} role="cell">
                     <a href={"#/states/" + r.state + "/" + r.office}>
                       {states[r.state].ap + seatLabel + ballotLabel}
                     </a>
                   </td>
 
                   {/* Open */}
-                  <td class="open-label" colspan="3">Last polls close at {states[r.state].closingTime} ET</td>
+                  <td class="open-label" colspan="3" role="cell">Last polls close at {states[r.state].closingTime} ET</td>
                   
                   {/* Candidates */}
                   {CandidateCells(r)}
 
                   {/* EEVP */}
-                  <td class={"reporting"}>{percentIn}</td>
+                  <td class={"reporting"} role="cell">{percentIn}</td>
 
                   {/* Runoff or Flip */}
-                  <td class={"little-label " + (flipped ? winner[0].party : "")}>
+                  <td class={"little-label " + (flipped ? winner[0].party : "")} role="cell">
                     <span class={r.runoff ? "runoff-label" : ""}>{r.runoff ? "R.O." : ""}</span>
                     <span class={flipped ? "flip-label" : ""}>{flipped ? "Flip" : ""}</span>
                   </td>

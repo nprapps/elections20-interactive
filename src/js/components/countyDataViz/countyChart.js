@@ -93,10 +93,10 @@ export class CountyChart extends Component {
     ];
     var index = Math.ceil(this.props.corr * relationships.length) - 1;
     return (
-      <h4>
-        There is <span>{relationships[index]}</span> correlation between{" "}
-        <span> {this.props.title} </span> and party vote
-      </h4>
+      <span class="description">
+        There is <b>{relationships[index]}</b> correlation between{" "}
+        <b> {this.props.title} </b> and party vote
+      </span>
     );
   }
 
@@ -133,6 +133,8 @@ export class CountyChart extends Component {
     var width = chartWidth + this.margins.left + this.margins.right;
     return (
       <svg
+        role="img"
+        aria-description="Scatter plot"
         class="svg-flex"
         ref={this.svgRef}
         width={width}
