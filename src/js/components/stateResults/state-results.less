@@ -80,7 +80,7 @@
         }
       }
 
-      .active {
+      [aria-current="true"] {
         &:hover {
           color: @gray;
         }
@@ -361,10 +361,8 @@
 
     a {
       text-decoration: none;
-    }
-
-    li.active {
-      a {
+      
+      &[aria-current=true] {
         color: #333333;
         font-weight: bold;
       }

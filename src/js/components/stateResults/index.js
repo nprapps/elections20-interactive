@@ -168,8 +168,9 @@ export default class StateResults extends Component {
     });
 
     var tabElements = tabs.map(t => (
-      <li class={view == t.data ? "active" : "inactive"}>
+      <li>
         <a
+          aria-current={view == t.data}
           href={`#/states/${this.props.state}/${t.data}`}
           class="race-type-nav">
           {t.label}
