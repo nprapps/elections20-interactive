@@ -52,7 +52,7 @@ export default function ResultsBoardNamed(props) {
               var ballotLabel = r.office == "I" ? " " + r.seat : "";
 
               return (
-                <tr class={"tr " + (hasResult ? "closed" : "open") + " index-" + i} role="row">
+                <tr key={r.id} class={"tr " + (hasResult ? "closed" : "open") + " index-" + i} role="row">
 
                   {/* State */}
                   <td class={"state " + (winner[0] ? ("winner " + winner[0].party) : "")} role="cell">

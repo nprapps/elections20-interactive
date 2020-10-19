@@ -45,7 +45,7 @@ export default function ResultsTableCandidates(props) {
         </div>
         <div class="tbody" role="rowgroup">
           {results.candidates.map((c, index) => (
-            <ResultsTableCandidatesRow data={c} uncontested={isUncontested} />
+            <ResultsTableCandidatesRow key={c.id} data={c} uncontested={isUncontested} />
           ))}
         </div>
       </div>

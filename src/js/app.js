@@ -10,8 +10,6 @@ import BoardBallot from "./components/boardBallot";
 import CountyResults from "./components/countyResults";
 import StateResults from "./components/stateResults";
 
-var guid = 0;
-
 export default class App extends Component {
   constructor() {
     super();
