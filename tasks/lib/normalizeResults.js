@@ -125,7 +125,7 @@ module.exports = function (resultArray, overrides = {}) {
   // we will instead restructure into groupings by geography
   var output = [];
 
-  var { calls = [], candidates = {}, rosters = {} } = overrides;
+  var { calls = [], candidates = {}, rosters = {}, states = {} } = overrides;
 
   var nprMetadata = {
     ...overrides.house,
@@ -160,6 +160,13 @@ module.exports = function (resultArray, overrides = {}) {
         // create a district property if necessary
         if (level == "district") {
           unitMeta.district = unitMeta.name == "At Large" ? "AL" : unitMeta.name.replace(/district /i, "");
+        }
+
+        // add the state name to states
+        var stateMeta = states[unitMeta.state];
+        if (stateMeta) {
+          unitMeta.stateName = states[unitMeta.state].name;
+          unitMeta.stateAP = states[unitMeta.state].ap
         }
 
         var sheetMetadata = nprMetadata[raceMeta.id];
