@@ -78,10 +78,12 @@ export default class BoardPresident extends Component {
 
       var called = {
         Dem: [],
-        GOP: []
+        GOP: [], 
+        uncalled: []
       }
 
-      races.forEach(r => r.called && called[r.winnerParty].push(r));
+
+      races.forEach(r => called[r.winnerParty || "uncalled"].push(r));
 
     }
     
@@ -110,6 +112,12 @@ export default class BoardPresident extends Component {
         >
           <div class="tetris-container">
             {races && <>
+              <div class="uncalled">
+                <b>Uncalled races</b>
+                <ul>
+                  {called.uncalled.map(c => <li>{c.state}</li>)}
+                </ul>
+              </div>
               <Tetris races={called.Dem} width={9} class="D" />
               <Tetris races={called.GOP} width={9} class="R" />
             </>}

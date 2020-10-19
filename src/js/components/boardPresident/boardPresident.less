@@ -35,6 +35,34 @@
     display: flex;
     justify-content: space-around;
 
+    .uncalled {
+      order: 1;
+      flex: 0 1 300px;
+      text-align: center;
+      .knockout();
+
+      b {
+        text-transform: uppercase;
+        margin-bottom: 4px;
+      }
+
+      ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        grid-gap: 2px;
+      }
+
+      li {
+        display: inline-block;
+        padding: 4px;
+        .knockout();
+        background: #CCC;
+      }
+    }
+
     svg {
       display: block;
 
@@ -54,6 +82,7 @@
       }
 
       &.R {
+        order: 2;
         --primary: #700;
         --secondary: #A00;
       }
