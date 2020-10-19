@@ -35,6 +35,27 @@
     display: flex;
     justify-content: space-around;
 
+    .tetris {
+      overflow: hidden;
+
+      --primary: #007;
+      --secondary: #00A;
+
+      &.R {
+        order: 2;
+        --primary: #700;
+        --secondary: #A00;
+      }
+
+      .a {
+        fill: var(--primary);
+      }
+
+      .b {
+        fill: var(--secondary);
+      }
+    }
+
     .uncalled {
       order: 1;
       flex: 0 1 300px;
@@ -65,9 +86,7 @@
 
     svg {
       display: block;
-
-      --primary: #007;
-      --secondary: #00A;
+      width: 100%;
 
       text {
         .knockout();
@@ -79,20 +98,6 @@
         &.victory {
           stroke: black;
         }
-      }
-
-      &.R {
-        order: 2;
-        --primary: #700;
-        --secondary: #A00;
-      }
-
-      .a {
-        fill: var(--primary);
-      }
-
-      .b {
-        fill: var(--secondary);
       }
     }
   }
