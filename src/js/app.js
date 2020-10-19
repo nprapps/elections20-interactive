@@ -56,21 +56,35 @@ export default class App extends Component {
     }
   }
 
+  componentDidCatch(e, info) {
+    console.log(e, info);
+    this.setState({ error: e })
+  }
+
   loading() {
     return <span>"Loading..."</span>;
   }
 
   render(props, state) {
+    console.log(state);
     // use a View component
     if (!state.route && state.View) {
       console.log(`Loaded page component: ${state.View.name}`);
-      return <state.View {...state.params} />
+      try {
+        return <state.View {...state.params} />
+      } catch (err) {
+        return `Error: unable to render component ${state.View.name}`
+      }
     }
 
     // otherwise call a route method
     if (this[state.route]) {
       console.log(`Loading local view method: ${state.route}()`);
-      return this[state.route](props, state);
+      try {
+        return this[state.route](props, state);
+      } catch (err) {
+        return `Error: unable to render route ${state.route}()`;
+      }
     }
 
     // otherwise fall back to nothing
