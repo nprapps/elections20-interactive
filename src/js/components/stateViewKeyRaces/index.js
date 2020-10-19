@@ -46,6 +46,13 @@ export default class KeyRaces extends Component {
 
     return offices.map((o) => {
       var data = grouped[o];
+      console.log(data)
+      // Filter house races for keyRaces
+      if (o == 'H') {
+        data = data.filter(d => d.keyRace);
+        if (!data.length) return;
+      }
+
       var label = Strings[`office-${o}`];
       return (
         <div class="key-race-group">

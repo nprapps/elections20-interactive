@@ -173,6 +173,9 @@ module.exports = function (resultArray, overrides = {}) {
         if (sheetMetadata && sheetMetadata.party) {
           unitMeta.previousParty = sheetMetadata.party;
         }
+        if (sheetMetadata && sheetMetadata.key_race) {
+          unitMeta.keyRace = sheetMetadata.key_race;
+        }
         unitMeta.updated = Date.parse(unitMeta.updated);
 
         var total = 0;
