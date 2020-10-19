@@ -23,7 +23,7 @@ function CandidateCells(race) {
       <td class={className.join(" ")}>
         <div class="perc">{Math.round(c.percent*100)}%</div>
       </td>
-    );
+    );    
   });
 }
 

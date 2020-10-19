@@ -38,6 +38,28 @@ export default class NationalMap extends Component {
   async loadSVG(svgText) {
     this.svgRef.current.innerHTML = svgText;
     this.paint(this.props);
+
+    var svg = this.svgRef.current.querySelector("svg");
+    svg.addEventListener("mousemove", e => this.onMove(e));
+  }
+
+  onMove(e) {
+    var svg = this.svgRef.current.querySelector("svg");
+    var currentHover = svg.querySelector(".hover");
+    if (currentHover) { currentHover.classList.remove("hover") };
+
+    if (!e.target.hasAttribute("data-postal")) return;
+
+    var group = e.target.closest("svg > g");
+    svg.appendChild(group);
+
+    var state = e.target.getAttribute("data-postal");
+    e.target.classList.add("hover");
+
+  }
+
+  initLabel() {
+
   }
 
   paint(props) {
@@ -46,27 +68,29 @@ export default class NationalMap extends Component {
     var svg = this.svgRef.current.querySelector("svg");
 
     mapData.forEach(function(r) {
-      // console.log(r)
       var eevp = r.eevp;
       var district = r.district;
       var state = r.state.toLowerCase() + (district ? "-" + district : "");
       var leader = r.candidates[0].party;
       var winner = r.winnerParty;
-      var paths = svg.querySelectorAll(`.${state}`);
-      if (!paths) return;
+      var stateGroup = svg.querySelector(`.${state}`);
+      if (!stateGroup) return;
 
-      paths.forEach(function(p) {
-        if (eevp > 0.5) {
-          p.classList.add("leader");
-          p.classList.add(leader);
-        }
-        if (winner) {
-          p.classList.remove("leader");
-          p.classList.remove(leader);
-          p.classList.add("winner");
-          p.classList.add(winner);
-        }
-      })
+      if (eevp > 0.5) {
+        stateGroup.classList.add("leader");
+        stateGroup.classList.add(leader);
+      }
+      if (winner) {
+        stateGroup.classList.remove("leader");
+        stateGroup.classList.remove(leader);
+        stateGroup.classList.add("winner");
+        stateGroup.classList.add(winner);
+      }
+
+      var stateOutline = stateGroup.querySelector("path");
+      var stateLabel = stateGroup.querySelector("text");
+      
+
     })
   }
 }

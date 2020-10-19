@@ -65,22 +65,25 @@ export default function Tetris(props) {
     lines.push(i);
   }
 
-  return <div class={"tetris " + props.class}>
-    <svg 
-      width={width * cellSize} 
-      height={rows * cellSize}
+  var svgWidth = width * cellSize;
+  var svgHeight = rows * cellSize;
+
+  return (<div class={"tetris " + props.class}>
+    <svg
+      width={svgWidth}
+      height={svgHeight}
       preserveAspectRatio="xMidYMid meet"
-      viewBox="0 0 {width"
+      viewBox={[0,0,svgWidth,svgHeight].join(" ")}
       >
       {lines.map(g => (
         <line 
-          x1={0} x2={width * cellSize}
+          x1={0} x2={svgWidth}
           y1={(rows - g) * cellSize} y2={(rows - g) * cellSize}
           class="grid"
         />
       ))}
       <line class="victory grid"
-        x1={0} x2={width * cellSize}
+        x1={0} x2={svgWidth}
         y1={(rows - victoryRow) * cellSize} y2={(rows - victoryRow) * cellSize}
       />
       <text x={0} y={(rows - victoryRow) * cellSize + textSize}>270 votes - victory</text>
@@ -134,5 +137,5 @@ export default function Tetris(props) {
         </>
       })}
     </svg>
-  </div>
+  </div>)
 }
