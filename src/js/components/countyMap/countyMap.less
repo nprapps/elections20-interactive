@@ -85,17 +85,32 @@
       stroke: #eee;
       stroke-width: 1;
 
-      &.winner {
-        fill: @gray;
+      &.leading {
+        fill: @gray-medium;
       }
-      &.winner.GOP {
-        fill: @gop;
+      &.leading.GOP {
+        fill: @gopDim2;
+
+        &.i0 {
+          fill: @gopMultiple1;
+        }
+
+        &.i1 {
+          fill: @gopMultiple2;
+        }
       }
 
-      &.winner.Dem {
-        fill: @dem;
-      }
+      &.leading.Dem {
+        fill: @demDim2;
 
+        &.i0 {
+          fill: @demMultiple1;
+        }
+
+        &.i1 {
+          fill: @demMultiple2;
+        }
+      }
     }
 
     &:hover {
@@ -151,15 +166,35 @@
     display: inline-block;
     width: 1em;
     height: 1em;
-    background: @gray;
+    background: @ind;
+    opacity: .9;
 
     &.Dem {
-      background: @dem;
+      background: @demDim2;
+
+      &.i0 {
+        background: @demMultiple1;
+      }
+
+      &.i1 {
+        background: @demMultiple2;
+      }
     }
 
     &.GOP {
-      background: @gop;
+      background: @gopDim2;
+
+      &.i0 {
+        background: @gopMultiple1;
+      }
+
+      &.i1 {
+        background: @gopMultiple2;
+      }
     }
 
+    &.Other {
+      background: @gray-medium;
+    }
   }
 }

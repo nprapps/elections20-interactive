@@ -77,10 +77,10 @@ table.results-table {
 
     &.margin {
       &.Dem {
-        color: var(--dem);
+        color: @dem;
       }
       &.GOP {
-        color: var(--gop);
+        color: @gop;
       }
       &.Other {
         color: @gray;
@@ -116,15 +116,15 @@ table.results-table {
     }
   }
 
-  .winner {
+  .leading {
     color: #fff;
-    background-color: @gray;
+    background-color: @gray-medium;
 
     &.Dem {
-      background-color: var(--dem);
+      background-color: @demDim2;
     }
     &.GOP {
-      background-color: var(--gop);
+      background-color: @gopDim2;
     }
 
     .icon {

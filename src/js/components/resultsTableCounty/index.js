@@ -180,8 +180,10 @@ export default class ResultsTableCounty extends Component {
         return sorterA == sorterB ? 0 : sorterA < sorterB ? order : order * -1;
       } else if (sortMetric.key == "past_margin") {
         // always put Democratic wins on top
-        if (sorterA.party === "Dem" && sorterB.party === "GOP") return -1 * order;
-        if (sorterA.party === "GOP" && sorterB.party === "Dem") return 1 * order;
+        if (sorterA.party === "Dem" && sorterB.party === "GOP")
+          return -1 * order;
+        if (sorterA.party === "GOP" && sorterB.party === "Dem")
+          return 1 * order;
 
         const aMargin = sorterA.margin * 1;
         const bMargin = sorterB.margin * 1;
@@ -229,9 +231,10 @@ export default class ResultsTableCounty extends Component {
 function ResultsRowCounty(props) {
   var { candidates, row, metric } = props;
 
+
   var orderedCandidates = candidates.map(function (header) {
     var [match] = row.candidates.filter(c => header.id == c.id);
-    return match || {};
+    return match || "";
   });
 
   var metricValue = row.county[metric.key];
@@ -240,7 +243,7 @@ function ResultsRowCounty(props) {
     metricValue = metric.format(metricValue);
   }
 
-  var leadingParty = row.reportingPercent == 1 ? row.candidates[0].party : "";
+  var leadingCand = row.reportingPercent == 1 ? row.candidates[0] : "";
 
   return (
     <tr>
@@ -248,12 +251,15 @@ function ResultsRowCounty(props) {
         <span class="precincts mobile">{row.county.countyName}</span>
       </td>
       <td class="precincts amt">
-        {reportingPercentage(row.reporting / row.precincts) + "% in"}
+        {reportingPercentage(row.reportingPercent) + "% in"}
       </td>
       {orderedCandidates.map(c =>
-        CandidatePercentCell(c, c.party == leadingParty)
+        CandidatePercentCell(
+          c,
+          c.party == leadingCand.party && c.last == leadingCand.last
+        )
       )}
-      {MarginCell(row.candidates, leadingParty)}
+      {MarginCell(row.candidates, leadingCand.party)}
       <td> {metricValue} </td>
     </tr>
   );
@@ -273,10 +279,14 @@ function CandidateHeaderCell(candidate) {
  * Creates a candidate vote % cell. Colors with candidate party if candidate is leading.
  */
 function CandidatePercentCell(candidate, leading) {
+  // TODO: get the right wording around this.
+  if (!candidate) {
+    return <td class="vote"> N/A</td>;
+  }
   var displayPercent = percentDecimal(candidate.percent);
   return (
     <td
-      class={`vote ${candidate.party} ${leading ? "winner" : ""}`}
+      class={`vote ${candidate.party} ${leading ? "leading" : ""}`}
       key={candidate.id}>
       {`${displayPercent}`}
     </td>

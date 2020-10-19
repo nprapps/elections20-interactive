@@ -17,6 +17,15 @@ export default class CountyMap extends Component {
     this.mapContainerRef = createRef();
     this.tooltipRef = createRef();
     this.guid = 0;
+
+    var partyMap = {};
+    props.sortOrder.forEach(function (c) {
+      if (!partyMap[c.party]) {
+        partyMap[c.party] = [];
+      }
+      partyMap[c.party].push(c.last);
+    });
+    this.partyMap = partyMap;
   }
 
   // Lifecycle: Called whenever our component is created
@@ -35,7 +44,7 @@ export default class CountyMap extends Component {
   }
 
   render() {
-    // TODO: Fix bug here where 3rd party candidate can make it into legend
+    // Handle case where leading 2 candidates are of same party
     return (
       <div class="county-map" data-as="map" aria-hidden="true">
         <div ref={this.containerRef} class="container" data-as="container">
@@ -52,30 +61,6 @@ export default class CountyMap extends Component {
               <path
                 d="M5,0L5,10"
                 stroke="rgba(0, 0, 0, .2)"
-                stroke-width="4"></path>
-            </pattern>
-            <pattern
-              id="pending-Dem"
-              class="stripes"
-              width="10"
-              height="10"
-              patternUnits="userSpaceOnUse"
-              patternTransform="rotate(-45)">
-              <path
-                d="M5,0L5,10"
-                stroke="rgba(35,123,189, 200)"
-                stroke-width="4"></path>
-            </pattern>
-            <pattern
-              id="pending-GOP"
-              class="stripes"
-              width="10"
-              height="10"
-              patternUnits="userSpaceOnUse"
-              patternTransform="rotate(-45)">
-              <path
-                d="M5,0L5,10"
-                stroke="rgba( 214, 32, 33, 200)"
                 stroke-width="4"></path>
             </pattern>
           </svg>
@@ -184,30 +169,35 @@ export default class CountyMap extends Component {
       path.classList.add("painted");
 
       var hitThreshold = mapData[d].reporting / mapData[d].precincts > 0.5;
-      var allReporting = mapData[d].reporting / mapData[d].precincts == 1;
 
-      if (!allReporting) {
-        var paint;
-        if (hitThreshold) {
-          paint = `url(#pending-${top.party})`;
-        } else {
-          paint = `url(#pending-0)`;
+      var specialShading =
+      this.partyMap[top.party].length > 1
+        ? this.partyMap[top.party].indexOf(top.last)
+        : "";
+      path.classList.add(`i${specialShading}`);
+
+      if (!hitThreshold) {
+
+          path.style.fill = `url(#pending-0)`;
           incomplete = true;
-        }
-        path.style.fill = paint;
       } else {
-        path.classList.add("winner");
+        path.classList.add("leading");
         path.classList.add(top.party);
       }
+
     }
   }
 
   createLegend(candidate) {
     if (!candidate.id) return;
     var name = `${candidate.first} ${candidate.last}`;
+    var specialShading =
+      this.partyMap[candidate.party].length > 1
+        ? this.partyMap[candidate.party].indexOf(candidate.last)
+        : "";
     return (
       <div class="key-row">
-        <div class={`swatch ${candidate.party}`}></div>
+        <div class={`swatch ${candidate.party} i${specialShading}`}></div>
         <div class="name">{name}</div>
       </div>
     );
