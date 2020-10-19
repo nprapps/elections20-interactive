@@ -48,7 +48,7 @@ export default function ResultsBoardPresident(props) {
             {props.races.map(function(r, i) {
               var hasResult = r.eevp || r.reporting || r.called || r.runoff;
               var reporting = r.eevp || r.reportingPercent;
-              var percentIn = reporting ? reportingPercentage(reporting) + "% in" : "";
+              var percentIn = reporting || reporting == 0 ? reportingPercentage(reporting) + "% in" : "";
               var winner = r.candidates.filter(c => c.winner == "X");
               var flipped = winner[0] && (r.previousParty !== winner[0].party);
               var stateDetail = states[r.state] || {};
