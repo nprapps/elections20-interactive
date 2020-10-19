@@ -47,6 +47,8 @@ export default class NationalMap extends Component {
 
   onMove(e) {
     var svg = this.svgRef.current.querySelector("svg");
+    if (e.target.tagName == "text") return;
+
     var currentHover = svg.querySelector(".hover");
     if (currentHover) { currentHover.classList.remove("hover") };
 
@@ -68,24 +70,30 @@ export default class NationalMap extends Component {
       var stateOutline = g.querySelector("path");
       var stateLabel = g.querySelector("text");
 
-      // ignore NE and ME
       if (!stateOutline) return;
-      if (!stateOutline.hasAttribute("data-postal")) return;
+      if (!stateOutline.hasAttribute("data-postal")) {
+        // handle NE and ME separately
+        var thisBlock = g.querySelector("rect");
+        var positionX = parseInt(thisBlock.getAttribute("x")) - 12 + "px";
+        var positionY = parseInt(thisBlock.getAttribute("y")) + 11 + "px";
+        stateLabel.setAttribute("x", positionX);
+        stateLabel.setAttribute("y", positionY);
+      } else {
+        var bounds = stateOutline.getBBox();
+        var labelBox = stateLabel.getBBox();
 
-      var bounds = stateOutline.getBBox();
-      var labelBox = stateLabel.getBBox();
+        var positionX = (bounds.x + (bounds.width / 2));
+        stateLabel.setAttribute("x", positionX);
 
-      var positionX = (bounds.x + (bounds.width / 2));
-      stateLabel.setAttribute("x", positionX);
+        var positionY = (bounds.y + (bounds.height / 2) + (labelBox.height / 3)) - 1;
+        stateLabel.setAttribute("y", positionY)
 
-      var positionY = (bounds.y + (bounds.height / 2) + (labelBox.height / 3)) - 1;
-      stateLabel.setAttribute("y", positionY)
-
-      var state = stateOutline.getAttribute("data-postal");
-      var offsetX = states[state].geo_offset_x;
-      var offsetY = states[state].geo_offset_y;
-      if (offsetX) { stateLabel.setAttribute("dx", offsetX); }
-      if (offsetY) { stateLabel.setAttribute("dy", offsetY); }
+        var state = stateOutline.getAttribute("data-postal");
+        var offsetX = states[state].geo_offset_x;
+        var offsetY = states[state].geo_offset_y;
+        if (offsetX) { stateLabel.setAttribute("dx", offsetX); }
+        if (offsetY) { stateLabel.setAttribute("dy", offsetY); }
+      }
     });
   }
 
