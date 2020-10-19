@@ -108,7 +108,7 @@ export default class BoardPresident extends Component {
       <div class="tabgroup">
         <div
           id="ec-tetris" role="tabpanel" tabindex="-1"
-          class={state.selectedTab == "ec-tetris" ? "active" : "inactive"}
+          class={state.selectedTab == "ec-tetris" ? "inactive" : "active"}
         >
           <div class="tetris-container">
             {races && <>
@@ -125,7 +125,7 @@ export default class BoardPresident extends Component {
         </div>
         <div
           id="national-map" role="tabpanel" tabindex="-1"
-          class={state.selectedTab == "national-map" ? "active" : "inactive"}
+          class={state.selectedTab == "national-map" ? "inactive" : "active"}
         >
           {races && <NationalMap races={races} />}
         </div>
