@@ -1,6 +1,7 @@
 import { h, Component, createRef } from "preact";
 import gopher from "../gopher.js";
 import "./nationalMap.less";
+import states from "states.sheet.json";
 
 export default class NationalMap extends Component {
   constructor(props) {
@@ -67,14 +68,24 @@ export default class NationalMap extends Component {
       var stateOutline = g.querySelector("path");
       var stateLabel = g.querySelector("text");
 
+      // ignore NE and ME
+      if (!stateOutline) return;
+      if (!stateOutline.hasAttribute("data-postal")) return;
+
       var bounds = stateOutline.getBBox();
       var labelBox = stateLabel.getBBox();
-      
+
       var positionX = (bounds.x + (bounds.width / 2));
       stateLabel.setAttribute("x", positionX);
 
       var positionY = (bounds.y + (bounds.height / 2) + (labelBox.height / 3)) - 1;
       stateLabel.setAttribute("y", positionY)
+
+      var state = stateOutline.getAttribute("data-postal");
+      var offsetX = states[state].geo_offset_x;
+      var offsetY = states[state].geo_offset_y;
+      if (offsetX) { stateLabel.setAttribute("dx", offsetX); }
+      if (offsetY) { stateLabel.setAttribute("dy", offsetY); }
     });
   }
 
