@@ -1,35 +1,6 @@
 @import "values";
 
 .board.president {
-  .tabs {
-    display: flex;
-
-    [role="tab"] {
-      border-bottom: 2px solid transparent;
-
-      &:focus {
-        background: #E8E8E8;
-        outline: none;
-      }
-
-      &[aria-selected="true"] {
-        border-bottom-color: blue;
-      }
-    }
-  }
-
-  [role="tabpanel"] {
-    display: none;
-
-    &:focus {
-      outline: none;
-      border: none;
-    }
-
-    &.active {
-      display: block;
-    }
-  }
 
   .tetris-container {
     display: flex;

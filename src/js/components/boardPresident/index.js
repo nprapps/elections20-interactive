@@ -6,6 +6,7 @@ import TestBanner from "../testBanner";
 import DateFormatter from "../dateFormatter";
 import "./boardPresident.less";
 import Tetris from "../tetris";
+import Tabs from "../tabs";
 import { getBucket } from "../util.js";
 
 export default class BoardPresident extends Component {
@@ -16,7 +17,6 @@ export default class BoardPresident extends Component {
       selectedTab: "ec-tetris"
     };
     this.onData = this.onData.bind(this);
-    this.selectTab = this.selectTab.bind(this);
   }
 
   onData(data) {
@@ -30,13 +30,6 @@ export default class BoardPresident extends Component {
 
   componentWillUnmount() {
     gopher.unwatch(`./data/president.json`, this.onData);
-  }
-
-  selectTab(e) {
-    var controls = e.target.getAttribute("aria-controls");
-    var panel = this.base.querySelector("#" + controls);
-    this.setState({ selectedTab: controls });
-    setTimeout(() => panel.focus(), 50);
   }
 
   render(props, state) {
@@ -73,34 +66,15 @@ export default class BoardPresident extends Component {
         uncalled: []
       }
 
-
       races.forEach(r => called[r.winnerParty || "uncalled"].push(r));
 
     }
-    
-    var tabs = [
-      ["Tetris", "ec-tetris"],
-      ["Geographic map", "national-map"]
-    ];
 
     return <div class="president board">
       <h1 tabindex="-1">President</h1>
       { test ? <TestBanner /> : "" }
-      <div class="tabs" role="tablist">
-        {tabs.map(([label, data]) => (
-          <button
-            role="tab"
-            aria-controls={data}
-            aria-selected={(state.selectedTab == data).toString()}
-            onClick={this.selectTab}
-          >{label}</button>
-        ))}
-      </div>
-      <div class="tabgroup">
-        <div
-          id="ec-tetris" role="tabpanel" tabindex="-1"
-          class={state.selectedTab == "ec-tetris" ? "inactive" : "active"}
-        >
+      <Tabs>
+        <div label="Tetris">
           <div class="tetris-container">
             {races && <>
               <div class="uncalled">
@@ -114,13 +88,10 @@ export default class BoardPresident extends Component {
             </>}
           </div>
         </div>
-        <div
-          id="national-map" role="tabpanel" tabindex="-1"
-          class={state.selectedTab == "national-map" ? "inactive" : "active"}
-        >
+        <div label="Geographic Map">
           {races && <NationalMap races={races} />}
         </div>
-      </div>
+      </Tabs>
       <div class="board-container">
         {races && <>
           <Results races={buckets.tossup} hed="Lean/Tossup States" office="President" addClass="middle" />
