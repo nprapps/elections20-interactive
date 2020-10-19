@@ -7,6 +7,7 @@ import DateFormatter from "../dateFormatter";
 import states from "states.sheet.json";
 import "./boardPresident.less";
 import Tetris from "../tetris";
+import { getBucket } from "../util.js";
 
 export default class BoardPresident extends Component {
   constructor(props) {
