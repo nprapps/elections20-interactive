@@ -118,8 +118,8 @@ export default class BoardPresident extends Component {
                   {called.uncalled.map(c => <li>{c.state}</li>)}
                 </ul>
               </div>
-              <Tetris races={called.Dem} width={9} class="D" />
-              <Tetris races={called.GOP} width={9} class="R" />
+              <Tetris races={called.Dem} width={10} class="D" />
+              <Tetris races={called.GOP} width={10} class="R" />
             </>}
           </div>
         </div>

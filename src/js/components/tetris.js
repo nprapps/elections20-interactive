@@ -65,67 +65,74 @@ export default function Tetris(props) {
     lines.push(i);
   }
 
-  return <svg class={"tetris " + props.class} width={width * cellSize} height={rows * cellSize}>
-    {lines.map(g => (
-      <line 
+  return <div class={"tetris " + props.class}>
+    <svg 
+      width={width * cellSize} 
+      height={rows * cellSize}
+      preserveAspectRatio="xMidYMid meet"
+      viewBox="0 0 {width"
+      >
+      {lines.map(g => (
+        <line 
+          x1={0} x2={width * cellSize}
+          y1={(rows - g) * cellSize} y2={(rows - g) * cellSize}
+          class="grid"
+        />
+      ))}
+      <line class="victory grid"
         x1={0} x2={width * cellSize}
-        y1={(rows - g) * cellSize} y2={(rows - g) * cellSize}
-        class="grid"
+        y1={(rows - victoryRow) * cellSize} y2={(rows - victoryRow) * cellSize}
       />
-    ))}
-    <line class="victory grid"
-      x1={0} x2={width * cellSize}
-      y1={(rows - victoryRow) * cellSize} y2={(rows - victoryRow) * cellSize}
-    />
-    <text x={0} y={(rows - victoryRow) * cellSize + textSize}>270 votes - victory</text>
-    {shapes.map(function(shape, i) {
-      var [ _, labelCell ] = shape.cells;
-      return <>
-        <g data-state={shape.label} data-count={shape.cells.length}>
-        {shape.cells.map(function(c) {
-          var attrs = {
-            x: c.column * cellSize,
-            y: (rows - c.row - 1) * cellSize,
-            width: cellSize,
-            height: cellSize
-          };
-          // get neighboring cells
-          var neighbors = {
-            top: peek(c.row + 1, c.column),
-            bottom: peek(c.row - 1, c.column),
-            left: peek(c.row, c.column - 1),
-            right: peek(c.row, c.column + 1)
-          };
-          // do those neighbors match?
-          for (var k in neighbors) neighbors[k] = neighbors[k] == shape.label;
-          // shrink the rectangle if it's lonely
-          if (!neighbors.top) {
-            attrs.y++;
-            attrs.height--;
-          }
-          if (!neighbors.bottom) {
-            attrs.height--;
-          }
-          if (!neighbors.left) {
-            attrs.x++
-            attrs.width--;
-          }
-          if (!neighbors.right) {
-            attrs.width--;
-          }
-          return <rect {...attrs} class={ i % 2 ? "a" : "b"} />
-        })}
-        </g>
-        <text 
-          x={labelCell.column * cellSize + cellSize / 2} 
-          y={(rows - labelCell.row) * cellSize - (cellSize - textSize) / 2}
-          text-anchor="middle"
-          fill="white"
-          font-size={textSize}
-        >
-          {shape.label}
-        </text>
-      </>
-    })}
-  </svg>
+      <text x={0} y={(rows - victoryRow) * cellSize + textSize}>270 votes - victory</text>
+      {shapes.map(function(shape, i) {
+        var [ _, labelCell = { row: 0, column: 0 }] = shape.cells;
+        return <>
+          <g data-state={shape.label} data-count={shape.cells.length}>
+          {shape.cells.map(function(c) {
+            var attrs = {
+              x: c.column * cellSize,
+              y: (rows - c.row - 1) * cellSize,
+              width: cellSize,
+              height: cellSize
+            };
+            // get neighboring cells
+            var neighbors = {
+              top: peek(c.row + 1, c.column),
+              bottom: peek(c.row - 1, c.column),
+              left: peek(c.row, c.column - 1),
+              right: peek(c.row, c.column + 1)
+            };
+            // do those neighbors match?
+            for (var k in neighbors) neighbors[k] = neighbors[k] == shape.label;
+            // shrink the rectangle if it's lonely
+            if (!neighbors.top) {
+              attrs.y++;
+              attrs.height--;
+            }
+            if (!neighbors.bottom) {
+              attrs.height--;
+            }
+            if (!neighbors.left) {
+              attrs.x++
+              attrs.width--;
+            }
+            if (!neighbors.right) {
+              attrs.width--;
+            }
+            return <rect {...attrs} class={ i % 2 ? "a" : "b"} />
+          })}
+          </g>
+          <text 
+            x={labelCell.column * cellSize + cellSize / 2} 
+            y={(rows - labelCell.row) * cellSize - (cellSize - textSize) / 2}
+            text-anchor="middle"
+            fill="white"
+            font-size={textSize}
+          >
+            {shape.label}
+          </text>
+        </>
+      })}
+    </svg>
+  </div>
 }
