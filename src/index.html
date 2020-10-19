@@ -11,6 +11,13 @@
       if (window.top != window || search.has("embedded")) {
         document.body.classList.add("embedded");
       }
+      window.addEventListener("unhandledrejection", function(err) {
+        // on errors, convert hashchanges into reloads
+        console.log(`Unhandled framework error: ${err.reason}`);
+        window.addEventListener("hashchange", function() {
+          window.location.reload();
+        });
+      });
     </script>
     <%= t.include("partials/_navbar.html") %> 
     <%= t.include("partials/_about-box.html") %> 

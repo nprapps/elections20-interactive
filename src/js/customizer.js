@@ -112,6 +112,7 @@ class Customizer extends Component {
                   </textarea>
                 </div>
               </div>
+              <h2>Preview</h2>
               <side-chain 
                 key={state.selectedState} 
                 src={src} />
