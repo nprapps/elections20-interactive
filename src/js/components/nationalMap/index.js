@@ -83,9 +83,10 @@ export default class NationalMap extends Component {
     var districtName = e.target.getAttribute("data-district");
     var result = this.props.races.filter(r => r.state == stateName)[0];
     var district = districtName && districtName !== "AL";
+    var districtDisplay = districtName == "AL" ? " At-Large" : " " + districtName;
 
     tooltip.innerHTML = `
-      <h3>${result.stateName} <span>(${district ? 1 : result.electoral})</span></h3>
+      <h3>${result.stateName}${districtName ? districtDisplay : ""} <span>(${district ? 1 : result.electoral})</span></h3>
       <div class="candidates">${result.candidates}</div>
       <div class="reporting">${reportingPercentage(result.reportingPercent)}% in</div>
     `;
