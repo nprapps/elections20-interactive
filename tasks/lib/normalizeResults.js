@@ -131,6 +131,7 @@ module.exports = function (resultArray, overrides = {}) {
     ...overrides.house,
     ...overrides.senate,
     ...overrides.governors,
+    ...overrides.ballot_measures,
   };
 
   for (var response of resultArray) {
@@ -180,9 +181,11 @@ module.exports = function (resultArray, overrides = {}) {
         if (sheetMetadata && sheetMetadata.key_race) {
           unitMeta.keyRace = sheetMetadata.key_race;
         }
-
         if (sheetMetadata && sheetMetadata.rating) {
           unitMeta.rating = sheetMetadata.rating;
+        }
+        if (sheetMetadata && sheetMetadata.description) {
+          unitMeta.description = sheetMetadata.description;
         }
 
         unitMeta.updated = Date.parse(unitMeta.updated);
