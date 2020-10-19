@@ -1,5 +1,5 @@
 import { Component, h, Fragment } from "preact";
-import Scrapple from "./scrapple";
+import Scrapple from "@twilburn/scrapple";
 import "./components/ad";
 
 import BoardGovernor from "./components/boardGovernor";
@@ -54,11 +54,6 @@ export default class App extends Component {
         console.log(`Updating route focus to "${headline.textContent}"`)
       }
     }
-  }
-
-  componentDidCatch(e, info) {
-    console.log(e, info);
-    this.setState({ error: e })
   }
 
   loading() {
