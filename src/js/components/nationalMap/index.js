@@ -3,6 +3,8 @@ import gopher from "../gopher.js";
 import "./nationalMap.less";
 import states from "states.sheet.json";
 
+var northeastStates = [ "VT", "NH", "MA", "CT", "RI", "NJ", "DE", "MD", "DC" ];
+
 export default class NationalMap extends Component {
   constructor(props) {
     super();
@@ -71,13 +73,37 @@ export default class NationalMap extends Component {
       var stateLabel = g.querySelector("text");
 
       if (!stateOutline) return;
+
       if (!stateOutline.hasAttribute("data-postal")) {
-        // handle NE and ME separately
+        // handle NE and ME
+
         var thisBlock = g.querySelector("rect");
         var positionX = parseInt(thisBlock.getAttribute("x")) - 12 + "px";
         var positionY = parseInt(thisBlock.getAttribute("y")) + 11 + "px";
         stateLabel.setAttribute("x", positionX);
         stateLabel.setAttribute("y", positionY);
+        return;
+      }
+
+      var state = stateOutline.getAttribute("data-postal");
+      var offsetX = states[state].geo_offset_x;
+      var offsetY = states[state].geo_offset_y;
+
+      if (northeastStates.indexOf(state) > -1) {
+          // handle Northeastern states
+
+          g.classList.add("northeast");
+
+          var rect = document.createElementNS(svg.namespaceURI, "rect");
+          g.append(rect);
+          rect.setAttribute("x", offsetX - 21);
+          rect.setAttribute("y", offsetY - 9);
+          rect.setAttribute("width", 10);
+          rect.setAttribute("height", 10);
+
+          stateLabel.setAttribute("x", offsetX);
+          stateLabel.setAttribute("y", offsetY);
+
       } else {
         var bounds = stateOutline.getBBox();
         var labelBox = stateLabel.getBBox();
@@ -88,9 +114,6 @@ export default class NationalMap extends Component {
         var positionY = (bounds.y + (bounds.height / 2) + (labelBox.height / 3)) - 1;
         stateLabel.setAttribute("y", positionY)
 
-        var state = stateOutline.getAttribute("data-postal");
-        var offsetX = states[state].geo_offset_x;
-        var offsetY = states[state].geo_offset_y;
         if (offsetX) { stateLabel.setAttribute("dx", offsetX); }
         if (offsetY) { stateLabel.setAttribute("dy", offsetY); }
       }
