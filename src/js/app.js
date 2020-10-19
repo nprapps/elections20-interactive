@@ -21,11 +21,8 @@ export default class App extends Component {
       View: null
     };
 
-    this.onRouted = this.onRouted.bind(this);
-
     this.router = new Scrapple();
-    this.router.onhit = this.onRouted;
-    this.routed = false;
+    // this.router.onhit = () => {};
 
     this.addView(["/", "/president"], BoardPresident);
     this.addView("/house", BoardHouse);
@@ -34,7 +31,6 @@ export default class App extends Component {
     this.addView("/ballots", BoardBallot);
     this.addView("/states/:state", StateResults);
     this.addView("/states/:state/:subview", StateResults);
-    this.addRoute("/states/:state/detail/:race", "renderCounty");
 
   }
 
@@ -50,32 +46,14 @@ export default class App extends Component {
     });
   }
 
-  onRouted() {
-    this.routed = true;
-  }
-
   componentDidUpdate(_, state) {
-    setTimeout(() => {
-      if (this.state.route != state.route || this.state.View != state.view) {
-        var headline = this.__P.querySelector("h1, h2");
-        if (headline) {
-          headline.focus();
-          console.log(`Updating route focus to "${headline.textContent}"`)
-        }
+    if (this.base && this.state.route != state.route || this.state.View != state.view) {
+      var headline = this.__P.querySelector("h1, h2");
+      if (headline) {
+        headline.focus();
+        console.log(`Updating route focus to "${headline.textContent}"`)
       }
-    }, 50);
-  }
-
-  renderCounty(props, state, race) {
-    let currentState = state.params.state;
-    return (
-      <>
-        <div id="county-results">
-          <CountyResults state={currentState} raceid={state.params.race} />
-        </div>
-        <div class="placeholder">Demographic/results dataviz</div>
-      </>
-    );
+    }
   }
 
   loading() {

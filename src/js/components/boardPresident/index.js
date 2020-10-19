@@ -41,53 +41,54 @@ export default class BoardPresident extends Component {
 
   render(props, state) {
     var { races, test, latest } = this.state;
-    if (!races) {
-      return "";
-    }
 
-    races.forEach(function(r) {
-      r.name = states[r.state].name;
-      r.districtDisplay = (r.district !== "AL") ? r.district : "";
-    });
+    if (races) {
 
-    var sorted = races.sort(function(a,b) {
-      if (a.name > b.name) return 1;
-      if (a.name < b.name) return -1;
-      if (a.districtDisplay > b.districtDisplay) return 1;
-      if (a.districtDisplay < b.districtDisplay) return -1;
-      return 0;
-    });
+      races.forEach(function(r) {
+        r.name = states[r.state].name;
+        r.districtDisplay = (r.district !== "AL") ? r.district : "";
+      });
 
-    var buckets = {
-      likelyD: [],
-      tossup: [],
-      likelyR: []
-    };
+      var sorted = races.sort(function(a,b) {
+        if (a.name > b.name) return 1;
+        if (a.name < b.name) return -1;
+        if (a.districtDisplay > b.districtDisplay) return 1;
+        if (a.districtDisplay < b.districtDisplay) return -1;
+        return 0;
+      });
 
-    sorted.forEach(function(r) {
-      var stateName = r.state + (r.districtDisplay ? "-" + r.districtDisplay : "");
-      var rating = states[stateName].rating;
+      var buckets = {
+        likelyD: [],
+        tossup: [],
+        likelyR: []
+      };
 
-      if (rating == "solid-d" || rating == "likely-d") {
-        buckets.likelyD.push(r);
-      } else if (rating == "lean-d" || rating == "toss-up" || rating == "lean-r") {
-        buckets.tossup.push(r);
-      } else if (rating == "solid-r" || rating == "likely-r") {
-        buckets.likelyR.push(r);
+      sorted.forEach(function(r) {
+        var stateName = r.state + (r.districtDisplay ? "-" + r.districtDisplay : "");
+        var rating = states[stateName].rating;
+
+        if (rating == "solid-d" || rating == "likely-d") {
+          buckets.likelyD.push(r);
+        } else if (rating == "lean-d" || rating == "toss-up" || rating == "lean-r") {
+          buckets.tossup.push(r);
+        } else if (rating == "solid-r" || rating == "likely-r") {
+          buckets.likelyR.push(r);
+        }
+      });
+
+      var called = {
+        Dem: [],
+        GOP: []
       }
-    });
 
+      races.forEach(r => r.called && called[r.winnerParty].push(r));
+
+    }
+    
     var tabs = [
       ["Tetris", "ec-tetris"],
       ["Geographic map", "national-map"]
     ];
-
-    var called = {
-      Dem: [],
-      GOP: []
-    }
-
-    races.forEach(r => r.called && called[r.winnerParty].push(r))
 
     return <div class="president board">
       <h1>President</h1>
@@ -108,21 +109,25 @@ export default class BoardPresident extends Component {
           class={state.selectedTab == "ec-tetris" ? "active" : "inactive"}
         >
           <div class="tetris-container">
-            <Tetris races={called.Dem} width={9} class="D" />
-            <Tetris races={called.GOP} width={9} class="R" />
+            {races && <>
+              <Tetris races={called.Dem} width={9} class="D" />
+              <Tetris races={called.GOP} width={9} class="R" />
+            </>}
           </div>
         </div>
         <div
           id="national-map" role="tabpanel" tabindex="-1"
           class={state.selectedTab == "national-map" ? "active" : "inactive"}
         >
-          <NationalMap races={races} />
+          {races && <NationalMap races={races} />}
         </div>
       </div>
       <div class="board-container">
-        <Results races={buckets.tossup} hed="Lean/Tossup" office="President" addClass="middle" />
-        <Results races={buckets.likelyD} hed="Dem. Likely" office="President" addClass="first" />
-        <Results races={buckets.likelyR} hed="GOP Likely" office="President" addClass="last" />
+        {races && <>
+          <Results races={buckets.tossup} hed="Lean/Tossup" office="President" addClass="middle" />
+          <Results races={buckets.likelyD} hed="Dem. Likely" office="President" addClass="first" />
+          <Results races={buckets.likelyR} hed="GOP Likely" office="President" addClass="last" />
+        </>}
       </div>
       Results as of <DateFormatter value={latest}/>
     </div>

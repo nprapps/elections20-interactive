@@ -33,31 +33,30 @@ export default class BoardSenate extends Component {
 
   render() {
     var { races, test, latest } = this.state;
-    if (!races) {
-      return "";
+
+    if (races) {
+      races.forEach(r => r.name = states[r.state].name);
+
+      var sorted = races.sort((a,b) => a.name > b.name ? 1 : a.name < b.name ? -1 : 0);
+
+      var buckets = {
+        likelyD: [],
+        tossup: [],
+        likelyR: []
+      };
+
+      sorted.forEach(function(r) {
+        var rating = senate[r.id].rating;
+
+        if (rating == "solid-d" || rating == "likely-d") {
+          buckets.likelyD.push(r);
+        } else if (rating == "lean-d" || rating == "toss-up" || rating == "lean-r") {
+          buckets.tossup.push(r);
+        } else if (rating == "solid-r" || rating == "likely-r") {
+          buckets.likelyR.push(r);
+        }
+      });
     }
-
-    races.forEach(r => r.name = states[r.state].name);
-
-    var sorted = races.sort((a,b) => a.name > b.name ? 1 : a.name < b.name ? -1 : 0);
-
-    var buckets = {
-      likelyD: [],
-      tossup: [],
-      likelyR: []
-    };
-
-    sorted.forEach(function(r) {
-      var rating = senate[r.id].rating;
-
-      if (rating == "solid-d" || rating == "likely-d") {
-        buckets.likelyD.push(r);
-      } else if (rating == "lean-d" || rating == "toss-up" || rating == "lean-r") {
-        buckets.tossup.push(r);
-      } else if (rating == "solid-r" || rating == "likely-r") {
-        buckets.likelyR.push(r);
-      }
-    });
 
     return (
       <Fragment>
@@ -65,9 +64,11 @@ export default class BoardSenate extends Component {
         { test ? <TestBanner /> : "" }
         <BalanceOfPower race="senate" />
         <div class="board-container">
-          <Results races={buckets.likelyD} hed="Dem. Solid/Likely" office="Senate"/>
-          <Results races={buckets.tossup} hed="Lean/Tossup" office="Senate"/>
-          <Results races={buckets.likelyR} hed="GOP Solid/Likely" office="Senate"/>
+          {races && <>
+            <Results races={buckets.likelyD} hed="Dem. Solid/Likely" office="Senate"/>
+            <Results races={buckets.tossup} hed="Lean/Tossup" office="Senate"/>
+            <Results races={buckets.likelyR} hed="GOP Solid/Likely" office="Senate"/>
+          </>}
         </div>
         Results as of <DateFormatter value={latest} />
       </Fragment>

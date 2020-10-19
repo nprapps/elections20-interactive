@@ -30,15 +30,12 @@ export default class BoardBallot extends Component {
 
   render() {
     var { races, test, latest } = this.state;
-    if (!races) {
-      return "";
-    }
 
     return <>
       <h1>Ballot Initiatives</h1>
       { test ? <TestBanner /> : "" }
       <div class="board-container">
-        <Results races={races} office="Ballot"/>
+        {races && <Results races={races} office="Ballot"/>}
       </div>
       Results as of <DateFormatter value={latest} />
     </>;

@@ -33,30 +33,31 @@ export default class BoardHouse extends Component {
 
   render() {
     var { races, test, latest } = this.state;
-    if (!races) {
-      return "";
+
+    if (races) {
+      races.forEach(r => r.name = states[r.state].name);
+
+      var sorted = races.sort((a,b) => a.name > b.name ? 1 : a.name < b.name ? -1 : parseInt(a.seatNumber) > parseInt(b.seatNumber) ? 1 : parseInt(a.seatNumber) < parseInt(b.seatNumber) ? -1 : 0);
+
+      var buckets = {};
+
+      sorted.forEach(function(r) {
+        var rating = house[r.id] ? house[r.id].rating : "";
+        if (!buckets[rating]) buckets[rating] = [];
+        buckets[rating].push(r);
+      });
     }
-
-    races.forEach(r => r.name = states[r.state].name);
-
-    var sorted = races.sort((a,b) => a.name > b.name ? 1 : a.name < b.name ? -1 : parseInt(a.seatNumber) > parseInt(b.seatNumber) ? 1 : parseInt(a.seatNumber) < parseInt(b.seatNumber) ? -1 : 0);
-
-    var buckets = {};
-
-    sorted.forEach(function(r) {
-      var rating = house[r.id] ? house[r.id].rating : "";
-      if (!buckets[rating]) buckets[rating] = [];
-      buckets[rating].push(r);
-    });
 
     return <>
       <h1>Key House Results</h1>
       { test ? <TestBanner /> : "" }
       <BalanceOfPower race="house" />
       <div class="board-container">
-        <Results races={buckets["toss-up"]} hed="Tossup" office="House" addClass="middle" />
-        <Results races={buckets["lean-d"]} hed="Dem. Lean" office="House" addClass="first" />
-        <Results races={buckets["lean-r"]} hed="GOP Lean" office="House" addClass="last" />
+        {races && <>
+          <Results races={buckets["toss-up"]} hed="Tossup" office="House" addClass="middle" />
+          <Results races={buckets["lean-d"]} hed="Dem. Lean" office="House" addClass="first" />
+          <Results races={buckets["lean-r"]} hed="GOP Lean" office="House" addClass="last" />
+        </>}
       </div>
       Results as of <DateFormatter value={latest} />
     </>

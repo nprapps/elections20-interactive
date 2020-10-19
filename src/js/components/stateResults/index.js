@@ -57,10 +57,6 @@ export default class StateResults extends Component {
   render(props, state) {
     var { races, test, latest } = this.state;
 
-    if (!races) {
-      return <div> Loading... </div>;
-    }
-
     let stateName = stateLookup[this.props.state].name;
 
     let office = props.subview || "key";
@@ -83,7 +79,7 @@ export default class StateResults extends Component {
             {this.renderTabSwitcher(office)}
           </header>
           {test ? <TestBanner /> : ""}
-          <div class="results-elements">{this.renderResults(office)}</div>
+          {races && <div class="results-elements">{this.renderResults(office)}</div>}
           Results as of <DateFormatter value={latest} />
         </div>
 
@@ -154,6 +150,7 @@ export default class StateResults extends Component {
 
   renderTabSwitcher(view) {
     // Create the tab switcher, between different race types
+    if (!this.state.races) return false;
     var available = new Set(this.state.races.map(r => r.office));
     var tabs = "PGSHI"
       .split("")
