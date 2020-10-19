@@ -105,7 +105,7 @@ var mergeOthers = function (candidates, raceID) {
   };
   for (var c of remaining) {
     // preserve candidates with >10% of the vote
-    if (c.votes / total > .1) {
+    if (c.votes / total > 0.1) {
       merged.push(c);
       continue;
     }
@@ -130,7 +130,7 @@ module.exports = function (resultArray, overrides = {}) {
   var nprMetadata = {
     ...overrides.house,
     ...overrides.senate,
-    ...overrides.governors
+    ...overrides.governors,
   };
 
   for (var response of resultArray) {
@@ -159,14 +159,18 @@ module.exports = function (resultArray, overrides = {}) {
 
         // create a district property if necessary
         if (level == "district") {
-          unitMeta.district = unitMeta.name == "At Large" ? "AL" : unitMeta.name.replace(/district /i, "");
+          unitMeta.district =
+            unitMeta.name == "At Large"
+              ? "AL"
+              : unitMeta.name.replace(/district /i, "");
         }
 
         // add the state name to states
         var stateMeta = states[unitMeta.state];
         if (stateMeta) {
           unitMeta.stateName = states[unitMeta.state].name;
-          unitMeta.stateAP = states[unitMeta.state].ap
+          unitMeta.stateAP = states[unitMeta.state].ap;
+          unitMeta.rating = states[unitMeta.state].rating;
         }
 
         var sheetMetadata = nprMetadata[raceMeta.id];
@@ -176,6 +180,11 @@ module.exports = function (resultArray, overrides = {}) {
         if (sheetMetadata && sheetMetadata.key_race) {
           unitMeta.keyRace = sheetMetadata.key_race;
         }
+
+        if (sheetMetadata && sheetMetadata.rating) {
+          unitMeta.rating = sheetMetadata.rating;
+        }
+
         unitMeta.updated = Date.parse(unitMeta.updated);
 
         var total = 0;
@@ -188,7 +197,9 @@ module.exports = function (resultArray, overrides = {}) {
             for (var k in override) {
               if (override[k]) c[k] = override[k];
             }
-            console.log(`Applying candidate overrides for #${c.id} (${c.first} ${c.last})`);
+            console.log(
+              `Applying candidate overrides for #${c.id} (${c.first} ${c.last})`
+            );
           }
           total += c.votes;
           parties.add(c.party);
@@ -199,7 +210,9 @@ module.exports = function (resultArray, overrides = {}) {
         var roster = rosters[raceMeta.id];
         if (roster) {
           roster = new Set(roster.toString().split(/,\s*/));
-          console.log(`Overriding the roster for race #${unitMeta.id} - ${roster.size} candidates`);
+          console.log(
+            `Overriding the roster for race #${unitMeta.id} - ${roster.size} candidates`
+          );
           ballot = ballot.filter(c => roster.has(c.id));
         }
 
@@ -214,7 +227,7 @@ module.exports = function (resultArray, overrides = {}) {
           ballot = mergeOthers(ballot, raceMeta.id);
         }
 
-        var [ call ] = calls.filter(function(row) {
+        var [call] = calls.filter(function (row) {
           if (row.raceID != unitMeta.id) return false;
           for (var p of ["state", "fips", "district"]) {
             if (row[p] && row[p] != unitMeta[p]) return false;
@@ -222,13 +235,14 @@ module.exports = function (resultArray, overrides = {}) {
           return true;
         });
 
-        if (call) console.log(`Overriding winner (${
-          call.candidate
-        }) for race #${
-          unitMeta.id
-        } in ${
-          [call.state, call.fips, call.district].filter(s => s).join("-")
-        }`);
+        if (call)
+          console.log(
+            `Overriding winner (${call.candidate}) for race #${
+              unitMeta.id
+            } in ${[call.state, call.fips, call.district]
+              .filter(s => s)
+              .join("-")}`
+          );
 
         var winner = null;
         ballot.forEach(function (c) {
@@ -250,7 +264,6 @@ module.exports = function (resultArray, overrides = {}) {
           unitMeta.runoff = winner.winner == "R";
           unitMeta.winnerParty = winner.party;
         }
-
 
         unitMeta.candidates = ballot;
         output.push(unitMeta);

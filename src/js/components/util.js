@@ -70,6 +70,16 @@ export var formatters = {
   },
 };
 
+export function getBucket(rating) {
+  if (rating == "solid-d" || rating == "likely-d") {
+    return 'likelyD'
+  } else if (rating == "lean-d" || rating == "toss-up" || rating == "lean-r") {
+    return 'tossup';
+  } else if (rating == "solid-r" || rating == "likely-r") {
+    return 'likelyR';
+  }
+}
+
 const availableMetrics = {
   population: {
     name: "Population",
