@@ -38,6 +38,7 @@ export default class NationalMap extends Component {
   async loadSVG(svgText) {
     this.svgRef.current.innerHTML = svgText;
     this.paint(this.props);
+    this.initLabels();
 
     var svg = this.svgRef.current.querySelector("svg");
     svg.addEventListener("mousemove", e => this.onMove(e));
@@ -58,8 +59,23 @@ export default class NationalMap extends Component {
 
   }
 
-  initLabel() {
+  initLabels() {
+    var svg = this.svgRef.current.querySelector("svg");
+    var groups = svg.querySelectorAll("g");
+    
+    groups.forEach(function(g) {
+      var stateOutline = g.querySelector("path");
+      var stateLabel = g.querySelector("text");
 
+      var bounds = stateOutline.getBBox();
+      var labelBox = stateLabel.getBBox();
+      
+      var positionX = (bounds.x + (bounds.width / 2));
+      stateLabel.setAttribute("x", positionX);
+
+      var positionY = (bounds.y + (bounds.height / 2) + (labelBox.height / 3)) - 1;
+      stateLabel.setAttribute("y", positionY)
+    });
   }
 
   paint(props) {
