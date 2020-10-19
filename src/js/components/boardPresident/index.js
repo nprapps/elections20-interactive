@@ -36,7 +36,7 @@ export default class BoardPresident extends Component {
     var controls = e.target.getAttribute("aria-controls");
     var panel = this.base.querySelector("#" + controls);
     this.setState({ selectedTab: controls });
-    panel.focus();
+    setTimeout(() => panel.focus(), 50);
   }
 
   render(props, state) {

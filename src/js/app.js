@@ -21,8 +21,12 @@ export default class App extends Component {
       View: null
     };
 
+    this.onRouted = this.onRouted.bind(this);
+
     this.router = new Scrapple();
-    this.router.onhit = () => {};
+    this.router.onhit = this.onRouted;
+    this.routed = false;
+
     this.addView(["/", "/president"], BoardPresident);
     this.addView("/house", BoardHouse);
     this.addView("/governor", BoardGovernor);
@@ -31,6 +35,7 @@ export default class App extends Component {
     this.addView("/states/:state", StateResults);
     this.addView("/states/:state/:subview", StateResults);
     this.addRoute("/states/:state/detail/:race", "renderCounty");
+
   }
 
   addRoute(path, route) {
@@ -43,6 +48,22 @@ export default class App extends Component {
     this.router.add(path, ({ url, params }) => {
       this.setState({ route: null, params, View, url });
     });
+  }
+
+  onRouted() {
+    this.routed = true;
+  }
+
+  componentDidUpdate(_, state) {
+    setTimeout(() => {
+      if (this.state.route != state.route || this.state.View != state.view) {
+        var headline = this.__P.querySelector("h1, h2");
+        if (headline) {
+          headline.focus();
+          console.log(`Updating route focus to "${headline.textContent}"`)
+        }
+      }
+    }, 50);
   }
 
   renderCounty(props, state, race) {
@@ -58,7 +79,7 @@ export default class App extends Component {
   }
 
   loading() {
-    return "Loading...";
+    return <span>"Loading..."</span>;
   }
 
   render(props, state) {
@@ -75,6 +96,6 @@ export default class App extends Component {
     }
 
     // otherwise fall back to nothing
-    return "";
+    return <span></span>;
   }
 }
