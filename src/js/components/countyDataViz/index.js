@@ -20,9 +20,11 @@ export class CountyDataViz extends Component {
 
   // Lifecycle: Called whenever our component is created
   async componentDidMount() {
+    // Sort by party for consistent display.
     var sorted = this.props.order.sort(sortByParty);
     var cleanedData = this.getCleanedData(this.props.data, sorted);
 
+    // Create display charts and sort by their correlations
     var charts = [];
     for (var m of Object.keys(availableMetrics)) {
       var metric = availableMetrics[m];
@@ -34,15 +36,14 @@ export class CountyDataViz extends Component {
     if (cleanedData.length >= 10) {
       this.setState({
         cleanedData,
+        sorted,
         charts: charts.sort((a, b) => b.corr - a.corr),
       });
     }
   }
 
   // Lifecycle: Called just before our component will be destroyed
-  componentWillUnmount() {
-    // stop when not renderable
-  }
+  componentWillUnmount() {}
 
   render() {
     if (!this.state.cleanedData) {
@@ -50,7 +51,7 @@ export class CountyDataViz extends Component {
     }
 
     var footnote = this.ommittedCounties
-      ? `${this.ommittedCounties} counties ommitted`
+      ? `${this.ommittedCounties} counties ommitted due top two parties being different than overall state top two parties`
       : "";
     return (
       <div class="trends">
@@ -61,11 +62,10 @@ export class CountyDataViz extends Component {
               <CountyChart
                 data={this.state.cleanedData}
                 variable={c.key}
-                order={this.props.order.sort(sortByParty)}
+                order={this.state.sorted}
                 title={c.name}
                 corr={c.corr}
                 formatter={c.format}
-                secondKey ={c.secondKey}
               />
             </div>
           ))}
@@ -88,8 +88,9 @@ export class CountyDataViz extends Component {
     var lead = order[0].party;
     var second = order[1].party;
 
-    var resultsIn = data.filter(d => d.reportingPercent >= .5);
+    var resultsIn = data.filter(d => d.reportingPercent >= 0.5);
 
+    // Filter out counties whose top 2 candidates don't match state.
     var filtered = resultsIn.filter(function (d) {
       var countyParties = d.candidates.map(c => c.party);
       return countyParties.includes(lead) && countyParties.includes(second);
@@ -114,7 +115,7 @@ export class CountyDataViz extends Component {
     var leadPer = firstParty.percent * 100;
     var secondPer = secondParty.percent * 100;
 
-    return (secondPer / (leadPer + secondPer));
+    return secondPer / (leadPer + secondPer);
   }
 
   getCorrs(v, data) {

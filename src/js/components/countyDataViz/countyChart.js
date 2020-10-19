@@ -35,9 +35,7 @@ export class CountyChart extends Component {
   }
 
   // Lifecycle: Called just before our component will be destroyed
-  componentWillUnmount() {
-    // stop when not renderable
-  }
+  componentWillUnmount() {}
 
   render() {
     if (!this.props.data) {
@@ -66,7 +64,7 @@ export class CountyChart extends Component {
     var index = Math.ceil(this.props.corr * relationships.length) - 1;
     return (
       <span class="description">
-        There is <b>{relationships[index]}</b> correlation between{" "}
+        There is <b>{relationships[index]}</b> relationship between{" "}
         <b> {this.props.title} </b> and party vote
       </span>
     );
@@ -76,33 +74,7 @@ export class CountyChart extends Component {
     if (!this.state.dimensions) {
       return "";
     }
-    // TODO: Move this elsewhere?
-    var width = this.state.dimensions.width;
-    var chartWidth = width - this.margins.left - this.margins.right;
-    var chartHeight = width - this.margins.top - this.margins.bottom;
-
-    var v = this.props.variable;
-    var maxY = Math.max.apply(
-      Math,
-      this.props.data.map(function (d) {
-        return getCountyVariable(d, v);
-      })
-    );
-    var minY = Math.min.apply(
-      Math,
-      this.props.data.map(function (d) {
-        return getCountyVariable(d, v);
-      })
-    );
-
-    maxY = Math.ceil(maxY * 100) / 100;
-    minY = Math.floor(minY * 100) / 100;
-
-    this.xScale = scaleFactory([0, 1], [0, chartWidth]);
-    this.yScale = scaleFactory([minY, maxY], [chartHeight, 0]);
-
-    var height = chartHeight + this.margins.top + this.margins.bottom;
-    var width = chartWidth + this.margins.left + this.margins.right;
+    var { width, height } = this.state.dimensions;
     return (
       <svg
         role="img"
@@ -154,12 +126,11 @@ export class CountyChart extends Component {
   createAxes() {
     const [xStart, xEnd] = this.xScale.range();
     const [yStart, yEnd] = this.yScale.range();
-    const ticksY = this.yScale.ticks();
     const [orderLess, orderMore] = this.props.order;
 
     var yLabel;
     if (this.props.variable == "past_margin") {
-      yLabel = 'More democratic →'
+      yLabel = "More democratic →";
     } else {
       yLabel = `Higher ${this.props.title} →`;
     }
@@ -182,7 +153,9 @@ export class CountyChart extends Component {
           transform="rotate(-90)"
           x={0}
           dy=".35em"
-          y={-10}>{yLabel}</text>
+          y={-10}>
+          {yLabel}
+        </text>
         <text
           class="x axis-label"
           text-anchor="start"
@@ -200,12 +173,6 @@ export class CountyChart extends Component {
   createDots() {
     const [xStart, xEnd] = this.xScale.range();
     const [yStart, yEnd] = this.yScale.range();
-    const ticksY = this.yScale.ticks();
-
-    var dots = [
-      { x: 10, y: 20 },
-      { x: 30, y: 10 },
-    ];
 
     return (
       <>
@@ -235,10 +202,31 @@ export class CountyChart extends Component {
 
   handleResize() {
     var newWidth = this.wrapperRef.current.offsetWidth;
+
+    var chartWidth = newWidth - this.margins.left - this.margins.right;
+    var chartHeight = newWidth - this.margins.top - this.margins.bottom;
+
+    // Get min/max for Y axis
+    var v = this.props.variable;
+    var currV = this.props.data.map(function (d) {
+      return getCountyVariable(d, v);
+    });
+    var maxY = Math.max.apply(Math, currV);
+    var minY = Math.min.apply(Math, currV);
+    maxY = Math.ceil(maxY * 100) / 100;
+    minY = Math.floor(minY * 100) / 100;
+
+    this.xScale = scaleFactory([0, 1], [0, chartWidth]);
+    this.yScale = scaleFactory([minY, maxY], [chartHeight, 0]);
+
+    var height = chartHeight + this.margins.top + this.margins.bottom;
+    var width = chartWidth + this.margins.left + this.margins.right;
+
     if (!this.state.dimensions || newWidth != this.state.dimensions.width) {
       this.setState({
         dimensions: {
-          width: newWidth,
+          width,
+          height,
         },
       });
     }
