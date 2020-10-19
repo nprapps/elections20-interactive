@@ -4,34 +4,6 @@ import "./countyData.less";
 import { formatters, getCountyVariable } from "../util.js";
 var { chain, comma, percent, dollars } = formatters;
 
-var scaleFactory = function (domain, range) {
-  var [rangeStart, rangeEnd] = range;
-  var rangeSize = rangeEnd - rangeStart;
-  var [domainStart, domainEnd] = domain;
-  var domainSize = domainEnd - domainStart;
-  var scale = function (input) {
-    var normalized = (input - domainStart) / domainSize;
-    return normalized * rangeSize + rangeStart;
-  };
-  scale.range = () => range;
-  var tickIntervals = [1, 2, 5, 10, 20, 25, 50, 100, 200, 250, 500, 1000];
-  scale.ticks = function () {
-    for (var interval of tickIntervals) {
-      var count = domainSize / interval;
-      if (count > 3 && count < 10) {
-        var ticks = [];
-        var min = Math.floor(domainStart / interval) * interval;
-        var max = Math.ceil(domainEnd / interval) * interval;
-        for (var i = min; i <= max; i += interval) {
-          ticks.push(i);
-        }
-        return ticks;
-      }
-    }
-  };
-  return scale;
-};
-
 export class CountyChart extends Component {
   constructor(props) {
     super();
@@ -183,7 +155,7 @@ export class CountyChart extends Component {
     const [xStart, xEnd] = this.xScale.range();
     const [yStart, yEnd] = this.yScale.range();
     const ticksY = this.yScale.ticks();
-    const [orderMore, orderLess] = this.props.order;
+    const [orderLess, orderMore] = this.props.order;
 
     var yLabel;
     if (this.props.variable == "past_margin") {
@@ -272,3 +244,31 @@ export class CountyChart extends Component {
     }
   }
 }
+
+var scaleFactory = function (domain, range) {
+  var [rangeStart, rangeEnd] = range;
+  var rangeSize = rangeEnd - rangeStart;
+  var [domainStart, domainEnd] = domain;
+  var domainSize = domainEnd - domainStart;
+  var scale = function (input) {
+    var normalized = (input - domainStart) / domainSize;
+    return normalized * rangeSize + rangeStart;
+  };
+  scale.range = () => range;
+  var tickIntervals = [1, 2, 5, 10, 20, 25, 50, 100, 200, 250, 500, 1000];
+  scale.ticks = function () {
+    for (var interval of tickIntervals) {
+      var count = domainSize / interval;
+      if (count > 3 && count < 10) {
+        var ticks = [];
+        var min = Math.floor(domainStart / interval) * interval;
+        var max = Math.ceil(domainEnd / interval) * interval;
+        for (var i = min; i <= max; i += interval) {
+          ticks.push(i);
+        }
+        return ticks;
+      }
+    }
+  };
+  return scale;
+};

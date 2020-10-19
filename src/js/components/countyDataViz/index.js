@@ -2,8 +2,7 @@ import { h, Component, createRef } from "preact";
 import gopher from "../gopher.js";
 
 import { CountyChart } from "./countyChart.js";
-import { availableMetrics, getCountyVariable } from "../util.js";
-// import "./countyDataViz.less";
+import { availableMetrics, getCountyVariable, sortByParty } from "../util.js";
 
 export class CountyDataViz extends Component {
   constructor(props) {
@@ -21,7 +20,8 @@ export class CountyDataViz extends Component {
 
   // Lifecycle: Called whenever our component is created
   async componentDidMount() {
-    var cleanedData = this.getCleanedData(this.props.data, this.props.order);
+    var sorted = this.props.order.sort(sortByParty);
+    var cleanedData = this.getCleanedData(this.props.data, sorted);
 
     var charts = [];
     for (var m of Object.keys(availableMetrics)) {
@@ -61,7 +61,7 @@ export class CountyDataViz extends Component {
               <CountyChart
                 data={this.state.cleanedData}
                 variable={c.key}
-                order={this.props.order}
+                order={this.props.order.sort(sortByParty)}
                 title={c.name}
                 corr={c.corr}
                 formatter={c.format}
@@ -88,7 +88,6 @@ export class CountyDataViz extends Component {
     var lead = order[0].party;
     var second = order[1].party;
 
-    // TODO: is this the right cutoff?
     var resultsIn = data.filter(d => d.reportingPercent >= .5);
 
     var filtered = resultsIn.filter(function (d) {
@@ -110,12 +109,12 @@ export class CountyDataViz extends Component {
   }
 
   getX(county, lead, second) {
-    var secondParty = county.candidates.filter(c => c.party == second)[0];
-    var leadPer =
-      county.candidates.filter(c => c.party == lead)[0].percent * 100;
+    var [secondParty] = county.candidates.filter(c => c.party == second);
+    var [firstParty] = county.candidates.filter(c => c.party == lead);
+    var leadPer = firstParty.percent * 100;
     var secondPer = secondParty.percent * 100;
 
-    return (leadPer / (leadPer + secondPer));
+    return (secondPer / (leadPer + secondPer));
   }
 
   getCorrs(v, data) {

@@ -170,21 +170,20 @@ export default class CountyMap extends Component {
 
       var hitThreshold = mapData[d].reporting / mapData[d].precincts > 0.5;
 
+      var topCand = this.partyMap[top.party];
       var specialShading =
-      this.partyMap[top.party].length > 1
-        ? this.partyMap[top.party].indexOf(top.last)
-        : "";
+        topCand && topCand.length > 1
+          ? this.partyMap[top.party].indexOf(top.last)
+          : "";
       path.classList.add(`i${specialShading}`);
 
       if (!hitThreshold) {
-
-          path.style.fill = `url(#pending-0)`;
-          incomplete = true;
+        path.style.fill = `url(#pending-0)`;
+        incomplete = true;
       } else {
         path.classList.add("leading");
         path.classList.add(top.party);
       }
-
     }
   }
 

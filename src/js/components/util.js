@@ -29,9 +29,8 @@ export function sortByParty(a, b) {
 }
 
 /*
-  Sort a list of candidates by party, with Dems always first and GOP always last
+  Sort a list of candidates by a predefined order
 */
-
 export function sortByOrder(a, b, order) {
   var getPartyValue = c => {
     if (!order.includes(c)) {
