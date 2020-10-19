@@ -4,8 +4,6 @@ import Results from "../resultsBoardNamed";
 import BalanceOfPower from "../balanceOfPower";
 import TestBanner from "../testBanner";
 import DateFormatter from "../dateFormatter";
-import house from "house.sheet.json";
-import states from "states.sheet.json";
 
 export default class BoardHouse extends Component {
   constructor(props) {
@@ -35,16 +33,13 @@ export default class BoardHouse extends Component {
     var { races, test, latest } = this.state;
 
     if (races) {
-      races.forEach(r => r.name = states[r.state].name);
-
-      var sorted = races.sort((a,b) => a.name > b.name ? 1 : a.name < b.name ? -1 : parseInt(a.seatNumber) > parseInt(b.seatNumber) ? 1 : parseInt(a.seatNumber) < parseInt(b.seatNumber) ? -1 : 0);
+      var sorted = races.sort((a,b) => a.state > b.state ? 1 : a.state < b.state ? -1 : parseInt(a.seatNumber) > parseInt(b.seatNumber) ? 1 : parseInt(a.seatNumber) < parseInt(b.seatNumber) ? -1 : 0);
 
       var buckets = {};
 
       sorted.forEach(function(r) {
-        var rating = house[r.id] ? house[r.id].rating : "";
-        if (!buckets[rating]) buckets[rating] = [];
-        buckets[rating].push(r);
+        if (!buckets[r.rating]) buckets[r.rating] = [];
+        buckets[r.rating].push(r);
       });
     }
 
