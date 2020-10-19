@@ -44,7 +44,7 @@ export default class BoardHouse extends Component {
     }
 
     return <>
-      <h1>Key House Results</h1>
+      <h1 tabindex="-1">Key House Results</h1>
       { test ? <TestBanner /> : "" }
       <BalanceOfPower race="house" />
       <div class="board-container">

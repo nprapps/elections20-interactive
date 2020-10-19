@@ -32,7 +32,7 @@ export default class BoardBallot extends Component {
     var { races, test, latest } = this.state;
 
     return <>
-      <h1>Ballot Initiatives</h1>
+      <h1 tabindex="-1">Ballot Initiatives</h1>
       { test ? <TestBanner /> : "" }
       <div class="board-container">
         {races && <Results races={races} office="Ballot"/>}

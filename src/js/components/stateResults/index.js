@@ -69,7 +69,7 @@ export default class StateResults extends Component {
         onupdatedtime={e => this.updateTimestamp(e.detail, e)}>
         <div class="content">
           <header id="state-header">
-            <h1>
+            <h1 tabindex="-1">
               <img
                 class="icon"
                 src={"./assets/states/" + this.props.state + ".svg"}></img>

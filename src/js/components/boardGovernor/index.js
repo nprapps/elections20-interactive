@@ -49,7 +49,7 @@ export default class BoardGovernor extends Component {
     }
 
     return <>
-      <h1>Governor</h1>
+      <h1 tabindex="-1">Governor</h1>
       { test ? <TestBanner /> : "" }
       <div class="board-container">
         {races && <>

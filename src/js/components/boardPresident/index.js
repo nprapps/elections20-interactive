@@ -84,7 +84,7 @@ export default class BoardPresident extends Component {
     ];
 
     return <div class="president board">
-      <h1>President</h1>
+      <h1 tabindex="-1">President</h1>
       { test ? <TestBanner /> : "" }
       <div class="tabs" role="tablist">
         {tabs.map(([label, data]) => (

@@ -48,8 +48,10 @@ export default class App extends Component {
     if (this.base && this.state.route != state.route || this.state.View != state.view) {
       var headline = this.__P.querySelector("h1, h2");
       if (headline) {
-        headline.focus();
-        console.log(`Updating route focus to "${headline.textContent}"`)
+        setTimeout(() => {
+          headline.focus();
+          console.log(`Updating route focus to "${headline.textContent}"`);
+        });
       }
     }
   }

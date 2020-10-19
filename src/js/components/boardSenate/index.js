@@ -50,7 +50,7 @@ export default class BoardSenate extends Component {
 
     return (
       <Fragment>
-        <h1>Senate</h1>
+        <h1 tabindex="-1">Senate</h1>
         { test ? <TestBanner /> : "" }
         <BalanceOfPower race="senate" />
         <div class="board-container">
