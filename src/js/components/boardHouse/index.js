@@ -54,9 +54,9 @@ export default class BoardHouse extends Component {
       <BalanceOfPower race="house" />
       <div class="board-container">
         {races && <>
-          <Results races={buckets["toss-up"]} hed="Tossup" office="House" addClass="middle" />
-          <Results races={buckets["lean-d"]} hed="Dem. Lean" office="House" addClass="first" />
-          <Results races={buckets["lean-r"]} hed="GOP Lean" office="House" addClass="last" />
+          <Results races={buckets["toss-up"]} hed="Tossup States" office="House" addClass="middle" />
+          <Results races={buckets["lean-d"]} hed="Lean Dem." office="House" addClass="first" />
+          <Results races={buckets["lean-r"]} hed="Lean GOP" office="House" addClass="last" />
         </>}
       </div>
       Results as of <DateFormatter value={latest} />

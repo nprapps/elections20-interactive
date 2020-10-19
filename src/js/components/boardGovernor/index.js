@@ -63,9 +63,9 @@ export default class BoardGovernor extends Component {
       { test ? <TestBanner /> : "" }
       <div class="board-container">
         {races && <>
-          <Results races={buckets.likelyD} hed="Dem. Solid/Likely" office="Gov"/>
-          <Results races={buckets.tossup} hed="Lean/Tossup" office="Gov"/>
-          <Results races={buckets.likelyR} hed="GOP Solid/Likely" office="Gov"/>
+          <Results races={buckets.likelyD} hed="Safe/Likely Dem." office="Gov"/>
+          <Results races={buckets.tossup} hed="Lean/Tossup States" office="Gov"/>
+          <Results races={buckets.likelyR} hed="Safe/Likely GOP" office="Gov"/>
         </>}
       </div>
       Results as of <DateFormatter value={latest} />

@@ -132,9 +132,9 @@ export default class BoardPresident extends Component {
       </div>
       <div class="board-container">
         {races && <>
-          <Results races={buckets.tossup} hed="Lean/Tossup" office="President" addClass="middle" />
-          <Results races={buckets.likelyD} hed="Dem. Likely" office="President" addClass="first" />
-          <Results races={buckets.likelyR} hed="GOP Likely" office="President" addClass="last" />
+          <Results races={buckets.tossup} hed="Lean/Tossup States" office="President" addClass="middle" />
+          <Results races={buckets.likelyD} hed="Likely Dem." office="President" addClass="first" />
+          <Results races={buckets.likelyR} hed="Likely GOP" office="President" addClass="last" />
         </>}
       </div>
       Results as of <DateFormatter value={latest}/>
