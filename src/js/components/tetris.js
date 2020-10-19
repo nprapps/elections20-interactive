@@ -23,7 +23,7 @@ export default function Tetris(props) {
 
   var { width } = props;
   var cellSize = 20;
-  var textSize = cellSize * .7;
+  var textSize = cellSize * .5;
   var victoryRow = 270 / width;
 
   var last = a => a[a.length - 1];
@@ -45,14 +45,15 @@ export default function Tetris(props) {
   var snake = Snake(width);
   var shapes = races.reverse().map(function(r) {
     var cells = [];
+    var label = r.district ? r.district : r.state;
     for (var i = 0; i < r.electoral; i++) {
       var c = snake.next().value;
       cells.push(c);
-      poke(c.row, c.column, r.state);
+      poke(c.row, c.column, label);
     }
     return {
       data: r,
-      label: r.state,
+      label,
       cells
     }
   });
@@ -81,14 +82,8 @@ export default function Tetris(props) {
           y1={(rows - g) * cellSize} y2={(rows - g) * cellSize}
           class="grid"
         />
-      ))}
-      <line class="victory grid"
-        x1={0} x2={svgWidth}
-        y1={(rows - victoryRow) * cellSize} y2={(rows - victoryRow) * cellSize}
-      />
-      <text x={0} y={(rows - victoryRow) * cellSize + textSize}>270 votes - victory</text>
-      {shapes.map(function(shape, i) {
-        var [ _, labelCell = { row: 0, column: 0 }] = shape.cells;
+      ))}      {shapes.map(function(shape, i) {
+        var [ labelCell = { row: 0, column: 0 }] = shape.cells;
         return <>
           <g data-state={shape.label} data-count={shape.cells.length}>
           {shape.cells.map(function(c) {
@@ -136,6 +131,11 @@ export default function Tetris(props) {
           </text>
         </>
       })}
+      <line class="victory grid"
+        x1={0} x2={svgWidth}
+        y1={(rows - victoryRow) * cellSize} y2={(rows - victoryRow) * cellSize}
+      />
+      <text x={0} y={(rows - victoryRow) * cellSize + textSize}>270 votes - victory</text>
     </svg>
   </div>)
 }

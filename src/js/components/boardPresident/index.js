@@ -66,7 +66,9 @@ export default class BoardPresident extends Component {
         uncalled: []
       }
 
-      races.forEach(r => called[r.winnerParty || "uncalled"].push(r));
+      races.sort(function(a, b) {
+        return a.state < b.state ? -1 : 1;
+      }).forEach(r => called[r.winnerParty || "uncalled"].push(r));
 
     }
 
