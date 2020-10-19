@@ -8,6 +8,7 @@ export default class BalanceOfPower extends Component {
     super();
 
     this.isSenate = props.race == "senate";
+    // Hardcoded # of seats needed for majority in Senate/house
     this.seatsNeeded = this.isSenate ? 51 : 218;
     this.onData = this.onData.bind(this);
   }
@@ -96,8 +97,7 @@ export default class BalanceOfPower extends Component {
   }
 
   getCongressBOP(data) {
-    // TODO: Do we need to handle uncontested elections? Do they have winner marked?
-    // Hardcoded # of seats needed for majority in Senate/house
+    // Get inactive races (pre-set in sheet)
     var inactiveGOP = this.isSenate ? parseInt(InactiveSenateRaces["GOP"]) : 0;
     var inactiveDem = this.isSenate ? parseInt(InactiveSenateRaces["Dem"]) : 0;
     var inactiveInd = this.isSenate
@@ -110,7 +110,8 @@ export default class BalanceOfPower extends Component {
       Ind: { total: inactiveInd, gains: 0 },
     };
 
-    var notCalled = 0;
+    // For each race, if winner add to total and check if gain.
+    results.notCalled = 0;
     for (let race of data) {
       var winner = this.getWinner(race);
       if (winner) {
@@ -122,22 +123,21 @@ export default class BalanceOfPower extends Component {
           results[previousWinner].gains -= 1;
         }
       } else {
-        notCalled += 1;
+        results.notCalled += 1;
       }
     }
 
     // Get party with the largest gain.
-    var sorted = Object.keys(results)
+    var [top] = Object.keys(results)
       .map(k => ({ party: k, gains: results[k].gains }))
-      .sort((a, b) => b.gains - a.gains)[0];
+      .sort((a, b) => b.gains - a.gains);
 
     results.netGainParty = "none";
-    if (sorted.gains > 0) {
-      results.netGainParty = sorted.party;
-      results.netGain = sorted.gains;
+    if (top.gains > 0) {
+      results.netGainParty = top.party;
+      results.netGain = top.gains;
     }
-    
-    results.notCalled = notCalled;
+
     return results;
   }
 
@@ -149,8 +149,6 @@ export default class BalanceOfPower extends Component {
   }
 
   getWinner(race, party) {
-    // Is this the right way to determine winner?
-    // Can this be replaced by a util fxn?
     return race.candidates.filter(c => c.winner == "X")[0];
   }
 }
