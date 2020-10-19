@@ -76,6 +76,9 @@ export default class BoardPresident extends Component {
       <h1 tabindex="-1">President</h1>
       { test ? <TestBanner /> : "" }
       <Tabs>
+        <div label="Geographic Map">
+          {races && <NationalMap races={races} />}
+        </div>
         <div label="Tetris">
           <div class="tetris-container">
             {races && <>
@@ -90,9 +93,7 @@ export default class BoardPresident extends Component {
             </>}
           </div>
         </div>
-        <div label="Geographic Map">
-          {races && <NationalMap races={races} />}
-        </div>
+        
       </Tabs>
       <div class="board-container">
         {races && <>

@@ -3,6 +3,50 @@
 .map {
 	max-width: 950px;
 	margin: auto;
+	position: relative;
+
+	.tooltip {
+  	position: absolute;
+	  border: 1px solid #eee;
+	  background-color: white;
+	  padding: 8px 8px 5px 8px;
+	  display: none;
+	  pointer-events: none;
+
+	  &.shown {
+	    display: block;
+	  }
+
+	  h3 {
+	  	font-size: 11px;
+    	margin: 0 0 3px 0;
+    	font-family: "Knockout 31 4r","Helvetica Neue",Helvetica,Arial,sans-serif;
+	    font-weight: normal;
+	    text-transform: uppercase;
+	    line-height: 1.2;
+	    letter-spacing: .05em;
+	    -webkit-font-smoothing: antialiased;
+	    color: #333;
+
+	    span {
+	    	color: #666;
+	    }
+	  }
+
+	  .candidates {
+	  	.gotham();
+	  }
+
+	  .reporting {
+	  	.gotham();
+	  	margin: 0;
+	    padding-top: 3px;
+	    font-size: 9px;
+	    color: #9a9a9a;
+	    font-style: italic;
+	    border-top: 1px solid #eee;
+	  }
+	}
 
 	g {
 		fill: #ddd;
@@ -45,10 +89,14 @@
     text-anchor: middle;
     stroke: none;
     cursor: default;
+    pointer-events: none;
 	}
 
   .hi text, .northeast text {
   	fill: #666 !important;
+  }
+  .northeast text {
+  	text-anchor: start;
   }
 
 	.hover {
@@ -56,3 +104,4 @@
 		stroke-width: 2px;
 	}
 }
+

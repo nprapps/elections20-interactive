@@ -1,5 +1,6 @@
 import { h, Component, createRef } from "preact";
 import gopher from "../gopher.js";
+import { reportingPercentage } from "../util.js";
 import "./nationalMap.less";
 import states from "states.sheet.json";
 
@@ -34,6 +35,7 @@ export default class NationalMap extends Component {
     return (
       <div class="map">
         <div ref={this.svgRef}></div>
+        <div class="tooltip"></div>
       </div>
     );
   }
@@ -49,18 +51,55 @@ export default class NationalMap extends Component {
 
   onMove(e) {
     var svg = this.svgRef.current.querySelector("svg");
-    if (e.target.tagName == "text") return;
+    var tooltip = document.querySelector(".tooltip");
 
+    // hover styles
     var currentHover = svg.querySelector(".hover");
     if (currentHover) { currentHover.classList.remove("hover") };
 
-    if (!e.target.hasAttribute("data-postal")) return;
+    if (!e.target.hasAttribute("data-postal")) {
+      tooltip.classList.remove("shown");
+      return;
+    }
 
     var group = e.target.closest("svg > g");
     svg.appendChild(group);
-
-    var state = e.target.getAttribute("data-postal");
     e.target.classList.add("hover");
+
+    // tooltips
+    var bounds = svg.getBoundingClientRect();
+    var x = e.clientX - bounds.left;
+    var y = e.clientY - bounds.top;
+    if (x > bounds.width / 2) {
+      x -= tooltip.offsetWidth + 10;
+    } else {
+      x += 20;
+    }
+    tooltip.style.left = x + "px";
+    tooltip.style.top = y + "px";
+
+    var stateName = e.target.getAttribute("data-postal");
+    var result = this.props.races.filter(r => r.state == stateName)[0];
+    console.log(result)
+
+    // var candText = "";
+    // if (result.reportingPercent > 0.5) {
+    //   var leadingCandidate = result.candidates[0];
+    //   var prefix = leadingCandidate.winner ? "Winner: " : "Leading: ";
+    //   var candText = `${prefix}${leadingCandidate.last} (${
+    //     leadingCandidate.percent
+    //       ? reportingPercentage(leadingCandidate.percent)
+    //       : 0
+    //   }%)`;
+    // }
+
+    tooltip.innerHTML = `
+      <h3>${result.stateName} <span>(${result.electoral})</span></h3>
+      <div class="candidates">${result.candidates}</div>
+      <div class="reporting">${reportingPercentage(result.reportingPercent)}% in</div>
+    `;
+
+    tooltip.classList.add("shown");
 
   }
 
@@ -85,18 +124,18 @@ export default class NationalMap extends Component {
         return;
       }
 
-      var state = stateOutline.getAttribute("data-postal");
-      var offsetX = states[state].geo_offset_x;
-      var offsetY = states[state].geo_offset_y;
+      var stateName = stateOutline.getAttribute("data-postal");
+      var offsetX = states[stateName].geo_offset_x;
+      var offsetY = states[stateName].geo_offset_y;
 
-      if (northeastStates.indexOf(state) > -1) {
+      if (northeastStates.indexOf(stateName) > -1) {
           // handle Northeastern states
 
           g.classList.add("northeast");
 
           var rect = document.createElementNS(svg.namespaceURI, "rect");
           g.append(rect);
-          rect.setAttribute("x", offsetX - 21);
+          rect.setAttribute("x", offsetX - 15);
           rect.setAttribute("y", offsetY - 9);
           rect.setAttribute("width", 10);
           rect.setAttribute("height", 10);
