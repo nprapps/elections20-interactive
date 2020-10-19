@@ -36,7 +36,6 @@ export default class BoardPresident extends Component {
     var { races, test, latest } = this.state;
 
     if (races) {
-
       races.forEach(function(r) {
         r.districtDisplay = (r.district !== "AL") ? r.district : "";
       });
