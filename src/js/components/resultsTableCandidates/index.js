@@ -11,7 +11,8 @@ export default function ResultsTableCandidates(props) {
   
   var results = props.data;
   var notStatewide = results.office === "H" || results.office === "I";
-  const seatName = notStatewide ? results.seat : props.title;
+  var seatName = notStatewide ? results.seat : props.title;
+  if (results.office === "I") seatName += ` - ${results.description}`
 
   let totalVotes = 0;
   for (let i = 0; i < results.candidates.length; i++) {
@@ -55,6 +56,9 @@ export default function ResultsTableCandidates(props) {
 
 export function ResultsTableCandidatesRow(props) {
   var result = props.data;
+  if (!result.votes && result.last == "Other") {
+    return;
+  }
   var mugshot;
 
   var classes = ["tr", "candidate", result.party || result.last];
