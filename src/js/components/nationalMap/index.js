@@ -64,7 +64,8 @@ export default class NationalMap extends Component {
 
     var group = e.target.closest("svg > g");
     svg.appendChild(group);
-    e.target.classList.add("hover");
+    e.target.parentNode.classList.add("hover");
+    
 
     // tooltips
     var bounds = svg.getBoundingClientRect();
@@ -79,28 +80,17 @@ export default class NationalMap extends Component {
     tooltip.style.top = y + "px";
 
     var stateName = e.target.getAttribute("data-postal");
+    var districtName = e.target.getAttribute("data-district");
     var result = this.props.races.filter(r => r.state == stateName)[0];
-    console.log(result)
-
-    // var candText = "";
-    // if (result.reportingPercent > 0.5) {
-    //   var leadingCandidate = result.candidates[0];
-    //   var prefix = leadingCandidate.winner ? "Winner: " : "Leading: ";
-    //   var candText = `${prefix}${leadingCandidate.last} (${
-    //     leadingCandidate.percent
-    //       ? reportingPercentage(leadingCandidate.percent)
-    //       : 0
-    //   }%)`;
-    // }
+    var district = districtName && districtName !== "AL";
 
     tooltip.innerHTML = `
-      <h3>${result.stateName} <span>(${result.electoral})</span></h3>
+      <h3>${result.stateName} <span>(${district ? 1 : result.electoral})</span></h3>
       <div class="candidates">${result.candidates}</div>
       <div class="reporting">${reportingPercentage(result.reportingPercent)}% in</div>
     `;
 
     tooltip.classList.add("shown");
-
   }
 
   initLabels() {
@@ -113,9 +103,8 @@ export default class NationalMap extends Component {
 
       if (!stateOutline) return;
 
+      // handle NE and ME labels
       if (!stateOutline.hasAttribute("data-postal")) {
-        // handle NE and ME
-
         var thisBlock = g.querySelector("rect");
         var positionX = parseInt(thisBlock.getAttribute("x")) - 12 + "px";
         var positionY = parseInt(thisBlock.getAttribute("y")) + 11 + "px";
@@ -128,21 +117,19 @@ export default class NationalMap extends Component {
       var offsetX = states[stateName].geo_offset_x;
       var offsetY = states[stateName].geo_offset_y;
 
+      // handle Northeastern state labels
       if (northeastStates.indexOf(stateName) > -1) {
-          // handle Northeastern states
+        g.classList.add("northeast");
 
-          g.classList.add("northeast");
+        var rect = document.createElementNS(svg.namespaceURI, "rect");
+        g.append(rect);
+        rect.setAttribute("x", offsetX - 15);
+        rect.setAttribute("y", offsetY - 9);
+        rect.setAttribute("width", 10);
+        rect.setAttribute("height", 10);
 
-          var rect = document.createElementNS(svg.namespaceURI, "rect");
-          g.append(rect);
-          rect.setAttribute("x", offsetX - 15);
-          rect.setAttribute("y", offsetY - 9);
-          rect.setAttribute("width", 10);
-          rect.setAttribute("height", 10);
-
-          stateLabel.setAttribute("x", offsetX);
-          stateLabel.setAttribute("y", offsetY);
-
+        stateLabel.setAttribute("x", offsetX);
+        stateLabel.setAttribute("y", offsetY);
       } else {
         var bounds = stateOutline.getBBox();
         var labelBox = stateLabel.getBBox();
@@ -155,6 +142,20 @@ export default class NationalMap extends Component {
 
         if (offsetX) { stateLabel.setAttribute("dx", offsetX); }
         if (offsetY) { stateLabel.setAttribute("dy", offsetY); }
+      }
+
+      // electoral vote labels
+      var voteLabel = document.createElementNS(svg.namespaceURI, "text"); 
+      voteLabel.classList.add("votes");
+      voteLabel.innerHTML = (states[stateName].electoral);
+      voteLabel.setAttribute("x", parseInt(stateLabel.getAttribute("x")));
+      voteLabel.setAttribute("y", parseInt(stateLabel.getAttribute("y") + 11));
+      voteLabel.setAttribute("dx", parseInt(stateLabel.getAttribute("dx")));
+      voteLabel.setAttribute("dy", parseInt(stateLabel.getAttribute("dy")));
+      g.append(voteLabel);
+
+      if (offsetX && northeastStates.indexOf(stateName) <= -1) {
+        voteLabel.setAttribute("dx", offsetX);
       }
     });
   }
