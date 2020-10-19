@@ -1,10 +1,9 @@
 import { h, Component, Fragment } from "preact";
 import gopher from "../gopher.js";
 import Results from "../resultsBoardNamed";
-import states from "states.sheet.json";
-import gov from "governors.sheet.json";
 import TestBanner from "../testBanner";
 import DateFormatter from "../dateFormatter";
+import { getBucket } from "../util.js";
 
 export default class BoardGovernor extends Component {
   constructor(props) {
@@ -35,26 +34,17 @@ export default class BoardGovernor extends Component {
     
     if (races) {
 
-      races.forEach(r => r.name = states[r.state].name);
-
       var sorted = races.sort((a,b) => a.name > b.name ? 1 : a.name < b.name ? -1 : 0);
 
       var buckets = {
         likelyD: [],
         tossup: [],
-        likelyR: []
+        likelyR: [],
       };
 
-      sorted.forEach(function(r) {
-        var rating = gov[r.id].rating;
-
-        if (rating == "solid-d" || rating == "likely-d") {
-          buckets.likelyD.push(r);
-        } else if (rating == "lean-d" || rating == "toss-up" || rating == "lean-r") {
-          buckets.tossup.push(r);
-        } else if (rating == "solid-r" || rating == "likely-r") {
-          buckets.likelyR.push(r);
-        }
+      sorted.forEach(function (r) {
+        var bucketRating = getBucket(r.rating);
+        if (bucketRating) buckets[bucketRating].push(r);
       });
     }
 

@@ -4,7 +4,6 @@ import NationalMap from "../nationalMap";
 import Results from "../resultsBoardPresident";
 import TestBanner from "../testBanner";
 import DateFormatter from "../dateFormatter";
-import states from "states.sheet.json";
 import "./boardPresident.less";
 import Tetris from "../tetris";
 import { getBucket } from "../util.js";
@@ -46,7 +45,6 @@ export default class BoardPresident extends Component {
     if (races) {
 
       races.forEach(function(r) {
-        r.name = states[r.state].name;
         r.districtDisplay = (r.district !== "AL") ? r.district : "";
       });
 
