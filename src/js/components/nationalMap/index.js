@@ -6,6 +6,20 @@ import states from "states.sheet.json";
 
 var northeastStates = ["VT", "NH", "MA", "CT", "RI", "NJ", "DE", "MD", "DC"];
 
+var winnerIcon =
+  `<span class="winner-icon" role="img" aria-label="check mark">
+    <svg
+      aria-hidden="true"
+      focusable="false"
+      role="img"
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 512 512">
+      <path
+        fill="#333"
+        d="M173.898 439.404l-166.4-166.4c-9.997-9.997-9.997-26.206 0-36.204l36.203-36.204c9.997-9.998 26.207-9.998 36.204 0L192 312.69 432.095 72.596c9.997-9.997 26.207-9.997 36.204 0l36.203 36.204c9.997 9.997 9.997 26.206 0 36.204l-294.4 294.401c-9.998 9.997-26.207 9.997-36.204-.001z"></path>
+    </svg>
+  </span>`;
+
 export default class NationalMap extends Component {
   constructor(props) {
     super();
@@ -83,20 +97,26 @@ export default class NationalMap extends Component {
     var stateName = e.target.getAttribute("data-postal");
     var district = e.target.getAttribute("data-district");
     var districtDisplay = district == "AL" ? " At-Large" : " " + district;
-    var result = this.props.races.filter((r) => r.state == stateName);
+    var results = this.props.races.filter((r) => r.state == stateName);
+    var result;
 
     if (district) {
-      result = result.filter((r) => (r.district = district))[0];
-      // console.log(result);
+      result = results.filter((r) => (r.district == district))[0];
     } else {
-      result = result[0];
+      result = results[0];
     }
 
+    console.log(result)
+
     tooltip.innerHTML = `
-      <h3>${result.stateName}${district ? districtDisplay : ""} <span>(${
-      result.electoral
-    })</span></h3>
-      <div class="candidates">${result.candidates}</div>
+      <h3>${result.stateName}${district ? districtDisplay : ""} <span>(${result.electoral})</span></h3>
+      <div class="candidates">${result.candidates.map(c =>
+        `<div class="row">
+            <div class="party ${c.party}"></div>
+            <div class="name">${c.last}</div> ${c.winner == "X" ? winnerIcon : ""}
+            <div class="perc">${c.percent ? c.percent : "0"}%</div>
+        </div>`
+      ).join("")}</div>
       <div class="reporting">${reportingPercentage(
         result.reportingPercent
       )}% in</div>

@@ -35,6 +35,41 @@
 
 	  .candidates {
 	  	.gotham();
+	  	min-width: 120px;
+	  	font-size: 10px;
+	  	color: #666;
+
+	  	.row {
+	  		border-top: 1px solid #eee;
+   	  	padding: 3px 0 3px 0;
+   	  }
+
+   	  .name, .perc {
+   	  	font-weight: normal;
+   	  	display: inline-block;
+   	  }
+   	  .perc {
+   	  	text-align: right;
+   	  	float: right;
+   	  }
+   	  .party {
+   	  	height: 6px;
+   	  	width: 6px;
+   	  	margin-right: 4px;
+    		margin-top: 5px;
+    		background: @ind;
+    		float: left;
+
+   	  	&.Dem {
+   	  		background: @dem;
+   	  	}
+   	  	&.GOP {
+   	  		background: @gop;
+   	  	}
+   	  	&.Other {
+   	  		background: #9a9a9a;
+   	  	}
+   	  }
 	  }
 
 	  .reporting {
@@ -46,6 +81,12 @@
 	    font-style: italic;
 	    border-top: 1px solid #eee;
 	  }
+
+	  .winner-icon {
+			color: #666;
+			margin-left: 2px;
+			font-size: 8px;
+		}
 	}
 
 	g {

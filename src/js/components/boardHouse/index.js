@@ -50,8 +50,8 @@ export default class BoardHouse extends Component {
       <div class="board-container">
         {races && <>
           <Results races={buckets["toss-up"]} hed="Tossup States" office="House" addClass="middle" />
-          <Results races={buckets["lean-d"]} hed="Lean Dem." office="House" addClass="first" />
-          <Results races={buckets["lean-r"]} hed="Lean GOP" office="House" addClass="last" />
+          <Results races={buckets["lean-d"]} hed="Lean Democratic" office="House" addClass="first" />
+          <Results races={buckets["lean-r"]} hed="Lean Republican" office="House" addClass="last" />
         </>}
       </div>
       Results as of <DateFormatter value={latest} />

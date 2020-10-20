@@ -41,8 +41,8 @@ export default class BoardPresident extends Component {
       });
 
       var sorted = races.sort(function(a,b) {
-        if (a.name > b.name) return 1;
-        if (a.name < b.name) return -1;
+        if (a.stateName > b.stateName) return 1;
+        if (a.stateName < b.stateName) return -1;
         if (a.districtDisplay > b.districtDisplay) return 1;
         if (a.districtDisplay < b.districtDisplay) return -1;
         return 0;
@@ -73,6 +73,11 @@ export default class BoardPresident extends Component {
       <h1 tabindex="-1">President</h1>
       { test ? <TestBanner /> : "" }
       <Tabs>
+        
+        <div label="Geographic Map">
+          {races && <NationalMap races={races} />}
+        </div>
+
         <div label="Tetris">
           <div class="tetris-container">
             {races && <>
@@ -87,16 +92,13 @@ export default class BoardPresident extends Component {
             </>}
           </div>
         </div>
-        <div label="Geographic Map">
-          {races && <NationalMap races={races} />}
-        </div>
         
       </Tabs>
       <div class="board-container">
         {races && <>
-          <Results races={buckets.tossup} hed="Lean/Tossup States" office="President" addClass="middle" />
-          <Results races={buckets.likelyD} hed="Likely Dem." office="President" addClass="first" />
-          <Results races={buckets.likelyR} hed="Likely GOP" office="President" addClass="last" />
+          <Results races={buckets.tossup} hed="Competitive States" office="President" addClass="middle" />
+          <Results races={buckets.likelyD} hed="Likely Democratic" office="President" addClass="first" />
+          <Results races={buckets.likelyR} hed="Likely Republican" office="President" addClass="last" />
         </>}
       </div>
       Results as of <DateFormatter value={latest}/>
