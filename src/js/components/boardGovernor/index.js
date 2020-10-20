@@ -51,7 +51,7 @@ export default class BoardGovernor extends Component {
     return <>
       <h1 tabindex="-1">Governor</h1>
       { test ? <TestBanner /> : "" }
-      <div class="board-container">
+      <div class="board-container Gov">
         {races && <>
           <Results races={buckets.tossup} hed="Lean/Tossup States" office="Gov" addClass="middle"/>
           <Results races={buckets.likelyD} hed="Safe/Likely Dem." office="Gov" addClass="first"/>

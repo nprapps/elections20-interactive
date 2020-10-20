@@ -11,8 +11,10 @@
   justify-content: space-between;
   margin-bottom: 30px;
 
-  @media @tablet {
-    display: block;
+  &.House, &.Senate, &.Gov {
+    @media @tablet {
+      display: block;
+    }
   }
 }
 
@@ -29,28 +31,30 @@
     order: 3;
   }
 
-  &.Ballot {
-    flex: 0 0 100%;
-  }
+  &.House, &.Senate, &.Gov {
+    @media @full {
+      flex: 0 0 49%;
 
-  @media @full {
-    flex: 0 0 49%;
+      &.middle {
+        flex: 0 0 100%;
+        order: 1;
 
-    &.middle {
-      flex: 0 0 100%;
-      order: 1;
+        .board-inner {
+          width: 50%;
+          margin: auto;
+        }
+      }
+    }
 
-      .board-inner {
-        width: 50%;
-        margin: auto;
+    @media @tablet {
+      &.middle .board-inner {
+        width: 100%;
       }
     }
   }
 
-  @media @tablet {
-    &.middle .board-inner {
-      width: 100%;
-    }
+  &.Ballot {
+    flex: 0 0 100%;
   }
 }
 
@@ -294,6 +298,34 @@ table.results {
   .state,
   th.state-hed {
     flex: 0 0 53px;
+  }
+}
+
+.President.board-container {
+  @media @mobile {
+    display: block;
+  }
+}
+
+.President.board-wrapper {
+  @media @desktop {
+    flex: 0 0 49%;
+
+    &.middle {
+      flex: 0 0 100%;
+      order: 1;
+
+      .board-inner {
+        width: 50%;
+        margin: auto;
+      }
+    }
+  }
+
+  @media @mobile {
+    &.middle .board-inner {
+      width: 100%;
+    }
   }
 }
 

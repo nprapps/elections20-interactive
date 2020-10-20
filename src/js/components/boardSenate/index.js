@@ -53,7 +53,7 @@ export default class BoardSenate extends Component {
         <h1 tabindex="-1">Senate</h1>
         { test ? <TestBanner /> : "" }
         <BalanceOfPower race="senate" />
-        <div class="board-container">
+        <div class="board-container Senate">
           {races && <>
             <Results races={buckets.tossup} hed="Competitive Seats" office="Senate" addClass="middle"/>
             <Results races={buckets.likelyD} hed="Likely Democratic" office="Senate" addClass="first"/>

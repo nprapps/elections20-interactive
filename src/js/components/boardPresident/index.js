@@ -94,7 +94,7 @@ export default class BoardPresident extends Component {
         </div>
         
       </Tabs>
-      <div class="board-container">
+      <div class="board-container President">
         {races && <>
           <Results races={buckets.tossup} hed="Competitive States" office="President" addClass="middle" />
           <Results races={buckets.likelyD} hed="Likely Democratic" office="President" addClass="first" />
