@@ -40,36 +40,36 @@ circle {
     fill: #787878;
     font-size: 12px;
   }
-}
 
-.tooltip {
-  position: absolute;
-  border: 1px solid #bbb;
-  background-color: #fff;
-  padding: 6px 8px;
-  display: none;
-  pointer-events: none;
-  z-index: 1;
+  .tooltip {
+    position: absolute;
+    border: 1px solid #bbb;
+    background-color: #fff;
+    padding: 6px 8px;
+    display: none;
+    pointer-events: none;
+    z-index: 1;
 
-  &.shown {
-    display: block;
-  }
+    &.shown {
+      display: block;
+    }
 
-  .name {
-    .gotham();
-    font-weight: bold;
-    border-bottom: 1px solid #eee;
-  }
+    .name {
+      .gotham();
+      font-weight: bold;
+      border-bottom: 1px solid #eee;
+    }
 
-  .pop,
-  .reporting,
-  .result {
-    font-size: 0.9rem;
-    .knockout();
-    color: #787878;
+    .pop,
+    .reporting,
+    .result {
+      font-size: 0.9rem;
+      .knockout();
+      color: #787878;
 
-    &:empty {
-      display: none;
+      &:empty {
+        display: none;
+      }
     }
   }
 }
