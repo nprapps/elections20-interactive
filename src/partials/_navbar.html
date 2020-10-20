@@ -51,7 +51,7 @@ var { nav, states } = grunt.data.json;
           <% for (var state of Object.keys(states)) {%>
           <% if (states[state].district) continue; %>
           <li>
-            <a href="#/states/<%= state %>"><%= states[state].name %></a>
+            <a href="#/states/<%= state %>"><%= states[state].name == "District of Columbia" ? "D.C." : states[state].name %></a>
           </li>
           <%}%>
         </ul>
