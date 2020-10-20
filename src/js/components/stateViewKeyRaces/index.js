@@ -2,6 +2,7 @@ import { h, Component, Fragment } from "preact";
 import gopher from "../gopher.js";
 import ResultsTableCandidates from "../resultsTableCandidates";
 import Strings from "strings.sheet.json";
+import "./keyRaces.less";
 
 export default class KeyRaces extends Component {
   constructor(props) {
@@ -14,7 +15,10 @@ export default class KeyRaces extends Component {
 
   onData(data) {
     var updated = Math.max(...data.results.map(r => r.updated));
-    var event = new CustomEvent("updatedtime", { detail: updated, bubbles: true });
+    var event = new CustomEvent("updatedtime", {
+      detail: updated,
+      bubbles: true,
+    });
     this.base.dispatchEvent(event);
 
     var grouped = {};
@@ -42,23 +46,32 @@ export default class KeyRaces extends Component {
       return "";
     }
 
-    var offices = "PGSHI".split("").filter((o) => o in grouped);
+    var offices = "PGSHI".split("").filter(o => o in grouped);
 
-    return offices.map((o) => {
+    return offices.map(o => {
       var data = grouped[o];
-      console.log(data)
       // Filter house races for keyRaces
-      if (o == 'H') {
+      if (o == "H") {
         data = data.filter(d => d.keyRace);
         if (!data.length) return;
       }
 
       var label = Strings[`office-${o}`];
+      var linkText =
+        o == "H" || o == "I" ? `All ${label} results ›` : "County-level results ›";
+
       return (
         <div class="key-race-group">
-          <h2>{label}</h2>
+          <h2>
+            {label}
+            <a
+              class="county-results"
+              href={`#/states/${this.props.state}/${o}`}>
+              {linkText}
+            </a>
+          </h2>
           <div class="races">
-            {data.map((r) => (
+            {data.map(r => (
               <ResultsTableCandidates data={r} />
             ))}
           </div>
