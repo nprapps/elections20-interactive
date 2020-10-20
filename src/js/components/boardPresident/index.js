@@ -65,9 +65,7 @@ export default class BoardPresident extends Component {
         uncalled: []
       }
 
-      races.sort(function(a, b) {
-        return a.state < b.state ? -1 : 1;
-      }).forEach(r => called[r.winnerParty || "uncalled"].push(r));
+      races.forEach(r => called[r.winnerParty || "uncalled"].push(r));
 
     }
 
@@ -75,9 +73,6 @@ export default class BoardPresident extends Component {
       <h1 tabindex="-1">President</h1>
       { test ? <TestBanner /> : "" }
       <Tabs>
-        <div label="Geographic Map">
-          {races && <NationalMap races={races} />}
-        </div>
         <div label="Tetris">
           <div class="tetris-container">
             {races && <>
@@ -91,6 +86,9 @@ export default class BoardPresident extends Component {
               <Tetris races={called.GOP} width={10} class="R" />
             </>}
           </div>
+        </div>
+        <div label="Geographic Map">
+          {races && <NationalMap races={races} />}
         </div>
         
       </Tabs>

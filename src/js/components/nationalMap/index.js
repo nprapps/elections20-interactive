@@ -4,7 +4,7 @@ import { reportingPercentage } from "../util.js";
 import "./nationalMap.less";
 import states from "states.sheet.json";
 
-var northeastStates = [ "VT", "NH", "MA", "CT", "RI", "NJ", "DE", "MD", "DC" ];
+var northeastStates = ["VT", "NH", "MA", "CT", "RI", "NJ", "DE", "MD", "DC"];
 
 export default class NationalMap extends Component {
   constructor(props) {
@@ -43,10 +43,10 @@ export default class NationalMap extends Component {
   async loadSVG(svgText) {
     this.svgRef.current.innerHTML = svgText;
     this.paint(this.props);
-    this.initLabels();
+    // this.initLabels();
 
     var svg = this.svgRef.current.querySelector("svg");
-    svg.addEventListener("mousemove", e => this.onMove(e));
+    svg.addEventListener("mousemove", (e) => this.onMove(e));
   }
 
   onMove(e) {
@@ -55,7 +55,9 @@ export default class NationalMap extends Component {
 
     // hover styles
     var currentHover = svg.querySelector(".hover");
-    if (currentHover) { currentHover.classList.remove("hover") };
+    if (currentHover) {
+      currentHover.classList.remove("hover");
+    }
 
     if (!e.target.hasAttribute("data-postal")) {
       tooltip.classList.remove("shown");
@@ -65,7 +67,6 @@ export default class NationalMap extends Component {
     var group = e.target.closest("svg > g");
     svg.appendChild(group);
     e.target.parentNode.classList.add("hover");
-    
 
     // tooltips
     var bounds = svg.getBoundingClientRect();
@@ -82,19 +83,23 @@ export default class NationalMap extends Component {
     var stateName = e.target.getAttribute("data-postal");
     var district = e.target.getAttribute("data-district");
     var districtDisplay = district == "AL" ? " At-Large" : " " + district;
-    var result = this.props.races.filter(r => r.state == stateName);
+    var result = this.props.races.filter((r) => r.state == stateName);
 
     if (district) {
-      result = result.filter(r => r.district = district)[0];
-      console.log(result)
+      result = result.filter((r) => (r.district = district))[0];
+      console.log(result);
     } else {
       result = result[0];
     }
 
     tooltip.innerHTML = `
-      <h3>${result.stateName}${district ? districtDisplay : ""} <span>(${result.electoral})</span></h3>
+      <h3>${result.stateName}${district ? districtDisplay : ""} <span>(${
+      result.electoral
+    })</span></h3>
       <div class="candidates">${result.candidates}</div>
-      <div class="reporting">${reportingPercentage(result.reportingPercent)}% in</div>
+      <div class="reporting">${reportingPercentage(
+        result.reportingPercent
+      )}% in</div>
     `;
 
     tooltip.classList.add("shown");
@@ -103,8 +108,8 @@ export default class NationalMap extends Component {
   initLabels() {
     var svg = this.svgRef.current.querySelector("svg");
     var groups = svg.querySelectorAll("g");
-    
-    groups.forEach(function(g) {
+
+    groups.forEach(function (g) {
       var stateOutline = g.querySelector("path");
       var stateLabel = g.querySelector("text");
 
@@ -141,20 +146,24 @@ export default class NationalMap extends Component {
         var bounds = stateOutline.getBBox();
         var labelBox = stateLabel.getBBox();
 
-        var positionX = (bounds.x + (bounds.width / 2));
+        var positionX = bounds.x + bounds.width / 2;
         stateLabel.setAttribute("x", positionX);
 
-        var positionY = (bounds.y + (bounds.height / 2) + (labelBox.height / 3)) - 1;
-        stateLabel.setAttribute("y", positionY)
+        var positionY = bounds.y + bounds.height / 2 + labelBox.height / 3 - 1;
+        stateLabel.setAttribute("y", positionY);
 
-        if (offsetX) { stateLabel.setAttribute("dx", offsetX); }
-        if (offsetY) { stateLabel.setAttribute("dy", offsetY); }
+        if (offsetX) {
+          stateLabel.setAttribute("dx", offsetX);
+        }
+        if (offsetY) {
+          stateLabel.setAttribute("dy", offsetY);
+        }
       }
 
       // electoral vote labels
-      var voteLabel = document.createElementNS(svg.namespaceURI, "text"); 
+      var voteLabel = document.createElementNS(svg.namespaceURI, "text");
       voteLabel.classList.add("votes");
-      voteLabel.innerHTML = (states[stateName].electoral);
+      voteLabel.innerHTML = states[stateName].electoral;
       voteLabel.setAttribute("x", parseInt(stateLabel.getAttribute("x")));
       voteLabel.setAttribute("y", parseInt(stateLabel.getAttribute("y") + 11));
       voteLabel.setAttribute("dx", parseInt(stateLabel.getAttribute("dx")));
@@ -172,7 +181,7 @@ export default class NationalMap extends Component {
     if (!this.svgRef.current) return;
     var svg = this.svgRef.current.querySelector("svg");
 
-    mapData.forEach(function(r) {
+    mapData.forEach(function (r) {
       var eevp = r.eevp;
       var district = r.district;
       var state = r.state.toLowerCase() + (district ? "-" + district : "");
@@ -194,8 +203,6 @@ export default class NationalMap extends Component {
 
       var stateOutline = stateGroup.querySelector("path");
       var stateLabel = stateGroup.querySelector("text");
-      
-
-    })
+    });
   }
 }

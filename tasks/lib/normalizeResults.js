@@ -175,17 +175,19 @@ module.exports = function (resultArray, overrides = {}) {
         }
 
         var sheetMetadata = nprMetadata[raceMeta.id];
-        if (sheetMetadata && sheetMetadata.party) {
-          unitMeta.previousParty = sheetMetadata.party;
-        }
-        if (sheetMetadata && sheetMetadata.key_race) {
-          unitMeta.keyRace = sheetMetadata.key_race;
-        }
-        if (sheetMetadata && sheetMetadata.rating) {
-          unitMeta.rating = sheetMetadata.rating;
-        }
-        if (sheetMetadata && sheetMetadata.description) {
-          unitMeta.description = sheetMetadata.description;
+        if (sheetMetadata) {
+          if (sheetMetadata.party) {
+            unitMeta.previousParty = sheetMetadata.party;
+          }
+          if (sheetMetadata.key_race) {
+            unitMeta.keyRace = sheetMetadata.key_race;
+          }
+          if (sheetMetadata.rating) {
+            unitMeta.rating = sheetMetadata.rating;
+          }
+          if (sheetMetadata.description) {
+            unitMeta.description = sheetMetadata.description;
+          }
         }
 
         unitMeta.updated = Date.parse(unitMeta.updated);

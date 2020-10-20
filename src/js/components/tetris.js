@@ -43,20 +43,35 @@ export default function Tetris(props) {
 
   var { races } = props;
   var snake = Snake(width);
-  var shapes = races.reverse().map(function(r) {
+
+  // merge the states
+  var states = {};
+  races.forEach(function(r) {
+    if (states[r.state]) {
+      states[r.state].electoral += r.electoral;
+    } else {
+      states[r.state] = { ...r };
+    }
+  });
+
+  var merged = Object.keys(states).sort().reverse().map(k => states[k]);
+
+  var shapes = merged.map(function(r) {
     var cells = [];
-    var label = r.district ? r.district : r.state;
+    var { state } = r;
     for (var i = 0; i < r.electoral; i++) {
       var c = snake.next().value;
       cells.push(c);
-      poke(c.row, c.column, label);
+      poke(c.row, c.column, state);
     }
     return {
       data: r,
-      label,
+      state,
       cells
     }
   });
+
+  if (!shapes.length) return;
 
   var topShape = last(shapes);
   var rows = Math.max(33, victoryRow, last(topShape.cells).row) + 1;
@@ -101,7 +116,7 @@ export default function Tetris(props) {
               right: peek(c.row, c.column + 1)
             };
             // do those neighbors match?
-            for (var k in neighbors) neighbors[k] = neighbors[k] == shape.label;
+            for (var k in neighbors) neighbors[k] = neighbors[k] == shape.state;
             // shrink the rectangle if it's lonely
             if (!neighbors.top) {
               attrs.y++;
@@ -127,7 +142,7 @@ export default function Tetris(props) {
             fill="white"
             font-size={textSize}
           >
-            {shape.label}
+            {shape.state}
           </text>
         </>
       })}
