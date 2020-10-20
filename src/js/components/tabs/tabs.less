@@ -16,14 +16,15 @@
 }
 
 [role="tabpanel"] {
-  display: none;
 
   &:focus {
     outline: none;
     border: none;
   }
 
-  &.active {
-    display: block;
+  &.inactive {
+    visibility: visible;
+    position: absolute;
+    left: -100000px;
   }
 }

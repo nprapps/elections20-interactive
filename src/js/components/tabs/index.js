@@ -11,7 +11,11 @@ export function Tab(props) {
 }
 
 export function Panel(props) {
-  return <div class={props.shown && "active"} role="tabpanel" tabindex="-1" id={"tab-" + props.id}>
+  return <div
+    class={props.shown ? "active" : "inactive"}
+    role="tabpanel" tabindex="-1"
+    aria-hidden={!props.shown}
+    id={"tab-" + props.id}>
     {props.children}
   </div>
 }
