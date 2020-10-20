@@ -30,12 +30,11 @@ function Branch(props) {
   var bounds = { x, y, width, height, vertical };
   races = races.slice();
 
-  var branches = [[], []];
+  var counter = races[0].electoral + races[races.length - 1].electoral;
+  var branches = [[races.shift()], [races.pop()]];
   if (races.length == 2) {
     branches = [[races[0]], [races[1]]];
   } else {
-    var counter = 0;
-    branches[1].push(races.pop());
     for (var r of races) {
       branches[~~(counter > total / 2)].push(r);
       counter += r.electoral;
@@ -53,7 +52,6 @@ function Branch(props) {
 
   return <g>
     {areas.map(function(a) {
-      console.log(a);
       if (!a.races.length) {
         return null;
       }
@@ -102,16 +100,25 @@ export default function TreeMap(props) {
     vertical = false
   } = props;
 
-  races = races.slice().sort((a, b) => b.electoral - a.electoral);
+  var byState = {};
+  for (var r of races) {
+    if (byState[r.state]) {
+      byState[r.state].electoral += r.electoral;
+    } else {
+      byState[r.state] = r;
+    }
+  }
+
+  var merged = Object.keys(byState).map(k => byState[k]).sort((a, b) => b.electoral - a.electoral);
+  console.log(merged.map(m => [m.state, m.electoral].join("-")));
 
   var total = sum(races);
   var ratio = total / max;
   var initialArea = {
     ...alloc({ x: 0, y: 0, width, height, vertical }, ratio),
-    total,
-    races
+    races: merged,
+    total
   };
-  console.log(initialArea);
 
   return (<>
     <div class="tree">
