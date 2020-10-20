@@ -150,9 +150,9 @@ export default class NationalMap extends Component {
       // handle Northeastern state labels
       if (northeastStates.indexOf(stateName) > -1) {
         g.classList.add("northeast");
-
         var rect = document.createElementNS(svg.namespaceURI, "rect");
         g.append(rect);
+        rect.setAttribute("data-postal", stateName)
         rect.setAttribute("x", offsetX - 15);
         rect.setAttribute("y", offsetY - 9);
         rect.setAttribute("width", 10);
