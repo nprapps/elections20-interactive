@@ -6,302 +6,324 @@
 @thin-padding: 4px;
 
 .board-container {
-	display: flex;
-	flex-wrap: wrap;
-	justify-content: space-between;
-	margin-bottom: 30px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin-bottom: 30px;
 
-	@media @tablet {
-		display: block;
-	}
+  @media @tablet {
+    display: block;
+  }
 }
 
 .board-wrapper {
-	flex: 0 0 32%;
+  flex: 0 0 32%;
 
-	&.first { order: 1; }
-	&.middle { order: 2; }
-	&.last { order: 3; }
+  &.first {
+    order: 1;
+  }
+  &.middle {
+    order: 2;
+  }
+  &.last {
+    order: 3;
+  }
 
-	&.Ballot {
-		flex: 0 0 100%;
-	}
+  &.Ballot {
+    flex: 0 0 100%;
+  }
 
-	@media @full {
-		flex: 0 0 49%;
+  @media @full {
+    flex: 0 0 49%;
 
-		&.middle {
-			flex: 0 0 100%;
-			order: 1;
+    &.middle {
+      flex: 0 0 100%;
+      order: 1;
 
-			.board-inner {
-				width: 50%;
-				margin: auto;
-			}
-		}
-	}
+      .board-inner {
+        width: 50%;
+        margin: auto;
+      }
+    }
+  }
 
-	@media @tablet {
-		&.middle .board-inner {
-			width: 100%;
-		}
-	}
+  @media @tablet {
+    &.middle .board-inner {
+      width: 100%;
+    }
+  }
 }
 
 .board-hed {
-	font-family: 'Gotham SSm', Helvetica, Arial, sans-serif;
-	color: #444;
-	display: block;
+  font-family: "Gotham SSm", Helvetica, Arial, sans-serif;
+  color: #444;
+  display: block;
 
-	&.none {
-		display: none;
-	}
+  &.none {
+    display: none;
+  }
 }
 
 table.results {
-	margin-bottom: 20px;
-	width: 100%;
-	font-family: 'Gotham SSm', Helvetica, Arial, sans-serif;
-	color: #666;
-	font-size: 11px;
-	// border-collapse: collapse;
+  margin-bottom: 20px;
+  width: 100%;
+  font-family: "Gotham SSm", Helvetica, Arial, sans-serif;
+  color: #666;
+  font-size: 11px;
+  // border-collapse: collapse;
 
-	tr {
-		display: flex;
+  tr {
+    display: flex;
 
-		&.index-0 td {
-			border-top: 1px solid #ddd;
-		}
+    &.index-0 td {
+      border-top: 1px solid #ddd;
+    }
 
-		td {
-			overflow: hidden;
-		}
+    td {
+      overflow: hidden;
+    }
 
-		.state, .state-hed {
-			flex: 0 0 60px;
-		}
-		.electoral, .electoral-hed {
-			flex: 0 0 23px;
-		}
-		.open-label {
-			flex: 1;
-		}
-		.candidate, .party-hed {
-			flex: 1;
-		}
-		.reporting, .reporting-hed {
-			flex: 0 0 54px;
-		}
-		.little-label, .little-hed {
-			flex: 0 0 19px;
-		}
-	}
+    .state,
+    .state-hed {
+      flex: 0 0 60px;
+    }
+    .electoral,
+    .electoral-hed {
+      flex: 0 0 23px;
+    }
+    .open-label {
+      flex: 1;
+    }
+    .candidate,
+    .party-hed {
+      flex: 1;
+    }
+    .reporting,
+    .reporting-hed {
+      flex: 0 0 54px;
+    }
+    .little-label,
+    .little-hed {
+      flex: 0 0 19px;
+    }
+  }
 
-	th {
-		font-size: 11px;
-		font-family: 'Knockout 31 4r','Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
-		text-transform: uppercase;
-		font-weight: normal;
-		letter-spacing: 0.05em;
-	  -webkit-font-smoothing: antialiased;
-	  padding: @wide-padding;
+  th {
+    font-size: 11px;
+    font-family: "Knockout 31 4r", "Helvetica Neue", "Helvetica", "Arial",
+      sans-serif;
+    text-transform: uppercase;
+    font-weight: normal;
+    letter-spacing: 0.05em;
+    -webkit-font-smoothing: antialiased;
+    padding: @wide-padding;
 
-	  &.state-hed, &.reporting-hed, &.name-hed {
-	  	text-align: left;
-	  }
-	  &.state-hed {
-	  	padding-left: 0;
-	  }
-	  &.electoral-hed {
-	  	text-align: left;
-    	padding-left: 0;
-    	padding-right: 0;
-	  }
-	}
+    &.state-hed,
+    &.reporting-hed,
+    &.name-hed {
+      text-align: left;
+    }
+    &.state-hed {
+      padding-left: 0;
+    }
+    &.electoral-hed {
+      text-align: left;
+      padding-left: 0;
+      padding-right: 0;
+    }
+  }
 
-	.open-label {
-		display: none;
-		font-style: italic;
-		font-size: 9px;
-		color: #9a9a9a;
-		padding-top: 5px;
-		padding-right: 0;
-		// border-left: @border;
-	}
+  .open-label {
+    display: none;
+    font-style: italic;
+    font-size: 9px;
+    color: #9a9a9a;
+    padding-top: 5px;
+    padding-right: 0;
+    // border-left: @border;
+  }
 
-	tr.open {
-		.candidate, .reporting {
-			display: none;
-		}
+  tr.open {
+    .candidate,
+    .reporting {
+      display: none;
+    }
 
-		.open-label {
-			display: table-cell;
-		}
-	}
+    .open-label {
+      display: table-cell;
+    }
+  }
 
-	td {
-		padding: @wide-padding;
-		border-bottom: @border;
-	}
+  td {
+    padding: @wide-padding;
+    border-bottom: @border;
+  }
 
-	td.state a {
-		text-decoration: none;
-		color: #444;
-	}
+  td.state a {
+    text-decoration: none;
+    color: #444;
+  }
 
-	td.state {
-		padding-left: 0;
-		text-decoration: none;
-		// border-right: @border;
-		color: #444;
+  td.state {
+    padding-left: 0;
+    text-decoration: none;
+    // border-right: @border;
+    color: #444;
 
-		&:hover {
-			text-decoration: underline;
-		}
+    &:hover {
+      text-decoration: underline;
+    }
 
-		// &.winner a {
-		// 	font-weight: bold;
-		// 	color: @ind;
-		// }
-		// &.winner.Dem a {
-		// 	color: @dem;
-		// }
-		// &.winner.GOP a, &.winner.No a {
-		// 	color: @gop;
-		// }
-	}
-	td.reporting {
-		font-size: 9px;
-		font-style: italic;
-		color: #9a9a9a;
-		padding-top: 5px;
-	}
+    // &.winner a {
+    //  font-weight: bold;
+    //  color: @ind;
+    // }
+    // &.winner.Dem a {
+    //  color: @dem;
+    // }
+    // &.winner.GOP a, &.winner.No a {
+    //  color: @gop;
+    // }
+  }
+  td.reporting {
+    font-size: 9px;
+    font-style: italic;
+    color: #9a9a9a;
+    padding-top: 5px;
+  }
   td.candidate {
-  	background: @background;
-  	border-bottom: 1px solid white;
-  	border-right: 1px solid white;
-  	display: flex;
-  	// color: @ind;
+    background: @background;
+    border-bottom: 1px solid white;
+    border-right: 1px solid white;
+    display: flex;
+    // color: @ind;
 
-  	.name {
-  		flex: 1;
-  		text-overflow: ellipsis;
-  		overflow: hidden;
-  		white-space: nowrap;
-  	}
-  	.incumbent {
-  		margin-left: 4px;
+    .name {
+      flex: 1 1 0;
+      display: flex;
+      min-width: 0;
 
-  		&.hide {
-  			display: none;
-  		}
-  	}
-  	.perc {
-  		flex: 0 0 25px;
-  		margin-left: 8px;
-  	}
+      .last {
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+      }
 
-  	&.leading {
-  		color: #666;
-	  	background: @indDim;
-	  }
-	  &.winner {
-	  	color: white;
-	  	background: @ind;
-	  }
-	  &.GOP, &.No {
-	  	// color: @gop;
-	  	&.leading {
-	  		color: #666;
-	  		background: @gopDim;
-	  	}
-	  	&.winner {
-	  		color: white;
-	  		background: @gop;
-	  	}
-	  }
-	  &.Dem {
-	  	// color: @dem;
-	  	&.leading {
-	  		color: #666;
-	  		background: @demDim;
-	  	}
-	  	&.winner {
-	  		color: white;
-	  		background: @dem;
-	  	}
-	  }
-	  &.runoff {
-  		background: @background !important;
-  	}
+      .incumbent {
+        margin-left: 4px;
+      }
+    }
+
+    .perc {
+      flex: 0 0 25px;
+      margin-left: 8px;
+    }
+
+    &.leading {
+      color: #666;
+      background: @indDim;
+    }
+
+    &.winner {
+      color: white;
+      background: @ind;
+    }
+    &.GOP,
+    &.No {
+      // color: @gop;
+      &.leading {
+        color: #666;
+        background: @gopDim;
+      }
+      &.winner {
+        color: white;
+        background: @gop;
+      }
+    }
+    &.Dem {
+      // color: @dem;
+      &.leading {
+        color: #666;
+        background: @demDim;
+      }
+      &.winner {
+        color: white;
+        background: @dem;
+      }
+    }
+    &.runoff {
+      background: @background !important;
+    }
   }
   td.little-label {
-  	font-size: 8px;
-  	text-transform: uppercase;
-  	font-weight: bold;
-  	width: 28px;
-  	padding-left: 0;
-  	padding-right: 0;
-  	padding-top: 6px;
-  	// border: 0;
+    font-size: 8px;
+    text-transform: uppercase;
+    font-weight: bold;
+    width: 28px;
+    padding-left: 0;
+    padding-right: 0;
+    padding-top: 6px;
+    // border: 0;
 
-  	.flip-label {
+    .flip-label {
       color: @ind;
-  	}
-  	&.Dem .flip-label{
-  		color: @dem;
-  	}
-  	&.GOP .flip-label, &.No.flip-label {
-  		color: @gop;
-  	}
+    }
+    &.Dem .flip-label {
+      color: @dem;
+    }
+    &.GOP .flip-label,
+    &.No.flip-label {
+      color: @gop;
+    }
   }
 }
-
 
 .Senate table.results tr {
-	.state, th.state-hed {
-		flex: 0 0 46px;
-	}
+  .state,
+  th.state-hed {
+    flex: 0 0 46px;
+  }
 }
 .Ballot table.results tr {
-	.state, th.state-hed {
-		flex: 1;
-	}
+  .state,
+  th.state-hed {
+    flex: 1;
+  }
 }
 .President table.results tr {
-	.state, th.state-hed {
-		flex: 0 0 53px;
-	}
+  .state,
+  th.state-hed {
+    flex: 0 0 53px;
+  }
 }
 
-
 .President table.results {
-	td {
-		text-align: left;
-	}
-  td.electoral {
-	  // border-right: @border;
-	  padding-left: 0;
-	  text-align: center;
-		color: #9a9a9a;
-
-  // 	&.winner {
-  // 		color: @ind;
-  // 		font-weight: bold;
-  // 	}
-  // 	&.winner.Dem {
-		// 	color: @dem;
-		// }
-		// &.winner.GOP {
-		// 	color: @gop;
-		// }
+  td {
+    text-align: left;
   }
-	td.candidate {
-		text-align: center;
-		color: #666;
+  td.electoral {
+    // border-right: @border;
+    padding-left: 0;
+    text-align: center;
+    color: #9a9a9a;
 
-		.perc {
-			margin: auto;
-		}
-	}
+    //  &.winner {
+    //    color: @ind;
+    //    font-weight: bold;
+    //  }
+    //  &.winner.Dem {
+    //  color: @dem;
+    // }
+    // &.winner.GOP {
+    //  color: @gop;
+    // }
+  }
+  td.candidate {
+    text-align: center;
+    color: #666;
+
+    .perc {
+      margin: auto;
+    }
+  }
 }
