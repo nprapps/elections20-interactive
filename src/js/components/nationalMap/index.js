@@ -187,8 +187,8 @@ export default class NationalMap extends Component {
 
       voteLabel.setAttribute("x", parseInt(stateLabel.getAttribute("x")));
       voteLabel.setAttribute("y", parseInt(stateLabel.getAttribute("y")) + 11);
-      voteLabel.setAttribute("dx", parseInt(stateLabel.getAttribute("dx")));
-      voteLabel.setAttribute("dy", parseInt(stateLabel.getAttribute("dy")));
+      voteLabel.setAttribute("dx", parseInt(stateLabel.getAttribute("dx") || 0));
+      voteLabel.setAttribute("dy", parseInt(stateLabel.getAttribute("dy") || 0));
       g.append(voteLabel);
 
       if (offsetX && northeastStates.indexOf(stateName) <= -1) {
