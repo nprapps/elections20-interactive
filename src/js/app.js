@@ -65,6 +65,7 @@ export default class App extends Component {
     // use a View component
     if (!state.route && state.View) {
       console.log(`Loaded page component: ${state.View.name}`);
+      document.body.dataset.view = state.View.name;
       try {
         return <state.View {...state.params} />
       } catch (err) {
@@ -75,6 +76,7 @@ export default class App extends Component {
     // otherwise call a route method
     if (this[state.route]) {
       console.log(`Loading local view method: ${state.route}()`);
+      document.body.dataset.view = state.route;
       try {
         return this[state.route](props, state);
       } catch (err) {
