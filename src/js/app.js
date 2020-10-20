@@ -61,7 +61,6 @@ export default class App extends Component {
   }
 
   render(props, state) {
-    console.log(state);
     // use a View component
     if (!state.route && state.View) {
       console.log(`Loaded page component: ${state.View.name}`);

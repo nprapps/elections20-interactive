@@ -110,7 +110,6 @@ export default function TreeMap(props) {
   }
 
   var merged = Object.keys(byState).map(k => byState[k]).sort((a, b) => b.electoral - a.electoral);
-  console.log(merged.map(m => [m.state, m.electoral].join("-")));
 
   var total = sum(races);
   var ratio = total / max;
