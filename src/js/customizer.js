@@ -8,7 +8,7 @@ class Customizer extends Component {
   constructor() {
     super();
     this.state = {
-      mode: "page",
+      mode: "president",
       selectedState: "AK",
       selectedOffice: "",
       races: [],
@@ -48,7 +48,11 @@ class Customizer extends Component {
   render(props, state) {
     var postals = Object.keys(stateSheet).filter(s => !stateSheet[s].district);
     var modes = [
-      ["page", "State page"],
+      ["president", "President"],
+      ["governor", "Governor"],
+      ["senate", "Senate"],
+      ["house", "House"],
+      ["state", "State page"],
       ["race", "Individual race"]
     ];
 
@@ -77,7 +81,7 @@ class Customizer extends Component {
       </div>
       {(() => {
         switch (state.mode) {
-          case "page":
+          case "state":
             var src = `${url}#/states/${state.selectedState}/${state.selectedOffice}`;
             return (<>
               <div class="state-select">
@@ -167,6 +171,38 @@ class Customizer extends Component {
                   src={src}
                 />
               </>}
+            </>);
+
+          default:
+            var src = url + `#/${state.mode}`;
+            return (<>
+              <h2>Embeds</h2>
+              <div style="display: grid; grid-template-columns: 1fr 1fr; grid-gap: 8px">
+                <div>
+                  <h3>Pym</h3>
+                  <textarea rows="6" style="width:100%">
+                  {`<p
+                    data-pym-loader
+                    data-child-src="${src}"
+                    id="responsive-embed-election-${state.selectedState}-${state.raceID}">
+                      Loading...
+                  </p>
+                  <script src="https://pym.nprapps.org/npr-pym-loader.v2.min.js"></script>`.replace(/\s{2,}|\n/g, " ")}
+                  </textarea>
+                </div>
+                <div>
+                  <h3>Sidechain</h3>
+                  <textarea rows="6" style="width:100%">
+                  {`<side-chain src="${src}"></side-chain>
+                  <script src="https://apps.npr.org/elections20-interactive/sidechain.js"></script>`.replace(/\s{2,}|\n/g, " ")}
+                  </textarea>
+                </div>
+              </div>
+              <h2>Preview</h2>
+              <side-chain
+                key={state.raceID}
+                src={src}
+              />
             </>);
         }
       })()}
