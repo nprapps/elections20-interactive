@@ -12,6 +12,9 @@ var nprDate = apDate => {
   return [m, d, y].join("/");
 };
 
+// candidates to always keep in results
+var NEVER_MERGE = new Set(["8639", "1036"]);
+
 var translation = {
   race: {
     test: "test",
@@ -103,9 +106,10 @@ var mergeOthers = function (candidates, raceID) {
     electoral: 0,
     count: remaining.length,
   };
+  
   for (var c of remaining) {
     // preserve candidates with >10% of the vote
-    if (c.votes / total > 0.1) {
+    if (c.votes / total > 0.1 || NEVER_MERGE.has(c.id)) {
       merged.push(c);
       continue;
     }
