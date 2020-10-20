@@ -31,17 +31,53 @@
     order: 3;
   }
 
+  &.Gov {
+    flex: 0 0 49%;
+  }
+
+  &.House, &.Senate, &.President {
+    &:nth-child(2) {
+      margin-top: 55px;
+    }
+  }
+
+  &.President {
+    &:nth-child(2) {
+      @media @mobile {
+        margin-top: -24px;
+
+        table.results tr.index-0 td {
+          border-top: none;
+        }
+
+        tr:first-child {
+          display: none;
+        }
+      }
+    }
+  }
+
   &.House, &.Senate, &.Gov {
+    &:nth-child(2) {
+      @media @tablet {
+        margin-top: -24px;
+
+        table.results tr.index-0 td {
+          border-top: none;
+        }
+      }
+    }
+
     @media @full {
       flex: 0 0 49%;
 
       &.middle {
-        flex: 0 0 100%;
+        // flex: 0 0 100%;
         order: 1;
 
         .board-inner {
-          width: 50%;
-          margin: auto;
+          // width: 50%;
+          // margin: auto;
         }
       }
     }
@@ -312,21 +348,21 @@ table.results {
     flex: 0 0 49%;
 
     &.middle {
-      flex: 0 0 100%;
+      // flex: 0 0 100%;
       order: 1;
 
-      .board-inner {
-        width: 50%;
-        margin: auto;
-      }
+      // .board-inner {
+      //   width: 50%;
+      //   margin: auto;
+      // }
     }
   }
 
-  @media @mobile {
-    &.middle .board-inner {
-      width: 100%;
-    }
-  }
+  // @media @mobile {
+  //   &.middle .board-inner {
+  //     width: 100%;
+  //   }
+  // }
 }
 
 .President table.results {

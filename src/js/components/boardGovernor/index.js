@@ -36,16 +36,20 @@ export default class BoardGovernor extends Component {
 
       var sorted = races.sort((a,b) => a.name > b.name ? 1 : a.name < b.name ? -1 : 0);
 
-      var buckets = {
-        likelyD: [],
-        tossup: [],
-        likelyR: [],
-      };
+      // var buckets = {
+      //   likelyD: [],
+      //   tossup: [],
+      //   likelyR: [],
+      // };
 
-      sorted.forEach(function (r) {
-        var bucketRating = getBucket(r.rating);
-        if (bucketRating) buckets[bucketRating].push(r);
-      });
+      // sorted.forEach(function (r) {
+      //   var bucketRating = getBucket(r.rating);
+      //   if (bucketRating) buckets[bucketRating].push(r);
+      // });
+
+      var half = Math.ceil(sorted.length / 2);    
+      var firstHalf = sorted.splice(0, half);
+      var secondHalf = sorted.splice(-half);
     }
 
     return <>
@@ -53,9 +57,8 @@ export default class BoardGovernor extends Component {
       { test ? <TestBanner /> : "" }
       <div class="board-container Gov">
         {races && <>
-          <Results races={buckets.tossup} hed="Lean/Tossup States" office="Gov" addClass="middle"/>
-          <Results races={buckets.likelyD} hed="Safe/Likely Dem." office="Gov" addClass="first"/>
-          <Results races={buckets.likelyR} hed="Safe/Likely GOP" office="Gov" addClass="last"/>
+          <Results races={firstHalf} office="Gov"/>
+          <Results races={secondHalf} office="Gov"/>
         </>}
       </div>
       Results as of <DateFormatter value={latest} />

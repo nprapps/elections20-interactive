@@ -41,6 +41,10 @@ export default class BoardHouse extends Component {
         if (!buckets[r.rating]) buckets[r.rating] = [];
         buckets[r.rating].push(r);
       });
+
+      var halfTossUp = Math.ceil(buckets["toss-up"].length / 2);    
+      var firstHalfTossUp = buckets["toss-up"].splice(0, halfTossUp);
+      var secondHalfTossUp = buckets["toss-up"].splice(-halfTossUp);
     }
 
     return <>
@@ -49,7 +53,8 @@ export default class BoardHouse extends Component {
       <BalanceOfPower race="house" />
       <div class="board-container House">
         {races && <>
-          <Results races={buckets["toss-up"]} hed="Tossup States" office="House" addClass="middle" />
+          <Results races={firstHalfTossUp} hed="Tossup States" office="House" addClass="middle" />
+          <Results races={secondHalfTossUp} office="House" addClass="middle" />
           <Results races={buckets["lean-d"]} hed="Lean Democratic" office="House" addClass="first" />
           <Results races={buckets["lean-r"]} hed="Lean Republican" office="House" addClass="last" />
         </>}

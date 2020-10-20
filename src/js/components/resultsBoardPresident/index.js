@@ -34,7 +34,7 @@ export default function ResultsBoardPresident(props) {
     <>
       <div class={["board-wrapper", props.office, props.addClass].join(" ")}>
         <div class="board-inner">
-          <h3 class="board-hed">{props.hed}</h3>
+          {props.hed ? <h3 class="board-hed">{props.hed}</h3> : ""}
           <table class="president results table" role="table">
           	<tr role="row">
               <th role="columnheader" class="state-hed">State</th>
