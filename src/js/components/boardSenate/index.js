@@ -55,9 +55,9 @@ export default class BoardSenate extends Component {
         <BalanceOfPower race="senate" />
         <div class="board-container">
           {races && <>
-            <Results races={buckets.likelyD} hed="Safe/Likely Dem." office="Senate"/>
-            <Results races={buckets.tossup} hed="Lean/Tossup States" office="Senate"/>
-            <Results races={buckets.likelyR} hed="Safe/Likely GOP" office="Senate"/>
+            <Results races={buckets.tossup} hed="Lean/Tossup States" office="Senate" addClass="middle"/>
+            <Results races={buckets.likelyD} hed="Safe/Likely Dem." office="Senate" addClass="first"/>
+            <Results races={buckets.likelyR} hed="Safe/Likely GOP" office="Senate" addClass="last"/>
           </>}
         </div>
         Results as of <DateFormatter value={latest} />
