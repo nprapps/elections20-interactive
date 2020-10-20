@@ -43,7 +43,7 @@ export default class NationalMap extends Component {
   async loadSVG(svgText) {
     this.svgRef.current.innerHTML = svgText;
     this.paint(this.props);
-    // this.initLabels();
+    this.initLabels();
 
     var svg = this.svgRef.current.querySelector("svg");
     svg.addEventListener("mousemove", (e) => this.onMove(e));
@@ -87,7 +87,7 @@ export default class NationalMap extends Component {
 
     if (district) {
       result = result.filter((r) => (r.district = district))[0];
-      console.log(result);
+      // console.log(result);
     } else {
       result = result[0];
     }
@@ -109,7 +109,7 @@ export default class NationalMap extends Component {
     var svg = this.svgRef.current.querySelector("svg");
     var groups = svg.querySelectorAll("g");
 
-    groups.forEach(function (g) {
+    groups.forEach(function(g) {
       var stateOutline = g.querySelector("path");
       var stateLabel = g.querySelector("text");
 
@@ -164,8 +164,9 @@ export default class NationalMap extends Component {
       var voteLabel = document.createElementNS(svg.namespaceURI, "text");
       voteLabel.classList.add("votes");
       voteLabel.innerHTML = states[stateName].electoral;
+
       voteLabel.setAttribute("x", parseInt(stateLabel.getAttribute("x")));
-      voteLabel.setAttribute("y", parseInt(stateLabel.getAttribute("y") + 11));
+      voteLabel.setAttribute("y", parseInt(stateLabel.getAttribute("y")) + 11);
       voteLabel.setAttribute("dx", parseInt(stateLabel.getAttribute("dx")));
       voteLabel.setAttribute("dy", parseInt(stateLabel.getAttribute("dy")));
       g.append(voteLabel);
