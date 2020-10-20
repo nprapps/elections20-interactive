@@ -4,6 +4,8 @@ import ResultsTableCandidates from "../resultsTableCandidates";
 import Strings from "strings.sheet.json";
 import "./keyRaces.less";
 
+const STATES_WITHOUT_COUNTY_INFO = ["AK"];
+
 export default class KeyRaces extends Component {
   constructor(props) {
     super();
@@ -57,8 +59,15 @@ export default class KeyRaces extends Component {
       }
 
       var label = Strings[`office-${o}`];
+      var noCountyResults = STATES_WITHOUT_COUNTY_INFO.includes(
+        this.props.state
+      );
       var linkText =
-        o == "H" || o == "I" ? `All ${label} results ›` : "County-level results ›";
+        o == "H" || o == "I"
+          ? `All ${label} results ›`
+          : noCountyResults
+          ? ""
+          : "County-level results ›";
 
       return (
         <div class="key-race-group">
