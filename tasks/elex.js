@@ -77,6 +77,8 @@ module.exports = function(grunt) {
     grunt.log.writeln("Merging in external data...");
     augment(results, grunt.data);
 
+    var { longform } = grunt.data.archieml;
+
     grunt.log.writeln("Generating data files...");
 
     // ensure the data folder exists
@@ -102,7 +104,15 @@ module.exports = function(grunt) {
       states[state].push(result);
     });
     for (var state in states) {
-      await fs.writeFile(`build/data/states/${state}.json`, serialize({ test, results: states[state] }));
+      var stateOutput = {
+        test,
+        results: states[state]
+      };
+      var stateChatter = longform.statePages[state.toLowerCase()];
+      if (stateChatter) {
+        stateOutput.chatter = grunt.template.renderMarkdown(stateChatter);
+      }
+      await fs.writeFile(`build/data/states/${state}.json`, serialize(stateOutput));
     }
 
     // county files
@@ -128,23 +138,15 @@ module.exports = function(grunt) {
     }
 
     for (var office in byOffice) {
-      await fs.writeFile(`build/data/${office}.json`, serialize({ test, results: byOffice[office] }));
+      var officeOutput = {
+        test,
+        results: byOffice[office]
+      }
+      if (longform.bop[office]) {
+        officeOutput.bopText = longform.bop[office];
+      }
+      await fs.writeFile(`build/data/${office}.json`, serialize(officeOutput));
     }
-
-    // top-level results fusion
-    var gcu = grunt.data.archieml.longform.getCaughtUp;
-    "headline text".split(" ").forEach(p => gcu[p] = grunt.template.renderMarkdown(gcu[p]));
-    var top = {
-      test,
-      gcu,
-      senate: [],
-      house: [],
-      president: [],
-      gov: [],
-      ballots: []
-    };
-
-    await fs.writeFile(`build/data/topResults.json`, serialize(top));
 
   }
 

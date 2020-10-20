@@ -29,11 +29,11 @@ export default class StateResults extends Component {
   onData(data) {
     var latest = Math.max(...data.results.map(r => r.updated));
     this.updateTimestamp(latest);
-    this.setState({ races: data.results, test: data.test, latest });
+    this.setState(data);
   }
 
   updateTimestamp(timestamp, e) {
-    var latest = Math.max(this.state.latest, timestamp);
+    var latest = Math.max(this.state.latest || 0, timestamp);
     this.setState({ latest });
   }
 
@@ -50,12 +50,12 @@ export default class StateResults extends Component {
     if (this.props.state != newProps.state) {
       gopher.unwatch(`./data/states/${this.props.state}.json`, this.onData);
       gopher.watch(`./data/states/${newProps.state}.json`, this.onData);
-      this.setState({ races: null });
+      this.setState({ results: null });
     }
   }
 
   render(props, state) {
-    var { races, test, latest } = this.state;
+    var { results, test, latest, chatter } = this.state;
 
     let stateName = stateLookup[this.props.state].name;
 
@@ -76,10 +76,11 @@ export default class StateResults extends Component {
               <span class="state-name">{stateName}</span>
               {viewTitle}
             </h1>
+            <div class="chatter" dangerouslySetInnerHTML={({ __html: chatter})} />
             {this.renderTabSwitcher(office)}
           </header>
           {test ? <TestBanner /> : ""}
-          {races && <div class="results-elements">{this.renderResults(office)}</div>}
+          {results && <div class="results-elements">{this.renderResults(office)}</div>}
           Results as of <DateFormatter value={latest} />
         </div>
 
@@ -94,19 +95,19 @@ export default class StateResults extends Component {
     if (view === "key") {
       return <KeyRaces state={this.props.state} />;
     } else if (view === "H" || view === "I") {
-      var races = this.state.races.filter(r => r.office == view);
+      var results = this.state.results.filter(r => r.office == view);
       return (
         <div class="results-no-counties">
           <div class="results-wrapper">
-            {races.map(race => (
+            {results.map(race => (
               <ResultsTableCandidates data={race} class="house-race" />
             ))}
           </div>
         </div>
       );
     } else {
-      var races = this.state.races.filter(r => r.office == view);
-      return races.map(r => this.getRaceWithCountyResults(r));
+      var results = this.state.results.filter(r => r.office == view);
+      return results.map(r => this.getRaceWithCountyResults(r));
     }
   }
 
@@ -150,8 +151,8 @@ export default class StateResults extends Component {
 
   renderTabSwitcher(view) {
     // Create the tab switcher, between different race types
-    if (!this.state.races) return false;
-    var available = new Set(this.state.races.map(r => r.office));
+    if (!this.state.results) return false;
+    var available = new Set(this.state.results.map(r => r.office));
     var tabs = "PGSHI"
       .split("")
       .filter(o => available.has(o))
