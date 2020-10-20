@@ -231,9 +231,14 @@ export default class ResultsTableCounty extends Component {
 
 function ResultsRowCounty(props) {
   var { candidates, row, metric } = props;
-
+  var topCands = props.candidates.map(c => c.last);
 
   var orderedCandidates = candidates.map(function (header) {
+    // If on other candidate, get total percent of other votes
+    if (header.last == 'Other') {
+      var other = mergeOthers(row.candidates, header.id, topCands)
+      return other;
+    }
     var [match] = row.candidates.filter(c => header.id == c.id);
     return match || "";
   });
@@ -319,3 +324,31 @@ function calculateVoteMargin(candidates) {
   var winnerMargin = a.percent - b.percent;
   return voteMargin({ party: a.party, margin: winnerMargin });
 }
+
+// Borrowed from normalize
+// TODO: clean me up, can probably remove some of the this for our purposes
+var mergeOthers = function (candidates, raceID, topCandidates) {
+  // Only merged not top X candidates in state.
+  var remaining = candidates.filter(c => !topCandidates.includes(c.last));
+  var other = {
+    first: "",
+    last: "Other",
+    party: "Other",
+    id: `other-${raceID}`,
+    votes: 0,
+    avotes: 0,
+    electoral: 0,
+    percent: 0,
+    count: remaining.length,
+  };
+  for (var c of remaining) {
+    other.votes += c.votes || 0;
+    other.avotes += c.avotes || 0;
+    other.percent += c.percent || 0;
+    other.electoral += c.electoral || 0;
+    if (c.winner) {
+      other.winner = c.winner;
+    }
+  }
+  return other;
+};
