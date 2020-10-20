@@ -54,7 +54,7 @@ export default function ResultsBoardPresident(props) {
               var stateDetail = states[r.state] || {};
 
               return (
-                <tr role="row" class={(hasResult ? "closed" : "open") + " index-" + i}>
+                <tr key={r.state+r.district} role="row" class={(hasResult ? "closed" : "open") + " index-" + i}>
 
                   {/* State */}
                   <td role="cell" class={"state " + (winner[0] ? ("winner " + winner[0].party) : "")}>

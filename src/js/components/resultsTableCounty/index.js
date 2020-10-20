@@ -81,6 +81,7 @@ export default class ResultsTableCounty extends Component {
           <tbody class={this.state.collapsed ? "collapsed" : null}>
             {sortedData.map(c => (
               <ResultsRowCounty
+                key={c.fips}
                 candidates={orderedCandidates}
                 row={c}
                 metric={this.state.displayedMetric}
