@@ -106,15 +106,13 @@ export default class NationalMap extends Component {
       result = results[0];
     }
 
-    console.log(result)
-
     tooltip.innerHTML = `
       <h3>${result.stateName}${district ? districtDisplay : ""} <span>(${result.electoral})</span></h3>
       <div class="candidates">${result.candidates.map(c =>
         `<div class="row">
             <div class="party ${c.party}"></div>
             <div class="name">${c.last}</div> ${c.winner == "X" ? winnerIcon : ""}
-            <div class="perc">${c.percent ? c.percent : "0"}%</div>
+            <div class="perc">${c.percent ? Math.round(c.percent * 1000) / 10 : "0"}%</div>
         </div>`
       ).join("")}</div>
       <div class="reporting">${reportingPercentage(

@@ -105,7 +105,7 @@
 
 		&.winner {
 			fill: @ind;
-
+   
 			text {
 				fill: white;
 			}
@@ -121,7 +121,7 @@
 	text {
 		font-family: 'Knockout 31 4r';
     font-weight: normal;
-    font-size: 12px;
+    font-size: 11px;
     text-transform: uppercase;
     letter-spacing: 0.05em;
     -webkit-font-smoothing: antialiased;
@@ -132,9 +132,17 @@
     cursor: default;
     pointer-events: none;
 
+    @media @mobile {
+    	font-size: 15px;
+    }
+
     &.votes {
 	    fill-opacity: 0.75;
 	    font-size: 80%;
+
+	    @media @mobile {
+	    	display: none;
+	    }
 	  }
 	}
 
