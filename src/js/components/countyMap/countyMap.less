@@ -40,7 +40,7 @@
   .tooltip {
     position: absolute;
     border: 1px solid #bbb;
-    background-color: #eee;
+    background-color: #fff;
     padding: 6px 8px;
     display: none;
     pointer-events: none;
@@ -53,10 +53,14 @@
     .name {
       .gotham();
       font-weight: bold;
+      border-bottom: 1px solid #eee;
+    }
+
+    .row {
+      padding: 3px 0;
     }
 
     .pop,
-    .reporting,
     .result {
       font-size: 0.9rem;
       .knockout();
@@ -65,6 +69,16 @@
       &:empty {
         display: none;
       }
+    }
+
+    .reporting {
+      .gotham();
+      margin: 0;
+      padding-top: 3px;
+      font-size: 9px;
+      color: #9a9a9a;
+      font-style: italic;
+      border-top: 1px solid #eee;
     }
   }
 
@@ -167,7 +181,7 @@
     width: 1em;
     height: 1em;
     background: @ind;
-    opacity: .9;
+    opacity: 0.9;
 
     &.Dem {
       background: @demDim2;

@@ -253,11 +253,11 @@ export default class CountyMap extends Component {
       var perReporting = reportingPercentage(result.reportingPercent);
       tooltip.innerHTML = `
         <div class="name">${countyName}</div>
-        <div class="result">${candText}</div>
-        <div class="reporting">${perReporting}% reporting</div>
-        <div class="pop">Pop. ${formatters.comma(
+        <div class="row result">${candText}</div>
+        <div class="row pop">Pop. ${formatters.comma(
           result.county.population
         )}</div>
+        <div class="row reporting">${perReporting}% reporting</div>
       `;
     }
 
