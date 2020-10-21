@@ -58,7 +58,7 @@ export default class BoardHouse extends Component {
             <>
               <Results
                 races={buckets["toss-up"]}
-                hed="Tossup States"
+                hed="Toss-Up Seats"
                 office="House"
                 addClass="middle"
                 split={true}
