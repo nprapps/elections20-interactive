@@ -237,7 +237,6 @@ export default class CountyMap extends Component {
       return;
     }
 
-    // TODO: check syntax around leading candidate/winner
     var result = this.fipsLookup[fips];
     if (result) {
       var displayCandidates = result.candidates.slice(0, 2);
