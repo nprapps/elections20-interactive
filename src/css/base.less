@@ -23,7 +23,8 @@ body {
   line-height: 1.4;
 }
 
-img, svg {
+img,
+svg {
   max-width: 100%;
 }
 
@@ -33,11 +34,14 @@ h1 {
   color: #666;
 }
 
-a, a:visited {
+a,
+a:visited {
   color: @accent-dark;
 }
 
-a:hover, a:active, a:focus {
+a:hover,
+a:active,
+a:focus {
   color: @accent-light;
 }
 
@@ -73,11 +77,13 @@ footer {
   .npr {
     margin-top: 44px;
 
-    a, a:visited {
+    a,
+    a:visited {
       color: white;
       text-decoration: none;
 
-      &:hover, &:focus {
+      &:hover,
+      &:focus {
         color: #888;
       }
     }
@@ -103,23 +109,13 @@ footer {
   }
 }
 
-// CSS vars
-:root {
-  --accent: var(--secondary);
-  --accent-fade: fade(#888, 30%);
-  --dem: @true;
-  --gop: @rigorous;
-  --dem-fade: fade(@true, 30%);
-  --gop-fade: fade(@rigorous, 30%);
-  --link: @true;
-  --link-secondary: var(--foreground);
-  --font-size: 14px;
-  --side-margin: 15px;
-  --divider: #999;
-  --divider-minor: #dadada;
-  --background-faded: rgba(255, 255, 255, 0);
-
-  @media @mobile-above {
-    --side-margin: 20px;
-  }
+h1 {
+  color: #333;
+  font-family: "Gotham SSm", Helvetica, Arial, sans-serif;
+  font-size: 30px;
+  font-weight: 700;
+  line-height: 1.2;
+  margin: 0;
+  text-transform: uppercase;
+  -webkit-font-smoothing: antialiased;
 }
