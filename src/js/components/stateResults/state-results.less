@@ -345,20 +345,16 @@
     .gotham();
     margin-top: 8px;
 
-    @media @mobile {
-      display: none;
-    }
-
     a {
       text-decoration: none;
-      
-      &[aria-current=true] {
+
+      &[aria-current="true"] {
         color: #333333;
         font-weight: bold;
       }
     }
 
-    ul {
+    nav {
       padding: 0 0 8px;
       margin: 0;
       display: flex;
@@ -367,8 +363,8 @@
       // border-bottom: 2px solid @border-color;
     }
 
-    li {
-      display: block;
+    div {
+      display: inline-block;
       padding: 0px 11px;
       border-right: 1px solid #666;
       font-size: 12px;
@@ -388,6 +384,13 @@
           sans-serif;
         margin: 4px 0 0 0;
         -webkit-font-smoothing: antialiased;
+
+        &.view-label {
+          display: none;
+          @media @tablet-above {
+            display: inline-block;
+          }
+        }
       }
     }
 
@@ -416,14 +419,6 @@
       height: 60px;
       opacity: 0.4;
       outline: none;
-    }
-  }
-
-  .mobile-calendar-wrapper {
-    display: none;
-
-    @media @mobile {
-      display: block;
     }
   }
 

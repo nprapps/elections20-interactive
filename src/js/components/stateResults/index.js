@@ -169,41 +169,23 @@ export default class StateResults extends Component {
     });
 
     var tabElements = tabs.map(t => (
-      <li>
+      <div>
         <a
           aria-current={view == t.data}
           href={`#/states/${this.props.state}/${t.data}`}
           class="race-type-nav">
           {t.label}
         </a>
-      </li>
-    ));
-
-    var dropdownElements = tabs.map(t => (
-      <option
-        value={`#/states/${this.props.state}/${t.data}`}
-        selected={view == t.data ? "true" : ""}>
-        {t.label}
-      </option>
+      </div>
     ));
 
     return (
       <>
-        <div class="mobile-calendar-wrapper">
-          <div class="select-label">Select a contest</div>
-          <div class="outer-mobile-calendar">
-            <select class="mobile-calendar" onchange={this.handleSelect}>
-              {dropdownElements}
-            </select>
-          </div>
-        </div>
         <nav class="race-calendar">
-          <ul>
-            <li>
-              <span>Election results: </span>
-            </li>
+          <div>
+              <span class="view-label">Election results: </span>
+            </div>
             {tabElements}
-          </ul>
         </nav>
       </>
     );
