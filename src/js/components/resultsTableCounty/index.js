@@ -59,8 +59,7 @@ export default class ResultsTableCounty extends Component {
                 class="amt precincts"
                 onclick={() => this.updateSort("countyName")}>
                 <div>
-                  <span></span>
-                  {this.getIcon("countyName")}
+                  <span>{this.getIcon("countyName")}</span>
                 </div>
               </th>
               {orderedCandidates.map(cand => CandidateHeaderCell(cand))}
@@ -74,7 +73,7 @@ export default class ResultsTableCounty extends Component {
                 onclick={() => this.updateSort(this.state.displayedMetric.key)}>
                 <div>
                   <span>{this.state.displayedMetric.name}</span>
-                  {this.getIcon(this.state.displayedMetric.key)}
+                  <span>{this.getIcon(this.state.displayedMetric.key)}</span>
                 </div>
               </th>
             </tr>
