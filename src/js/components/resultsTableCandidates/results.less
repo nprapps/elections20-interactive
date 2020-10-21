@@ -16,12 +16,20 @@
   .gotham();
   font-size: var(--font-size);
   position: relative;
-  width: 80%;
+  width: 100%;
   max-width: 650px;
   padding-right: 20px;
 
-  @media @mobile {
-    width: 100%;
+  caption {
+    display: inline-block;
+    text-align: left;
+
+    @media @mobile {
+      width: 100%;
+    }
+    &:empty {
+      display: none;
+    }
   }
 
   &[test]::before {
@@ -50,7 +58,8 @@
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
-    margin-bottom: 1em;
+    margin-bottom: .5em;
+    margin-top: 10px;
 
     @media @mobile {
       display: block;
@@ -63,10 +72,11 @@
       text-transform: uppercase;
     }
 
-    .reporting {
+    span.reporting {
       color: var(--secondary);
       font-family: @sans;
       font-size: 0.85em;
+      text-align: right;
     }
   }
 
