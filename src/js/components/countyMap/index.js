@@ -43,6 +43,10 @@ export default class CountyMap extends Component {
     // stop when not renderable
   }
 
+  componentDidUpdate() {
+    this.paint();
+  }
+
   render() {
     // Handle case where leading 2 candidates are of same party
     return (
