@@ -142,8 +142,8 @@ module.exports = function(grunt) {
         test,
         results: byOffice[office]
       }
-      if (longform.bop[office]) {
-        officeOutput.bopText = longform.bop[office];
+      if (longform.chamberAlerts && longform.chamberAlerts[office]) {
+        officeOutput.alert = longform.chamberAlerts[office];
       }
       await fs.writeFile(`build/data/${office}.json`, serialize(officeOutput));
     }
