@@ -33,6 +33,14 @@ export default class BoardPresident extends Component {
   render(props, state) {
     var { races, test, latest } = this.state;
 
+    var called = {
+      Dem: [],
+      GOP: [], 
+      uncalled: []
+    };
+
+    var sum = list => list.reduce((t, r) => t + r.electoral, 0);
+
     if (races) {
       races.forEach(function(r) {
         r.districtDisplay = (r.district !== "AL") ? r.district : "";
@@ -57,12 +65,6 @@ export default class BoardPresident extends Component {
         if (bucketRating) buckets[bucketRating].push(r);
       });
 
-      var called = {
-        Dem: [],
-        GOP: [], 
-        uncalled: []
-      }
-
       races.forEach(r => called[r.winnerParty || "uncalled"].push(r));
     }
 
@@ -70,6 +72,29 @@ export default class BoardPresident extends Component {
       <h1 tabindex="-1">President</h1>
       { test ? <TestBanner /> : "" }
       <Tabs>
+
+        <div label="Breakdown" class="breakdown leaderboard">
+          <div class="results-header-group dem">
+            <h2 class="party">
+              <label>Biden</label>
+              <abbr>{sum(called.Dem)}</abbr>
+            </h2>
+          </div>
+
+          <div class="results-header-group gop">
+            <h2 class="party">
+              <label>Trump</label>
+              <abbr>{sum(called.GOP)}</abbr>
+            </h2>
+          </div>
+
+          <div class="results-header-group not-called">
+            <h2 class="party">
+              <label>Uncalled</label>
+              <abbr>{sum(called.uncalled)}</abbr>
+            </h2>
+          </div>
+        </div>
 
         <div label="Tetris">
           <div class="tetris-container">
