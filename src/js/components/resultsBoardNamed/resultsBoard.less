@@ -71,6 +71,7 @@
       &.middle {
         flex: 0 0 100%;
         order: 1;
+        margin-bottom: 35px;
 
         table {
           width: 49%;
@@ -88,8 +89,10 @@
 
     @media @tablet {
       flex: 0 0 100%;
+      margin-bottom: 20px;
 
       &.middle {
+        margin-bottom: 20px;
         table {
           width: 100%;
         }
@@ -395,6 +398,7 @@ table.results {
     &.middle {
       flex: 0 0 100%;
       order: 1;
+      margin-bottom: 35px;
 
       table {
         width: 49%;
@@ -411,10 +415,12 @@ table.results {
     }
   }
 
-  @media (max-width: 500px) {
+  @media @mobile {
     flex: 0 0 100%;
+    margin-bottom: 20px;
 
     &.middle {
+      margin-bottom: 20px;
       table {
         width: 100%;
       }
