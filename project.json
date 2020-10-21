@@ -15,6 +15,7 @@
   "scripts": {
     "src/js/main.js": "build/app.js",
     "src/js/embed.js": "build/embed.js",
+    "src/js/embedBOP.js": "build/embedBOP.js",
     "src/js/customizer.js": "build/customizer.js",
     "src/js/sidechain.js": "build/sidechain.js"
   },
