@@ -46,10 +46,6 @@ export default class BoardSenate extends Component {
         var bucketRating = getBucket(r.rating);
         if (bucketRating) buckets[bucketRating].push(r);
       });
-
-      var halfTossUp = Math.ceil(buckets["tossup"].length / 2);    
-      var firstHalfTossUp = buckets["tossup"].splice(0, halfTossUp);
-      var secondHalfTossUp = buckets["tossup"].splice(-halfTossUp);
     }
 
     return (
@@ -59,8 +55,7 @@ export default class BoardSenate extends Component {
         <BalanceOfPower race="senate" />
         <div class="board-container Senate">
           {races && <>
-            <Results races={firstHalfTossUp} hed="Competitive Seats" office="Senate" addClass="middle"/>
-            <Results races={secondHalfTossUp} office="Senate" addClass="middle"/>
+            <Results races={buckets.tossup} hed="Competitive Seats" office="Senate" addClass="middle" split={true}/>
             <Results races={buckets.likelyD} hed="Likely Democratic" office="Senate" addClass="first"/>
             <Results races={buckets.likelyR} hed="Likely Republican" office="Senate" addClass="last"/>
           </>}

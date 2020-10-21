@@ -64,10 +64,6 @@ export default class BoardPresident extends Component {
       }
 
       races.forEach(r => called[r.winnerParty || "uncalled"].push(r));
-
-      var halfTossUp = Math.ceil(buckets["tossup"].length / 2);    
-      var firstHalfTossUp = buckets["tossup"].splice(0, halfTossUp);
-      var secondHalfTossUp = buckets["tossup"].splice(-halfTossUp);
     }
 
     return <div class="president board">
@@ -97,8 +93,7 @@ export default class BoardPresident extends Component {
       </Tabs>
       <div class="board-container President">
         {races && <>
-          <Results races={firstHalfTossUp} hed="Competitive States" office="President" addClass="middle" />
-          <Results races={secondHalfTossUp} office="President" addClass="middle" />
+          <Results races={buckets.tossup} hed="Competitive States" office="President" addClass="middle" split={true}/>
           <Results races={buckets.likelyD} hed="Likely Democratic" office="President" addClass="first" />
           <Results races={buckets.likelyR} hed="Likely Republican" office="President" addClass="last" />
         </>}

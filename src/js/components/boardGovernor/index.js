@@ -47,9 +47,6 @@ export default class BoardGovernor extends Component {
       //   if (bucketRating) buckets[bucketRating].push(r);
       // });
 
-      var half = Math.ceil(sorted.length / 2);    
-      var firstHalf = sorted.splice(0, half);
-      var secondHalf = sorted.splice(-half);
     }
 
     return <>
@@ -57,8 +54,7 @@ export default class BoardGovernor extends Component {
       { test ? <TestBanner /> : "" }
       <div class="board-container Gov">
         {races && <>
-          <Results races={firstHalf} office="Gov"/>
-          <Results races={secondHalf} office="Gov"/>
+          <Results races={sorted} office="Gov" split={true}/>
         </>}
       </div>
       Results as of <DateFormatter value={latest} />

@@ -10,12 +10,6 @@
   flex-wrap: wrap;
   justify-content: space-between;
   margin-bottom: 30px;
-
-  &.House, &.Senate, &.Gov {
-    @media @tablet {
-      display: block;
-    }
-  }
 }
 
 .board-wrapper {
@@ -32,37 +26,40 @@
   }
 
   &.Gov {
-    flex: 0 0 49%;
-  }
+    flex: 0 0 100%;
 
-  &.House, &.Senate, &.President {
-    &:nth-child(2) {
-      margin-top: 55px;
+    table {
+      width: 49%;
+      vertical-align: top;
+      display: inline-block;
     }
-  }
 
-  &.President {
-    &:nth-child(2) {
-      @media @mobile {
-        margin-top: -24px;
+    table:nth-child(2) {
+      float: right;
+        
+      tr.index-0 td {
+        border-top: 1px solid #ddd;
+      }
+    }
 
-        table.results tr.index-0 td {
+    @media @tablet {
+      table {
+        width: 100%;
+      }
+      table:nth-child(2) {
+        tr.index-0 td {
           border-top: none;
-        }
-
-        tr:first-child {
-          display: none;
         }
       }
     }
   }
 
-  &.House, &.Senate, &.Gov {
-    &:nth-child(2) {
-      @media @tablet {
-        margin-top: -24px;
+  &.House, &.Senate {
+    .board-inner {
+      table:nth-child(2) {
+        float: right;
 
-        table.results tr.index-0 td {
+        tr.index-0 td {
           border-top: none;
         }
       }
@@ -72,19 +69,35 @@
       flex: 0 0 49%;
 
       &.middle {
-        // flex: 0 0 100%;
+        flex: 0 0 100%;
         order: 1;
 
-        .board-inner {
-          // width: 50%;
-          // margin: auto;
+        table {
+          width: 49%;
+          vertical-align: top;
+          display: inline-block;
+        }
+
+        table:nth-child(2) {
+          tr.index-0 td {
+            border-top: 1px solid #ddd;
+          }
         }
       }
     }
 
     @media @tablet {
-      &.middle .board-inner {
-        width: 100%;
+      flex: 0 0 100%;
+
+      &.middle {
+        table {
+          width: 100%;
+        }
+        table:nth-child(2) {
+          tr.index-0 td {
+            border-top: none;
+          }
+        }
       }
     }
   }
@@ -105,7 +118,7 @@
 }
 
 table.results {
-  margin-bottom: 20px;
+  // margin-bottom: 20px;
   width: 100%;
   font-family: "Gotham SSm", Helvetica, Arial, sans-serif;
   color: #666;
@@ -167,7 +180,7 @@ table.results {
         display: none;
       }
 
-      @media @mobile {
+      @media @tiny {
         display: none;
       }
     }
@@ -362,32 +375,57 @@ table.results {
   }
 }
 
-.President.board-container {
-  @media @mobile {
-    display: block;
-  }
-}
+.President .board-wrapper {
+  .board-inner {
+    table:nth-child(2) {
+      float: right;
 
-.President.board-wrapper {
+      tr:nth-child(1) {
+        display: none;
+      }
+      tr.index-0 td {
+        border-top: none;
+      }
+    }
+  }
+
   @media @desktop {
     flex: 0 0 49%;
 
     &.middle {
-      // flex: 0 0 100%;
+      flex: 0 0 100%;
       order: 1;
 
-      // .board-inner {
-      //   width: 50%;
-      //   margin: auto;
-      // }
+      table {
+        width: 49%;
+        vertical-align: top;
+        display: inline-block;
+      }
+
+      table:nth-child(2) {
+        tr.index-0 td {
+          border-top: 1px solid #ddd;
+          margin-top: 23px;
+        }
+      }
     }
   }
 
-  // @media @mobile {
-  //   &.middle .board-inner {
-  //     width: 100%;
-  //   }
-  // }
+  @media (max-width: 500px) {
+    flex: 0 0 100%;
+
+    &.middle {
+      table {
+        width: 100%;
+      }
+      table:nth-child(2) {
+        tr.index-0 td {
+          border-top: none;
+          margin-top: 0;
+        }
+      }
+    }
+  }
 }
 
 .President table.results {

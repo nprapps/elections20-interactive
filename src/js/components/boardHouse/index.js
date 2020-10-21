@@ -46,10 +46,6 @@ export default class BoardHouse extends Component {
         if (!buckets[r.rating]) buckets[r.rating] = [];
         buckets[r.rating].push(r);
       });
-
-      var halfTossUp = Math.ceil(buckets["toss-up"].length / 2);
-      var firstHalfTossUp = buckets["toss-up"].splice(0, halfTossUp);
-      var secondHalfTossUp = buckets["toss-up"].splice(-halfTossUp);
     }
 
     return (
@@ -61,15 +57,11 @@ export default class BoardHouse extends Component {
           {races && (
             <>
               <Results
-                races={firstHalfTossUp}
+                races={buckets["toss-up"]}
                 hed="Tossup States"
                 office="House"
                 addClass="middle"
-              />
-              <Results
-                races={secondHalfTossUp}
-                office="House"
-                addClass="middle"
+                split={true}
               />
               <Results
                 races={buckets["lean-d"]}
