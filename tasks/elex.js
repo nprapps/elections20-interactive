@@ -131,7 +131,7 @@ module.exports = function(grunt) {
     // sliced by office
     var byOffice = {
       president: geo.state.filter(r => r.office == "P").filter(stateOrDistrictFilter("district")),
-      house: geo.state.filter(r => r.office == "H" && r.keyRace),
+      house: geo.state.filter(r => r.office == "H"),
       senate: geo.state.filter(r => r.office == "S"),
       gov: geo.state.filter(r => r.office == "G"),
       ballots: geo.state.filter(r => r.office == "I")
