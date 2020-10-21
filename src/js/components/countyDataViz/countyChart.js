@@ -105,18 +105,17 @@ export class CountyChart extends Component {
     var displayVar = data[this.props.variable];
     tooltip.innerHTML = `
         <div class="name">${data.countyName}</div>
-        <div class="reporting">${this.props.title}: ${
+        <div class="row">${this.props.title}: <span class="amt"> ${
       this.props.formatter ? this.props.formatter(displayVar) : displayVar
-    }</div>`;
+    }</span></div>`;
 
     var bounds = this.svgRef.current.getBoundingClientRect();
     var x = e.clientX - bounds.left;
     var y = e.clientY - bounds.top;
-    if (x > bounds.width / 2) {
-      x -= tooltip.offsetWidth + 10;
-    } else {
-      x += 20;
-    }
+    if (x + 1 > bounds.width / 2) {
+      x -= 130;
+      y += 10;
+    } 
     tooltip.style.left = x + 20 + "px";
     tooltip.style.top = y + "px";
 

@@ -39,9 +39,9 @@
 
   .tooltip {
     position: absolute;
-    border: 1px solid #bbb;
-    background-color: #fff;
-    padding: 6px 8px;
+    border: 1px solid #eee;
+    background-color: white;
+    padding: 8px 8px 5px 8px;
     display: none;
     pointer-events: none;
     z-index: 1;
@@ -51,34 +51,63 @@
     }
 
     .name {
-      .gotham();
-      font-weight: bold;
-      border-bottom: 1px solid #eee;
+      font-size: 11px;
+      margin: 0 0 3px 0;
+      font-family: "Knockout 31 4r", "Helvetica Neue", Helvetica, Arial,
+        sans-serif;
+      font-weight: normal;
+      text-transform: uppercase;
+      line-height: 1.2;
+      letter-spacing: 0.05em;
+      -webkit-font-smoothing: antialiased;
+      color: #333;
     }
 
     .row {
       padding: 3px 0;
-    }
+      min-width: 120px;
+      font-size: 10px;
+      color: #666;
+      text-transform: uppercase;
+      border-top: 1px solid #eee;
 
-    .pop,
-    .result {
-      font-size: 0.9rem;
-      .knockout();
-      color: #787878;
+      &.reporting {
+        .gotham();
+        margin: 0;
+        padding-top: 3px;
+        font-size: 9px;
+        color: #9a9a9a;
+        font-style: italic;
+        text-transform: none;
+      }
+
+      .amt {
+        text-align: right;
+        float: right;
+      }
+
+      span.party {
+        height: 6px;
+        width: 6px;
+        margin-right: 4px;
+        margin-top: 5px;
+        background: @ind;
+        float: left;
+
+        &.Dem {
+          background: @dem;
+        }
+        &.GOP {
+          background: @gop;
+        }
+        &.Other {
+          background: #9a9a9a;
+        }
+      }
 
       &:empty {
         display: none;
       }
-    }
-
-    .reporting {
-      .gotham();
-      margin: 0;
-      padding-top: 3px;
-      font-size: 9px;
-      color: #9a9a9a;
-      font-style: italic;
-      border-top: 1px solid #eee;
     }
   }
 

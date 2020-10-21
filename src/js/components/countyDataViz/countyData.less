@@ -43,9 +43,9 @@ circle {
 
   .tooltip {
     position: absolute;
-    border: 1px solid #bbb;
-    background-color: #fff;
-    padding: 6px 8px;
+    border: 1px solid #eee;
+    background-color: white;
+    padding: 8px 8px 5px 8px;
     display: none;
     pointer-events: none;
     z-index: 1;
@@ -55,17 +55,29 @@ circle {
     }
 
     .name {
-      .gotham();
-      font-weight: bold;
-      border-bottom: 1px solid #eee;
+      font-size: 11px;
+      margin: 0 0 3px 0;
+      font-family: "Knockout 31 4r","Helvetica Neue",Helvetica,Arial,sans-serif;
+      font-weight: normal;
+      text-transform: uppercase;
+      line-height: 1.2;
+      letter-spacing: .05em;
+      -webkit-font-smoothing: antialiased;
+      color: #333;
     }
 
-    .pop,
-    .reporting,
-    .result {
-      font-size: 0.9rem;
-      .knockout();
-      color: #787878;
+    .row {
+      padding: 3px 0;
+      min-width: 120px;
+      font-size: 10px;
+      color: #666;
+      text-transform: uppercase;
+      border-top: 1px solid #eee;
+
+      .amt {
+        text-align: right;
+        float: right;
+      }
 
       &:empty {
         display: none;
