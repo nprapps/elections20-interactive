@@ -1,3 +1,5 @@
+@import "values";
+
 h1 {
   font-size: 24px;
 }
@@ -23,5 +25,46 @@ h1 {
 
   .state {
     width: 100px;
+  }
+}
+
+// Balance of power embed
+
+@height: 30px;
+
+main.embed-bop {
+  max-width: 650px;
+
+  .bar-container {
+    width: 100%;
+    height: @height;
+    background: #ddd;
+    margin-bottom: 20px;
+    position: relative;
+
+    .bar {
+      height: 100%;
+      display: inline-block;
+
+      &.dem {
+        background: @dem;
+      }
+      &.gop {
+        background: @gop;
+        float: right;
+      }
+      &.other {
+        background: @ind;
+      }
+    }
+
+    .middle {
+      position: absolute;
+      top: @height / -5;
+      border-left: 1px solid #444;
+      height: @height * 1.4;
+      width: 1px;
+      right: 50%;
+    }
   }
 }
