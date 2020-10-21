@@ -4,15 +4,22 @@ import { reportingPercentage } from "../util.js";
 import "./results.less";
 import strings from "strings.sheet.json";
 
+const activeMugshots = {
+  Biden:
+    "https://apps.npr.org/dailygraphics/graphics/prez-candidates-jan-list-20190116/assets/joe_biden.png",
+  Trump:
+    "https://apps.npr.org/dailygraphics/graphics/prez-candidates-jan-list-20190116/assets/donald_trump.png",
+};
+
 export default function ResultsTableCandidates(props) {
   if (!props.data) {
     return "";
   }
-  
+
   var results = props.data;
   var notStatewide = results.office === "H" || results.office === "I";
   var seatName = notStatewide ? results.seat : props.title;
-  if (results.office === "I") seatName += ` - ${results.description}`
+  if (results.office === "I") seatName += ` - ${results.description}`;
 
   let totalVotes = 0;
   for (let i = 0; i < results.candidates.length; i++) {
@@ -23,6 +30,8 @@ export default function ResultsTableCandidates(props) {
   var reporting = notStatewide
     ? `${reportingPercentage(props.data.reportingPercent || 0)}% reporting`
     : `${reportingPercentage(props.data.eevp || 0)}% in`;
+
+  var hasMugs = results.candidates.some(c => Object.keys(activeMugshots).includes(c.last));
 
   return (
     <div class="results-table statewide">
@@ -46,7 +55,12 @@ export default function ResultsTableCandidates(props) {
         </div>
         <div class="tbody" role="rowgroup">
           {results.candidates.map((c, index) => (
-            <ResultsTableCandidatesRow key={c.id} data={c} uncontested={isUncontested} />
+            <ResultsTableCandidatesRow
+              key={c.id}
+              data={c}
+              uncontested={isUncontested}
+              mugs={hasMugs}
+            />
           ))}
         </div>
       </div>
@@ -59,21 +73,21 @@ export function ResultsTableCandidatesRow(props) {
   if (!result.votes && result.last == "Other") {
     return;
   }
-  var mugshot;
+  var mugshot = activeMugshots[result.last];
 
   var classes = ["tr", "candidate", result.party || result.last];
   if (result.winner) classes.push("winner");
   if (result.incumbent) classes.push("incumbent");
-  if (!mugshot) classes.push("noimg");
+  if (!props.mugs) classes.push("noimg");
   var imgClass = mugshot ? "" : "noimg";
 
   return (
     <Fragment>
       <div class="row-wrapper" role="presentation">
         <div class={`${classes.join(" ")}`} role="row">
-          <div aria-hidden="true" class={`td flourishes ${imgClass}`}>
+          <div aria-hidden="true" class={`td flourishes ${props.mugs ? '' : imgClass}`}>
             <div
-              class={`"mugshot ${imgClass}`}
+              class={`mugshot ${imgClass}`}
               style={`background-image: url( ${mugshot})`}></div>
             {result.votes ? (
               <div class="bar-container">
