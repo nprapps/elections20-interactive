@@ -2,7 +2,6 @@
 import { h, Component, Fragment } from "preact";
 import gopher from "../gopher.js";
 import KeyRaces from "../stateViewKeyRaces";
-import HouseResults from "../stateViewHouse";
 import ResultsTableCandidates from "../resultsTableCandidates";
 import CountyResults from "../countyResults";
 import TestBanner from "../testBanner";
