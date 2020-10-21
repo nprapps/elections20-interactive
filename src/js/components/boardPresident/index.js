@@ -13,9 +13,7 @@ export default class BoardPresident extends Component {
   constructor(props) {
     super();
 
-    this.state = {
-      selectedTab: "ec-tetris"
-    };
+    this.state = {};
     this.onData = this.onData.bind(this);
   }
 
@@ -83,7 +81,7 @@ export default class BoardPresident extends Component {
               <div class="uncalled">
                 <b>Uncalled races</b>
                 <ul>
-                  {called.uncalled.map(c => <li>{c.state}</li>)}
+                  {called.uncalled.map(c => <li>{c.state} ({c.electoral})</li>)}
                 </ul>
               </div>
               <Tetris races={called.Dem} width={10} class="D" />
