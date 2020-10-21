@@ -60,7 +60,7 @@ export default class StateResults extends Component {
 
     let office = props.subview || "key";
     let viewTitle =
-      office == "key" ? "Key Results" : strings[`office-${office}`];
+      office == "key" ? "Key Results" : `${strings[`office-${office}`]} Results`;
 
     return (
       <div
