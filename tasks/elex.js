@@ -148,6 +148,24 @@ module.exports = function(grunt) {
       await fs.writeFile(`build/data/${office}.json`, serialize(officeOutput));
     }
 
+    // create BOP widget output
+    var mapBOP = function(r) {
+      return {
+        id: r.id,
+        state: r.state,
+        district: r.district,
+        winner: r.winnerParty
+      }
+    }
+
+    var bop = {
+      president: geo.national[0].candidates,
+      house: byOffice.house.filter(r => r.called).map(mapBOP),
+      senate: byOffice.senate.filter(r => r.called).map(mapBOP)
+    }
+
+    await fs.writeFile(`build/data/bop.json`, serialize(bop));
+
   }
 
   var serialize = d => JSON.stringify(d, null, 2);
