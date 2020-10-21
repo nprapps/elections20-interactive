@@ -58,7 +58,7 @@ export default class BoardSenate extends Component {
             <div class="alert" dangerouslySetInnerHTML={({ __html: alert })} />
           </div>
           <div class="bop-wrapper">
-            <BalanceOfPower race="senate" />
+            <BalanceOfPower race="senate" data={results}/>
           </div>
         </div>
         <div class="board-container Senate">

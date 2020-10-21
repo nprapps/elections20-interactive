@@ -10,29 +10,21 @@ export default class BalanceOfPower extends Component {
     this.isSenate = props.race == "senate";
     // Hardcoded # of seats needed for majority in Senate/house
     this.seatsNeeded = this.isSenate ? 51 : 218;
-    this.onData = this.onData.bind(this);
-  }
-
-  onData(json) {
-    this.setState({ data: json.results });
   }
 
   // Lifecycle: Called whenever our component is created
-  async componentDidMount() {
-    gopher.watch(`./data/${this.props.race}.json`, this.onData);
-  }
+  async componentDidMount() {}
 
   // Lifecycle: Called just before our component will be destroyed
   componentWillUnmount() {
     // stop when not renderable
-    gopher.unwatch(`./data/${this.props.race}.json`, this.onData);
   }
 
   render() {
-    if (!this.state.data) {
+    if (!this.props.data) {
       return;
     }
-    var results = this.getCongressBOP(this.state.data);
+    var results = this.getCongressBOP(this.props.data);
 
     // TODO: add in check icon
     return (
