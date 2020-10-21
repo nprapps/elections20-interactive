@@ -153,7 +153,7 @@ table.results {
 
       @media @mobile {
         flex: 0 0 40px;
-        
+
         .in {
           display: none;
         }
@@ -162,6 +162,10 @@ table.results {
     .little-label,
     .little-hed {
       flex: 0 0 19px;
+
+      .no-flips & {
+        display: none;
+      }
 
       @media @mobile {
         display: none;

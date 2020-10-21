@@ -30,9 +30,20 @@ function CandidateCells(race) {
 export default function ResultsBoardPresident(props) {
   // console.log("props",props)
 
+  var hasFlips = props.races.some(function(r) {
+    var [ winner ] = r.candidates.filter(c => c.winner == "X");
+    return winner && (r.previousParty !== winner.party);
+  });
+
+  var classNames = [
+    "board-wrapper president",
+    props.addClass,
+    hasFlips ? "has-flips" : "no-flips"
+  ];
+
   return (
     <>
-      <div class={["board-wrapper", props.office, props.addClass].join(" ")}>
+      <div class={classNames.filter(c => c).join(" ")}>
         <div class="board-inner">
           {props.hed ? <h3 class="board-hed">{props.hed}</h3> : ""}
           <table class="president results table" role="table">
@@ -51,22 +62,22 @@ export default function ResultsBoardPresident(props) {
               var percentIn = reporting || reporting == 0 
                 ? <span>{reportingPercentage(reporting)}%<span class="in"> in</span></span>
                 : "";
-              var winner = r.candidates.filter(c => c.winner == "X");
-              var flipped = winner[0] && (r.previousParty !== winner[0].party);
+              var [ winner ] = r.candidates.filter(c => c.winner == "X");
+              var flipped = winner && (r.previousParty !== winner.party);
               var stateDetail = states[r.state] || {};
 
               return (
                 <tr key={r.state+r.district} role="row" class={(hasResult ? "closed" : "open") + " index-" + i}>
 
                   {/* State */}
-                  <td role="cell" class={"state " + (winner[0] ? ("winner " + winner[0].party) : "")}>
+                  <td role="cell" class={"state " + (winner ? ("winner " + winner.party) : "")}>
                     <a href={"#/states/" + r.state + "/" + r.office}>
                       {stateDetail.ap} {r.district && r.district !== "AL" ? r.district : ""}
                     </a>
                   </td>
 
                   {/* Electoral votes */}
-                  <td role="cell" class={"electoral " + (winner[0] ? ("winner " + winner[0].party) : "")}>{r.electoral}</td>
+                  <td role="cell" class={"electoral " + (winner ? ("winner " + winner.party) : "")}>{r.electoral}</td>
 
                   {/* Open */}
                   <td role="cell" class="open-label" colspan="3">Last polls close at {stateDetail.closingTime} ET</td>
@@ -78,7 +89,7 @@ export default function ResultsBoardPresident(props) {
                   <td role="cell" class="reporting">{percentIn}</td>
 
                   {/* Runoff or Flip */}
-                  <td role="cell" class={"little-label " + (flipped ? winner[0].party : "")}>
+                  <td role="cell" class={"little-label " + (flipped ? winner.party : "")}>
                     <span class={r.runoff ? "runoff-label" : ""}>{r.runoff ? "R.O." : ""}</span>
                     <span class={flipped ? "flip-label" : ""}>{flipped ? "Flip" : ""}</span>
                   </td>

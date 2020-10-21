@@ -30,9 +30,26 @@ function CandidateCells(race) {
 export default function ResultsBoardNamed(props) {
   // console.log("props",props)
 
+  var hasFlips = props.races.some(function(r) {
+    var [ winner ] = r.candidates.filter(c => c.winner);
+    return winner && (
+      // seat flipped
+      r.previousParty !== winner.party ||
+      // runoff
+      winner.winner == "R"
+    );
+  });
+
+  var classNames = [
+    "board-wrapper president",
+    props.office,
+    props.addClass,
+    hasFlips ? "has-flips" : "no-flips"
+  ];
+
   return (
     <>
-      <div class={["board-wrapper", props.office, props.addClass].join(" ")}>
+      <div class={classNames.filter(c => c).join(" ")}>
         <div class="board-inner">
           {props.hed ? <h3 class="board-hed">{props.hed}</h3> : ""}
           <table class="named results table" role="table">
@@ -51,7 +68,7 @@ export default function ResultsBoardNamed(props) {
                 : "";
               var [ winner ] = r.candidates.filter(c => c.winner == "X");
               var [ incumbent ] = r.candidates.filter(c => c.incumbent);
-              var flipped = winner && incumbent && (r.previousParty !== winner.party);
+              var flipped = winner && (r.previousParty !== winner.party);
               var seatLabel = "";
               var ballotLabel = "";
               switch (r.office) {
