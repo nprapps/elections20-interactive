@@ -5,6 +5,7 @@ import BalanceOfPower from "../balanceOfPower";
 import TestBanner from "../testBanner";
 import DateFormatter from "../dateFormatter";
 import { getBucket } from "../util.js";
+import "./senate.less";
 
 export default class BoardSenate extends Component {
   constructor(props) {
@@ -50,9 +51,16 @@ export default class BoardSenate extends Component {
 
     return (
       <Fragment>
-        <h1 tabindex="-1">Senate</h1>
         { test ? <TestBanner /> : "" }
-        <BalanceOfPower race="senate" />
+        <div class="header">
+          <div class="title-wrapper">
+            <h1 tabindex="-1">Senate Results</h1>
+            <div>TKTK Placeholder for call text</div>
+          </div>
+          <div class="bop-wrapper">
+            <BalanceOfPower race="senate" />
+          </div>
+        </div>
         <div class="board-container Senate">
           {races && <>
             <Results races={buckets.tossup} hed="Competitive Seats" office="Senate" addClass="middle" split={true}/>

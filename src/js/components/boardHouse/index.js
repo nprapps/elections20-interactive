@@ -50,9 +50,16 @@ export default class BoardHouse extends Component {
 
     return (
       <>
-        <h1 tabindex="-1">Key House Results</h1>
         {test ? <TestBanner /> : ""}
-        <BalanceOfPower race="house" />
+        <div class="header">
+          <div class="title-wrapper">
+            <h1 tabindex="-1">Key House Results</h1>
+            <div>TKTK Placeholder for call text</div>
+          </div>
+          <div class="bop-wrapper">
+            <BalanceOfPower race="house" />
+          </div>
+        </div>
         <div class="board-container House">
           {races && (
             <>
