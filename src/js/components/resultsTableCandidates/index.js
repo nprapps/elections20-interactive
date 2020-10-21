@@ -19,7 +19,8 @@ export default function ResultsTableCandidates(props) {
   var results = props.data;
   var notStatewide = results.office === "H" || results.office === "I";
   var seatName = notStatewide ? results.seat : props.title;
-  if (results.office === "I") seatName += ` - ${results.description}`;
+  if (results.office === "I" && results.description)
+    seatName += ` - ${results.description}`;
 
   let totalVotes = 0;
   for (let i = 0; i < results.candidates.length; i++) {
@@ -31,7 +32,9 @@ export default function ResultsTableCandidates(props) {
     ? `${reportingPercentage(props.data.reportingPercent || 0)}% reporting`
     : `${reportingPercentage(props.data.eevp || 0)}% in`;
 
-  var hasMugs = results.candidates.some(c => Object.keys(activeMugshots).includes(c.last));
+  var hasMugs = results.candidates.some(c =>
+    Object.keys(activeMugshots).includes(c.last)
+  );
 
   return (
     <div class="results-table statewide">
@@ -85,7 +88,9 @@ export function ResultsTableCandidatesRow(props) {
     <Fragment>
       <div class="row-wrapper" role="presentation">
         <div class={`${classes.join(" ")}`} role="row">
-          <div aria-hidden="true" class={`td flourishes ${props.mugs ? '' : imgClass}`}>
+          <div
+            aria-hidden="true"
+            class={`td flourishes ${props.mugs ? "" : imgClass}`}>
             <div
               class={`mugshot ${imgClass}`}
               style={`background-image: url( ${mugshot})`}></div>

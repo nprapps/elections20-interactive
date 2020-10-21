@@ -46,7 +46,7 @@ export default class CountyResults extends Component {
     }
 
     // Don't show data viz for special elections as they may have two candidates
-    // of the same party running against each
+    // of the same party running against each other.
     var dataViz;
     if (!this.props.isSpecial) {
       dataViz = (

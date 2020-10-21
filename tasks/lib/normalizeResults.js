@@ -189,9 +189,14 @@ module.exports = function (resultArray, overrides = {}) {
           if (sheetMetadata.rating) {
             unitMeta.rating = sheetMetadata.rating;
           }
-          if (sheetMetadata.description) {
-            unitMeta.description = sheetMetadata.description;
+          if (sheetMetadata.name) {
+            unitMeta.seat = sheetMetadata.name;
           }
+          if (sheetMetadata.featured) {
+            unitMeta.featured = sheetMetadata.featured;
+          }
+          // For now, always override description with ours even if empty.
+          unitMeta.description = sheetMetadata.description;
         }
 
         unitMeta.updated = Date.parse(unitMeta.updated);

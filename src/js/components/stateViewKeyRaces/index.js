@@ -57,6 +57,10 @@ export default class KeyRaces extends Component {
         data = data.filter(d => d.keyRace);
         if (!data.length) return;
       }
+      if (o == "I") {
+        data = data.filter(d => d.featured);
+        if (!data.length) return;
+      }
 
       var label = Strings[`office-${o}`];
       var noCountyResults = STATES_WITHOUT_COUNTY_INFO.includes(
