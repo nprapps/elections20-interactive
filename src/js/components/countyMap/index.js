@@ -231,23 +231,30 @@ export default class CountyMap extends Component {
   onMove(e) {
     var tooltip = this.tooltipRef.current;
     var fips = e.target.id.replace("fips-", "");
-    tooltip.classList.remove("shown");
+    
     if (!fips || e.type == "mouseleave") {
+      tooltip.classList.remove("shown");
       return;
     }
 
     // TODO: check syntax around leading candidate/winner
     var result = this.fipsLookup[fips];
     if (result) {
+      var displayCandidates = result.candidates.slice(0, 2);
       var candText = "";
       if (result.reportingPercent > 0.5) {
-        var leadingCandidate = result.candidates[0];
-        var prefix = "Leading: "; // TODO: when do we add winner in?
-        var candText = `${prefix}${leadingCandidate.last} (${
-          leadingCandidate.percent
-            ? reportingPercentage(leadingCandidate.percent)
-            : 0
-        }%)`;
+        candText = displayCandidates
+          .map(
+            c =>
+            `<div class="row">
+            <span class="party ${c.party}"></span>
+            <span>${c.last}</span>
+            <span class="amt">${
+              c.percent ? reportingPercentage(c.percent) : '-'
+            }%</span>
+        </div>`
+          )
+          .join("");
       }
 
       // TODO: get the county name back in and check language around eevp
@@ -256,11 +263,11 @@ export default class CountyMap extends Component {
       );
       var perReporting = reportingPercentage(result.reportingPercent);
       tooltip.innerHTML = `
-        <div class="name">${countyName}</div>
-        <div class="row result">${candText}</div>
-        <div class="row pop">Pop. ${formatters.comma(
+        <div class="name"> ${countyName} </div>
+        ${candText}
+        <div class="row pop">Population <span class="amt"> ${formatters.comma(
           result.county.population
-        )}</div>
+        )}</span></div>
         <div class="row reporting">${perReporting}% reporting</div>
       `;
     }
