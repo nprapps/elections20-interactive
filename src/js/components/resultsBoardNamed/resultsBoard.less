@@ -110,6 +110,7 @@ table.results {
   font-family: "Gotham SSm", Helvetica, Arial, sans-serif;
   color: #666;
   font-size: 11px;
+  display: block;
   // border-collapse: collapse;
 
   tr {
@@ -126,6 +127,14 @@ table.results {
     .state,
     .state-hed {
       flex: 0 0 60px;
+
+      .x-small { display: none; }
+
+      @media @mobile {
+        flex: 0 0 45px;
+        .x-small { display: inline; }
+        .not-small { display: none; }
+      }
     }
     .electoral,
     .electoral-hed {
@@ -141,10 +150,22 @@ table.results {
     .reporting,
     .reporting-hed {
       flex: 0 0 54px;
+
+      @media @mobile {
+        flex: 0 0 40px;
+        
+        .in {
+          display: none;
+        }
+      }
     }
     .little-label,
     .little-hed {
       flex: 0 0 19px;
+
+      @media @mobile {
+        display: none;
+      }
     }
   }
 
