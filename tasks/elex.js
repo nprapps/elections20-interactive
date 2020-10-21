@@ -143,7 +143,7 @@ module.exports = function(grunt) {
         results: byOffice[office]
       }
       if (longform.chamberAlerts && longform.chamberAlerts[office]) {
-        officeOutput.alert = longform.chamberAlerts[office];
+        officeOutput.alert = grunt.template.renderMarkdown(longform.chamberAlerts[office]);
       }
       await fs.writeFile(`build/data/${office}.json`, serialize(officeOutput));
     }

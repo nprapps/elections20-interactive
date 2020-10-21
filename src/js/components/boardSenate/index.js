@@ -17,7 +17,7 @@ export default class BoardSenate extends Component {
 
   onData(data) {
     var latest = Math.max(...data.results.map(r => r.updated));
-    this.setState({ races: data.results, test: data.test, latest });
+    this.setState({ ...data, latest });
   }
 
   // Lifecycle: Called whenever our component is created
@@ -32,10 +32,10 @@ export default class BoardSenate extends Component {
   }
 
   render() {
-    var { races, test, latest } = this.state;
+    var { results, test, latest, alert } = this.state;
 
-    if (races) {
-      var sorted = races.sort((a,b) => a.name > b.name ? 1 : a.name < b.name ? -1 : 0);
+    if (results) {
+      var sorted = results.sort((a,b) => a.name > b.name ? 1 : a.name < b.name ? -1 : 0);
 
       var buckets = {
         likelyD: [],
@@ -55,14 +55,14 @@ export default class BoardSenate extends Component {
         <div class="header">
           <div class="title-wrapper">
             <h1 tabindex="-1">Senate Results</h1>
-            <div>TKTK Placeholder for call text</div>
+            <div class="alert" dangerouslySetInnerHTML={({ __html: alert })} />
           </div>
           <div class="bop-wrapper">
             <BalanceOfPower race="senate" />
           </div>
         </div>
         <div class="board-container Senate">
-          {races && <>
+          {results && <>
             <Results races={buckets.tossup} hed="Competitive Seats" office="Senate" addClass="middle" split={true}/>
             <Results races={buckets.likelyD} hed="Likely Democratic" office="Senate" addClass="first"/>
             <Results races={buckets.likelyR} hed="Likely Republican" office="Senate" addClass="last"/>

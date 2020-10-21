@@ -15,7 +15,7 @@ export default class BoardHouse extends Component {
 
   onData(data) {
     var latest = Math.max(...data.results.map((r) => r.updated));
-    this.setState({ races: data.results, test: data.test, latest });
+    this.setState({ ...data, latest });
   }
 
   // Lifecycle: Called whenever our component is created
@@ -30,10 +30,10 @@ export default class BoardHouse extends Component {
   }
 
   render() {
-    var { races, test, latest } = this.state;
+    var { results, test, latest, alert } = this.state;
 
-    if (races) {
-      var sorted = races.sort((a, b) =>
+    if (results) {
+      var sorted = results.sort((a, b) =>
         a.state > b.state ? 1 : 
         a.state < b.state ? -1 : 
         parseInt(a.seatNumber) > parseInt(b.seatNumber) ? 1 : 
@@ -54,14 +54,14 @@ export default class BoardHouse extends Component {
         <div class="header">
           <div class="title-wrapper">
             <h1 tabindex="-1">Key House Results</h1>
-            <div>TKTK Placeholder for call text</div>
+            <div class="alert" dangerouslySetInnerHTML={({ __html: alert })} />
           </div>
           <div class="bop-wrapper">
             <BalanceOfPower race="house" />
           </div>
         </div>
         <div class="board-container House">
-          {races && (
+          {results && (
             <>
               <Results
                 races={buckets["toss-up"]}
