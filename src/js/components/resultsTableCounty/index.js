@@ -1,5 +1,4 @@
 import { h, Fragment, Component, createRef } from "preact";
-import "./resultsTableCounty.less";
 import {
   reportingPercentage,
   sortByOrder,

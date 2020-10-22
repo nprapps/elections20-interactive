@@ -2,8 +2,6 @@ import { h, Fragment } from "preact";
 import { reportingPercentage, sortByParty } from "../util";
 import states from "states.sheet.json";
 
-import "./resultsBoard.less";
-
 function CandidateCells(race) {
   var sorted = race.candidates.slice(0, 2).sort(sortByParty);
   var leading = race.candidates[0];

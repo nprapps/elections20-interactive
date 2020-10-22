@@ -2,8 +2,6 @@ import { h, Fragment } from "preact";
 import { reportingPercentage } from "../util";
 import states from "states.sheet.json";
 
-import "../resultsBoardNamed/resultsBoard.less";
-
 var sortParty = function(p) {
   return p == "GOP" ? Infinity : p == "Dem" ? -Infinity : 0;
 };

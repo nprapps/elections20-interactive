@@ -4,8 +4,7 @@ import NationalMap from "../nationalMap";
 import Results from "../resultsBoardPresident";
 import TestBanner from "../testBanner";
 import DateFormatter from "../dateFormatter";
-import "./boardPresident.less";
-import Tetris from "../tetris";
+import ElectoralArc from "../electoralArc";
 import Tabs from "../tabs";
 import { getBucket } from "../util.js";
 
@@ -19,7 +18,7 @@ export default class BoardPresident extends Component {
 
   onData(data) {
     var latest = Math.max(...data.results.map(r => r.updated));
-    this.setState({ races: data.results, test: data.test, latest });
+    this.setState({ ...data, latest });
   }
 
   componentDidMount() {
@@ -31,22 +30,14 @@ export default class BoardPresident extends Component {
   }
 
   render(props, state) {
-    var { races, test, latest } = this.state;
+    var { results, test, latest } = this.state;
 
-    var called = {
-      Dem: [],
-      GOP: [], 
-      uncalled: []
-    };
-
-    var sum = list => list.reduce((t, r) => t + r.electoral, 0);
-
-    if (races) {
-      races.forEach(function(r) {
+    if (results) {
+      results.forEach(function(r) {
         r.districtDisplay = (r.district !== "AL") ? r.district : "";
       });
 
-      var sorted = races.sort(function(a,b) {
+      var sorted = results.sort(function(a,b) {
         if (a.stateName > b.stateName) return 1;
         if (a.stateName < b.stateName) return -1;
         if (a.districtDisplay > b.districtDisplay) return 1;
@@ -64,8 +55,6 @@ export default class BoardPresident extends Component {
         var bucketRating = getBucket(r.rating);
         if (bucketRating) buckets[bucketRating].push(r);
       });
-
-      races.forEach(r => called[r.winnerParty || "uncalled"].push(r));
     }
 
     return <div class="president board">
@@ -73,51 +62,17 @@ export default class BoardPresident extends Component {
       { test ? <TestBanner /> : "" }
       <Tabs>
 
-        <div label="Breakdown" class="breakdown leaderboard">
-          <div class="results-header-group dem">
-            <h2 class="party">
-              <label>Biden</label>
-              <abbr>{sum(called.Dem)}</abbr>
-            </h2>
-          </div>
-
-          <div class="results-header-group gop">
-            <h2 class="party">
-              <label>Trump</label>
-              <abbr>{sum(called.GOP)}</abbr>
-            </h2>
-          </div>
-
-          <div class="results-header-group not-called">
-            <h2 class="party">
-              <label>Uncalled</label>
-              <abbr>{sum(called.uncalled)}</abbr>
-            </h2>
-          </div>
-        </div>
-
-        <div label="Tetris">
-          <div class="tetris-container">
-            {races && <>
-              <div class="uncalled">
-                <b>Uncalled races</b>
-                <ul>
-                  {called.uncalled.map(c => <li>{c.state} ({c.electoral})</li>)}
-                </ul>
-              </div>
-              <Tetris races={called.Dem} width={10} class="D" />
-              <Tetris races={called.GOP} width={10} class="R" />
-            </>}
-          </div>
+        <div label="Breakdown">
+          <ElectoralArc results={results} />
         </div>
 
         <div label="Geographic Map">
-          {races && <NationalMap races={races} />}
+          {results && <NationalMap races={results} />}
         </div>
         
       </Tabs>
       <div class="board-container President">
-        {races && <>
+        {results && <>
           <Results races={buckets.tossup} hed="Competitive States" office="President" addClass="middle" split={true}/>
           <Results races={buckets.likelyD} hed="Likely Democratic" office="President" addClass="first" />
           <Results races={buckets.likelyR} hed="Likely Republican" office="President" addClass="last" />
