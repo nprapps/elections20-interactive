@@ -2,7 +2,6 @@ import { h, Component, Fragment } from "preact";
 import gopher from "../gopher.js";
 import { reportingPercentage } from "../util.js";
 import "./results.less";
-import strings from "strings.sheet.json";
 
 const activeMugshots = {
   Biden:
@@ -36,6 +35,18 @@ export default function ResultsTableCandidates(props) {
     Object.keys(activeMugshots).includes(c.last)
   );
 
+  var footnote;
+  var uncontestedText = isUncontested ? (
+    <div>
+      The AP does not tabulate votes for uncontested races and declares its
+      winner as soon as polls close.
+    </div>
+  ) : (
+    ""
+  );
+  var hasIncumbent = results.candidates.some(c => c.incumbent);
+  var incumbentText = hasIncumbent ? <div>● - Incumbent</div> : '';
+
   return (
     <div class="results-table statewide">
       <div class="results-header">
@@ -66,6 +77,10 @@ export default function ResultsTableCandidates(props) {
             />
           ))}
         </div>
+      </div>
+      <div class="footnote">
+        {incumbentText}
+        {uncontestedText}
       </div>
     </div>
   );
@@ -119,15 +134,10 @@ export function ResultsTableCandidatesRow(props) {
 function CandidateNameCell(candidate) {
   var name;
   if (candidate.last == "Other") {
-    name = (
-      <Fragment>
-        <span>Other</span> <span class="first">Candidates</span>
-      </Fragment>
-    );
+    name = <span>Other Candidates</span>;
   } else {
     name = (
       <Fragment>
-        {" "}
         <span class="first">{candidate.first || ""}</span> {candidate.last}{" "}
       </Fragment>
     );
@@ -139,7 +149,7 @@ function CandidateNameCell(candidate) {
   }
 
   var winner;
-  if (candidate.winner == 'X') {
+  if (candidate.winner == "X") {
     winner = (
       <span class="winner-icon" role="img" aria-label="check mark">
         <svg
@@ -154,8 +164,8 @@ function CandidateNameCell(candidate) {
         </svg>
       </span>
     );
-  } else if(candidate.winner == 'R') {
-    winner = <span class="runoff-text"> - runoff</span>
+  } else if (candidate.winner == "R") {
+    winner = <span class="runoff-text"> - runoff</span>;
   }
 
   return (
