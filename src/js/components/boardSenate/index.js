@@ -5,7 +5,7 @@ import BalanceOfPower from "../balanceOfPower";
 import TestBanner from "../testBanner";
 import DateFormatter from "../dateFormatter";
 import { getBucket } from "../util.js";
-// import "./senate.less";
+import "./senate.less";
 
 export default class BoardSenate extends Component {
   constructor(props) {

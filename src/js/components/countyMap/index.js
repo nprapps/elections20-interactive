@@ -1,7 +1,7 @@
 import { h, Component, createRef } from "preact";
 import gopher from "../gopher.js";
 import { formatters, reportingPercentage } from "../util.js";
-// import "./countyMap.less";
+import "./countyMap.less";
 
 var specialStates = new Set(["IA", "MA", "OK", "WA"]);
 

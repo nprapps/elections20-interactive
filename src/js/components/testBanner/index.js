@@ -1,5 +1,5 @@
 import { h } from "preact";
-// import "./testBanner.less";
+import "./testBanner.less";
 
 export default function TestBanner() {
   return <div class="test-banner">

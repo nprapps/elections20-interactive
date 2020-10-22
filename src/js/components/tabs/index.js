@@ -1,5 +1,5 @@
 import { h, Fragment, Component } from "preact";
-// import "./tabs.less";
+import "./tabs.less";
 
 export function Tab(props) {
   return <button

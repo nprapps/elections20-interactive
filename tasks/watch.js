@@ -27,7 +27,7 @@ module.exports = function(grunt) {
         tasks: ["template"]
       },
       js: {
-        files: ["src/js/**/*", "!src/js/**/*.less"], //everything, due to templating, GLSL, LESS, etc.
+        files: ["src/js/**/*"], //everything, due to templating, GLSL, LESS, etc.
         tasks: ["bundle"]
       }
     }

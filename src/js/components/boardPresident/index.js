@@ -4,7 +4,8 @@ import NationalMap from "../nationalMap";
 import Results from "../resultsBoardPresident";
 import TestBanner from "../testBanner";
 import DateFormatter from "../dateFormatter";
-// import "./boardPresident.less";
+import "./boardPresident.less";
+import Tetris from "../tetris";
 import Tabs from "../tabs";
 import { getBucket } from "../util.js";
 
@@ -92,6 +93,21 @@ export default class BoardPresident extends Component {
               <label>Uncalled</label>
               <abbr>{sum(called.uncalled)}</abbr>
             </h2>
+          </div>
+        </div>
+
+        <div label="Tetris">
+          <div class="tetris-container">
+            {races && <>
+              <div class="uncalled">
+                <b>Uncalled races</b>
+                <ul>
+                  {called.uncalled.map(c => <li>{c.state} ({c.electoral})</li>)}
+                </ul>
+              </div>
+              <Tetris races={called.Dem} width={10} class="D" />
+              <Tetris races={called.GOP} width={10} class="R" />
+            </>}
           </div>
         </div>
 
