@@ -1,4 +1,5 @@
 @import "values";
+@sidebar: ~"(max-width: 300px)";
 
 h1 {
   font-size: 24px;
@@ -64,31 +65,40 @@ main.embed-bop {
     .candidate {
       flex: 1;
       text-align: center;
-      border-right: 1px solid #eee;
+      border-left: 1px solid #eee;
 
-      &:last-child {
+      &:first-child {
         border-right: 0;
       }
 
       .name {
         .knockout-header();
         text-transform: uppercase;
+
+        @media @sidebar {
+          font-size: 12px;
+        }
       }
       .votes {
         .gotham();
         font-size: 30px;
         font-weight: bold;
         color: #9a9a9a;
+      }
+    }
 
-        &.dem {
-          color: @dem;
-        }
-        &.gop {
-          color: @gop;
-        }
-        &.other {
-          color: @ind;
-        }
+    .dem {
+      .votes {color: @dem;}
+    }
+    .gop {
+      .votes {color: @gop;}
+    }
+    .other {
+      .votes {color: @ind;}
+    }
+    .uncalled {
+      @media @sidebar {
+        display: none;
       }
     }
   }
