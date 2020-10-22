@@ -3,7 +3,7 @@
 @border: 1px solid #efefef;
 @background: #efefef;
 @wide-padding: 4px 8px;
-@thin-padding: 4px;
+@thin-padding: 4px 5px;
 
 .board-container {
   display: flex;
@@ -129,6 +129,10 @@ table.results {
   display: block;
   // border-collapse: collapse;
 
+  @media @tiny {
+    font-size: 10px;
+  }
+
   tr {
     display: flex;
 
@@ -147,7 +151,7 @@ table.results {
       .x-small { display: none; }
 
       @media @tiny {
-        flex: 0 0 45px;
+        flex: 0 0 38px;
         .x-small { display: inline; }
         .not-small { display: none; }
       }
@@ -165,14 +169,18 @@ table.results {
     }
     .reporting,
     .reporting-hed {
-      flex: 0 0 57px;
+      flex: 0 0 58px;
 
       @media @mobile {
-        flex: 0 0 40px;
+        flex: 0 0 44px;
 
         .in {
           display: none;
         }
+      }
+
+      @media @tiny {
+        flex: 0 0 38px;
       }
     }
     .little-label,
@@ -184,7 +192,7 @@ table.results {
       }
 
       @media @tiny {
-        display: none;
+        // display: none;
       }
     }
   }
@@ -198,6 +206,10 @@ table.results {
     letter-spacing: 0.05em;
     -webkit-font-smoothing: antialiased;
     padding: @wide-padding;
+
+    @media @tiny {
+      padding: @thin-padding;
+    }
 
     &.state-hed,
     &.reporting-hed,
@@ -238,6 +250,10 @@ table.results {
   td {
     padding: @wide-padding;
     border-bottom: @border;
+
+    @media @tiny {
+      padding: @thin-padding;
+    }
   }
 
   td.state a {
@@ -363,6 +379,18 @@ table.results {
   .state,
   th.state-hed {
     flex: 0 0 46px;
+
+    @media @tiny {
+      flex: 0 0 32px;
+    }
+  }
+}
+.Gov table.results tr {
+  .state,
+  th.state-hed {
+    @media @tiny {
+      flex: 0 0 24px;
+    }
   }
 }
 .Ballot table.results tr {
