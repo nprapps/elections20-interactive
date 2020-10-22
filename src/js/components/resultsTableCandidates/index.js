@@ -1,7 +1,7 @@
 import { h, Component, Fragment } from "preact";
 import gopher from "../gopher.js";
 import { reportingPercentage } from "../util.js";
-import "./results.less";
+// import "./results.less";
 
 const activeMugshots = {
   Biden:

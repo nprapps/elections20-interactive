@@ -2,7 +2,7 @@ import { h, Component, Fragment } from "preact";
 import gopher from "../gopher.js";
 import ResultsTableCandidates from "../resultsTableCandidates";
 import Strings from "strings.sheet.json";
-import "./keyRaces.less";
+// import "./keyRaces.less";
 
 const STATES_WITHOUT_COUNTY_INFO = ["AK"];
 

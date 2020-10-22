@@ -6,7 +6,7 @@ import ResultsTableCandidates from "../resultsTableCandidates";
 import CountyResults from "../countyResults";
 import TestBanner from "../testBanner";
 import DateFormatter from "../dateFormatter";
-import "./state-results.less";
+// import "./state-results.less";
 
 import stateLookup from "states.sheet.json";
 import strings from "strings.sheet.json";

@@ -1,7 +1,7 @@
 import { h, Component, createRef } from "preact";
 import gopher from "../gopher.js";
 import { reportingPercentage } from "../util.js";
-import "./nationalMap.less";
+// import "./nationalMap.less";
 import states from "states.sheet.json";
 
 var northeastStates = ["VT", "NH", "MA", "CT", "RI", "NJ", "DE", "MD", "DC"];

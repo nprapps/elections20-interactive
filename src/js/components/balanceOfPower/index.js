@@ -1,7 +1,7 @@
 import { h, Component, Fragment } from "preact";
 import gopher from "../gopher.js";
 import InactiveSenateRaces from "inactive_senate_races.sheet.json";
-import "./balanceOfPower.less";
+// import "./balanceOfPower.less";
 
 export default class BalanceOfPower extends Component {
   constructor(props) {

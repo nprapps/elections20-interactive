@@ -1,6 +1,6 @@
 import { h, Component, Fragment, createRef } from "preact";
 import gopher from "../gopher.js";
-import "./countyData.less";
+// import "./countyData.less";
 import { formatters, getCountyVariable } from "../util.js";
 var { chain, comma, percent, dollars } = formatters;
 

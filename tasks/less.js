@@ -12,10 +12,11 @@ module.exports = function(grunt) {
   var path = require("path");
   var through = require("through2");
   var npmImporter = require("./lib/npm-less");
+  var globImporter = require("less-plugin-glob");
 
   var options = {
     paths: ["src/css"],
-    plugins: [npmImporter]
+    plugins: [npmImporter, globImporter]
   };
 
   grunt.registerTask("less", "Compile styles from src/css/seed.less", function() {
