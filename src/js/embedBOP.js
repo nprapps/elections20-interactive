@@ -57,7 +57,7 @@ async function init(results) {
       <div class="chatter"><strong>270</strong> electoral votes needed to win</div>
       <div class="pres-container">
         <div class="candidate dem">
-          <div class="name">Biden {winnerIcon}</div>
+          <div class="name">Biden {president.winner == "Biden" ? winnerIcon : ""}</div>
           <div class="votes">{president.Dem}</div>
         </div>
         <div class="candidate gop">
