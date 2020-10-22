@@ -79,7 +79,7 @@ export function ResultsTableCandidatesRow(props) {
   var mugshot = activeMugshots[result.last];
 
   var classes = ["tr", "candidate", result.party || result.last];
-  if (result.winner) classes.push("winner");
+  if (result.winner == "X") classes.push("winner");
   if (result.incumbent) classes.push("incumbent");
   if (!props.mugs) classes.push("noimg");
   var imgClass = mugshot ? "" : "noimg";
@@ -139,7 +139,7 @@ function CandidateNameCell(candidate) {
   }
 
   var winner;
-  if (candidate.winner) {
+  if (candidate.winner == 'X') {
     winner = (
       <span class="winner-icon" role="img" aria-label="check mark">
         <svg
@@ -154,6 +154,8 @@ function CandidateNameCell(candidate) {
         </svg>
       </span>
     );
+  } else if(candidate.winner == 'R') {
+    winner = <span class="runoff-text"> - runoff</span>
   }
 
   return (
