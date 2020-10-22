@@ -123,7 +123,7 @@ export default class BoardPresident extends Component {
           <Results races={buckets.likelyR} hed="Likely Republican" office="President" addClass="last" />
         </>}
       </div>
-      Results as of <DateFormatter value={latest}/>
+      <div class="source">Source: AP (as of <DateFormatter value={latest} />)</div>
     </div>
   }
 }

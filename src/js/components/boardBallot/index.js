@@ -37,7 +37,7 @@ export default class BoardBallot extends Component {
       <div class="board-container">
         {races && <Results races={races} office="Ballot"/>}
       </div>
-      Results as of <DateFormatter value={latest} />
+      <div class="source">Source: AP (as of <DateFormatter value={latest} />)</div>
     </>;
   }
 }

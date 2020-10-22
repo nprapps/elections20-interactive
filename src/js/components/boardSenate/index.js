@@ -68,7 +68,7 @@ export default class BoardSenate extends Component {
             <Results races={buckets.likelyR} hed="Likely Republican" office="Senate" addClass="last"/>
           </>}
         </div>
-        Results as of <DateFormatter value={latest} />
+        <div class="source">Source: AP (as of <DateFormatter value={latest} />)</div>
       </Fragment>
     );
   }

@@ -57,7 +57,7 @@ export default class BoardGovernor extends Component {
           <Results races={sorted} office="Gov" split={true}/>
         </>}
       </div>
-      Results as of <DateFormatter value={latest} />
+      <div class="source">Source: AP (as of <DateFormatter value={latest} />)</div>
     </>;
   }
 }

@@ -80,7 +80,7 @@ export default class StateResults extends Component {
           </header>
           {test ? <TestBanner /> : ""}
           {results && <div class="results-elements">{this.renderResults(office)}</div>}
-          Results as of <DateFormatter value={latest} />
+          <div class="source">Source: AP (as of <DateFormatter value={latest} />)</div>
         </div>
 
         <aside class="sidebar">

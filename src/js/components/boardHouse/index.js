@@ -85,7 +85,7 @@ export default class BoardHouse extends Component {
             </>
           )}
         </div>
-        Results as of <DateFormatter value={latest} />
+        <div class="source">Source: AP (as of <DateFormatter value={latest} />)</div>
       </>
     );
   }
