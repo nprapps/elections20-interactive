@@ -22,8 +22,7 @@ export default class CountyResults extends Component {
     var office = json.results[0].office;
     this.setState({ data: json.results, office });
   }
-
-  // Lifecycle: Called whenever our component is created
+  
   async componentDidMount() {
     gopher.watch(
       `./data/counties/${this.props.state}-${this.props.raceid}.json`,
@@ -31,10 +30,7 @@ export default class CountyResults extends Component {
     );
   }
 
-  // Lifecycle: Called just before our component will be destroyed
   componentWillUnmount() {
-    // stop when not renderable
-    console.log("unmounting county", this.props.state, this.props.raceid);
     gopher.unwatch(
       `./data/counties/${this.props.state}-${this.props.raceid}.json`,
       this.onCountyData
