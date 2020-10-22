@@ -82,7 +82,7 @@ class Customizer extends Component {
       {(() => {
         switch (state.mode) {
           case "state":
-            var src = `${url}#/states/${state.selectedState}/${state.selectedOffice}`;
+            var src = `${url}#/states/${state.selectedState}/${state.selectedOffice || ''}`;
             return (<>
               <div class="state-select">
                 <select value={state.selectedState} onInput={this.selectStatePage}>
