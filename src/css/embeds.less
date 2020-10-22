@@ -34,12 +34,64 @@ h1 {
 
 main.embed-bop {
   max-width: 650px;
+  color: #444;
+
+  h3 {
+    .gotham();
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 5px;
+  }
+
+  .chatter {
+    text-align: center;
+    font-size: 12px;
+    .gotham();
+    margin-bottom: 15px;
+    color: #666;
+  }
+
+  .pres-container {
+    display: flex;
+
+    .candidate {
+      flex: 1;
+      text-align: center;
+      border-right: 1px solid #eee;
+
+      &:last-child {
+        border-right: 0;
+      }
+
+      .name {
+        .knockout-header();
+        text-transform: uppercase;
+      }
+      .votes {
+        .gotham();
+        font-size: 30px;
+        font-weight: bold;
+        color: #9a9a9a;
+
+        &.dem {
+          color: @dem;
+        }
+        &.gop {
+          color: @gop;
+        }
+        &.other {
+          color: @ind;
+        }
+      }
+    }
+  }
 
   .bar-container {
     width: 100%;
     height: @height;
     background: #ddd;
-    margin-bottom: 20px;
+    margin-bottom: 50px;
     position: relative;
 
     .bar {
@@ -58,6 +110,33 @@ main.embed-bop {
       }
     }
 
+    .label {
+      position: absolute;
+      margin-top: calc(@height + 5px);
+      .gotham();
+      font-weight: bold;
+      font-size: 12px;
+
+      span {
+        color: #9a9a9a;
+        font-weight: normal;
+        font-size: 0.9em;
+        display: block;
+      }
+    }
+
+    .dem .label {
+      color: @dem;
+    }
+    .gop .label {
+      color: @gop;
+      right: 0;
+      text-align: right;
+    }
+    .other .label {
+      color: @ind;
+    }
+
     .middle {
       position: absolute;
       top: @height / -5;
@@ -66,5 +145,10 @@ main.embed-bop {
       width: 1px;
       right: 50%;
     }
+  }
+
+  .divider {
+    border-top: 1px solid #eee;
+    margin: 20px 0;
   }
 }
