@@ -72,7 +72,7 @@ class Customizer extends Component {
         <input
           type="radio"
           name="mode"
-          onInput={() => this.setState({ mode: data, selectedOffice: null })}
+          onInput={() => this.setState({ mode: data, selectedOffice: '' })}
           id={`mode-${data}`}
           checked={data == state.mode}
         />
