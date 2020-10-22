@@ -52,62 +52,69 @@ async function init(results) {
 
   var template = <>
 
-    <h3>President</h3>
-    <div class="chatter"><strong>270</strong> electoral votes needed to win</div>
-    <div class="pres-container">
-      <div class="candidate dem">
-        <div class="name">Biden {winnerIcon}</div>
-        <div class="votes">{president.Dem}</div>
-      </div>
-      <div class="candidate gop">
-        <div class="name">Trump {president.winner == "Trump" ? winnerIcon : ""}</div>
-        <div class="votes">{president.GOP}</div>
-      </div>
-      {president.Other ?
-        <div class="candidate other">
-          <div class="name">Other {president.winner == "Other" ? winnerIcon : ""}</div>
-          <div class="votes">{president.Other}</div>
+    <a class="container" href="http://apps.npr.org/elections20-interactive/#/president">
+      <h3>President ›</h3>
+      <div class="chatter"><strong>270</strong> electoral votes needed to win</div>
+      <div class="pres-container">
+        <div class="candidate dem">
+          <div class="name">Biden {winnerIcon}</div>
+          <div class="votes">{president.Dem}</div>
         </div>
-      : ""}
-      {538 - president.Dem - president.GOP - president.Other ?
-        <div class="candidate uncalled">
-          <div class="name">Uncalled</div>
-          <div class="votes">{538 - president.Dem - president.GOP - president.Other}</div>
+        <div class="candidate gop">
+          <div class="name">Trump {president.winner == "Trump" ? winnerIcon : ""}</div>
+          <div class="votes">{president.GOP}</div>
         </div>
-      : ""}
-    </div>
+        {president.Other ?
+          <div class="candidate other">
+            <div class="name">Other {president.winner == "Other" ? winnerIcon : ""}</div>
+            <div class="votes">{president.Other}</div>
+          </div>
+        : ""}
+        {538 - president.Dem - president.GOP - president.Other ?
+          <div class="candidate uncalled">
+            <div class="name">Uncalled</div>
+            <div class="votes">{538 - president.Dem - president.GOP - president.Other}</div>
+          </div>
+        : ""}
+      </div>
+
+    </a>
 
     <div class="divider" />
 
-    <h3>House</h3>
-    <div class="chatter"><strong>218</strong> seats needed for majority</div>
-    <div class="bar-container">
-      <div class="bar dem" style={"width: " + (house.Dem / 435 * 100) + "%"}>
-        <div class="label">Dem. {house.Dem >= 218 ? winnerIcon : ""}<span class="number">{house.Dem}</span></div>
+    <a class="container" href="http://apps.npr.org/elections20-interactive/#/house">
+      <h3>House ›</h3>
+      <div class="chatter"><strong>218</strong> seats needed for majority</div>
+      <div class="bar-container">
+        <div class="bar dem" style={"width: " + (house.Dem / 435 * 100) + "%"}>
+          <div class="label">Dem. {house.Dem >= 218 ? winnerIcon : ""}<span class="number">{house.Dem}</span></div>
+        </div>
+        <div class="bar other" style={"width: " + (house.Other / 435 * 100) + "%"}>
+          {house.Other ? <div class="label">Ind. {house.Other >= 218 ? winnerIcon : ""}<span class="number">{house.Other}</span></div> : ""}
+        </div>
+        <div class="bar gop" style={"width: " + (house.GOP / 435 * 100) + "%"}>
+          <div class="label">GOP {house.GOP >= 218 ? winnerIcon : ""}<span class="number">{house.GOP}</span></div>
+        </div>
+        <div class="middle"></div>
       </div>
-      <div class="bar other" style={"width: " + (house.Other / 435 * 100) + "%"}>
-        {house.Other ? <div class="label">Ind. {house.Other >= 218 ? winnerIcon : ""}<span class="number">{house.Other}</span></div> : ""}
-      </div>
-      <div class="bar gop" style={"width: " + (house.GOP / 435 * 100) + "%"}>
-        <div class="label">GOP {house.GOP >= 218 ? winnerIcon : ""}<span class="number">{house.GOP}</span></div>
-      </div>
-      <div class="middle"></div>
-    </div>
+    </a>
 
-    <h3>Senate</h3>
-    <div class="chatter"><strong>51</strong> seats needed for majority</div>
-    <div class="bar-container">
-      <div class="bar dem" style={"width: " + (senate.Dem) + "%"}>
-        <div class="label">Dem. {senate.Dem >= 51 ? winnerIcon : ""}<span class="number">{senate.Dem}</span></div>
+    <a class="container" href="http://apps.npr.org/elections20-interactive/#/senate">
+      <h3>Senate ›</h3>
+      <div class="chatter"><strong>51</strong> seats needed for majority</div>
+      <div class="bar-container">
+        <div class="bar dem" style={"width: " + (senate.Dem) + "%"}>
+          <div class="label">Dem. {senate.Dem >= 51 ? winnerIcon : ""}<span class="number">{senate.Dem}</span></div>
+        </div>
+        <div class="bar other" style={"width: " + (senate.Other) + "%"}>
+          <div class="label">Ind. {senate.Other >= 51 ? winnerIcon : ""}<span class="number">{senate.Other}</span></div>
+        </div>
+        <div class="bar gop" style={"width: " + (senate.GOP) + "%"}>
+          <div class="label">GOP {senate.GOP >= 51 ? winnerIcon : ""}<span class="number">{senate.GOP}</span></div>
+        </div>
+        <div class="middle"></div>
       </div>
-      <div class="bar other" style={"width: " + (senate.Other) + "%"}>
-        <div class="label">Ind. {senate.Other >= 51 ? winnerIcon : ""}<span class="number">{senate.Other}</span></div>
-      </div>
-      <div class="bar gop" style={"width: " + (senate.GOP) + "%"}>
-        <div class="label">GOP {senate.GOP >= 51 ? winnerIcon : ""}<span class="number">{senate.GOP}</span></div>
-      </div>
-      <div class="middle"></div>
-    </div>
+    </a>
 
     <div class="source">Source: AP (as of <DateFormatter value={results.latest} />)</div>
 

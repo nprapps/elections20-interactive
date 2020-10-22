@@ -59,6 +59,22 @@ main.embed-bop {
     display: inline-block;
   }
 
+  a.container {
+    text-decoration: none;
+    color: #444;
+
+    &:hover {
+      h3 {
+        color: @link-color;
+      }
+    }
+  }
+
+  .full {
+    .knockout-header();
+    font-size: 11px;
+  }
+
   .pres-container {
     display: flex;
 
