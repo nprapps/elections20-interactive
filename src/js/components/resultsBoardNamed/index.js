@@ -83,9 +83,9 @@ export default function ResultsBoardNamed(props) {
                   var seatLabel = "";
                   var ballotLabel = "";
                   switch (r.office) {
-                    case "H":
+                    case "H": seatLabel = ` ${r.seatNumber}`;
                     case "S":
-                      if (r.seatNumber && r.description && !r.description.match(/at large/i)) {
+                      if (r.seatNumber) {
                         seatLabel = ` ${r.seatNumber}`;
                       }
                       break;
