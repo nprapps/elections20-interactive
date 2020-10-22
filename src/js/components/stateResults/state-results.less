@@ -11,13 +11,10 @@
   aside.sidebar {
     flex: 0 0 300px;
     padding-left: 16px;
+    display: none;
 
-    @media @mobile {
-      display: none;
-    }
-
-    .embedded & {
-      display: none;
+    @media only screen and (min-width: 1025px) {
+      display: block;
     }
   }
 
