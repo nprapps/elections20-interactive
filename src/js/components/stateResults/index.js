@@ -42,14 +42,15 @@ export default class StateResults extends Component {
 
   componentWillUnmount() {
     // stop when not renderable
+    console.log("unmount", this.props.state);
     gopher.unwatch(`./data/states/${this.props.state}.json`, this.onData);
   }
 
   shouldComponentUpdate(newProps, newState) {
     if (this.props.state != newProps.state) {
+      this.setState({ results: null });
       gopher.unwatch(`./data/states/${this.props.state}.json`, this.onData);
       gopher.watch(`./data/states/${newProps.state}.json`, this.onData);
-      this.setState({ results: null });
     }
   }
 

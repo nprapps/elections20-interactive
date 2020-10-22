@@ -62,7 +62,8 @@ export class Gopher extends EventTarget {
   }
 
   unwatch(url, callback) {
-    var entry = this.urls.get(url);
+    var normalized = new URL(url, window.location.href).toString();
+    var entry = this.urls.get(normalized);
     if (!entry) return console.warn(`No gopher entry found for ${url}`);
     entry.callbacks = entry.callbacks.filter((c) => c != callback);
     this.watchCount--;

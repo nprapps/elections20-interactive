@@ -34,9 +34,10 @@ export default class CountyResults extends Component {
   // Lifecycle: Called just before our component will be destroyed
   componentWillUnmount() {
     // stop when not renderable
+    console.log("unmounting county", this.props.state, this.props.raceid);
     gopher.unwatch(
       `./data/counties/${this.props.state}-${this.props.raceid}.json`,
-      this.onData
+      this.onCountyData
     );
   }
 
