@@ -79,12 +79,26 @@
     }
   }
 
-  h2 {
+  h3 {
     color: @gray-dark;
     font-family: @gotham;
     font-size: 16px;
     font-weight: 700;
     -webkit-font-smoothing: antialiased;
+
+    &.hidden {
+      display: none;
+    }
+  }
+
+  h2 {
+    font-family: "Gotham SSm", Helvetica, Arial, sans-serif;
+    font-weight: normal;
+    margin: 0 0 22px 0;
+    font-weight: bold;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 8px;
+    font-size: 1.1em;
 
     &.hidden {
       display: none;

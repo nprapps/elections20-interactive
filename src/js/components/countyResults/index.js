@@ -56,7 +56,7 @@ export default class CountyResults extends Component {
 
     return (
       <div class="results-elements">
-        <h2>Results By County</h2>
+        <h3>Results By County</h3>
         <CountyMap
           state={this.props.state.toUpperCase()}
           data={this.state.data}

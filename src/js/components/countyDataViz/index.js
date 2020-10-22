@@ -55,7 +55,7 @@ export class CountyDataViz extends Component {
       : "";
     return (
       <div class="trends">
-        <h2 ref={this.trendsRef}>County Trends</h2>
+        <h3 ref={this.trendsRef}>County Trends</h3>
         <div class={this.state.collapsed ? "collapsed" : null}>
           {this.state.charts.map(c => (
             <div class="chart-wrapper">

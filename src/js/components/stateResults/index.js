@@ -60,7 +60,9 @@ export default class StateResults extends Component {
 
     let office = props.subview || "key";
     let viewTitle =
-      office == "key" ? "Key Results" : `${strings[`office-${office}`]} Results`;
+      office == "key"
+        ? "Key Results"
+        : `${strings[`office-${office}`]} Results`;
 
     return (
       <div
@@ -75,12 +77,19 @@ export default class StateResults extends Component {
               <span class="state-name">{stateName}</span>
               {viewTitle}
             </h1>
-            <div class="chatter" dangerouslySetInnerHTML={({ __html: chatter})} />
+            <div
+              class="chatter"
+              dangerouslySetInnerHTML={{ __html: chatter }}
+            />
             {this.renderTabSwitcher(office)}
           </header>
           {test ? <TestBanner /> : ""}
-          {results && <div class="results-elements">{this.renderResults(office)}</div>}
-          <div class="source">Source: AP (as of <DateFormatter value={latest} />)</div>
+          {results && (
+            <div class="results-elements">{this.renderResults(office)}</div>
+          )}
+          <div class="source">
+            Source: AP (as of <DateFormatter value={latest} />)
+          </div>
         </div>
 
         <aside class="sidebar">
@@ -115,12 +124,7 @@ export default class StateResults extends Component {
     var isSpecial = !!race.seat;
 
     var seatLabel =
-      (race.office == "H" || race.office == "S") &&
-      race.seatNumber &&
-      race.description &&
-      !race.description.includes("at large")
-        ? " " + race.seatNumber
-        : "";
+      race.office == "H" || race.office == "S" ? race.seatNumber : "";
 
     var countyResults;
     if (!STATES_WITHOUT_COUNTY_INFO.includes(this.props.state)) {
@@ -136,7 +140,9 @@ export default class StateResults extends Component {
     }
 
     var specialHeader = isSpecial ? (
-      <h3 id="">{stateLookup[this.props.state].name + seatLabel}</h3>
+      <h2 id={`${this.props.state}-${seatLabel}`}>{`${
+        stateLookup[this.props.state].name
+      }-${seatLabel}`}</h2>
     ) : (
       ""
     );
@@ -183,9 +189,9 @@ export default class StateResults extends Component {
       <>
         <nav class="race-calendar">
           <div>
-              <span class="view-label">Election results: </span>
-            </div>
-            {tabElements}
+            <span class="view-label">Election results: </span>
+          </div>
+          {tabElements}
         </nav>
       </>
     );
