@@ -116,7 +116,7 @@ export default class NationalMap extends Component {
         </div>`
       ).join("")}</div>
       <div class="reporting">${reportingPercentage(
-        result.reportingPercent
+        result.eevp
       )}% in</div>
     `;
 
