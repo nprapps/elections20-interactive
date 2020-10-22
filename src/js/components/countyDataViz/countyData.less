@@ -57,11 +57,12 @@ circle {
     .name {
       font-size: 11px;
       margin: 0 0 3px 0;
-      font-family: "Knockout 31 4r","Helvetica Neue",Helvetica,Arial,sans-serif;
+      font-family: "Knockout 31 4r", "Helvetica Neue", Helvetica, Arial,
+        sans-serif;
       font-weight: normal;
       text-transform: uppercase;
       line-height: 1.2;
-      letter-spacing: .05em;
+      letter-spacing: 0.05em;
       -webkit-font-smoothing: antialiased;
       color: #333;
     }
@@ -87,11 +88,15 @@ circle {
 }
 
 .chart-wrapper {
-  width: 50%;
+  width: 25%;
   display: inline-block;
 
-  @media (min-width: 1100px) {
-    width: 25%;
+  @media @tablet {
+    width: 33%;
+  }
+
+  @media @mobile {
+    width: 50%;
   }
 }
 
@@ -107,13 +112,18 @@ circle {
   margin-bottom: 25px;
   display: block;
 
-  @media (max-width: 1099px) {
-    div.collapsed .chart-wrapper:nth-child(n + 3) {
+  div.collapsed .chart-wrapper:nth-child(n + 5) {
+    display: none;
+  }
+
+  @media @tablet {
+    div.collapsed .chart-wrapper:nth-child(n + 4) {
       display: none;
     }
   }
-  @media (min-width: 1100px) {
-    div.collapsed .chart-wrapper:nth-child(n + 5) {
+
+  @media @mobile {
+    div.collapsed .chart-wrapper:nth-child(n + 3) {
       display: none;
     }
   }
