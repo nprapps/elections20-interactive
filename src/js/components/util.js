@@ -62,10 +62,9 @@ export var formatters = {
       prefix = "D";
     } else if (result.party === "GOP") {
       prefix = "R";
-    } else if (results.party =="Other") {
+    } else if (result.party =="Other") {
       prefix = "O";
     } else {
-      console.log(result)
       prefix = "I";
     }
 
