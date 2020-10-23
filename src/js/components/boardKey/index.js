@@ -15,13 +15,13 @@ export default function BoardKey(props) {
 	      	<li class="gop">Republican / <span class="leading">Leading</span> <span class="winner">Winner</span></li>
 	      	<li class="ind">Independent / <span class="leading">Leading</span> <span class="winner">Winner</span></li>
       </>}
-      {hasParties && <li class="pickup"><span>FLIP</span> {hasPickup ? "Seat pickup" : "Changed parties since last election"} (party color)</li>}
+      {hasParties && <li class="pickup"><span>FLIP</span> {hasPickup ? "Seat pickup" : "Change in party control"} (party color)</li>}
       {hasParties && <li class="runoff"><span>R.O.</span> Going to a runoff election</li>}
       {!hasParties && <>
       	<li class="yes">Yes / <span class="leading">Leading</span> <span class="winner">Winner</span></li>
       	<li class="no">No / <span class="leading">Leading</span> <span class="winner">Winner</span></li>
       </>}
-      <li class="eevp"><span>76% in</span> {hasEEVP ? "Estimated vote" : "Precincts reporting"}</li>
+      <li class="eevp"><span>76% in</span> {hasEEVP ? "Estimated expected vote" : "Precincts reporting"}</li>
       {hasIncumbent && <li class="incumbent">● Incumbent</li>}
     </ul>
   </div>

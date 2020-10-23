@@ -6,6 +6,7 @@ import TestBanner from "../testBanner";
 import DateFormatter from "../dateFormatter";
 import ElectoralArc from "../electoralArc";
 import ElectoralGrid from "../electoralGrid";
+import ElectoralBubbles from "../electoralBubbles";
 import BoardKey from "../boardKey";
 import Tabs from "../tabs";
 import { getBucket, sumElectoral, groupCalled } from "../util.js";
@@ -97,20 +98,13 @@ export default class BoardPresident extends Component {
       <Leaderboard called={called} />
 
       <Tabs>
-        <div label="Board" class="board-container President">
-          {results && <>
-            <Results races={buckets.tossup} hed="Competitive States" office="President" addClass="middle" split={true}/>
-            <Results races={buckets.likelyD} hed="Likely Democratic" office="President" addClass="first" />
-            <Results races={buckets.likelyR} hed="Likely Republican" office="President" addClass="last" />
-          </>}
+
+        <div label="Margins">
+          <ElectoralBubbles results={results} />
         </div>
 
         <div label="Grid">
           <ElectoralGrid results={results} />
-        </div>
-
-        <div label="Breakdown">
-          <ElectoralArc results={results} />
         </div>
 
         <div label="Map">
@@ -118,6 +112,14 @@ export default class BoardPresident extends Component {
         </div>
         
       </Tabs>
+
+      <div label="Board" class="board-container President">
+        {results && <>
+          <Results races={buckets.tossup} hed="Competitive States" office="President" addClass="middle" split={true}/>
+          <Results races={buckets.likelyD} hed="Likely Democratic" office="President" addClass="first" />
+          <Results races={buckets.likelyR} hed="Likely Republican" office="President" addClass="last" />
+        </>}
+      </div>
 
       <BoardKey race="president"/>
       

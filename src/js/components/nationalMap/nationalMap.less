@@ -90,8 +90,12 @@
 	}
 
 	g {
-		fill: #ddd;
+		fill: #eee;
 		stroke: white;
+
+		&.early {
+			fill: #ddd;
+		}
 
 		&.leader {
 			fill: @indDim;
@@ -150,11 +154,11 @@
 	  }
 	}
 
-	.ne, .me {
-		path {
-			fill: #efefef;
-		}
-	}
+	// .ne, .me {
+	// 	path {
+	// 		fill: #efefef;
+	// 	}
+	// }
 
   .hi text, .northeast text {
   	fill: #666 !important;

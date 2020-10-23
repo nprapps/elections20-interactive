@@ -161,7 +161,7 @@ export default class CountyMap extends Component {
       path.classList.add(`i${specialShading}`);
 
       if (!hitThreshold) {
-        path.style.fill = "#ddd";;
+        path.style.fill = "#ddd";
         incomplete = true;
       } else {
         path.classList.add(getParty(top.party));
