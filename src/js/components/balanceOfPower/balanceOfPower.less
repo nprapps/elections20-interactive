@@ -44,6 +44,10 @@
     overflow: hidden;
     width: 17.5%;
 
+    @media @tiny {
+      width: 17%;
+    }
+
     &:first-child {
       padding-left: 0;
     }
@@ -85,8 +89,12 @@
     label {
       display: block;
       font-family: @knockout;
-      font-size: 1.1rem;
+      font-size: 16px;
       margin-bottom: 0.3rem;
+
+      @media @tiny {
+        font-size: 14px;
+      }
 
       &.hidden {
         display: none;
@@ -95,6 +103,7 @@
     abbr {
       -webkit-font-smoothing: antialiased;
       display: block;
+      font-size: 32px;
       font-family: @gotham;
       font-weight: 700;
       font-size: 100%;
@@ -107,6 +116,10 @@
     padding-right: 10px;
     width: 25%;
 
+    @media @tiny {
+      width: 32%;
+    }
+
     h2 {
       color: #666;
 
@@ -116,6 +129,10 @@
         padding: 0.65rem 0;
         text-decoration: none;
         white-space: nowrap;
+
+        @media @tiny {
+          font-size: 0.8rem;
+        }
       }
 
       label {

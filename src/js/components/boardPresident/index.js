@@ -31,7 +31,7 @@ export function Leaderboard(props) {
 
       <div class="results-header-group not-called">
         <h2 class="party">
-          <label>Uncalled</label>
+          <label>Not Yet Called</label>
           <abbr>{sumElectoral(called.uncalled)}</abbr>
         </h2>
       </div>
