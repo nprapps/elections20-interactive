@@ -4,6 +4,30 @@
     justify-content: space-around;
   }
 
+  .column {
+    text-align: center;
+    line-height: 1;
+
+    &.R .counts {
+      color: @rigorous;
+    }
+
+    &.D .counts {
+      color: @true;
+    }
+  }
+
+  h4 {
+    margin: 0;
+    .knockout();
+    font-size: 32px;
+  }
+
+  .count {
+    .gotham();
+    font-size: 48px;
+  }
+
   .minor { fill: lighten(@true, 20%); }
   .major { fill: @true; }
   .landslide { fill: darken(@true, 10%); }

@@ -209,11 +209,23 @@ export default function ElectoralGrid(props) {
   min = Math.ceil(min / 10) * 10;
 
   return <div class="electoral-grid">
-    <Leaderboard called={called} />
+    {false && <Leaderboard called={called} />}
 
     <div class="grids-container">
-      <Grid class="D" width={10} races={called.Dem} min={min}/>
-      <Grid class="R" width={10} races={called.GOP} min={min}/>
+      <div class="column D">
+        <div class="counts">
+          <h4>Biden</h4>
+          <div class="count">{sum(called.Dem)}</div>
+        </div>
+        <Grid class="D" width={10} races={called.Dem} min={min}/>
+      </div>
+      <div class="column R">
+        <div class="counts">
+          <h4>Trump</h4>
+          <div class="count">{sum(called.GOP)}</div>
+        </div>
+        <Grid class="R" width={10} races={called.GOP} min={min}/>
+      </div>
     </div>
   </div>;
 }
