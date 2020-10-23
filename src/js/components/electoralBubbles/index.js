@@ -17,7 +17,36 @@ export default class ElectoralBubbles extends Component {
     // window.addEventListener("resize", () => this.setState({ resize: window.innerWidth }));
   }
 
-  positionBubbles(results) {
+  runForces(results) {
+
+    if (this.simulation) {
+      this.simulation.stop();
+    }
+
+    var simulation = d3.forceSimulation();
+    var strength = .02;
+    var decay = .2;
+
+    var xForce = d3.forceX().x(d => d.cx).strength(strength * 20);
+    var yForce = d3.forceY().strength(strength);
+    var collider = d3.forceCollide();
+    collider.radius(d => d.r + 2);
+
+    simulation.velocityDecay(decay);
+    simulation.force("x", xForce);
+    simulation.force("y", yForce);
+    simulation.force("collide", collider);
+
+    simulation.on("tick", () => {
+      for (var n of nodes) {
+        n.cx = n.x;
+        n.cy = height / 2 + n.y;
+      }
+      this.setState({ nodes });
+    });
+
+    this.simulation = simulation;
+
     var svg = this.svg.current;
     var svgBounds = svg.getBoundingClientRect();
     var { width, height } = svgBounds;
@@ -46,47 +75,31 @@ export default class ElectoralBubbles extends Component {
     nodes.sort((a, b) => b.electoral - a.electoral);
 
     // find the margin range
+    var viewMarginLimit = .5;
+    var circleMarginLimit = .3;
     var maxMargin = Math.max(...nodes.map(m => Math.abs(m.margin)));
+    maxMargin = Math.min(maxMargin, viewMarginLimit);
     maxMargin = Math.round(maxMargin * 10) / 10;
 
     var centerX = width / 2;
+    var demX = centerX * .9;
+    var gopX = centerX * 1.1;
 
     // set the normalized cx within that range
     for (var circle of nodes) {
-      var offset = circle.margin / maxMargin * centerX;
-      if (circle.winnerParty == "Dem") offset *= -1;
-      circle.x = circle.cx = centerX + offset;
+      var offset = Math.min(circle.margin, circleMarginLimit) / maxMargin * centerX;
+      var center = gopX;
+      if (circle.winnerParty == "Dem") {
+        center = demX;
+        offset *= -1;
+      }
+      circle.x = circle.cx = center + offset;
       circle.y = 0;
       circle.r = Math.max(height / 300 * circle.electoral, 10);
     }
 
-    var simulation = d3.forceSimulation(nodes);
-    var strength = .02;
-    var decay = .2;
-
-    var xForce = d3.forceX().x(d => d.cx).strength(strength * 10);
-    var yForce = d3.forceY().strength(strength);
-    var collider = d3.forceCollide();
-    collider.radius(d => d.r + 2);
-
-    simulation.velocityDecay(decay);
-    simulation.force("x", xForce);
-    simulation.force("y", yForce);
-    simulation.force("collide", collider);
-
-    // simulation.stop();
-    // simulation.tick(200);
-    simulation.on("tick", () => {
-      for (var n of nodes) {
-        n.cx = n.x;
-        n.cy = height / 2 + n.y;
-      }
-      this.setState({ nodes });
-    });
-
-    this.simulation = simulation;
-
     this.setState({ nodes });
+    simulation.nodes(nodes);
   }
 
   shouldComponentUpdate(props, state) {
@@ -94,12 +107,8 @@ export default class ElectoralBubbles extends Component {
     if (this.props.results == results && this.state.resize == state.resize) return;
     if (!results) return;
 
-    if (this.simulation) {
-      this.simulation.stop();
-    }
-
     // run the simulation
-    var bubbles = this.positionBubbles(results);
+    this.runForces(results);
   }
 
   render(props, state) {
