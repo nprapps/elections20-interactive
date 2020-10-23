@@ -213,24 +213,25 @@ export default class CountyMap extends Component {
       return;
     }
 
+    var svg = this.svgRef.current.querySelector("svg");
+    svg.appendChild(e.target);
+
     var result = this.fipsLookup[fips];
     if (result) {
       var displayCandidates = result.candidates.slice(0, 2);
       var candText = "";
-      if (result.reportingPercent > 0.5) {
+      // if (result.reportingPercent > 0) {
         candText = displayCandidates
           .map(
             c =>
               `<div class="row">
             <span class="party ${c.party}"></span>
             <span>${c.last}</span>
-            <span class="amt">${
-              c.percent ? reportingPercentage(c.percent) : "-"
-            }%</span>
+            <span class="amt">${reportingPercentage(c.percent)}%</span>
         </div>`
           )
           .join("");
-      }
+      // }
 
       // TODO: get the county name back in and check language around eevp
       var countyName = result.county.countyName.replace(/\s[a-z]/g, match =>
