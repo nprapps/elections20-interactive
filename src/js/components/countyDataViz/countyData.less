@@ -1,7 +1,6 @@
 @import "values";
 
 .county-trend {
-
   circle {
     fill-opacity: 0.3;
     stroke-opacity: 0.6;
@@ -87,19 +86,6 @@
     }
   }
 
-  .chart-wrapper {
-    width: 25%;
-    display: inline-block;
-
-    @media @tablet {
-      width: 33%;
-    }
-
-    @media @mobile {
-      width: 50%;
-    }
-  }
-
   .footnote {
     font-style: italic;
     color: #999;
@@ -108,32 +94,29 @@
     border-bottom: none;
   }
 
-  .trends {
-    margin-bottom: 25px;
-    display: block;
-
-    div.collapsed .chart-wrapper:nth-child(n + 5) {
-      display: none;
-    }
-
-    @media @tablet {
-      div.collapsed .chart-wrapper:nth-child(n + 4) {
-        display: none;
-      }
-    }
-
-    @media @mobile {
-      div.collapsed .chart-wrapper:nth-child(n + 3) {
-        display: none;
-      }
-    }
-  }
-
   .trend-line {
     stroke: #ccc;
     fill: none;
     stroke-width: 1px;
   }
+}
+
+.chart-wrapper {
+  width: 25%;
+  display: inline-block;
+
+  @media @tablet {
+    width: 33%;
+  }
+
+  @media @mobile {
+    width: 50%;
+  }
+}
+
+.trends {
+  margin-bottom: 25px;
+  display: block;
 
   button {
     background-color: #fff;
@@ -147,5 +130,21 @@
     margin-bottom: 22px;
     padding: 10px;
     text-transform: uppercase;
+  }
+
+  div.collapsed .chart-wrapper:nth-child(n + 5) {
+    display: none;
+  }
+
+  @media @tablet {
+    div.collapsed .chart-wrapper:nth-child(n + 4) {
+      display: none;
+    }
+  }
+
+  @media @mobile {
+    div.collapsed .chart-wrapper:nth-child(n + 3) {
+      display: none;
+    }
   }
 }
