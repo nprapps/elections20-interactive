@@ -95,13 +95,13 @@
         float: left;
 
         &.Dem {
-          background: @demDim2;
+          background: @dem;
         }
         &.GOP {
-          background: @gopDim2;
+          background: @gop;
         }
         &.Other {
-          background: @gray-medium;
+          background: @gray;
         }
       }
 
@@ -130,28 +130,56 @@
 
       &.leading {
         fill: @gray-medium;
+
+        &.allin {
+          fill: @gray;
+        }
       }
       &.leading.GOP {
         fill: @gopDim2;
 
+        &.allin {
+          fill: @gop;
+
+          &.i0 {
+            fill: @gopMultiple1;
+          }
+
+          &.i1 {
+            fill: @gopMultiple2;
+          }
+        }
+
         &.i0 {
-          fill: @gopMultiple1;
+          fill: @gopMultiple1Dim;
         }
 
         &.i1 {
-          fill: @gopMultiple2;
+          fill: @gopMultiple2Dim;
         }
       }
 
       &.leading.Dem {
         fill: @demDim2;
 
+        &.allin {
+          fill: @dem;
+
+          &.i0 {
+            fill: @demMultiple1;
+          }
+
+          &.i1 {
+            fill: @demMultiple2;
+          }
+        }
+
         &.i0 {
-          fill: @demMultiple1;
+          fill: @demMultiple1Dim;
         }
 
         &.i1 {
-          fill: @demMultiple2;
+          fill: @demMultiple2Dim;
         }
       }
     }
@@ -213,7 +241,7 @@
     opacity: 0.9;
 
     &.Dem {
-      background: @demDim2;
+      background: @dem;
 
       &.i0 {
         background: @demMultiple1;
@@ -225,7 +253,7 @@
     }
 
     &.GOP {
-      background: @gopDim2;
+      background: @gop;
 
       &.i0 {
         background: @gopMultiple1;
@@ -237,7 +265,7 @@
     }
 
     &.Other {
-      background: @gray-medium;
+      background: @gray;
     }
   }
 }

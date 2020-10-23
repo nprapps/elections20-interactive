@@ -171,7 +171,8 @@ export default class CountyMap extends Component {
       if (!path) continue;
       path.classList.add("painted");
 
-      var hitThreshold = mapData[d].reporting / mapData[d].precincts > 0.5;
+      var hitThreshold = mapData[d].reportingPercent > 0.5;
+      var allReporting = mapData[d].reportingPercent >= 1;
 
       var topCand = this.partyMap[top.party];
       var specialShading =
@@ -184,8 +185,9 @@ export default class CountyMap extends Component {
         path.style.fill = `url(#pending-0)`;
         incomplete = true;
       } else {
-        path.classList.add("leading");
         path.classList.add(top.party);
+        path.classList.add("leading");
+        if (allReporting) path.classList.add("allin");
       }
     }
   }
