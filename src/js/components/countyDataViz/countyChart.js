@@ -42,7 +42,7 @@ export class CountyChart extends Component {
     }
 
     return (
-      <div class="graphic">
+      <div class="county-trend graphic">
         {this.renderCorrelation()}
         <div class="graphic-wrapper" ref={this.wrapperRef}>
           {this.renderSVG()}

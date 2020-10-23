@@ -1,21 +1,22 @@
-@import "../../../css/values";
+@import "values";
 
-circle {
-  fill-opacity: 0.3;
-  stroke-opacity: 0.6;
+.county-trend {
 
-  &.GOP {
-    fill: @gopDim2;
-    stroke: @gopDim2;
+  circle {
+    fill-opacity: 0.3;
+    stroke-opacity: 0.6;
+
+    &.GOP {
+      fill: @gopDim2;
+      stroke: @gopDim2;
+    }
+
+    &.Dem {
+      fill: @demDim2;
+      stroke: @demDim2;
+    }
   }
 
-  &.Dem {
-    fill: @demDim2;
-    stroke: @demDim2;
-  }
-}
-
-.graphic {
   span.description {
     font-weight: normal;
     color: #777;
@@ -85,66 +86,66 @@ circle {
       }
     }
   }
-}
 
-.chart-wrapper {
-  width: 25%;
-  display: inline-block;
+  .chart-wrapper {
+    width: 25%;
+    display: inline-block;
 
-  @media @tablet {
-    width: 33%;
-  }
+    @media @tablet {
+      width: 33%;
+    }
 
-  @media @mobile {
-    width: 50%;
-  }
-}
-
-.footnote {
-  font-style: italic;
-  color: #999;
-  font-size: 10px;
-  white-space: nowrap;
-  border-bottom: none;
-}
-
-.trends {
-  margin-bottom: 25px;
-  display: block;
-
-  div.collapsed .chart-wrapper:nth-child(n + 5) {
-    display: none;
-  }
-
-  @media @tablet {
-    div.collapsed .chart-wrapper:nth-child(n + 4) {
-      display: none;
+    @media @mobile {
+      width: 50%;
     }
   }
 
-  @media @mobile {
-    div.collapsed .chart-wrapper:nth-child(n + 3) {
+  .footnote {
+    font-style: italic;
+    color: #999;
+    font-size: 10px;
+    white-space: nowrap;
+    border-bottom: none;
+  }
+
+  .trends {
+    margin-bottom: 25px;
+    display: block;
+
+    div.collapsed .chart-wrapper:nth-child(n + 5) {
       display: none;
     }
+
+    @media @tablet {
+      div.collapsed .chart-wrapper:nth-child(n + 4) {
+        display: none;
+      }
+    }
+
+    @media @mobile {
+      div.collapsed .chart-wrapper:nth-child(n + 3) {
+        display: none;
+      }
+    }
   }
-}
 
-.trend-line {
-  stroke: #ccc;
-  fill: none;
-  stroke-width: 1px;
-}
+  .trend-line {
+    stroke: #ccc;
+    fill: none;
+    stroke-width: 1px;
+  }
 
-button {
-  background-color: #fff;
-  border: none;
-  box-shadow: none;
-  box-sizing: border-box;
-  color: #4774cc;
-  display: block;
-  font-weight: bold;
-  margin-top: 0;
-  margin-bottom: 22px;
-  padding: 10px;
-  text-transform: uppercase;
+  button {
+    background-color: #fff;
+    border: none;
+    box-shadow: none;
+    box-sizing: border-box;
+    color: #4774cc;
+    display: block;
+    font-weight: bold;
+    margin-top: 0;
+    margin-bottom: 22px;
+    padding: 10px;
+    text-transform: uppercase;
+  }
 }
