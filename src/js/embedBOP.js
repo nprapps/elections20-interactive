@@ -44,10 +44,7 @@ async function init(results) {
     Other: InactiveSenateRaces.Other
   }
 
-  results.president.forEach(function(r) {
-    president[r.party] += r.electoral;
-    if (r.winner == "X") president.winner = r.last;
-  });
+  results.president.forEach(r => president[r.winner] += r.electoral);
   results.house.forEach(r => house[r.winner] += 1);
   results.senate.forEach(r => senate[r.winner] += 1);
 
@@ -61,16 +58,16 @@ async function init(results) {
         <div class="chatter"><strong>270</strong> electoral votes needed to win</div>
         <div class="pres-container">
           <div class="candidate dem">
-            <div class="name">Biden {president.winner == "Biden" ? winnerIcon : ""}</div>
+            <div class="name">Biden {president.Dem >= 270 ? winnerIcon : ""}</div>
             <div class="votes">{president.Dem}</div>
           </div>
           <div class="candidate gop">
-            <div class="name">Trump {president.winner == "Trump" ? winnerIcon : ""}</div>
+            <div class="name">Trump {president.GOP >= 270 ? winnerIcon : ""}</div>
             <div class="votes">{president.GOP}</div>
           </div>
           {president.Other ?
             <div class="candidate other">
-              <div class="name">Other {president.winner == "Other" ? winnerIcon : ""}</div>
+              <div class="name">Other {president.Other >= 270 ? winnerIcon : ""}</div>
               <div class="votes">{president.Other}</div>
             </div>
           : ""}

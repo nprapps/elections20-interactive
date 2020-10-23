@@ -78,14 +78,16 @@ main.embed-bop {
 
   .pres-container {
     display: flex;
+    justify-content: center;
 
     .candidate {
       flex: 1;
       text-align: center;
       border-left: 1px solid #eee;
+      max-width: 150px;
 
       &:first-child {
-        border-right: 0;
+        border-left: 0;
       }
 
       .name {
