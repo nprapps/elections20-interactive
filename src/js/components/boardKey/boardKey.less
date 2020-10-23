@@ -1,0 +1,75 @@
+.board-key {
+	color: #666;
+	font-size: 12px;
+
+	ul {
+		list-style-type: none;
+		padding-left: 0;
+		display: flex;
+    flex-flow: row wrap;
+
+		li {
+			line-height: 20px;
+			display: block;
+			white-space: nowrap;
+      width: 210px;
+		}
+	}
+
+	.dem {
+		.leaning {
+			background: @demDim;
+		}
+		.winner {
+			background: @dem;
+		}
+	}
+	.gop, .no {
+		.leaning {
+			background: @gopDim;
+		}
+		.winner {
+			background: @gop;
+		}
+	}
+	.ind, .yes {
+		.leaning {
+			background: @indDim;
+		}
+		.winner {
+			background: @ind;
+		}
+	}
+
+	.leaning, .winner {
+		padding: 1px 3px;
+		border-radius: 1px;
+		.gotham();
+		font-size: 11px;
+	}
+	.winner {
+		color: white;
+	}
+
+	.pickup, .runoff {
+		span {
+			.gotham();
+			font-size: 8px; 
+			font-weight: bold;
+		}
+	}
+	.pickup {
+		span {
+			color: @dem;
+		}
+	}
+
+	.eevp {
+		span {
+			.gotham();
+			font-style: italic;
+			font-size: 10px;
+			color: #9a9a9a;
+		}
+	}
+}

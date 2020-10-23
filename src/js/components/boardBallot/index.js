@@ -3,6 +3,7 @@ import gopher from "../gopher.js";
 import Results from "../resultsBoardNamed";
 import TestBanner from "../testBanner";
 import DateFormatter from "../dateFormatter";
+import BoardKey from "../boardKey";
 
 export default class BoardBallot extends Component {
   constructor(props) {
@@ -34,6 +35,8 @@ export default class BoardBallot extends Component {
     return <>
       <h1 tabindex="-1">Ballot Initiatives</h1>
       { test ? <TestBanner /> : "" }
+
+      <BoardKey />
       <div class="board-container">
         {races && <Results races={races} office="Ballot"/>}
       </div>

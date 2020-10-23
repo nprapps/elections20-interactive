@@ -4,6 +4,7 @@ import Results from "../resultsBoardNamed";
 import BalanceOfPower from "../balanceOfPower";
 import TestBanner from "../testBanner";
 import DateFormatter from "../dateFormatter";
+import BoardKey from "../boardKey";
 
 export default class BoardHouse extends Component {
   constructor(props) {
@@ -60,6 +61,8 @@ export default class BoardHouse extends Component {
             <BalanceOfPower race="house" data={results}/>
           </div>
         </div>
+
+        <BoardKey />
         <div class="board-container House">
           {results && (
             <>

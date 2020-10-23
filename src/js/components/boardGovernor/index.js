@@ -3,6 +3,7 @@ import gopher from "../gopher.js";
 import Results from "../resultsBoardNamed";
 import TestBanner from "../testBanner";
 import DateFormatter from "../dateFormatter";
+import BoardKey from "../boardKey";
 import { getBucket } from "../util.js";
 
 export default class BoardGovernor extends Component {
@@ -52,6 +53,8 @@ export default class BoardGovernor extends Component {
     return <>
       <h1 tabindex="-1">Governor</h1>
       { test ? <TestBanner /> : "" }
+
+      <BoardKey />
       <div class="board-container Gov">
         {races && <>
           <Results races={sorted} office="Gov" split={true}/>

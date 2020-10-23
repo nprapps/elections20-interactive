@@ -4,6 +4,7 @@ import Results from "../resultsBoardNamed";
 import BalanceOfPower from "../balanceOfPower";
 import TestBanner from "../testBanner";
 import DateFormatter from "../dateFormatter";
+import BoardKey from "../boardKey";
 import { getBucket } from "../util.js";
 
 export default class BoardSenate extends Component {
@@ -60,6 +61,8 @@ export default class BoardSenate extends Component {
             <BalanceOfPower race="senate" data={results}/>
           </div>
         </div>
+
+        <BoardKey />
         <div class="board-container Senate">
           {results && <>
             <Results races={buckets.tossup} hed="Competitive Seats" office="Senate" addClass="middle" split={true}/>

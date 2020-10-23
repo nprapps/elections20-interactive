@@ -5,6 +5,7 @@ import Results from "../resultsBoardPresident";
 import TestBanner from "../testBanner";
 import DateFormatter from "../dateFormatter";
 import ElectoralArc from "../electoralArc";
+import BoardKey from "../boardKey";
 import Tabs from "../tabs";
 import { getBucket } from "../util.js";
 
@@ -71,6 +72,8 @@ export default class BoardPresident extends Component {
         </div>
         
       </Tabs>
+
+      <BoardKey />
       <div class="board-container President">
         {results && <>
           <Results races={buckets.tossup} hed="Competitive States" office="President" addClass="middle" split={true}/>
