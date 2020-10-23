@@ -1,10 +1,16 @@
 @import "../../../css/values";
 
 .results-no-counties {
-  .results-table.statewide {
-    width: 100%;
-    display: inline-block;
-    max-width: none;
+  .results-wrapper {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 30px;
+  }
+
+  @media @mobile {
+    .results-wrapper {
+      display: block;
+    }
   }
 }
 
