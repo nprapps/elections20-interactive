@@ -62,17 +62,19 @@ export default class BoardPresident extends Component {
     return <div class="president board">
       <h1 tabindex="-1">President</h1>
       { test ? <TestBanner /> : "" }
-      <Tabs>
+      
+      <div label="Grid">
+        <ElectoralGrid results={results} />
+      </div>
 
-        <div label="Grid">
-          <ElectoralGrid results={results} />
-        </div>
+      <Tabs>
+        <div label="Board"></div>
 
         <div label="Breakdown">
           <ElectoralArc results={results} />
         </div>
 
-        <div label="Geographic Map">
+        <div label="Map">
           {results && <NationalMap races={results} />}
         </div>
         
