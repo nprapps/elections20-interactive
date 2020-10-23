@@ -102,7 +102,13 @@ function Grid(props) {
           class="grid"
         />
       ))}      {shapes.map(function(shape, i) {
-        var [ labelCell = { row: 0, column: 0 }] = shape.cells;
+        var labelCell = shape.cells[shape.cells.length >> 1];
+        // find the widest row
+        var byRow = {};
+        shape.cells.forEach(function(c) {
+          if (!byRow[c.row]) byRow[c.row] = [];
+          byRow[c.row].push(c);
+        });
         return <>
           <g data-state={shape.label} data-count={shape.cells.length}>
           {shape.cells.map(function(c) {
@@ -217,14 +223,14 @@ export default function ElectoralGrid(props) {
           <h4>Biden</h4>
           <div class="count">{sum(called.Dem)}</div>
         </div>
-        <Grid class="D" width={10} races={called.Dem} min={min}/>
+        {false && <Grid class="D" width={10} races={called.Dem} min={min}/>}
       </div>
       <div class="column R">
         <div class="counts">
           <h4>Trump</h4>
           <div class="count">{sum(called.GOP)}</div>
         </div>
-        <Grid class="R" width={10} races={called.GOP} min={min}/>
+        {false && <Grid class="R" width={10} races={called.GOP} min={min}/>}
       </div>
     </div>
   </div>;

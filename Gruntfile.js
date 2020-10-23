@@ -59,7 +59,7 @@ module.exports = function (grunt) {
     "static",
     "elex",
     "publish",
-    "cron:240:publish"
+    "cron:30:publish"
   ]);
   grunt.registerTask("deploy-live", "Deploy HTML to live on a timer", [
     "sheets",
