@@ -136,3 +136,19 @@ export function getCountyVariable(data, variable) {
 }
 
 export { availableMetrics };
+
+export function groupCalled(results) {
+  var called = {
+    Dem: [],
+    GOP: [],
+    uncalled: []
+  }
+
+  if (results) {
+    results.forEach(r => r.called && called[r.winnerParty || "uncalled"].push(r));
+  }
+
+  return called;
+}
+
+export var sumElectoral = (list) => list.reduce((t, r) => t + r.electoral, 0);

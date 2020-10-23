@@ -8,7 +8,36 @@ import ElectoralArc from "../electoralArc";
 import ElectoralGrid from "../electoralGrid";
 import BoardKey from "../boardKey";
 import Tabs from "../tabs";
-import { getBucket } from "../util.js";
+import { getBucket, sumElectoral, groupCalled } from "../util.js";
+
+export function Leaderboard(props) {
+  var { called } = props;
+
+  return (
+    <div class="leaderboard">
+      <div class="results-header-group dem">
+        <h2 class="party">
+          <label>Biden</label>
+          <abbr>{sumElectoral(called.Dem)}</abbr>
+        </h2>
+      </div>
+
+      <div class="results-header-group gop">
+        <h2 class="party">
+          <label>Trump</label>
+          <abbr>{sumElectoral(called.GOP)}</abbr>
+        </h2>
+      </div>
+
+      <div class="results-header-group not-called">
+        <h2 class="party">
+          <label>Uncalled</label>
+          <abbr>{sumElectoral(called.uncalled)}</abbr>
+        </h2>
+      </div>
+    </div>
+  );
+}
 
 export default class BoardPresident extends Component {
   constructor(props) {
@@ -59,16 +88,26 @@ export default class BoardPresident extends Component {
       });
     }
 
+    var called = groupCalled(results);
+
     return <div class="president board">
       <h1 tabindex="-1">President</h1>
       { test ? <TestBanner /> : "" }
-      
-      <div label="Grid">
-        <ElectoralGrid results={results} />
-      </div>
+
+      <Leaderboard called={called} />
 
       <Tabs>
-        <div label="Board"></div>
+        <div label="Board" class="board-container President">
+          {results && <>
+            <Results races={buckets.tossup} hed="Competitive States" office="President" addClass="middle" split={true}/>
+            <Results races={buckets.likelyD} hed="Likely Democratic" office="President" addClass="first" />
+            <Results races={buckets.likelyR} hed="Likely Republican" office="President" addClass="last" />
+          </>}
+        </div>
+
+        <div label="Grid">
+          <ElectoralGrid results={results} />
+        </div>
 
         <div label="Breakdown">
           <ElectoralArc results={results} />
@@ -81,13 +120,7 @@ export default class BoardPresident extends Component {
       </Tabs>
 
       <BoardKey race="president"/>
-      <div class="board-container President">
-        {results && <>
-          <Results races={buckets.tossup} hed="Competitive States" office="President" addClass="middle" split={true}/>
-          <Results races={buckets.likelyD} hed="Likely Democratic" office="President" addClass="first" />
-          <Results races={buckets.likelyR} hed="Likely Republican" office="President" addClass="last" />
-        </>}
-      </div>
+      
       <div class="source">Source: AP (as of <DateFormatter value={latest} />)</div>
     </div>
   }
