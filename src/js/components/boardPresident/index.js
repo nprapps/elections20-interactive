@@ -5,6 +5,7 @@ import Results from "../resultsBoardPresident";
 import TestBanner from "../testBanner";
 import DateFormatter from "../dateFormatter";
 import ElectoralArc from "../electoralArc";
+import ElectoralGrid from "../electoralGrid";
 import BoardKey from "../boardKey";
 import Tabs from "../tabs";
 import { getBucket } from "../util.js";
@@ -62,6 +63,10 @@ export default class BoardPresident extends Component {
       <h1 tabindex="-1">President</h1>
       { test ? <TestBanner /> : "" }
       <Tabs>
+
+        <div label="Grid">
+          <ElectoralGrid results={results} />
+        </div>
 
         <div label="Breakdown">
           <ElectoralArc results={results} />

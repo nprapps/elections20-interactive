@@ -5,7 +5,7 @@ var { cos, sin, PI } = Math;
 
 var unit = PI / 538;
 
-function Leaderboard(props) {
+export function Leaderboard(props) {
   var { called } = props;
 
   return (

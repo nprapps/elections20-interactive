@@ -1,8 +1,17 @@
-.tabs {
+.tabs[role="tablist"] {
   display: flex;
 
   [role="tab"] {
+    background: white;
+    border: none;
+    padding: 8px;
+    text-transform: uppercase;
+    .gotham();
     border-bottom: 2px solid transparent;
+
+    &:hover {
+      border-bottom-color: fade(@true, 20%);
+    }
 
     &:focus {
       background: #E8E8E8;
@@ -10,7 +19,7 @@
     }
 
     &[aria-selected="true"] {
-      border-bottom-color: blue;
+      border-bottom-color: @true;
     }
   }
 }
