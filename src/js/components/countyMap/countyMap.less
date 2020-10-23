@@ -64,18 +64,19 @@
     }
 
     .row {
+      .gotham();
       padding: 3px 0;
       min-width: 120px;
       font-size: 10px;
       color: #666;
-      text-transform: uppercase;
+
       border-top: 1px solid #eee;
 
       &.reporting {
         .gotham();
         margin: 0;
         padding-top: 3px;
-        font-size: 9px;
+        font-size: 10px;
         color: #9a9a9a;
         font-style: italic;
         text-transform: none;
@@ -117,17 +118,11 @@
   }
 
   .map path {
-    stroke: #ddd;
-    fill-opacity: 0;
-    fill: white;
+    stroke: white;
+    fill: #eee;
     stroke-width: 1;
-    /*transition: fill-opacity 1s linear;*/
 
     &.painted {
-      fill-opacity: 0.75;
-      stroke: #eee;
-      stroke-width: 1;
-
       &.leading {
         fill: @indDim2;
         &.allin {
@@ -193,6 +188,7 @@
 
     &:hover {
       cursor: pointer;
+      stroke: black;
       fill-opacity: 1;
       stroke-width: 2;
       /*transition-duration: 0s !important;*/

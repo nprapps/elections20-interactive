@@ -115,7 +115,7 @@ export default class NationalMap extends Component {
         </div>`
       ).join("")}</div>
       <div class="reporting">${reportingPercentage(
-        result.eevp
+        result.eevp || result.reportingPercent
       )}% in</div>
     `;
 
@@ -200,7 +200,7 @@ export default class NationalMap extends Component {
     var svg = this.svgRef.current.querySelector("svg");
 
     mapData.forEach(function (r) {
-      var eevp = r.eevp;
+      var eevp = r.eevp || r.reportingPercent;
       var district = r.district;
       var state = r.state.toLowerCase() + (district ? "-" + district : "");
       var leader = r.candidates[0].party;
@@ -208,6 +208,9 @@ export default class NationalMap extends Component {
       var stateGroup = svg.querySelector(`.${state}`);
       if (!stateGroup) return;
 
+      if (eevp > 0) {
+        stateGroup.classList.add("early");
+      }
       if (eevp > 0.5) {
         stateGroup.classList.add("leader");
         stateGroup.classList.add(leader);

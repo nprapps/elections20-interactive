@@ -169,7 +169,7 @@ export default class CountyMap extends Component {
       path.classList.add(`i${specialShading}`);
 
       if (!hitThreshold) {
-        path.style.fill = `url(#pending-0)`;
+        path.style.fill = "#ddd";
         incomplete = true;
       } else {
         path.classList.add(getParty(top.party));
@@ -243,7 +243,7 @@ export default class CountyMap extends Component {
         <div class="row pop">Population <span class="amt"> ${formatters.comma(
           result.county.population
         )}</span></div>
-        <div class="row reporting">${perReporting}% reporting</div>
+        <div class="row reporting">${perReporting}% in</div>
       `;
     }
 
