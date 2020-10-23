@@ -158,10 +158,14 @@ module.exports = function(grunt) {
       }
     }
 
-    var latest = [].concat(geo.national, byOffice.house, byOffice.senate).reduce((t, r) => Math.max(t, r.updated), 0);
+    var latest = [].concat(
+      geo.national,
+      byOffice.house,
+      byOffice.senate
+    ).reduce((t, r) => Math.max(t, r.updated), 0);
 
     var bop = {
-      president: geo.national[0].candidates,
+      president: byOffice.president.filter(r => r.called).map(mapBOP),
       house: byOffice.house.filter(r => r.called).map(mapBOP),
       senate: byOffice.senate.filter(r => r.called).map(mapBOP),
       latest
