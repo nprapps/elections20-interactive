@@ -71,12 +71,19 @@ export var formatters = {
 
 export function getBucket(rating) {
   if (rating == "solid-d" || rating == "likely-d") {
-    return 'likelyD'
+    return "likelyD";
   } else if (rating == "lean-d" || rating == "toss-up" || rating == "lean-r") {
-    return 'tossup';
+    return "tossup";
   } else if (rating == "solid-r" || rating == "likely-r") {
-    return 'likelyR';
+    return "likelyR";
   }
+}
+
+export function getParty(party) {
+  if (["Dem", "GOP"].includes(party)) {
+    return party;
+  }
+  return "Ind";
 }
 
 const availableMetrics = {
@@ -141,14 +148,16 @@ export function groupCalled(results) {
   var called = {
     Dem: [],
     GOP: [],
-    uncalled: []
-  }
+    uncalled: [],
+  };
 
   if (results) {
-    results.forEach(r => r.called && called[r.winnerParty || "uncalled"].push(r));
+    results.forEach(
+      r => r.called && called[r.winnerParty || "uncalled"].push(r)
+    );
   }
 
   return called;
 }
 
-export var sumElectoral = (list) => list.reduce((t, r) => t + r.electoral, 0);
+export var sumElectoral = list => list.reduce((t, r) => t + r.electoral, 0);

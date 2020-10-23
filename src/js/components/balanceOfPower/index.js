@@ -1,6 +1,7 @@
 import { h, Component, Fragment } from "preact";
 import gopher from "../gopher.js";
 import InactiveSenateRaces from "inactive_senate_races.sheet.json";
+import {getParty} from "../util.js"
 
 export default class BalanceOfPower extends Component {
   constructor(props) {
@@ -106,8 +107,8 @@ export default class BalanceOfPower extends Component {
     for (let race of data) {
       var winner = this.getWinner(race);
       if (winner) {
-        var winnerParty = this.getParty(winner.party);
-        var previousWinner = this.getParty(race.previousParty);
+        var winnerParty = getParty(winner.party);
+        var previousWinner = getParty(race.previousParty);
         results[winner.party].total += 1;
         if (winnerParty != previousWinner) {
           results[winnerParty].gains += 1;
@@ -130,13 +131,6 @@ export default class BalanceOfPower extends Component {
     }
 
     return results;
-  }
-
-  getParty(party) {
-    if (["Dem", "GOP"].includes(party)) {
-      return party;
-    }
-    return "Ind";
   }
 
   getWinner(race, party) {

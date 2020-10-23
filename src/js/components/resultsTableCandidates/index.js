@@ -1,6 +1,6 @@
 import { h, Component, Fragment } from "preact";
 import gopher from "../gopher.js";
-import { reportingPercentage } from "../util.js";
+import { reportingPercentage, getParty } from "../util.js";
 
 const activeMugshots = {
   Biden:
@@ -44,7 +44,7 @@ export default function ResultsTableCandidates(props) {
     ""
   );
   var hasIncumbent = results.candidates.some(c => c.incumbent);
-  var incumbentText = hasIncumbent ? <div>● - Incumbent</div> : '';
+  var incumbentText = hasIncumbent ? <div>● - Incumbent</div> : "";
 
   return (
     <div class="results-table statewide">
@@ -137,7 +137,8 @@ function CandidateNameCell(candidate) {
   } else {
     name = (
       <Fragment>
-        <span class="first">{candidate.first || ""}</span> {candidate.last}{" "}
+        <span class="first">{candidate.first || ""}</span> {candidate.last}
+        {` (${getParty(candidate.party)}) `}
       </Fragment>
     );
   }
