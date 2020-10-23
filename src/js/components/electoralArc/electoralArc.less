@@ -1,0 +1,30 @@
+@import "values";
+
+.electoral-arc {
+
+  .aspect-ratio {
+    position: relative;
+
+    &::before {
+      display: block;
+      content: "";
+      padding-bottom: percentage(9 / 16);
+    }
+
+    svg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  .GOP.landslide { fill: @rigorous; }
+  .GOP.major { fill: fade(@rigorous, 20%); }
+  .GOP.minor { fill: fade(@rigorous, 50%); }
+
+  .Dem.landslide { fill: @true; }
+  .Dem.major { fill: fade(@true, 20%); }
+  .Dem.minor { fill: fade(@true, 50%); }
+}
