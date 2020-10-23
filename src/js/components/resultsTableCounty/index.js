@@ -52,7 +52,7 @@ export default class ResultsTableCounty extends Component {
                 class="county sortable"
                 onclick={() => this.updateSort("countyName")}>
                 <div>
-                  <span class="title county">County</span>
+                  <span class="county">County</span>
                 </div>
               </th>
               <th
