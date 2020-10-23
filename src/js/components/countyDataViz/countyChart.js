@@ -18,7 +18,7 @@ export class CountyChart extends Component {
       top: 20,
       right: 5,
       bottom: 25,
-      left: 30,
+      left: 20,
     };
 
     window.addEventListener("resize", this.handleResize);

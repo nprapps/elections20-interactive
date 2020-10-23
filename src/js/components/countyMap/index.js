@@ -13,14 +13,19 @@ export default class CountyMap extends Component {
     this.containerRef = createRef();
     this.mapContainerRef = createRef();
     this.tooltipRef = createRef();
+    this.width;
+    this.height;
+
+    props.sortOrder = props.sortOrder.filter(s => props.data.some(d => d.candidates[0].last == s.last))
 
     // Helper for handling multiple candidates of same party on map.
     var partyMap = {};
     props.sortOrder.forEach(function (c) {
-      if (!partyMap[c.party]) {
-        partyMap[c.party] = [];
+      if (!partyMap[c.party]) partyMap[c.party] = [];
+      if (props.data.some(d => d.candidates[0].last == c.last)) {
+        partyMap[c.party].push(c.last);
       }
-      partyMap[c.party].push(c.last);
+      
     });
     this.partyMap = partyMap;
   }
@@ -41,6 +46,7 @@ export default class CountyMap extends Component {
   }
 
   componentDidUpdate() {
+    this.updateDimensions()
     this.paint();
   }
 
@@ -48,22 +54,6 @@ export default class CountyMap extends Component {
     return (
       <div class="county-map" data-as="map" aria-hidden="true">
         <div ref={this.containerRef} class="container" data-as="container">
-          <svg
-            class="patterns"
-            style="opacity: 0; position: absolute; left: -1000px">
-            <pattern
-              id="pending-0"
-              class="stripes"
-              width="10"
-              height="10"
-              patternUnits="userSpaceOnUse"
-              patternTransform="rotate(-45)">
-              <path
-                d="M5,0L5,10"
-                stroke="rgba(0, 0, 0, .2)"
-                stroke-width="4"></path>
-            </pattern>
-          </svg>
           <div class="key" data-as="key">
             <div class="key-grid">
               {this.props.sortOrder.map(candidate =>
@@ -87,7 +77,9 @@ export default class CountyMap extends Component {
 
   async loadSVG(svgText) {
     this.svgRef.current.innerHTML = svgText;
-    var svg = this.svgRef.current.getElementsByTagName("svg")[0];
+    var [svg] = this.svgRef.current.getElementsByTagName("svg");
+    this.width = svg.getAttribute("width") * 1;
+    this.height = svg.getAttribute("height") * 1;
 
     svg.setAttribute("preserveAspectRatio", "xMidYMid meet");
 
@@ -109,8 +101,7 @@ export default class CountyMap extends Component {
   }
 
   updateDimensions() {
-    var width = this.svg.getAttribute("width") * 1;
-    var height = this.svg.getAttribute("height") * 1;
+    if (!this.svg) return;
 
     // TODO: fix this
     var embedded = false; //document.body.classList.contains("embedded");
@@ -118,24 +109,25 @@ export default class CountyMap extends Component {
 
     var w;
     var h;
-    if (width > height * 1.4) {
-      var ratio = height / (width * 2);
-      w = Math.max(800, window.innerWidth);
+    var innerWidth = window.innerWidth;
+    if (this.width > this.height * 1.4) {
+      var ratio = this.height / (this.width * 2);
+      w = Math.min(800, innerWidth);
       var h = w * ratio;
-    } else if (width > height * 1.2) {
-      var ratio = height / (width * 3);
-      w = Math.max(800, window.innerWidth);
+    } else if (this.width > this.height * 1.2) {
+      var ratio = this.height / (this.width * 3);
+      w = Math.min(800, innerWidth);
       var h = w * ratio;
     } else {
-      var ratio = width / height;
-      var w = 450;
+      var ratio = this.width / this.height;
+      var w = Math.min(450, innerWidth);
       var h = w * ratio;
     }
 
     this.svg.setAttribute("width", w + "px");
     this.svg.setAttribute("height", h + "px");
 
-    this.containerRef.current.classList.toggle("horizontal", width < height);
+    this.containerRef.current.classList.toggle("horizontal", this.width < this.height);
   }
 
   paint() {
@@ -169,7 +161,7 @@ export default class CountyMap extends Component {
       path.classList.add(`i${specialShading}`);
 
       if (!hitThreshold) {
-        path.style.fill = `url(#pending-0)`;
+        path.style.fill = "#ddd";;
         incomplete = true;
       } else {
         path.classList.add(getParty(top.party));
@@ -186,6 +178,10 @@ export default class CountyMap extends Component {
       this.partyMap[candidate.party].length > 1
         ? this.partyMap[candidate.party].indexOf(candidate.last)
         : "";
+    console.log(specialShading)
+    if (specialShading == -1) {
+      return;
+    }
     return (
       <div class="key-row">
         <div class={`swatch ${getParty(candidate.party)} i${specialShading}`}></div>
@@ -243,7 +239,7 @@ export default class CountyMap extends Component {
         <div class="row pop">Population <span class="amt"> ${formatters.comma(
           result.county.population
         )}</span></div>
-        <div class="row reporting">${perReporting}% reporting</div>
+        <div class="row reporting">${perReporting}% in</div>
       `;
     }
 
