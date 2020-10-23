@@ -4,6 +4,7 @@ import {
   sortByOrder,
   formatters,
   availableMetrics,
+  getParty,
 } from "../util.js";
 var { percentDecimal, voteMargin } = formatters;
 
@@ -57,9 +58,7 @@ export default class ResultsTableCounty extends Component {
               <th
                 class="amt precincts"
                 onclick={() => this.updateSort("countyName")}>
-                <div>
-                  {this.getIcon("countyName")}
-                </div>
+                <div>{this.getIcon("countyName")}</div>
               </th>
               {orderedCandidates.map(cand => CandidateHeaderCell(cand))}
               <th class="vote margin">
@@ -234,8 +233,8 @@ function ResultsRowCounty(props) {
 
   var orderedCandidates = candidates.map(function (header) {
     // If on other candidate, get total percent of other votes
-    if (header.last == 'Other') {
-      var other = mergeOthers(row.candidates, header.id, topCands)
+    if (header.last == "Other") {
+      var other = mergeOthers(row.candidates, header.id, topCands);
       return other;
     }
     var [match] = row.candidates.filter(c => header.id == c.id);
@@ -249,7 +248,7 @@ function ResultsRowCounty(props) {
   }
 
   var leadingCand = row.reportingPercent == 1 ? row.candidates[0] : "";
-  var reportingPercent = reportingPercentage(row.reportingPercent) + "% in"
+  var reportingPercent = reportingPercentage(row.reportingPercent) + "% in";
 
   return (
     <tr>
@@ -257,9 +256,7 @@ function ResultsRowCounty(props) {
         <span>{row.county.countyName}</span>
         <span class="precincts mobile">{reportingPercent}</span>
       </td>
-      <td class="precincts amt">
-        {reportingPercent}
-      </td>
+      <td class="precincts amt">{reportingPercent}</td>
       {orderedCandidates.map(c =>
         CandidatePercentCell(
           c,
@@ -291,10 +288,9 @@ function CandidatePercentCell(candidate, leading) {
     return <td class="vote"> N/A</td>;
   }
   var displayPercent = percentDecimal(candidate.percent);
+  var party = getParty(candidate.party);
   return (
-    <td
-      class={`vote ${candidate.party} ${leading ? "leading" : ""}`}
-      key={candidate.id}>
+    <td class={`vote ${party} ${leading ? "leading" : ""}`} key={candidate.id}>
       {`${displayPercent}`}
     </td>
   );
@@ -306,7 +302,7 @@ function CandidatePercentCell(candidate, leading) {
 function MarginCell(candidates, leading) {
   var party;
   if (leading) {
-    party = ["Dem", "GOP"].includes(leading) ? leading : "ind";
+    party = getParty(leading);
   }
 
   return (
@@ -323,7 +319,7 @@ function calculateVoteMargin(candidates) {
     return "-";
   }
   var winnerMargin = a.percent - b.percent;
-  return voteMargin({ party: a.party, margin: winnerMargin });
+  return voteMargin({ party: getParty(a.party), margin: winnerMargin });
 }
 
 // Borrowed from normalize

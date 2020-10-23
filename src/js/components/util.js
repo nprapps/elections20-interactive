@@ -56,12 +56,16 @@ export var formatters = {
   },
   percentDecimal: v => (v * 100).toFixed(1) + "%",
   voteMargin: function (result) {
+
     let prefix;
     if (result.party === "Dem") {
       prefix = "D";
     } else if (result.party === "GOP") {
       prefix = "R";
+    } else if (results.party =="Other") {
+      prefix = "O";
     } else {
+      console.log(result)
       prefix = "I";
     }
 
@@ -80,7 +84,7 @@ export function getBucket(rating) {
 }
 
 export function getParty(party) {
-  if (["Dem", "GOP"].includes(party)) {
+  if (["Dem", "GOP", "Other"].includes(party)) {
     return party;
   }
   return "Ind";

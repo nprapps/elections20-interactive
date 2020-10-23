@@ -1,6 +1,6 @@
 import { h, Component, createRef } from "preact";
 import gopher from "../gopher.js";
-import { formatters, reportingPercentage } from "../util.js";
+import { formatters, reportingPercentage, getParty } from "../util.js";
 
 var specialStates = new Set(["IA", "MA", "OK", "WA"]);
 
@@ -148,15 +148,8 @@ export default class CountyMap extends Component {
 
     var incomplete = false;
 
-    // Need to get the data in here first
-    var winners = new Set();
-    var hasVotes = false;
     for (var d of Object.keys(mapData)) {
       var [top] = mapData[d].candidates.sort((a, b) => b.percent - a.percent);
-      if (top.votes) {
-        winners.add(top.party);
-        hasVotes = true;
-      }
       this.fipsLookup[mapData[d].fips] = mapData[d];
     }
 
@@ -176,16 +169,14 @@ export default class CountyMap extends Component {
 
       var topCand = this.partyMap[top.party];
       var specialShading =
-        topCand && topCand.length > 1
-          ? this.partyMap[top.party].indexOf(top.last)
-          : "";
+        topCand && topCand.length > 1 ? topCand.indexOf(top.last) : "";
       path.classList.add(`i${specialShading}`);
 
       if (!hitThreshold) {
         path.style.fill = `url(#pending-0)`;
         incomplete = true;
       } else {
-        path.classList.add(top.party);
+        path.classList.add(getParty(top.party));
         path.classList.add("leading");
         if (allReporting) path.classList.add("allin");
       }
@@ -201,7 +192,7 @@ export default class CountyMap extends Component {
         : "";
     return (
       <div class="key-row">
-        <div class={`swatch ${candidate.party} i${specialShading}`}></div>
+        <div class={`swatch ${getParty(candidate.party)} i${specialShading}`}></div>
         <div class="name">{name}</div>
       </div>
     );
@@ -232,7 +223,7 @@ export default class CountyMap extends Component {
   onMove(e) {
     var tooltip = this.tooltipRef.current;
     var fips = e.target.id.replace("fips-", "");
-    
+
     if (!fips || e.type == "mouseleave") {
       tooltip.classList.remove("shown");
       return;
@@ -246,11 +237,11 @@ export default class CountyMap extends Component {
         candText = displayCandidates
           .map(
             c =>
-            `<div class="row">
+              `<div class="row">
             <span class="party ${c.party}"></span>
             <span>${c.last}</span>
             <span class="amt">${
-              c.percent ? reportingPercentage(c.percent) : '-'
+              c.percent ? reportingPercentage(c.percent) : "-"
             }%</span>
         </div>`
           )

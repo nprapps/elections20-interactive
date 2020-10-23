@@ -132,6 +132,9 @@ table.results-table {
       &.GOP {
         color: @gop;
       }
+      &.Ind {
+        color: @ind;
+      }
       &.Other {
         color: @gray;
       }
@@ -172,7 +175,11 @@ table.results-table {
 
   .leading {
     color: #fff;
-    background-color: @gray-medium;
+    background-color: @ind;
+    
+    &.Other {
+      background-color: @gray;
+    }
 
     &.Dem {
       background-color: @dem;
