@@ -4,18 +4,28 @@
 	margin: auto;
 	margin-bottom: 30px;
 	padding: 8px 35px;
-	padding-bottom: 35px;
+	padding-bottom: 20px;
 	border-top: 6px solid;
 	border-bottom: 0;
 	border-left: 0;
 	border-right: 0;
-  	border-image: linear-gradient(to right, @rigorous, @true) 100;
-  	color: #333;
+  border-image: linear-gradient(to right, @rigorous, @true) 100;
+  color: #333;
 	.gotham();
 
-	@media (max-width: 760px) {
+	@media @tablet {
 		margin-left: 15px;
 		margin-right: 15px;
+	}
+
+	@media @tiny {
+		padding-left: 25px;
+		padding-right: 25px;
+		font-size: 13px;
+
+		h2 {
+			font-size: 18px;
+		}
 	}
 
 	a {
@@ -35,10 +45,19 @@
 		border-radius: 100%;
 		padding: 6px;
 
+		@media @tiny {
+			margin-top: 18px;
+		}
+
 		svg {
 			width: 12px;
 			height: 12px;
 			display: block;
+
+			@media @tiny {
+				width: 9px;
+			  height: 9px;
+			}
 		}
 
 		&:hover {
