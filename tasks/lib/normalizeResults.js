@@ -249,14 +249,15 @@ module.exports = function (resultArray, overrides = {}) {
           return true;
         });
 
-        if (call)
-          // console.log(
-          //   `Overriding winner (${call.candidate}) for race #${
-          //     unitMeta.id
-          //   } in ${[call.state, call.fips, call.district]
-          //     .filter(s => s)
-          //     .join("-")}`
-          // );
+        if (false && call) {
+          console.log(
+            `Overriding winner (${call.candidate}) for race #${
+              unitMeta.id
+            } in ${[call.state, call.fips, call.district]
+              .filter(s => s)
+              .join("-")}`
+          );
+        }
 
         var winner = null;
         ballot.forEach(function (c) {
