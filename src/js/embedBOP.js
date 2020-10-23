@@ -9,6 +9,9 @@ var guest = Sidechain.registerGuest();
 
 gopher.watch("./data/bop.json", init);
 
+var search = new URLSearchParams(window.location.search);
+var hp = search.get("hp");
+
 var winnerIcon =
   <span class="winner-icon" role="img" aria-label="check mark">
     <svg
@@ -52,35 +55,35 @@ async function init(results) {
 
   var template = <>
 
-    <a class="container" href="http://apps.npr.org/elections20-interactive/#/president">
-      <h3>President ›</h3>
-      <div class="chatter"><strong>270</strong> electoral votes needed to win</div>
-      <div class="pres-container">
-        <div class="candidate dem">
-          <div class="name">Biden {president.winner == "Biden" ? winnerIcon : ""}</div>
-          <div class="votes">{president.Dem}</div>
-        </div>
-        <div class="candidate gop">
-          <div class="name">Trump {president.winner == "Trump" ? winnerIcon : ""}</div>
-          <div class="votes">{president.GOP}</div>
-        </div>
-        {president.Other ?
-          <div class="candidate other">
-            <div class="name">Other {president.winner == "Other" ? winnerIcon : ""}</div>
-            <div class="votes">{president.Other}</div>
+    {hp && <>
+      <a class="container" href="http://apps.npr.org/elections20-interactive/#/president">
+        <h3>President ›</h3>
+        <div class="chatter"><strong>270</strong> electoral votes needed to win</div>
+        <div class="pres-container">
+          <div class="candidate dem">
+            <div class="name">Biden {president.winner == "Biden" ? winnerIcon : ""}</div>
+            <div class="votes">{president.Dem}</div>
           </div>
-        : ""}
-        {538 - president.Dem - president.GOP - president.Other ?
-          <div class="candidate uncalled">
-            <div class="name">Uncalled</div>
-            <div class="votes">{538 - president.Dem - president.GOP - president.Other}</div>
+          <div class="candidate gop">
+            <div class="name">Trump {president.winner == "Trump" ? winnerIcon : ""}</div>
+            <div class="votes">{president.GOP}</div>
           </div>
-        : ""}
-      </div>
-
-    </a>
-
-    <div class="divider" />
+          {president.Other ?
+            <div class="candidate other">
+              <div class="name">Other {president.winner == "Other" ? winnerIcon : ""}</div>
+              <div class="votes">{president.Other}</div>
+            </div>
+          : ""}
+          {538 - president.Dem - president.GOP - president.Other ?
+            <div class="candidate uncalled">
+              <div class="name">Uncalled</div>
+              <div class="votes">{538 - president.Dem - president.GOP - president.Other}</div>
+            </div>
+          : ""}
+        </div>
+      </a>
+      <div class="divider" />
+    </>}
 
     <a class="container" href="http://apps.npr.org/elections20-interactive/#/house">
       <h3>House ›</h3>

@@ -8,6 +8,7 @@ export default function BoardKey(props) {
 	var hasEEVP = race !== "house";
 
   return <div class="board-key">
+    <h3>Key</h3>
     <ul>
       {hasParties && <>
 	      	<li class="dem">Democrat / <span class="leading">Leading</span> <span class="winner">Winner</span></li>
