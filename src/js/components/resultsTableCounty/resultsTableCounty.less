@@ -34,34 +34,77 @@ table.results-table {
     font-weight: normal;
     letter-spacing: 0.05em;
     line-height: 1.2;
-    padding: 0 10px 5px 10px;
+    padding: 2px;
     text-align: left;
     text-transform: uppercase;
     -webkit-font-smoothing: antialiased;
+    position: relative;
 
-    span {
+    span.title {
       vertical-align: middle;
       display: inline-block;
+
+      @media @mobile {
+        transform: translateY(-55%) rotate(270deg);
+        text-align: left;
+      }
     }
-    span:nth-child(2) {
-      padding-left: 10px;
+
+    @media @mobile {
+      border-left: 1px solid #ccc;
+
+      div {
+        width: 70px;
+      }
     }
-    span:nth-child(1) {
+    &.sortable {
+      span:nth-child(2) {
+        position: absolute;
+        right: 0;
+      }
+      padding-right: 15px;
+    }
+    &.comparison {
+      text-align: right;
+    }
+
+    span:first-child {
       width: 80%;
+    }
+
+    &:first-child {
+      border-left: none;
     }
   }
 
   td {
+    position: relative;
     padding: 10px;
     border-bottom: 1px solid #eee;
     border-right: 1px solid #eee;
-    &:last-child,
-    &:first-child {
+    &:last-child {
       border-right: none;
+      text-align: right;
+    }
+    &:first-child {
+      @media @mobile-above {
+        border-right: none;
+      }
+    }
+
+    span.precincts {
+      display: none;
+      font-size: 9px;
+      font-style: italic;
+      color: #999;
     }
 
     @media @mobile {
       padding: 3px;
+
+      span.precincts {
+        display: block;
+      }
     }
   }
 
@@ -101,7 +144,11 @@ table.results-table {
       font-style: italic;
       text-align: right;
       white-space: nowrap;
-      width: 15%;
+      width: 10%;
+
+      @media @mobile {
+        display: none;
+      }
     }
   }
 
@@ -182,8 +229,12 @@ tbody.collapsed :nth-child(n + 11) {
     font-family: @gotham;
     font-size: 12px;
     list-style-type: none;
-    margin: 0 0 25px 0;
+    margin-bottom: 25px;
     padding: 0;
+
+    @media @mobile {
+      margin-bottom: 40px;
+    }
 
     // @media screen and (max-width: @screen-xs) { text-align: center; }
 

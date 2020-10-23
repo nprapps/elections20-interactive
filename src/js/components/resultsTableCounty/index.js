@@ -51,28 +51,28 @@ export default class ResultsTableCounty extends Component {
                 class="county sortable"
                 onclick={() => this.updateSort("countyName")}>
                 <div>
-                  <span>County</span>
+                  <span class="title county">County</span>
                 </div>
               </th>
               <th
                 class="amt precincts"
                 onclick={() => this.updateSort("countyName")}>
                 <div>
-                  <span>{this.getIcon("countyName")}</span>
+                  {this.getIcon("countyName")}
                 </div>
               </th>
               {orderedCandidates.map(cand => CandidateHeaderCell(cand))}
               <th class="vote margin">
                 <div>
-                  <span>Vote margin</span>
+                  <span class="title">Vote margin</span>
                 </div>
               </th>
               <th
                 class="comparison sortable"
                 onclick={() => this.updateSort(this.state.displayedMetric.key)}>
                 <div>
-                  <span>{this.state.displayedMetric.name}</span>
-                  <span>{this.getIcon(this.state.displayedMetric.key)}</span>
+                  <span class="title">{this.state.displayedMetric.name}</span>
+                  {this.getIcon(this.state.displayedMetric.key)}
                 </div>
               </th>
             </tr>
@@ -249,14 +249,16 @@ function ResultsRowCounty(props) {
   }
 
   var leadingCand = row.reportingPercent == 1 ? row.candidates[0] : "";
+  var reportingPercent = reportingPercentage(row.reportingPercent) + "% in"
 
   return (
     <tr>
       <td class="county">
-        <span class="precincts mobile">{row.county.countyName}</span>
+        <span>{row.county.countyName}</span>
+        <span class="precincts mobile">{reportingPercent}</span>
       </td>
       <td class="precincts amt">
-        {reportingPercentage(row.reportingPercent) + "% in"}
+        {reportingPercent}
       </td>
       {orderedCandidates.map(c =>
         CandidatePercentCell(
@@ -274,7 +276,7 @@ function CandidateHeaderCell(candidate) {
   return (
     <th class="vote" key={candidate.party}>
       <div>
-        <span>{candidate.last}</span>
+        <span class="title">{candidate.last}</span>
       </div>
     </th>
   );
