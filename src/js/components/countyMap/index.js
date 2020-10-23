@@ -2,8 +2,6 @@ import { h, Component, createRef } from "preact";
 import gopher from "../gopher.js";
 import { formatters, reportingPercentage, getParty } from "../util.js";
 
-var specialStates = new Set(["IA", "MA", "OK", "WA"]);
-
 export default class CountyMap extends Component {
   constructor(props) {
     super();
@@ -15,8 +13,8 @@ export default class CountyMap extends Component {
     this.containerRef = createRef();
     this.mapContainerRef = createRef();
     this.tooltipRef = createRef();
-    this.guid = 0;
 
+    // Helper for handling multiple candidates of same party on map.
     var partyMap = {};
     props.sortOrder.forEach(function (c) {
       if (!partyMap[c.party]) {
@@ -47,7 +45,6 @@ export default class CountyMap extends Component {
   }
 
   render() {
-    // Handle case where leading 2 candidates are of same party
     return (
       <div class="county-map" data-as="map" aria-hidden="true">
         <div ref={this.containerRef} class="container" data-as="container">
@@ -99,7 +96,6 @@ export default class CountyMap extends Component {
       p.setAttribute("vector-effect", "non-scaling-stroke");
     });
 
-    svg.addEventListener("click", e => this.onClick(e));
     svg.addEventListener("mousemove", e => this.onMove(e));
     svg.addEventListener("mouseleave", e => this.onMove(e));
 
@@ -206,18 +202,6 @@ export default class CountyMap extends Component {
     county.parentElement.appendChild(county);
     county.classList.add("clicked");
     this.lastClicked = county;
-  }
-
-  onClick(e) {
-    return;
-    var county = e.target;
-    var fips = county.id.replace("fips-", "");
-
-    if (fips.length > 0) {
-      // TODO: add back in some version of this to communicate county change?
-      // this.dispatch("map-click", { fips });
-      this.highlightCounty(fips);
-    }
   }
 
   onMove(e) {

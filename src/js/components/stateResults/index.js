@@ -11,9 +11,7 @@ import stateLookup from "states.sheet.json";
 import strings from "strings.sheet.json";
 import { getViewFromRace, formatters } from "../util.js";
 
-// TODO: check on the use of all of these
 const STATES_WITHOUT_COUNTY_INFO = ["AK"];
-const STATES_WITH_POTENTIAL_RUNOFFS = ["GA", "LA", "MS"];
 
 export default class StateResults extends Component {
   constructor(props) {

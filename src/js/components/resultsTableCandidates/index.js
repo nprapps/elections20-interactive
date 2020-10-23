@@ -92,7 +92,7 @@ export function ResultsTableCandidatesRow(props) {
   }
   var mugshot = activeMugshots[result.last];
 
-  var classes = ["tr", "candidate", result.party || result.last];
+  var classes = ["tr", "candidate", getParty(result.party)];
   if (result.winner == "X") classes.push("winner");
   if (result.incumbent) classes.push("incumbent");
   if (!props.mugs) classes.push("noimg");
