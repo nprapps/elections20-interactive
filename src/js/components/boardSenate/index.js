@@ -62,7 +62,7 @@ export default class BoardSenate extends Component {
           </div>
         </div>
 
-        <BoardKey />
+        <BoardKey race="senate"/>
         <div class="board-container Senate">
           {results && <>
             <Results races={buckets.tossup} hed="Competitive Seats" office="Senate" addClass="middle" split={true}/>

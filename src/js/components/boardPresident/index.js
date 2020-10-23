@@ -73,7 +73,7 @@ export default class BoardPresident extends Component {
         
       </Tabs>
 
-      <BoardKey />
+      <BoardKey race="president"/>
       <div class="board-container President">
         {results && <>
           <Results races={buckets.tossup} hed="Competitive States" office="President" addClass="middle" split={true}/>

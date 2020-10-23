@@ -62,7 +62,7 @@ export default class BoardHouse extends Component {
           </div>
         </div>
 
-        <BoardKey />
+        <BoardKey race="house"/>
         <div class="board-container House">
           {results && (
             <>
