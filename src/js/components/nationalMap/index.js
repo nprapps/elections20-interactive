@@ -72,8 +72,8 @@ export default class NationalMap extends Component {
       currentHover.classList.remove("hover");
     }
 
+    tooltip.classList.remove("shown");
     if (!e.target.hasAttribute("data-postal")) {
-      tooltip.classList.remove("shown");
       return;
     }
 
@@ -86,7 +86,7 @@ export default class NationalMap extends Component {
     var x = e.clientX - bounds.left;
     var y = e.clientY - bounds.top;
     if (x > bounds.width / 2) {
-      x -= tooltip.offsetWidth + 10;
+      x -= 150;
     } else {
       x += 20;
     }
