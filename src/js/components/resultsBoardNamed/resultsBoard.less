@@ -269,23 +269,11 @@ table.results {
   td.state {
     padding-left: 0;
     text-decoration: none;
-    // border-right: @border;
     color: #444;
 
     &:hover {
       text-decoration: underline;
     }
-
-    // &.winner a {
-    //  font-weight: bold;
-    //  color: @ind;
-    // }
-    // &.winner.Dem a {
-    //  color: @dem;
-    // }
-    // &.winner.GOP a, &.winner.No a {
-    //  color: @gop;
-    // }
   }
   td.reporting {
     font-size: 10px;
@@ -298,7 +286,6 @@ table.results {
     border-bottom: 1px solid white;
     border-right: 1px solid white;
     display: flex;
-    // color: @ind;
 
     .name {
       flex: 1 1 0;
@@ -336,7 +323,6 @@ table.results {
     }
     &.GOP,
     &.No {
-      // color: @gop;
       &.leading {
         color: #666;
         background: @gopDim;
@@ -347,7 +333,6 @@ table.results {
       }
     }
     &.Dem {
-      // color: @dem;
       &.leading {
         color: #666;
         background: @demDim;
@@ -357,7 +342,7 @@ table.results {
         background: @dem;
       }
     }
-    &.runoff {
+    &.runoff, &.loser {
       background: @background !important;
     }
   }
@@ -369,7 +354,6 @@ table.results {
     padding-left: 0;
     padding-right: 0;
     padding-top: 6px;
-    // border: 0;
 
     .flip-label {
       color: @ind;
@@ -476,21 +460,9 @@ table.results {
     text-align: left;
   }
   td.electoral {
-    // border-right: @border;
     padding-left: 0;
     text-align: center;
     color: #9a9a9a;
-
-    //  &.winner {
-    //    color: @ind;
-    //    font-weight: bold;
-    //  }
-    //  &.winner.Dem {
-    //  color: @dem;
-    // }
-    // &.winner.GOP {
-    //  color: @gop;
-    // }
   }
   td.candidate {
     text-align: center;

@@ -6,7 +6,7 @@ var sortParty = function(p) {
   return p == "GOP" ? Infinity : p == "Dem" ? -Infinity : 0;
 };
 
-function CandidateCells(race) {
+function CandidateCells(race, winner) {
   var sorted = race.candidates.slice(0, 2).sort((a, b) => sortParty(a.party) - sortParty(b.party));
   var leading = race.candidates[0];
   var reporting = race.eevp || race.reportingPercent;
@@ -15,6 +15,7 @@ function CandidateCells(race) {
     var className = ["candidate", c.party];
     if (reporting > .5 && c == leading) className.push("leading");
     if (c.winner == "X") className.push("winner");
+    if (winner && !c.winner) className.push("loser");
     if (race.runoff) className.push("runoff");
 
     return (
@@ -79,20 +80,20 @@ export default function ResultsBoardPresident(props) {
                     <tr key={r.state+r.district} role="row" class={(hasResult ? "closed" : "open") + " index-" + i}>
 
                       {/* State */}
-                      <td role="cell" class={"state " + (winner ? ("winner " + winner.party) : "")}>
+                      <td role="cell" class="state">
                         <a href={"#/states/" + r.state + "/" + r.office}>
                           {stateDetail.ap} {r.district && r.district !== "AL" ? r.district : ""}
                         </a>
                       </td>
 
                       {/* Electoral votes */}
-                      <td role="cell" class={"electoral " + (winner ? ("winner " + winner.party) : "")}>{r.electoral}</td>
+                      <td role="cell" class="electoral">{r.electoral}</td>
 
                       {/* Open */}
                       <td role="cell" class="open-label" colspan="3">Last polls close at {stateDetail.closingTime} ET</td>
                       
                       {/* Candidates */}
-                      {CandidateCells(r)}
+                      {CandidateCells(r, winner)}
 
                       {/* EEVP */}
                       <td role="cell" class="reporting">{percentIn}</td>

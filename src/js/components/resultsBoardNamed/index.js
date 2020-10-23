@@ -2,7 +2,7 @@ import { h, Fragment } from "preact";
 import { reportingPercentage, sortByParty } from "../util";
 import states from "states.sheet.json";
 
-function CandidateCells(race) {
+function CandidateCells(race, winner) {
   var sorted = race.candidates.slice(0, 2).sort(sortByParty);
   var leading = race.candidates[0];
   var reporting = race.eevp || race.reportingPercent;
@@ -11,6 +11,7 @@ function CandidateCells(race) {
     var className = ["candidate", c.party];
     if (reporting > .5 && c == leading) className.push("leading");
     if (c.winner == "X") className.push("winner");
+    if (winner && !c.winner) className.push("loser");
     if (race.runoff) className.push("runoff");
 
     return (
@@ -97,7 +98,7 @@ export default function ResultsBoardNamed(props) {
                     <tr key={r.id} class={"tr " + (hasResult ? "closed" : "open") + " index-" + i} role="row">
 
                       {/* State */}
-                      <td class={"state " + (winner ? ("winner " + winner.party) : "")} role="cell">
+                      <td class="state" role="cell">
                         <a href={"#/states/" + r.state + "/" + r.office}>
                           <span class="not-small">
                             {states[r.state].ap + seatLabel + ballotLabel}
@@ -112,7 +113,7 @@ export default function ResultsBoardNamed(props) {
                       <td class="open-label" colspan="3" role="cell">Last polls close at {states[r.state].closingTime} ET</td>
                       
                       {/* Candidates */}
-                      {CandidateCells(r)}
+                      {CandidateCells(r, winner)}
 
                       {/* EEVP */}
                       <td class={"reporting"} role="cell">{percentIn}</td>
