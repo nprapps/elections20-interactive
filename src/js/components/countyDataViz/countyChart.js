@@ -220,6 +220,7 @@ export class CountyChart extends Component {
     var height = chartHeight + this.margins.top + this.margins.bottom;
     var width = chartWidth + this.margins.left + this.margins.right;
 
+    // Check if dimensions have updated.
     if (!this.state.dimensions || newWidth != this.state.dimensions.width) {
       this.setState({
         dimensions: {
@@ -231,6 +232,7 @@ export class CountyChart extends Component {
   }
 }
 
+// Stand in for d3's scale functionality
 var scaleFactory = function (domain, range) {
   var [rangeStart, rangeEnd] = range;
   var rangeSize = rangeEnd - rangeStart;
@@ -241,20 +243,5 @@ var scaleFactory = function (domain, range) {
     return normalized * rangeSize + rangeStart;
   };
   scale.range = () => range;
-  var tickIntervals = [1, 2, 5, 10, 20, 25, 50, 100, 200, 250, 500, 1000];
-  scale.ticks = function () {
-    for (var interval of tickIntervals) {
-      var count = domainSize / interval;
-      if (count > 3 && count < 10) {
-        var ticks = [];
-        var min = Math.floor(domainStart / interval) * interval;
-        var max = Math.ceil(domainEnd / interval) * interval;
-        for (var i = min; i <= max; i += interval) {
-          ticks.push(i);
-        }
-        return ticks;
-      }
-    }
-  };
   return scale;
 };
