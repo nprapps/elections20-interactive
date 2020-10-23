@@ -102,6 +102,10 @@
     @media @mobile {
       width: 50%;
     }
+
+    @media @tiny {
+      width: 100%;
+    }
   }
 
   button {
@@ -130,6 +134,12 @@
 
   @media @mobile {
     div.collapsed .chart-wrapper:nth-child(n + 3) {
+      display: none;
+    }
+  }
+
+  @media @tiny {
+    div.collapsed .chart-wrapper:nth-child(n + 2) {
       display: none;
     }
   }
