@@ -51,9 +51,9 @@ export default class BoardGovernor extends Component {
     }
 
     return <>
-      <h1 tabindex="-1">Governor</h1>
       { test ? <TestBanner /> : "" }
-
+      
+      <h1 tabindex="-1">Governor</h1>
       <BoardKey race="gov"/>
       <div class="board-container Gov">
         {races && <>

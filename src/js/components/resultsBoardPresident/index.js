@@ -17,9 +17,10 @@ function CandidateCells(race, winner) {
     if (c.winner == "X") className.push("winner");
     if (winner && !c.winner) className.push("loser");
     if (race.runoff) className.push("runoff");
+    console.log(c.id);
 
     return (
-      <td class={className.join(" ")}>
+      <td role="cell" key={c.id} class={className.join(" ")}>
         <div class="perc">{Math.round(c.percent*100)}%</div>
       </td>
     );    

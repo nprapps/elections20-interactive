@@ -2,8 +2,14 @@
 
 .test-banner {
   background: @rigorous;
+  @clear: transparent;
+  @stripe: fade(white, 20%);
+  background-image: repeating-linear-gradient(45deg, 
+    @stripe 0, @stripe 4px, 
+    @clear 4px, @clear 8px);
   color: white;
-  padding: 20px;
+  padding: 10px 20px;
   text-align: center;
   .knockout();
+  margin: 20px;
 }

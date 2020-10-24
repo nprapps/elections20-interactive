@@ -199,6 +199,8 @@ export default class ElectoralBubbles extends Component {
     return <div class="electoral-bubbles">
       <div class="aspect-ratio">
         <svg class="bubble-svg" ref={this.svg}
+          role="img"
+          aria-label="Bubble plot of state margins"
           preserveAspectRatio="none"
           width={width} height={height}
           viewBox={`0 0 ${width} ${height}`}

@@ -15,7 +15,7 @@ function CandidateCells(race, winner) {
     if (race.runoff) className.push("runoff");
 
     return (
-      <td class={className.join(" ")}>
+      <td role="cell" class={className.join(" ")}>
         <div class="name">
           <div class="last">{c.last}</div>
           <div class="incumbent">{c.incumbent ? "●" : ""}</div>

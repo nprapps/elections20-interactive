@@ -9,7 +9,7 @@ import ElectoralGrid from "../electoralGrid";
 import ElectoralBubbles from "../electoralBubbles";
 import BoardKey from "../boardKey";
 import Tabs from "../tabs";
-import { getBucket, sumElectoral, groupCalled } from "../util.js";
+import { getBucket, sumElectoral, groupCalled, styleJSX } from "../util.js";
 
 export function Leaderboard(props) {
   var { called } = props;
@@ -23,22 +23,36 @@ export function Leaderboard(props) {
         </h2>
       </div>
 
-      <div class="results-header-group gop">
-        <h2 class="party">
-          <label>Trump</label>
-          <abbr>{sumElectoral(called.GOP)}</abbr>
-        </h2>
-      </div>
-
       <div class="results-header-group not-called">
         <h2 class="party">
           <label>Not Yet Called</label>
           <abbr>{sumElectoral(called.uncalled)}</abbr>
         </h2>
       </div>
+
+      <div class="results-header-group gop">
+        <h2 class="party">
+          <label>Trump</label>
+          <abbr>{sumElectoral(called.GOP)}</abbr>
+        </h2>
+      </div>
     </div>
   );
 }
+
+export function ElectoralBars(props) {
+  var { called } = props;
+  var dWidth = sumElectoral(called.Dem) / 538 * 100;
+  var rWidth = sumElectoral(called.GOP) / 538 * 100;
+
+  return <div class="electoral-bars" aria-hidden="true">
+    <div class="bar Dem" style={styleJSX({ width: dWidth + "%" })} />
+    <div class="bar GOP" style={styleJSX({ width: rWidth + "%" })} />
+    <hr class="divider">
+      <span class="label">270</span>
+    </hr>
+  </div>
+};
 
 export default class BoardPresident extends Component {
   constructor(props) {
@@ -92,9 +106,10 @@ export default class BoardPresident extends Component {
     var called = groupCalled(results);
 
     return <div class="president board">
-      <h1 tabindex="-1">President</h1>
       { test ? <TestBanner /> : "" }
+      <h1 tabindex="-1">President</h1>
 
+      <ElectoralBars called={called} />
       <Leaderboard called={called} />
 
       <Tabs id="president-viz">

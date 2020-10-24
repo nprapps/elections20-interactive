@@ -33,6 +33,7 @@ module.exports = function (grunt) {
   grunt.registerTask("startup", "Build all files and data", [
     "copy",
     "bundle",
+    "bundle:once",
     "less",
     "ap",
     "build"
