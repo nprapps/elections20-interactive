@@ -7,11 +7,13 @@ var { sqrt, PI, cos, sin } = Math;
 
 const Y_FORCE = .01;
 const X_FORCE = .2;
+const COLLIDE_FORCE = 1;
 const VISUAL_DOMAIN = .5;
 const DATA_DOMAIN = .3;
 const POLAR_OFFSET = .05;
 const TEXT_SIZE = 12;
 const MIN_RADIUS = 12;
+const FROZEN = .001;
 
 var nextTick = function(f) {
   requestAnimationFrame(f);
@@ -35,14 +37,11 @@ export default class ElectoralBubbles extends Component {
     this.xAccess = this.xAccess.bind(this);
 
     var simulation = d3.forceSimulation();
-    // simulation.velocityDecay(.2); // some friction
-    // simulation.alphaDecay(0); 
-    simulation.alphaMin(.001).alphaTarget(.1); // run forever
-    simulation.stop(); // ...but only when visible
+    simulation.stop(); // only run when visible
 
     var xForce = d3.forceX().x(this.xAccess).strength(X_FORCE);
     var yForce = d3.forceY().strength(Y_FORCE);
-    var collider = d3.forceCollide();
+    var collider = d3.forceCollide().strength(COLLIDE_FORCE);
     collider.radius(this.collisionRadius);
 
     simulation.force("x", xForce);
@@ -71,13 +70,14 @@ export default class ElectoralBubbles extends Component {
   }
 
   collisionRadius(d) {
-    return this.nodeRadius(d) + 2;
+    return this.nodeRadius(d) + 4;
   }
 
   resize() {
     var bounds = this.svg.current.getBoundingClientRect();
     var { width, height } = bounds;
     this.setState({ width, height });
+    this.simulation.alpha(1);
   }
 
   intersect([e]) {
@@ -100,21 +100,27 @@ export default class ElectoralBubbles extends Component {
     var svg = this.svg.current;
     var bounds = svg.getBoundingClientRect();
     var { width, height } = bounds;
+    if (width != this.state.width && height != this.state.height) {
 
-    svg.setAttribute("width", width);
-    svg.setAttribute("height", height);
-    svg.setAttribute("viewBox", `0 0 ${width} ${height}`);
+      svg.setAttribute("width", width);
+      svg.setAttribute("height", height);
+      svg.setAttribute("viewBox", `0 0 ${width} ${height}`);
 
-    var { nodes, width, height } = this.state;
+    }
+
+    var { nodes } = this.state;
 
     // update node state, like radius if newly added
 
     // run the simulation against the nodes
-    this.simulation.nodes(nodes);
-    this.simulation.tick();
+    var alpha = this.simulation.alpha();
+    if (alpha > FROZEN) {
+      this.simulation.nodes(nodes);
+      this.simulation.tick();
 
-    // render with new positions
-    this.setState({ nodes, width, height });
+      // render with new positions
+      this.setState({ nodes, width, height });
+    }
 
   }
 
@@ -145,6 +151,7 @@ export default class ElectoralBubbles extends Component {
 
     var touched = new Set();
 
+    results = results.filter(r => r.called || r.eevp > .5);
     for (var r of results) {
       // find an existing node?
       var upsert = this.createNode(r);
@@ -164,13 +171,14 @@ export default class ElectoralBubbles extends Component {
     // remove missing results
     nodes = nodes.filter(n => touched.has(n));
 
+    this.simulation.alpha(1);
+
     this.setState({ nodes });
   }
 
   shouldComponentUpdate(props, state) {
     var { results = [] } = props || this.props;
-    results = results.filter(r => r.called || r.eevp > .5);
-    this.updateNodes(results);
+    if (props.results != this.props.results) this.updateNodes(results);
   }
 
   componentDidMount() {
