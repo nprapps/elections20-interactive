@@ -53,7 +53,8 @@ class Customizer extends Component {
       ["senate", "Senate"],
       ["house", "House"],
       ["state", "State page"],
-      ["race", "Individual race"]
+      ["race", "Individual race"],
+      ["sidebar", "Sidebar BoP"]
     ];
 
     var offices = [
@@ -172,6 +173,39 @@ class Customizer extends Component {
                 />
               </>}
             </>);
+
+          case "sidebar":
+            var src = url + `embedBOP.html?hp=true`;
+            return (<>
+              <h2>Embeds</h2>
+              <div style="display: grid; grid-template-columns: 1fr 1fr; grid-gap: 8px">
+                <div>
+                  <h3>Pym</h3>
+                  <textarea rows="6" style="width:100%">
+                  {`<p
+                    data-pym-loader
+                    data-child-src="${src}"
+                    id="responsive-embed-election-sidebar">
+                      Loading...
+                  </p>
+                  <script src="https://pym.nprapps.org/npr-pym-loader.v2.min.js"></script>`.replace(/\s{2,}|\n/g, " ")}
+                  </textarea>
+                </div>
+                <div>
+                  <h3>Sidechain</h3>
+                  <textarea rows="6" style="width:100%">
+                  {`<side-chain src="${src}"></side-chain>
+                  <script src="https://apps.npr.org/elections20-interactive/sidechain.js"></script>`.replace(/\s{2,}|\n/g, " ")}
+                  </textarea>
+                </div>
+              </div>
+              <h2>Preview</h2>
+              <side-chain
+                key={state.raceID}
+                src={src}
+              />
+            </>);
+            break;
 
           default:
             var src = url + `#/${state.mode}`;
