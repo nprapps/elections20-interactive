@@ -85,6 +85,7 @@ export default class ElectoralBubbles extends Component {
       if (!this.running) {
         console.log("Starting force sim...");
         this.running = true;
+        this.simulation.alpha(1);
         requestAnimationFrame(this.tick);
       }
     } else {
@@ -94,12 +95,14 @@ export default class ElectoralBubbles extends Component {
   }
 
   tick(t) {
+    if (!this.running) return 
     // schedule updates
-    if (this.running) nextTick(this.tick);
+    nextTick(this.tick);
 
     var svg = this.svg.current;
     var bounds = svg.getBoundingClientRect();
     var { width, height } = bounds;
+    if (!width || !height) return;
     if (width != this.state.width && height != this.state.height) {
 
       svg.setAttribute("width", width);

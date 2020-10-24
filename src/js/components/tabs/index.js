@@ -22,10 +22,16 @@ export function Panel(props) {
 export default class Tabs extends Component {
   constructor(props) {
     super();
-    this.state = { selected: 0, clicked: false }
+    var id = props.id || 0;
+    this.state = {
+      id,
+      selected: localStorage.getItem(`tabs-${id}`) || 0,
+      clicked: false
+    }
   }
 
   choose(selected) {
+    localStorage.setItem(`tabs-${this.state.id}`, selected);
     this.setState({ selected, clicked: true });
   }
 
