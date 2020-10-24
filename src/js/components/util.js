@@ -28,6 +28,10 @@ export function sortByParty(a, b) {
   return getPartyValue(a) - getPartyValue(b);
 }
 
+export function isSameCandidate(c1, c2) {
+  return c1.last == c2.last && c1.party == c2.party;
+}
+
 /*
   Sort a list of candidates by a predefined order
 */

@@ -1,38 +1,5 @@
 @import "../../../css/values";
 
-table.results-table {
-  td {
-    position: relative;
-    padding: 10px;
-    border-bottom: 1px solid #eee;
-    border-right: 1px solid #eee;
-    &:last-child {
-      border-right: none;
-      text-align: center;
-    }
-    &:first-child {
-      @media @mobile-above {
-        border-right: none;
-      }
-    }
-
-    span.precincts {
-      display: none;
-      font-size: 9px;
-      font-style: italic;
-      color: #999;
-    }
-
-    @media @mobile {
-      padding: 3px;
-
-      span.precincts {
-        display: block;
-      }
-    }
-  }
-}
-
 .results-counties {
   table.results-table {
     border-collapse: collapse;
@@ -70,7 +37,35 @@ table.results-table {
     }
 
     td {
+      position: relative;
       vertical-align: middle;
+      padding: 10px;
+      border-bottom: 1px solid #eee;
+      border-right: 1px solid #eee;
+      &:last-child {
+        border-right: none;
+        text-align: center;
+      }
+      &:first-child {
+        @media @mobile-above {
+          border-right: none;
+        }
+      }
+
+      span.precincts {
+        display: none;
+        font-size: 9px;
+        font-style: italic;
+        color: #999;
+      }
+
+      @media @mobile {
+        padding: 3px;
+
+        span.precincts {
+          display: block;
+        }
+      }
     }
 
     thead th {

@@ -16,15 +16,17 @@ export default class CountyMap extends Component {
     this.width;
     this.height;
 
-    props.sortOrder = props.sortOrder.filter(s => props.data.some(d => d.candidates[0].last == s.last))
+    // TODO: figure out whether to show candidates with >10% of vote but who haven't won
+    // any counties on map and either add me back in or fix.
+    // props.sortOrder = props.sortOrder.filter(s => props.data.some(d => d.candidates[0].last == s.last))
 
     // Helper for handling multiple candidates of same party on map.
     var partyMap = {};
     props.sortOrder.forEach(function (c) {
       if (!partyMap[c.party]) partyMap[c.party] = [];
-      if (props.data.some(d => d.candidates[0].last == c.last)) {
+      // if (props.data.some(d => d.candidates[0].last == c.last)) {
         partyMap[c.party].push(c.last);
-      }
+      // }
       
     });
     this.partyMap = partyMap;
@@ -178,7 +180,7 @@ export default class CountyMap extends Component {
       this.partyMap[candidate.party].length > 1
         ? this.partyMap[candidate.party].indexOf(candidate.last)
         : "";
-    console.log(specialShading)
+
     if (specialShading == -1) {
       return;
     }
