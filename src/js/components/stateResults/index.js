@@ -65,6 +65,7 @@ export default class StateResults extends Component {
         class="state-results results"
         onupdatedtime={e => this.updateTimestamp(e.detail, e)}>
         <div class="content">
+          {test ? <TestBanner /> : ""}
           <header id="state-header">
             <h1 tabindex="-1">
               <img
@@ -79,7 +80,6 @@ export default class StateResults extends Component {
             />
             {this.renderTabSwitcher(office)}
           </header>
-          {test ? <TestBanner /> : ""}
           {results && (
             <div class="results-elements">{this.renderResults(office)}</div>
           )}

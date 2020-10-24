@@ -1,5 +1,42 @@
 @import "values";
 
 .board.president {
+  .electoral-bars {
+    height: 30px;
+    display: flex;
+    justify-content: space-between;
+    background: #CCC;
+    position: relative;
+    margin-top: 30px;
 
+    .bar {
+      height: 100%;
+      transition: all .4s ease;
+
+      &.Dem {
+        background: @dem;
+      }
+
+      &.GOP {
+        background: @gop;
+      }
+    }
+
+    .divider {
+      position: absolute;
+      left: 50%;
+      top: -10px;
+      bottom: -10px;
+      border: 1px solid fade(black, 20%);
+      overflow: visible;
+
+      .label {
+        position: absolute;
+        bottom: calc(~"100% + 4px");
+        color: @gray;
+        transform: translateX(-50%);
+        .knockout();
+      }
+    }
+  }
 }

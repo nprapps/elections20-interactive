@@ -164,3 +164,14 @@ export function groupCalled(results) {
 }
 
 export var sumElectoral = list => list.reduce((t, r) => t + r.electoral, 0);
+
+export function styleJSX(styles) {
+  var list = [];
+  for (var k in styles) {
+    var name = k.replace(/(a-z)(A-Z)/, (_, a, b) => `${a}-${b.toLowerCase()}`);
+    var value = styles[k];
+    list.push(`${name}: ${value}`);
+  }
+  console.log(list);
+  return list.join("; ");
+}

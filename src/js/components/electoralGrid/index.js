@@ -186,8 +186,6 @@ export default function ElectoralGrid(props) {
   var width = 10;
 
   return <div class="electoral-grid">
-    {false && <Leaderboard called={called} />}
-
     <div class="grids-container">
       <div class="column D">
         <div class="counts">
