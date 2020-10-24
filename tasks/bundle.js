@@ -16,10 +16,11 @@ module.exports = function(grunt) {
 
     //specify starter files here - if you need additionally built JS, just add it.
     var config = grunt.file.readJSON("project.json");
-    var seeds = config.scripts;
+    var seeds = mode == "once" ? config.scriptsOnce : config.scripts;
 
     async.forEachOf(seeds, function(dest, src, c) {
-      var b = browserify({ debug: mode == "dev", paths: ["data"] });
+      console.log(`Building ${src} to ${dest}...`);
+      var b = browserify({ debug: true, paths: ["data"] });
       b.plugin(require("browser-pack-flat/plugin"));
       b.transform("babelify", { global: true, presets: [
         ["@babel/preset-react", {
@@ -51,7 +52,7 @@ module.exports = function(grunt) {
         assembly = assembly.pipe(exorcist(mapFile, null, null, "."));
       }
       assembly.pipe(output).on("finish", function() {
-        if (mode != "dev") return;
+        if (mode != "dev") return c();
 
         //correct path separators in the sourcemap for Windows
         var sourcemap = grunt.file.readJSON(mapFile);

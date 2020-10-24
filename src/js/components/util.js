@@ -172,6 +172,5 @@ export function styleJSX(styles) {
     var value = styles[k];
     list.push(`${name}: ${value}`);
   }
-  console.log(list);
   return list.join("; ");
 }
