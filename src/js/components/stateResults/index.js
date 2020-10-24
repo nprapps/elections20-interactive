@@ -111,13 +111,36 @@ export default class StateResults extends Component {
       );
     } else {
       var results = this.state.results.filter(r => r.office == view);
-      return results.map(r => this.getRaceWithCountyResults(r));
+      return <div>
+        {results.length > 1 && this.renderJumpButtons(results)}
+        {results.map(r => this.getRaceWithCountyResults(r, results.length - 1))}
+      </div>
+
     }
   }
 
-  getRaceWithCountyResults(race) {
+  renderJumpButtons(results) {
+    return <nav class="jump-links">
+      Jump to results:
+    {results.map((r, i) => (<>
+      <a onClick={() => this.jump(`#race-${r.id}`)}>
+        {`${stateLookup[this.props.state].name}-${r.seatNumber || 1}`}
+      </a> { i < results.length - 1 ? "|" : ""}
+    </>))}
+    </nav>
+  }
+
+  jump(id) {
+    var element = document.querySelector(id);
+    if (element) {
+      element.focus();
+      element.scrollIntoView();
+    }
+  }
+
+  getRaceWithCountyResults(race, oneOfMultiple) {
     var order = race.candidates;
-    var isSpecial = !!race.seat;
+    var isSpecial = oneOfMultiple || !!race.seat;
 
     var seatLabel =
       race.office == "H" || race.office == "S" ? race.seatNumber : "";
@@ -138,16 +161,16 @@ export default class StateResults extends Component {
     var specialHeader = isSpecial ? (
       <h2 id={`${this.props.state}-${seatLabel}`}>{`${
         stateLookup[this.props.state].name
-      }-${seatLabel}`}</h2>
+      }-${seatLabel || 1}`}</h2>
     ) : (
       ""
     );
     return (
-      <>
+      <div id={`race-${race.id}`} tabindex="-1">
         {specialHeader}
         <ResultsTableCandidates data={race} />
         {countyResults}
-      </>
+      </div>
     );
   }
 

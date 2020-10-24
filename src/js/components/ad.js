@@ -46,10 +46,10 @@ class GoogleAd extends HTMLElement {
     var size = this.dataset.size || "tall";
     var adSizeArray = adSizes[size];
 
-    var adUnitString = "/6735/n6735.npr/news_politics_elections";
+    var adUnitString = "/6735/n6735.npr/news_politics/news_politics_liveblog";
     // Medium and small breakpoints
     if (window.innerWidth < 1024) {
-      adUnitString = "/6735/n6735.nprmobile/news_politics_elections";
+      adUnitString = "/6735/n6735.nprmobile/news_politics/news_politics_liveblog";
       adSizeArray.push([300, 250]);
     }
 

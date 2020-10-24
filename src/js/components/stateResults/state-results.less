@@ -3,6 +3,10 @@
 .state-results {
   display: flex;
 
+  [tabindex="-1"]:focus {
+    outline: none;
+  }
+
   .content {
     flex: 1;
   }
@@ -72,6 +76,18 @@
           color: @gray;
         }
       }
+    }
+  }
+
+  .jump-links {
+    .gotham();
+    font-size: 13px;
+    padding: 12px 0;
+
+    a {
+      display: inline-block;
+      padding: 0 4px;
+      cursor: pointer;
     }
   }
 

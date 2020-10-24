@@ -97,7 +97,7 @@ export default class BoardPresident extends Component {
 
       <Leaderboard called={called} />
 
-      <Tabs>
+      <Tabs id="president-viz">
 
         <div label="Margins">
           <ElectoralBubbles results={results} />
