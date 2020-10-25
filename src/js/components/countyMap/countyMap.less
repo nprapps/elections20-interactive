@@ -107,19 +107,17 @@
 
   .map-container {
     position: relative;
+    max-width: 100%;
 
     @media @mobile-above {
       margin-bottom: 20px;
     }
-    
   }
 
   .key {
-    @media @mobile-above {
-      margin-bottom: 10px;
-    }
+    margin-bottom: 10px;
   }
-
+  
   .map path {
     stroke: white;
     fill: #eee;
@@ -206,8 +204,6 @@
     }
   }
 
-
-
   .key-row {
     display: inline-block;
     line-height: 1em;
@@ -226,6 +222,10 @@
   .horizontal .key-row {
     display: block;
     margin-bottom: 8px;
+
+    @media @mobile {
+      display: inline-block;
+    }
   }
 
   .label {

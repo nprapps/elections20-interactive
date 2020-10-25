@@ -25,9 +25,8 @@ export default class CountyMap extends Component {
     props.sortOrder.forEach(function (c) {
       if (!partyMap[c.party]) partyMap[c.party] = [];
       // if (props.data.some(d => d.candidates[0].last == c.last)) {
-        partyMap[c.party].push(c.last);
+      partyMap[c.party].push(c.last);
       // }
-      
     });
     this.partyMap = partyMap;
   }
@@ -48,7 +47,6 @@ export default class CountyMap extends Component {
   }
 
   componentDidUpdate() {
-    this.updateDimensions()
     this.paint();
   }
 
@@ -96,7 +94,6 @@ export default class CountyMap extends Component {
     this.svg = svg;
 
     this.paint();
-
     this.updateDimensions();
 
     return svg;
@@ -105,36 +102,30 @@ export default class CountyMap extends Component {
   updateDimensions() {
     if (!this.svg) return;
 
-    // TODO: fix this
+    // TODO: check if this needs updating
     var embedded = false; //document.body.classList.contains("embedded");
     var mapContainer = this.mapContainerRef.current;
 
-    var w;
-    var h;
     var innerWidth = window.innerWidth;
-    if (this.width > this.height * 1.4) {
-      var ratio = this.height / (this.width * 2);
-      w = Math.min(800, innerWidth);
-      var h = w * ratio;
-    } else if (this.width > this.height * 1.2) {
-      var ratio = this.height / (this.width * 3);
-      w = Math.min(800, innerWidth);
-      var h = w * ratio;
-    } else {
-      var ratio = this.width / this.height;
-      var w = Math.min(450, innerWidth);
-      var h = w * ratio;
-    }
+    var maxH = 400;
+    var maxW = 600;
+
+    var ratio = this.height / this.width;
+    var w = Math.min(innerWidth - 40, maxW)
+    var h = Math.min(w * ratio, maxH)
 
     this.svg.setAttribute("width", w + "px");
     this.svg.setAttribute("height", h + "px");
 
-    this.containerRef.current.classList.toggle("horizontal", this.width < this.height);
+    this.containerRef.current.classList.toggle(
+      "horizontal",
+      this.width < this.height
+    );
   }
 
   paint() {
-    var mapData = this.props.data;
     if (!this.svg) return;
+    var mapData = this.props.data;
 
     var incomplete = false;
 
@@ -186,7 +177,10 @@ export default class CountyMap extends Component {
     }
     return (
       <div class="key-row">
-        <div class={`swatch ${getParty(candidate.party)} i${specialShading}`}></div>
+        <div
+          class={`swatch ${getParty(
+            candidate.party
+          )} i${specialShading}`}></div>
         <div class="name">{name}</div>
       </div>
     );
@@ -218,20 +212,17 @@ export default class CountyMap extends Component {
     if (result) {
       var displayCandidates = result.candidates.slice(0, 2);
       var candText = "";
-      // if (result.reportingPercent > 0) {
-        candText = displayCandidates
-          .map(
-            c =>
-              `<div class="row">
+      candText = displayCandidates
+        .map(
+          c =>
+            `<div class="row">
             <span class="party ${c.party}"></span>
             <span>${c.last}</span>
             <span class="amt">${reportingPercentage(c.percent)}%</span>
         </div>`
-          )
-          .join("");
-      // }
+        )
+        .join("");
 
-      // TODO: get the county name back in and check language around eevp
       var countyName = result.county.countyName.replace(/\s[a-z]/g, match =>
         match.toUpperCase()
       );
