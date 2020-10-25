@@ -264,7 +264,7 @@ function ResultsRowCounty(props) {
         )
       )}
       {MarginCell(row.candidates, leadingCand.party)}
-      <td> {metricValue} </td>
+      <td class="comparison"> {metricValue} </td>
     </tr>
   );
 }
@@ -283,10 +283,6 @@ function CandidateHeaderCell(candidate) {
  * Creates a candidate vote % cell. Colors with candidate party if candidate is leading.
  */
 function CandidatePercentCell(candidate, leading) {
-  // TODO: get the right wording around this.
-  if (!candidate) {
-    return <td class="vote"> N/A</td>;
-  }
   var displayPercent = percentDecimal(candidate.percent);
   var party = getParty(candidate.party);
   return (

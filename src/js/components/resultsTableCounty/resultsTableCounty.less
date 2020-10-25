@@ -60,7 +60,8 @@
       }
 
       @media @mobile {
-        padding: 3px;
+        padding: 2px;
+        word-wrap: break-word;
 
         span.precincts {
           display: block;
@@ -70,6 +71,10 @@
 
     thead th {
       vertical-align: bottom;
+
+      @media @mobile {
+        padding: 0 2px 5px 2px;
+      }
     }
 
     thead th,
@@ -111,6 +116,10 @@
             position: absolute;
             right: 0;
             bottom: 5px;
+
+            @media @mobile {
+              display: none;
+            }
           }
           padding-right: 15px;
         }
@@ -121,6 +130,18 @@
     td {
       border-left: 1px solid #eee;
       text-align: center;
+
+      @media @mobile {
+        font-size: 11px;
+
+        &.vote {
+          width: 14%;
+        }
+
+        &.comparison {
+          width: 20%;
+        }
+      }
 
       &:first-child {
         padding-left: 0;
@@ -170,12 +191,8 @@
     font-family: @gotham;
     font-size: 12px;
     list-style-type: none;
-    margin-bottom: 25px;
+    margin-bottom: 15px;
     padding: 0;
-
-    @media @mobile {
-      margin-bottom: 40px;
-    }
 
     // @media screen and (max-width: @screen-xs) { text-align: center; }
 
