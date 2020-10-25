@@ -15,7 +15,7 @@ export default class BoardBallot extends Component {
 
   onData(data) {
     var latest = Math.max(...data.results.map(r => r.updated));
-    this.setState({ races: data.results, test: data.test, latest });
+    this.setState({ ...data, latest });
   }
 
   // Lifecycle: Called whenever our component is created
@@ -30,7 +30,7 @@ export default class BoardBallot extends Component {
   }
 
   render() {
-    var { races, test, latest } = this.state;
+    var { results, test, latest } = this.state;
 
     return <>
       <h1 tabindex="-1">Ballot Initiatives</h1>
@@ -38,7 +38,7 @@ export default class BoardBallot extends Component {
 
       <BoardKey race="ballot"/>
       <div class="board-container">
-        {races && <Results races={races} office="Ballot"/>}
+        {results && <Results races={results} office="Ballot"/>}
       </div>
       <div class="source">Source: AP (as of <DateFormatter value={latest} />)</div>
     </>;

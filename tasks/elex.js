@@ -134,7 +134,7 @@ module.exports = function(grunt) {
       house: geo.state.filter(r => r.office == "H"),
       senate: geo.state.filter(r => r.office == "S"),
       gov: geo.state.filter(r => r.office == "G"),
-      ballots: geo.state.filter(r => r.office == "I")
+      ballots: geo.state.filter(r => r.office == "I" && r.featured)
     }
 
     for (var office in byOffice) {

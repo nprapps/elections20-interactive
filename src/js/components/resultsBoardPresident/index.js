@@ -17,7 +17,6 @@ function CandidateCells(race, winner) {
     if (c.winner == "X") className.push("winner");
     if (winner && !c.winner) className.push("loser");
     if (race.runoff) className.push("runoff");
-    console.log(c.id);
 
     return (
       <td role="cell" key={c.id} class={className.join(" ")}>
