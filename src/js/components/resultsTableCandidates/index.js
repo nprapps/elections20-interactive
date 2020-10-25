@@ -73,6 +73,7 @@ export default function ResultsTableCandidates(props) {
               data={c}
               uncontested={isUncontested}
               mugs={hasMugs}
+              office={results.office}
             />
           ))}
         </div>
@@ -118,7 +119,7 @@ export function ResultsTableCandidatesRow(props) {
               ""
             )}
           </div>
-          {CandidateNameCell(result)}
+          {CandidateNameCell(result, props.office)}
           {CandidateVoteCell(result, props.uncontested)}
           <div role="cell" class="td votes">
             {result.votes ? result.votes.toLocaleString() : "-"}
@@ -130,7 +131,7 @@ export function ResultsTableCandidatesRow(props) {
   );
 }
 
-function CandidateNameCell(candidate) {
+function CandidateNameCell(candidate, office) {
   var name;
   if (candidate.last == "Other") {
     name = <span>Other Candidates</span>;
@@ -138,7 +139,7 @@ function CandidateNameCell(candidate) {
     name = (
       <Fragment>
         <span class="first">{candidate.first || ""}</span> {candidate.last}
-        {` (${getParty(candidate.party)}) `}
+        {office === "I" ? '' : ` (${getParty(candidate.party)}) `}
       </Fragment>
     );
   }

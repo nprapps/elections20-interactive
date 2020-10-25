@@ -87,7 +87,7 @@ export function getBucket(rating) {
 }
 
 export function getParty(party) {
-  if (["Dem", "GOP", "Other"].includes(party)) {
+  if (["Dem", "GOP", "Other", "No", "Yes"].includes(party)) {
     return party;
   }
   return "Ind";
