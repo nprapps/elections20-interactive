@@ -252,9 +252,12 @@ export default class ElectoralBubbles extends Component {
     var { nodes, width, height } = state;
     var [ n ] = nodes;
     return <div class="electoral-bubbles">
+      <div class="key-above">
+        Who's ahead (current vote margin)
+      </div>
       <div class="key">
-        <div class="dem">&larr; More Democratic</div>
-        <div class="gop">More Republican &rarr;</div>
+        <div class="dem">&lt; More Democratic</div>
+        <div class="gop">More Republican &gt;</div>
       </div>
       <div class="aspect-ratio">
         <svg class="bubble-svg" ref={this.svg}

@@ -15,28 +15,22 @@ export function Leaderboard(props) {
   var { called } = props;
 
   return (
-    <div class="leaderboard">
-      <div class="results-header-group dem">
-        <h2 class="party">
-          <label>Biden</label>
-          <abbr>{sumElectoral(called.Dem)}</abbr>
-        </h2>
-      </div>
+    <ul class="electoral-leaderboard">
+      <li class="party dem">
+        <label>Biden</label>
+        {sumElectoral(called.Dem)}
+      </li>
 
-      <div class="results-header-group not-called">
-        <h2 class="party">
-          <label>Not Yet Called</label>
-          <abbr>{sumElectoral(called.uncalled)}</abbr>
-        </h2>
-      </div>
+      <li class="party not-called">
+        <label>Not Yet Called</label>
+        {sumElectoral(called.uncalled)}
+      </li>
 
-      <div class="results-header-group gop">
-        <h2 class="party">
-          <label>Trump</label>
-          <abbr>{sumElectoral(called.GOP)}</abbr>
-        </h2>
-      </div>
-    </div>
+      <li class="party gop">
+        <label>Trump</label>
+        {sumElectoral(called.GOP)}
+      </li>
+    </ul>
   );
 }
 
@@ -48,7 +42,7 @@ export function ElectoralBars(props) {
   return <div class="electoral-bars" aria-hidden="true">
     <div class="bar Dem" style={styleJSX({ width: dWidth + "%" })} />
     <div class="bar GOP" style={styleJSX({ width: rWidth + "%" })} />
-    <hr class="divider">
+    <hr class="victory">
       <span class="label">270</span>
     </hr>
   </div>
@@ -111,6 +105,7 @@ export default class BoardPresident extends Component {
 
       <ElectoralBars called={called} />
       <Leaderboard called={called} />
+      <hr class="divider" />
 
       <Tabs id="president-viz">
 

@@ -1,13 +1,46 @@
 @import "values";
 
 .board.president {
+  .electoral-leaderboard {
+    display: flex;
+    justify-content: center;
+    align-items: top;
+    padding: 0 0 30px;
+    margin: 0;
+    list-style-type: none;
+    .gotham();
+    text-transform: uppercase;
+    line-height: 1;
+    font-weight: bold;
+
+    .party {
+      font-size: 64px;
+      display: block;
+      padding: 0 20px;
+      text-align: center;
+      color: @gray;
+
+      &.dem { color: @dem; }
+      &.gop { color: @gop; }
+
+      label {
+        .knockout();
+        font-size: 20px;
+        display: block;
+        font-weight: normal;
+      }
+    }
+  }
+
   .electoral-bars {
-    height: 30px;
+    height: 10px;
+    max-width: 600px;
     display: flex;
     justify-content: space-between;
     background: #CCC;
     position: relative;
-    margin-top: 30px;
+    margin: auto;
+    margin-bottom: 30px;
 
     .bar {
       height: 100%;
@@ -22,7 +55,7 @@
       }
     }
 
-    .divider {
+    hr.victory {
       position: absolute;
       left: 50%;
       top: -10px;
@@ -38,5 +71,11 @@
         .knockout();
       }
     }
+  }
+
+  hr.divider {
+    max-width: 300px;
+    margin: 20px auto;
+    border: 1px solid @gray-lighter;
   }
 }

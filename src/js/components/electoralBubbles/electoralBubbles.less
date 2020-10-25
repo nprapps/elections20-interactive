@@ -1,13 +1,23 @@
 .electoral-bubbles {
+  .key-above {
+    text-align: center;
+    .knockout();
+    color: @gray-darker;
+    text-transform: uppercase;
+    font-size: 18px;
+  }
+
   .key {
     display: flex;
-    color: @gray;
+    color: @gray-light;
+    font-size: 14px;
 
     div {
       flex: 1;
       padding: 0 10px;
       text-transform: uppercase;
-      .gotham();
+      .knockout();
+      font-weight: normal;
 
       &.dem {
         text-align: right;
