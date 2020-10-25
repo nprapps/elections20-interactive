@@ -1,5 +1,4 @@
 import { h, Component, Fragment } from "preact";
-import gopher from "../gopher.js";
 import { reportingPercentage, getParty } from "../util.js";
 
 const activeMugshots = {
@@ -10,7 +9,7 @@ const activeMugshots = {
 };
 
 export default function ResultsTableCandidates(props) {
-  if (!props.data) {
+  if (!props.data || !props.data.candidates) {
     return "";
   }
 

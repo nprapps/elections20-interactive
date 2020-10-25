@@ -1,5 +1,4 @@
 import { h, Component, Fragment } from "preact";
-import gopher from "../gopher.js";
 import InactiveSenateRaces from "inactive_senate_races.sheet.json";
 import {getParty} from "../util.js"
 
@@ -26,7 +25,6 @@ export default class BalanceOfPower extends Component {
     }
     var results = this.getCongressBOP(this.props.data);
 
-    // TODO: add in check icon
     return (
       <div class="leaderboard">
         <div class="results-header-group net-gain">

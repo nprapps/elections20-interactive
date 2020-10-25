@@ -9,6 +9,7 @@ import {
 var { percentDecimal, voteMargin } = formatters;
 
 export default class ResultsTableCounty extends Component {
+
   constructor(props) {
     super();
 
@@ -34,6 +35,9 @@ export default class ResultsTableCounty extends Component {
   }
 
   render() {
+    if (!this.props.data || !this.props.sortOrder || !this.props.sortOrder.length > 1) {
+      return;
+    }
     var sortedData = this.sortCountyResults();
 
     // Order by lead in overall state race

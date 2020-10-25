@@ -58,15 +58,28 @@
     ]
   },
   "devDependencies": {
-    "@babel/core": "^7.10.5",
+    "@babel/core": "^7.12.3",
     "@babel/plugin-transform-modules-commonjs": "^7.10.4",
     "@babel/polyfill": "^7.10.4",
     "@babel/preset-env": "^7.10.4",
+    "@babel/register": "^7.12.1",
+    "babel-core": "^6.26.3",
     "babel-preset-es2015": "^6.24.1",
+    "babel-preset-react": "^6.24.1",
+    "chai": "^4.2.0",
+    "enzyme": "^3.11.0",
+    "enzyme-adapter-preact-pure": "^2.2.3",
+    "ignore-styles": "^5.0.1",
+    "jsdom": "16.4.0",
+    "jsdom-global": "3.0.2",
     "lodash.sortby": "^4.7.0",
-    "lodash.values": "^4.3.0"
+    "lodash.values": "^4.3.0",
+    "mocha": "^8.2.0"
   },
   "plugins": [
     "@babel/plugin-transform-modules-commonjs"
-  ]
+  ],
+  "scripts": {
+    "test": "mocha --require @babel/register --require ignore-styles 'tests/*.js'"
+  }
 }
