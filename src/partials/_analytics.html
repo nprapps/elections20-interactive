@@ -33,9 +33,6 @@ if (window.top !== window) {
   // standalone page analytics
   ga("create", "UA-5828686-4", "auto");
   ga("set", {
-    dimension2: <%= JSON.stringify(json.project.analytics.topicIDs || []) %>,
-    dimension3: <%= JSON.stringify(json.project.analytics.primaryTopic || "News") %>,
-    dimension6: <%= JSON.stringify(json.project.analytics.secondaryTopics || []) %>,
     dimension22: document.title
   });
 }
