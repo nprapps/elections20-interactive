@@ -103,9 +103,20 @@
 
     svg {
       margin: 8px;
+      overflow: visible;
 
       circle {
-        fill: #efefef;
+        fill: #eee;
+        cursor: pointer;
+
+        &.early {
+          fill: #ddd;
+        }
+
+        &:hover {
+          stroke: black;
+          stroke-width: 2px;
+        }
       }
 
       text {

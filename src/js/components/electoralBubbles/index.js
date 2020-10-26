@@ -233,7 +233,8 @@ export default class ElectoralBubbles extends Component {
 
     if (this.lastHover != key) {
       var stateName = stateSheet[data.state].name;
-      var h3 = data.district ? `${stateName} - ${data.district}` : stateName;
+      var districtDisplay = data.district == "AL" ? "At-Large" : data.district;
+      var h3 = data.district ? `${stateName} ${districtDisplay}` : stateName;
       tooltip.innerHTML = `
         <h3>${h3} (${data.electoral})</h3>
         <div class="candidates">${data.candidates.map(c =>
@@ -307,13 +308,15 @@ export default class ElectoralBubbles extends Component {
       <h3 class="uncalled-head">Not yet called</h3>
       <div class="uncalled">
         {uncalled.map(uncall => {
+          var reporting = uncall.eevp || uncall.reportingPercent;
           var r = Math.max(this.nodeRadius(uncall), MIN_RADIUS);
           var size = r * .5;
           return <svg width={r * 2} height={r * 2} class="uncalled-race">
             <circle
-              class="uncalled-race"
+              class={"uncalled-race " + `${reporting ? "early" : "open"}`}
               cx={r} cy={r} r={r}
               data-key={uncall.district ? uncall.state + uncall.district : uncall.state}
+              onClick={() => this.goToState(uncall.state)}
             />
             {size > MIN_TEXT && (
               <text x={r} y={r + size * .4} font-size={size + "px"}>{uncall.state}</text>
