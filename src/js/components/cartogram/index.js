@@ -5,8 +5,6 @@ import states from "states.sheet.json";
 import $ from "../../lib/qsa";
 import track from "../../lib/tracking";
 
-var northeastStates = ["VT", "NH", "MA", "CT", "RI", "NJ", "DE", "MD", "DC"];
-
 export default class Cartogram extends Component {
   constructor(props) {
     super();
@@ -35,7 +33,7 @@ export default class Cartogram extends Component {
 
   render() {
     return (
-      <div class="map">
+      <div class="cartogram">
         <div ref={this.svgRef} onMove={this.onMove}></div>
         <div class="tooltip" ref={this.tooltip}></div>
       </div>
@@ -133,14 +131,25 @@ export default class Cartogram extends Component {
       var labelBox = label.getBBox();
       var hasDistricts = g.querySelector("[data-postal]");
 
+
       // handle NE and ME labels
       if (hasDistricts) {
-        label.setAttribute("x", bbox.x - 10);
-        label.setAttribute("y", bbox.y + labelBox.height);
+        var x = bbox.x - 10;
+        var y = bbox.y + labelBox.height;
       } else {
-        label.setAttribute("x", bbox.x + bbox.width / 2);
-        label.setAttribute("y", bbox.y + bbox.height / 2 + 3);
+        var x = bbox.x + bbox.width / 2;
+        var y = bbox.y + bbox.height / 2 - 2;
       }
+      label.setAttribute("x", x);
+      label.setAttribute("y", y);
+
+      var votes = states[stateName].electoral;
+      var electoralLabel = document.createElementNS(svg.namespaceURI, "text");
+      electoralLabel.textContent = votes;
+      electoralLabel.setAttribute("x", x);
+      electoralLabel.setAttribute("y", y + 10);
+      electoralLabel.setAttribute("class", "votes");
+      g.appendChild(electoralLabel);
     });
   }
 
