@@ -83,7 +83,9 @@ export default class ElectoralBubbles extends Component {
   }
 
   resize() {
-    var bounds = this.svg.current.getBoundingClientRect();
+    var svg = this.svg.current;
+    if (!svg) return;
+    var bounds = svg.getBoundingClientRect();
     var { width, height } = bounds;
     this.setState({ width, height });
     this.simulation.alpha(1);
@@ -217,7 +219,9 @@ console.log(state)
   }
 
   onMove(e) {
-    var bounds = this.svg.current.getBoundingClientRect();
+    var svg = this.svg.current;
+    if (!svg) return;
+    var bounds = svg.getBoundingClientRect();
     var offsetX = e.clientX - bounds.left;
     var offsetY = e.clientY - bounds.top;
     var tooltip = this.tooltip.current;
