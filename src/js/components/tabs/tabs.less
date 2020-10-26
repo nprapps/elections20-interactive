@@ -9,9 +9,9 @@
     text-transform: uppercase;
     .gotham();
     border-bottom: 2px solid transparent;
-    white-space: nowrap;
     display: block;
-    flex: 1 1 0;
+    text-align: center;
+    flex: 1;
 
     &:hover {
       border-bottom-color: fade(@true, 20%);
@@ -32,6 +32,11 @@
       max-height: 1.5em;
       margin-right: 4px;
       vertical-align: middle;
+
+      @media @mobile {
+        display: block;
+        margin: 0 auto 4px;
+      }
     }
   }
 }
