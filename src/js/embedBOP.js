@@ -73,7 +73,7 @@ async function init(results) {
           : ""}
           {538 - president.Dem - president.GOP - president.Other ?
             <div class="candidate uncalled">
-              <div class="name">Uncalled</div>
+              <div class="name">Not Yet Called</div>
               <div class="votes">{538 - president.Dem - president.GOP - president.Other}</div>
             </div>
           : ""}
