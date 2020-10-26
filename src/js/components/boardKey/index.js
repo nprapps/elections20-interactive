@@ -21,7 +21,7 @@ export default function BoardKey(props) {
       	<li class="yes">Yes / <span class="leading">Leading</span> <span class="winner">Winner</span></li>
       	<li class="no">No / <span class="leading">Leading</span> <span class="winner">Winner</span></li>
       </>}
-      <li class="eevp"><span class="perc">76% in</span> {hasEEVP ? <span>Estimated expected vote <span class="link">(<a href="https://www.ap.org/en-us/topics/politics/elections/counting-the-vote">what's this?</a>)</span></span> : "Precincts reporting"}</li>
+      <li class="eevp"><span class="perc">76% in</span> {hasEEVP ? <span>Expected vote <span class="link">(<a href="https://www.ap.org/en-us/topics/politics/elections/counting-the-vote">what's this?</a>)</span></span> : "Precincts reporting"}</li>
       {hasIncumbent && <li class="incumbent">● Incumbent</li>}
     </ul>
   </div>

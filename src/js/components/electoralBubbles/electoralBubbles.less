@@ -42,26 +42,31 @@
         cursor: pointer;
 
         &.Dem {
-          fill: fade(@true, 30%);
-          stroke: @true;
+          fill: @demDim;
+          // stroke: @true;
 
           &.called {
-            fill: fade(@true, 60%);
+            fill: @dem;
           }
         }
 
         &.GOP {
-          fill: fade(@rigorous, 30%);
-          stroke: @rigorous;
+          fill: @gopDim;
+          // stroke: @rigorous;
 
           &.called {
-            fill: fade(@rigorous, 60%);
+            fill: @gop;
           }
         }
 
         &.pending {
           stroke-dasharray: 5 2;
           stroke: gray;
+        }
+
+        &:hover {
+          stroke: black;
+          stroke-width: 2px;
         }
       }
 
