@@ -4,6 +4,7 @@ import {
   formatters,
   reportingPercentage,
   getParty,
+  getPartyPrefix,
   isSameCandidate,
 } from "../util.js";
 
@@ -21,6 +22,7 @@ export default class CountyMap extends Component {
     this.width;
     this.height;
 
+    // Only display candidates that are winning a county
     var legendCands = props.data
       .filter(function (obj, index, self) {
         return (
@@ -32,6 +34,7 @@ export default class CountyMap extends Component {
       })
       .map(c => c.candidates[0]);
 
+    // Add in special marker if more than one candidate of same party is winning a county.
     var specialCount = 1;
     legendCands.forEach(function (c, index) {
       if (legendCands.filter(l => isSameCandidate(l, c)).length > 1) {
@@ -173,7 +176,7 @@ export default class CountyMap extends Component {
 
   createLegend(candidate) {
     if (!candidate.id) return;
-    var name = `${candidate.first} ${candidate.last}`;
+    var name = `${candidate.last}`;
     var specialShading = candidate.special;
     return (
       <div class="key-row">
@@ -220,7 +223,7 @@ export default class CountyMap extends Component {
             candidate && candidate.special ? `i${candidate.special}` : "";
           var cs = `<div class="row">
             <span class="party ${cand.party} ${special}"></span>
-            <span>${cand.last}</span>
+            <span>${cand.first} ${cand.last} (${getPartyPrefix(cand.party)}) </span>
             <span class="amt">${reportingPercentage(cand.percent)}%</span>
         </div>`;
           return cs;

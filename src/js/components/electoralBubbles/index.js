@@ -1,5 +1,5 @@
 import { h, Fragment, Component, createRef } from "preact";
-import { reportingPercentage, winnerIcon } from "../util";
+import { reportingPercentage, winnerIcon, groupCalled } from "../util";
 import stateSheet from "states.sheet.json";
 
 // d3 is weird about imports, apparently
@@ -168,6 +168,7 @@ export default class ElectoralBubbles extends Component {
 
     var touched = new Set();
     var lookup = {};
+    results.forEach(r => lookup[r.state + (r.district || "")] = r);
 
     var uncalled = results.filter(r => r.eevp < .5 && !r.called);
     var called = results.filter(r => r.called || r.eevp >= .5);
@@ -217,9 +218,7 @@ export default class ElectoralBubbles extends Component {
   }
 
   onMove(e) {
-    var svg = this.svg.current;
-    if (!svg) return;
-    var bounds = svg.getBoundingClientRect();
+    var bounds = this.base.getBoundingClientRect();
     var offsetX = e.clientX - bounds.left;
     var offsetY = e.clientY - bounds.top;
     var tooltip = this.tooltip.current;
@@ -262,9 +261,10 @@ export default class ElectoralBubbles extends Component {
   }
 
   render(props, state) {
-    var { nodes, width, height, uncalled } = state;
+    var { nodes, width, height, uncalled = [] } = state;
     var [ n ] = nodes;
-    return <div class="electoral-bubbles">
+
+    return <div class="electoral-bubbles" onMousemove={this.onMove} onMouseleave={this.onExit}>
       <div class="key-above">
         Who's ahead (current vote margin)
       </div>
@@ -274,9 +274,6 @@ export default class ElectoralBubbles extends Component {
       </div>
       <div class="aspect-ratio">
         <svg class="bubble-svg" ref={this.svg}
-          onMousemove={this.onMove}
-          onMouseleave={this.onExit}
-          onClick={this.onClick}
           role="img"
           aria-label="Bubble plot of state margins"
           preserveAspectRatio="none"
@@ -306,8 +303,25 @@ export default class ElectoralBubbles extends Component {
             </>);
           })}
         </svg>
-        <div class="tooltip" ref={this.tooltip}></div>
       </div>
+      <h3 class="uncalled-head">Not yet called</h3>
+      <div class="uncalled">
+        {uncalled.map(uncall => {
+          var r = Math.max(this.nodeRadius(uncall), MIN_RADIUS);
+          var size = r * .5;
+          return <svg width={r * 2} height={r * 2} class="uncalled-race">
+            <circle
+              class="uncalled-race"
+              cx={r} cy={r} r={r}
+              data-key={uncall.district ? uncall.state + uncall.district : uncall.state}
+            />
+            {size > MIN_TEXT && (
+              <text x={r} y={r + size * .4} font-size={size + "px"}>{uncall.state}</text>
+            )}
+          </svg>
+        })}
+      </div>
+      <div class="tooltip" ref={this.tooltip}></div>
     </div>
   }
 }
