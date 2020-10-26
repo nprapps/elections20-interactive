@@ -40,6 +40,17 @@ Common tasks that you may want to run include:
   * ``publish:live`` uploads to production
   * ``publish:simulated`` does a dry run of uploaded files and their compressed sizes
 
+Tracked events
+--------------
+
+* ``route`` - sends the URL fragment as the event label
+* ``county-metric`` - the county table's custom metric was updated
+* ``county-sort`` - the user clicked a header to re-sort a county table
+* ``clicked-bubble`` - the user clicked a bubble on the margin plot
+* ``clicked-cartogram`` - the user clicked a state on the cartogram
+* ``clicked-map`` - the user clicked a state on the national map
+* ``tab-selected`` - the user manually chose a tab to view
+
 Troubleshooting
 ---------------
 

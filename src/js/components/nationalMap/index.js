@@ -1,6 +1,7 @@
 import { h, Component, createRef } from "preact";
 import gopher from "../gopher.js";
 import { reportingPercentage, winnerIcon } from "../util.js";
+import track from "../../lib/tracking";
 import states from "states.sheet.json";
 
 var northeastStates = ["VT", "NH", "MA", "CT", "RI", "NJ", "DE", "MD", "DC"];
@@ -53,7 +54,10 @@ export default class NationalMap extends Component {
 
   onClick(e) {
     var state = e.target.getAttribute("data-postal");
-    if (state) window.location.href = `#/states/${state}/P`;
+    if (state) {
+      track("clicked-map", state);
+      window.location.href = `#/states/${state}/P`;
+    }
   }
 
   onMove(e) {

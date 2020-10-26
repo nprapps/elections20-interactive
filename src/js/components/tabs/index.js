@@ -1,4 +1,5 @@
 import { h, Fragment, Component } from "preact";
+import track from "../../lib/tracking";
 
 export function Tab(props) {
   return <button
@@ -36,6 +37,7 @@ export default class Tabs extends Component {
   choose(selected) {
     localStorage.setItem(`tabs-${this.state.id}`, selected);
     this.setState({ selected, clicked: true });
+    track("tab-selected", this.props.children[selected].props.label);
   }
 
   componentDidUpdate() {

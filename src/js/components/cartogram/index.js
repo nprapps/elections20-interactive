@@ -3,6 +3,7 @@ import gopher from "../gopher.js";
 import { reportingPercentage, winnerIcon } from "../util.js";
 import states from "states.sheet.json";
 import $ from "../../lib/qsa";
+import track from "../../lib/tracking";
 
 var northeastStates = ["VT", "NH", "MA", "CT", "RI", "NJ", "DE", "MD", "DC"];
 
@@ -54,7 +55,10 @@ export default class Cartogram extends Component {
   onClick(e) {
     var group = e.target.closest("svg > g");
     var state = group.getAttribute("data-postal");
-    if (state) window.location.href = `#/states/${state}/P`;
+    if (state) {
+      window.location.href = `#/states/${state}/P`;
+      track("clicked-cartogram", state);
+    }
   }
 
   onMove(e) {

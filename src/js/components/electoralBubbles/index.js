@@ -1,5 +1,6 @@
 import { h, Fragment, Component, createRef } from "preact";
 import { reportingPercentage, winnerIcon, groupCalled } from "../util";
+import track from "../../lib/tracking";
 import stateSheet from "states.sheet.json";
 
 // d3 is weird about imports, apparently
@@ -214,7 +215,8 @@ export default class ElectoralBubbles extends Component {
   }
 
   goToState(state) {
-    if (state) window.location.href = `#/states/${state}/P`;
+    track("clicked-bubble", state);
+    window.location.href = `#/states/${state}/P`;
   }
 
   onMove(e) {
