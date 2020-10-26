@@ -23,7 +23,7 @@ var nextTick = function(f) {
 
 export default class ElectoralBubbles extends Component {
 
-  constructor() {
+  constructor(props) {
     super();
     this.state = {
       nodes: [],
@@ -104,7 +104,7 @@ export default class ElectoralBubbles extends Component {
   }
 
   tick(t) {
-    if (!this.running) return 
+    if (!this.running) return;
     // schedule updates
     nextTick(this.tick);
 
@@ -117,6 +117,7 @@ export default class ElectoralBubbles extends Component {
       svg.setAttribute("width", width);
       svg.setAttribute("height", height);
       svg.setAttribute("viewBox", `0 0 ${width} ${height}`);
+      this.setState({ width, height });
 
     }
 
@@ -131,7 +132,7 @@ export default class ElectoralBubbles extends Component {
       this.simulation.tick();
 
       // render with new positions
-      this.setState({ nodes, width, height });
+      this.setState({ nodes });
     }
 
   }
@@ -199,6 +200,7 @@ export default class ElectoralBubbles extends Component {
   componentDidMount() {
     this.resize();
     this.observer.observe(this.base);
+    if (this.props.results) this.updateNodes(this.props.results);
   }
 
   componentWillUnmount() {

@@ -161,7 +161,7 @@ export function groupCalled(results) {
 
   if (results) {
     results.forEach(
-      r => r.called && called[r.winnerParty || "uncalled"].push(r)
+      r => called[r.called ? r.winnerParty : "uncalled"].push(r)
     );
   }
 

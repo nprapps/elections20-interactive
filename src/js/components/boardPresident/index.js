@@ -130,21 +130,21 @@ export default class BoardPresident extends Component {
       <Leaderboard called={called} />
       <hr class="divider" />
 
-      <Tabs id="president-viz">
+      {results && (called.uncalled.length < 45) && <Tabs id="president-viz">
 
         <div icon="./assets/icons/ico-bubbles.svg" label="Margins">
           <ElectoralBubbles results={results} />
         </div>
 
         <div icon="./assets/icons/ico-cartogram.svg" label="Cartogram">
-          {results && <Cartogram races={results} />}
+          <Cartogram races={results} />
         </div>
 
         <div icon="./assets/icons/ico-geo.svg" label="Map">
-          {results && <NationalMap races={results} />}
+          <NationalMap races={results} />
         </div>
         
-      </Tabs>
+      </Tabs>}
 
       <div label="Board" class="board-container President">
         {results && <>
