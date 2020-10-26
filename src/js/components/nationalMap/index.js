@@ -52,7 +52,7 @@ export default class NationalMap extends Component {
 
   onMove(e) {
     var svg = this.svgRef.current.querySelector("svg");
-    var tooltip = document.querySelector(".tooltip");
+    var tooltip = this.base.querySelector(".tooltip");
 
     // hover styles
     var currentHover = svg.querySelector(".hover");

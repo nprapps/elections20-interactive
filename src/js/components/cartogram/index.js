@@ -2,6 +2,7 @@ import { h, Component, createRef } from "preact";
 import gopher from "../gopher.js";
 import { reportingPercentage, winnerIcon } from "../util.js";
 import states from "states.sheet.json";
+import $ from "../../lib/qsa";
 
 var northeastStates = ["VT", "NH", "MA", "CT", "RI", "NJ", "DE", "MD", "DC"];
 
@@ -54,18 +55,17 @@ export default class Cartogram extends Component {
     var tooltip = this.tooltip.current;
 
     // hover styles
-    var currentHover = svg.querySelector(".hover");
-    if (currentHover) {
-      currentHover.classList.remove("hover");
-    }
+    var currentHover = $(".hover", svg);
+    currentHover.forEach(g => g.classList.remove("hover"));
 
     tooltip.classList.remove("shown");
     var postalGroup = e.target.closest("[data-postal]");
     if (!postalGroup) {
       return;
     }
+    var postal = postalGroup.getAttribute("data-postal");
 
-    postalGroup.classList.add("hover");
+    $(`[data-postal="${postal}"]`, svg).forEach(g => g.classList.add("hover"));
 
     // tooltips
     var bounds = svg.getBoundingClientRect();
@@ -79,7 +79,6 @@ export default class Cartogram extends Component {
     tooltip.style.left = x + "px";
     tooltip.style.top = y + "px";
 
-    var postal = postalGroup.getAttribute("data-postal");
     var [ stateName, district ] = postal.split("-");
     var districtDisplay = district == "AL" ? " At-Large" : " " + district;
     var results = this.props.races.filter((r) => r.state == stateName);
