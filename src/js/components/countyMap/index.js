@@ -1,6 +1,11 @@
 import { h, Component, createRef } from "preact";
 import gopher from "../gopher.js";
-import { formatters, reportingPercentage, getParty } from "../util.js";
+import {
+  formatters,
+  reportingPercentage,
+  getParty,
+  isSameCandidate,
+} from "../util.js";
 
 export default class CountyMap extends Component {
   constructor(props) {
@@ -16,19 +21,25 @@ export default class CountyMap extends Component {
     this.width;
     this.height;
 
-    // TODO: figure out whether to show candidates with >10% of vote but who haven't won
-    // any counties on map and either add me back in or fix.
-    // props.sortOrder = props.sortOrder.filter(s => props.data.some(d => d.candidates[0].last == s.last))
+    var legendCands = props.data
+      .filter(function (obj, index, self) {
+        return (
+          index ===
+          self.findIndex(function (t) {
+            return t.candidates[0].last === obj.candidates[0].last;
+          })
+        );
+      })
+      .map(c => c.candidates[0]);
 
-    // Helper for handling multiple candidates of same party on map.
-    var partyMap = {};
-    props.sortOrder.forEach(function (c) {
-      if (!partyMap[c.party]) partyMap[c.party] = [];
-      // if (props.data.some(d => d.candidates[0].last == c.last)) {
-      partyMap[c.party].push(c.last);
-      // }
+    var specialCount = 1;
+    legendCands.forEach(function (c, index) {
+      if (legendCands.filter(l => isSameCandidate(l, c)).length > 1) {
+        c.special = specialCount;
+        specialCount += 1;
+      }
     });
-    this.partyMap = partyMap;
+    this.legendCands = legendCands;
   }
 
   // Lifecycle: Called whenever our component is created
@@ -56,9 +67,7 @@ export default class CountyMap extends Component {
         <div ref={this.containerRef} class="container" data-as="container">
           <div class="key" data-as="key">
             <div class="key-grid">
-              {this.props.sortOrder.map(candidate =>
-                this.createLegend(candidate)
-              )}
+              {this.legendCands.map(candidate => this.createLegend(candidate))}
             </div>
           </div>
           <div
@@ -111,8 +120,8 @@ export default class CountyMap extends Component {
     var maxW = 600;
 
     var ratio = this.height / this.width;
-    var w = Math.min(innerWidth - 40, maxW)
-    var h = Math.min(w * ratio, maxH)
+    var w = Math.min(innerWidth - 40, maxW);
+    var h = Math.min(w * ratio, maxH);
 
     this.svg.setAttribute("width", w + "px");
     this.svg.setAttribute("height", h + "px");
@@ -148,10 +157,8 @@ export default class CountyMap extends Component {
       var hitThreshold = mapData[d].reportingPercent > 0.5;
       var allReporting = mapData[d].reportingPercent >= 1;
 
-      var topCand = this.partyMap[top.party];
-      var specialShading =
-        topCand && topCand.length > 1 ? topCand.indexOf(top.last) : "";
-      path.classList.add(`i${specialShading}`);
+      var [candidate] = this.legendCands.filter(c => isSameCandidate(c, top));
+      if (candidate.special) path.classList.add(`i${candidate.special}`);
 
       if (!hitThreshold) {
         path.style.fill = "#ddd";
@@ -167,14 +174,7 @@ export default class CountyMap extends Component {
   createLegend(candidate) {
     if (!candidate.id) return;
     var name = `${candidate.first} ${candidate.last}`;
-    var specialShading =
-      this.partyMap[candidate.party].length > 1
-        ? this.partyMap[candidate.party].indexOf(candidate.last)
-        : "";
-
-    if (specialShading == -1) {
-      return;
-    }
+    var specialShading = candidate.special;
     return (
       <div class="key-row">
         <div
@@ -212,15 +212,19 @@ export default class CountyMap extends Component {
     if (result) {
       var displayCandidates = result.candidates.slice(0, 2);
       var candText = "";
+      var legendCands = this.legendCands;
       candText = displayCandidates
-        .map(
-          c =>
-            `<div class="row">
-            <span class="party ${c.party}"></span>
-            <span>${c.last}</span>
-            <span class="amt">${reportingPercentage(c.percent)}%</span>
-        </div>`
-        )
+        .map(cand => {
+          var [candidate] = legendCands.filter(c => isSameCandidate(c, cand));
+          var special =
+            candidate && candidate.special ? `i${candidate.special}` : "";
+          var cs = `<div class="row">
+            <span class="party ${cand.party} ${special}"></span>
+            <span>${cand.last}</span>
+            <span class="amt">${reportingPercentage(cand.percent)}%</span>
+        </div>`;
+          return cs;
+        })
         .join("");
 
       var countyName = result.county.countyName.replace(/\s[a-z]/g, match =>

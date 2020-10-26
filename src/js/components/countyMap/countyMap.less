@@ -94,8 +94,14 @@
         &.GOP {
           background: @gop;
         }
-        &.Other {
-          background: @gray;
+        &.i1 {
+          background: @overflow1;
+        }
+        &.i2 {
+          background: @overflow2;
+        }
+        &.i3 {
+          background: @overflow3;
         }
       }
 
@@ -117,7 +123,7 @@
   .key {
     margin-bottom: 10px;
   }
-  
+
   .map path {
     stroke: white;
     fill: #eee;
@@ -131,34 +137,11 @@
         }
       }
 
-      &.leading.Other {
-        fill: @gray-medium;
-
-        &.allin {
-          fill: @gray;
-        }
-      }
       &.leading.GOP {
         fill: @gopDim2;
 
         &.allin {
           fill: @gop;
-
-          &.i0 {
-            fill: @gopMultiple1;
-          }
-
-          &.i1 {
-            fill: @gopMultiple2;
-          }
-        }
-
-        &.i0 {
-          fill: @gopMultiple1Dim;
-        }
-
-        &.i1 {
-          fill: @gopMultiple2Dim;
         }
       }
 
@@ -167,22 +150,29 @@
 
         &.allin {
           fill: @dem;
-
-          &.i0 {
-            fill: @demMultiple1;
-          }
-
-          &.i1 {
-            fill: @demMultiple2;
-          }
         }
+      }
 
-        &.i0 {
-          fill: @demMultiple1Dim;
+      &.leading.i1 {
+        fill: @overflowDim1;
+
+        &.allin {
+          fill: @overflow1;
         }
+      }
+      &.leading.i2 {
+        fill: @overflowDim2;
 
-        &.i1 {
-          fill: @demMultiple2Dim;
+        &.allin {
+          fill: @overflow2;
+        }
+      }
+
+      &.leading.i3 {
+        fill: @overflowDim3;
+
+        &.allin {
+          fill: @overflow3;
         }
       }
     }
@@ -246,30 +236,20 @@
 
     &.Dem {
       background: @dem;
-
-      &.i0 {
-        background: @demMultiple1;
-      }
-
-      &.i1 {
-        background: @demMultiple2;
-      }
     }
 
     &.GOP {
       background: @gop;
-
-      &.i0 {
-        background: @gopMultiple1;
-      }
-
-      &.i1 {
-        background: @gopMultiple2;
-      }
     }
 
-    &.Other {
-      background: @gray;
+    &.i1 {
+      background: @overflow1;
+    }
+    &.i2 {
+      background: @overflow2;
+    }
+    &.i3 {
+      background: @overflow3;
     }
   }
 }
