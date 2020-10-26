@@ -8,6 +8,7 @@
 
 var { redeemTicket, apDate } = require("./lib/apResults");
 var normalize = require("./lib/normalizeResults");
+var nullify = require("./lib/nullifyResults");
 var augment = require("./lib/augmentResults");
 var fs = require("fs").promises;
 
@@ -50,7 +51,7 @@ module.exports = function(grunt) {
     // get results from AP
     var rawResults = [];
     for (var t of tickets) {
-      var response = await redeemTicket(t, { zero, test, offline });
+      var response = await redeemTicket(t, { test, offline });
       if (!response) continue;
       // filter state results out of district requests
       if (t.params.level == "district") {
@@ -59,6 +60,7 @@ module.exports = function(grunt) {
           race.reportingUnits = race.reportingUnits.filter(u => u.level == "district");
         });
       }
+      if (zero) nullify(response);
       rawResults.push(response);
     }
     // turn AP into normalized race objects
