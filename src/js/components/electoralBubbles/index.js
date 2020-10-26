@@ -212,9 +212,7 @@ export default class ElectoralBubbles extends Component {
     this.observer.disconnect();
   }
 
-  onClick(e) {
-    var state = e.target.getAttribute("data-key").slice(0,2);
-console.log(state)
+  goToState(state) {
     if (state) window.location.href = `#/states/${state}/P`;
   }
 
@@ -296,8 +294,9 @@ console.log(state)
                 data-key={n.key}
                 key={n.key}
                 cx={n.x}
-                cy={n.y + height / 2}
+                cy={(n.y || 0) + height / 2}
                 r={this.nodeRadius(n)}
+                onClick={() => this.goToState(n.state)}
               />
               {textSize > MIN_TEXT && <text 
                 class={`${n.party} ${n.called ? "called" : "pending"}`}
