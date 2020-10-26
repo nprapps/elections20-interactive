@@ -36,11 +36,13 @@ export function Leaderboard(props) {
         <label>Biden {sumElectoral(called.Dem) >= 270 ? winnerIcon : ""}</label>
         {sumElectoral(called.Dem)}
       </li>
-      
+
+      {sumElectoral(called.uncalled) ?
         <li class="party not-called">
           <label>Not Yet Called</label>
           {sumElectoral(called.uncalled)}
         </li>
+      : ""}
 
       <li class="party gop">
         <label>Trump {sumElectoral(called.GOP) >= 270 ? winnerIcon : ""}</label>

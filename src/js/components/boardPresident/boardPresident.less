@@ -12,17 +12,29 @@
     text-transform: uppercase;
     line-height: 1;
     font-weight: bold;
-    align-items: flex-end;
+    align-items: stretch;
 
     .party {
       font-size: 64px;
-      display: block;
-      padding: 0 20px;
+      // display: block;
+      padding: 0 40px;
       text-align: center;
       color: @gray;
+      border-left: 1px solid #eee;
+      display: flex; 
+      flex-direction: column; 
+      justify-content: flex-end;
 
-      @media (max-width: 420px) {
-        padding: 0 16px;
+      &:first-child {
+        border-left: 0;
+      }
+
+      @media @mobile {
+        padding: 0 30px;
+        font-size: 40px;
+      }
+      @media (max-width: 500px) {
+        padding: 0 20px;
       }
 
       &.dem { 
@@ -45,7 +57,7 @@
         display: block;
         // color: #444;
 
-        @media (max-width: 420px) {
+        @media @mobile {
           font-size: 14px;
         }
       }
