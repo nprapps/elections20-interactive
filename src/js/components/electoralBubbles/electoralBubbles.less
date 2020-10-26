@@ -1,4 +1,6 @@
 .electoral-bubbles {
+  position: relative;
+  
   .key-above {
     text-align: center;
     .knockout();
@@ -75,6 +77,37 @@
         &.pending {
           fill: @gray;
         }
+      }
+    }
+  }
+
+  .uncalled-head {
+    text-align: center;
+    .knockout();
+    text-transform: uppercase;
+    color: @gray;
+  }
+
+  .uncalled {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    margin: auto;
+    max-width: 600px;
+
+    svg {
+      margin: 8px;
+
+      circle {
+        fill: #efefef;
+      }
+
+      text {
+        fill: @gray;
+        text-anchor: middle;
+        .knockout();
+        pointer-events: none;
       }
     }
   }
