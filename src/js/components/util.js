@@ -155,6 +155,7 @@ export function groupCalled(results) {
   var called = {
     Dem: [],
     GOP: [],
+    Other: [],
     uncalled: [],
   };
 

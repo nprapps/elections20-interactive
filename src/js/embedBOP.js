@@ -61,6 +61,12 @@ async function init(results) {
             <div class="name">Biden {president.Dem >= 270 ? winnerIcon : ""}</div>
             <div class="votes">{president.Dem}</div>
           </div>
+          {538 - president.Dem - president.GOP - president.Other ?
+            <div class="candidate uncalled">
+              <div class="name">Not Yet Called</div>
+              <div class="votes">{538 - president.Dem - president.GOP - president.Other}</div>
+            </div>
+          : ""}
           <div class="candidate gop">
             <div class="name">Trump {president.GOP >= 270 ? winnerIcon : ""}</div>
             <div class="votes">{president.GOP}</div>
@@ -71,12 +77,7 @@ async function init(results) {
               <div class="votes">{president.Other}</div>
             </div>
           : ""}
-          {538 - president.Dem - president.GOP - president.Other ?
-            <div class="candidate uncalled">
-              <div class="name">Not Yet Called</div>
-              <div class="votes">{538 - president.Dem - president.GOP - president.Other}</div>
-            </div>
-          : ""}
+          
         </div>
       </a>
       <div class="divider" />

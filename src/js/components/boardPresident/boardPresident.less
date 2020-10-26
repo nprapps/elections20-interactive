@@ -12,6 +12,7 @@
     text-transform: uppercase;
     line-height: 1;
     font-weight: bold;
+    align-items: flex-end;
 
     .party {
       font-size: 64px;
@@ -20,14 +21,33 @@
       text-align: center;
       color: @gray;
 
-      &.dem { color: @dem; }
-      &.gop { color: @gop; }
+      @media (max-width: 420px) {
+        padding: 0 16px;
+      }
+
+      &.dem { 
+        color: @dem; 
+        path { fill: @dem; }
+      }
+      &.gop { 
+        color: @gop; 
+        path { fill: @gop; }
+      }
+      &.other { 
+        color: @ind; 
+        path { fill: @ind; }
+      }
 
       label {
-        .knockout();
-        font-size: 20px;
+        .knockout-header();
+        font-size: 16px;
+        margin-bottom: 6px;
         display: block;
-        font-weight: normal;
+        // color: #444;
+
+        @media (max-width: 420px) {
+          font-size: 14px;
+        }
       }
     }
   }
@@ -39,8 +59,7 @@
     justify-content: space-between;
     background: #CCC;
     position: relative;
-    margin: auto;
-    margin-bottom: 30px;
+    margin: 40px auto 30px;
 
     .bar {
       height: 100%;
@@ -60,7 +79,8 @@
       left: 50%;
       top: -10px;
       bottom: -10px;
-      border: 1px solid fade(black, 20%);
+      border: 0;
+      border-left: 1px solid fade(black, 60%);
       overflow: visible;
 
       .label {
@@ -69,6 +89,7 @@
         color: @gray;
         transform: translateX(-50%);
         .knockout();
+        white-space: nowrap;
       }
     }
   }
