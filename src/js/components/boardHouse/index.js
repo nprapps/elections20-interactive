@@ -62,7 +62,6 @@ export default class BoardHouse extends Component {
           </div>
         </div>
 
-        <BoardKey race="house"/>
         <div class="board-container House">
           {results && results.length && (
             <>
@@ -88,6 +87,7 @@ export default class BoardHouse extends Component {
             </>
           )}
         </div>
+        <BoardKey race="house"/>
         <div class="source">Source: AP (as of <DateFormatter value={latest} />)</div>
       </>
     );

@@ -36,10 +36,10 @@ export default class BoardBallot extends Component {
       <h1 tabindex="-1">Ballot Initiatives</h1>
       { test ? <TestBanner /> : "" }
 
-      <BoardKey race="ballot"/>
       <div class="board-container">
         {results && <Results races={results} office="Ballot"/>}
       </div>
+      <BoardKey race="ballot"/>
       <div class="source">Source: AP (as of <DateFormatter value={latest} />)</div>
     </>;
   }
