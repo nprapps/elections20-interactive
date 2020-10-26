@@ -8,6 +8,9 @@
     text-transform: uppercase;
     .gotham();
     border-bottom: 2px solid transparent;
+    white-space: nowrap;
+    display: block;
+    flex: 1 1 0;
 
     &:hover {
       border-bottom-color: fade(@true, 20%);
@@ -21,10 +24,19 @@
     &[aria-selected="true"] {
       border-bottom-color: @true;
     }
+
+    img.icon {
+      display: inline;
+      max-width: 30px;
+      max-height: 1.5em;
+      margin-right: 4px;
+      vertical-align: middle;
+    }
   }
 }
 
 [role="tabpanel"] {
+  padding: 20px 0 0;
 
   &:focus {
     outline: none;

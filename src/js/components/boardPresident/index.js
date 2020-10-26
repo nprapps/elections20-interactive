@@ -1,15 +1,17 @@
 import { h, Component, Fragment } from "preact";
 import gopher from "../gopher.js";
-import NationalMap from "../nationalMap";
-import Results from "../resultsBoardPresident";
-import TestBanner from "../testBanner";
-import DateFormatter from "../dateFormatter";
-import ElectoralArc from "../electoralArc";
-import ElectoralGrid from "../electoralGrid";
-import ElectoralBubbles from "../electoralBubbles";
-import BoardKey from "../boardKey";
-import Tabs from "../tabs";
 import { getBucket, sumElectoral, groupCalled, styleJSX } from "../util.js";
+
+import TestBanner from "../testBanner";
+
+import Tabs from "../tabs";
+import ElectoralBubbles from "../electoralBubbles";
+import Cartogram from "../cartogram";
+import NationalMap from "../nationalMap";
+
+import Results from "../resultsBoardPresident";
+import DateFormatter from "../dateFormatter";
+import BoardKey from "../boardKey";
 
 export function Leaderboard(props) {
   var { called } = props;
@@ -109,15 +111,15 @@ export default class BoardPresident extends Component {
 
       <Tabs id="president-viz">
 
-        <div label="Margins">
+        <div icon="./assets/icons/ico-bubbles.svg" label="Margins">
           <ElectoralBubbles results={results} />
         </div>
 
-        <div label="Grid">
-          <ElectoralGrid results={results} />
+        <div icon="./assets/icons/ico-cartogram.svg" label="Cartogram">
+          {results && <Cartogram races={results} />}
         </div>
 
-        <div label="Map">
+        <div icon="./assets/icons/ico-geo.svg" label="Map">
           {results && <NationalMap races={results} />}
         </div>
         

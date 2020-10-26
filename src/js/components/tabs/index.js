@@ -6,7 +6,10 @@ export function Tab(props) {
     aria-controls={"tab-" + props.tab}
     aria-selected={props.selected}
     onClick={props.choose}
-  >{props.label}</button>
+  >
+    {props.icon && <img alt="" src={props.icon} class="icon" />}
+    {props.label}
+  </button>
 }
 
 export function Panel(props) {
@@ -45,7 +48,7 @@ export default class Tabs extends Component {
     return <div>
       <div role="tablist" class="tabs">
         {props.children.map((c, i) => (
-          <Tab label={c.props.label} tab={i} selected={state.selected == i} choose={() => this.choose(i)} />
+          <Tab icon={c.props.icon} label={c.props.label} tab={i} selected={state.selected == i} choose={() => this.choose(i)} />
         ))}
       </div>
       <div class="tabgroup">
