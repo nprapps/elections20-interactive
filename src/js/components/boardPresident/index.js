@@ -138,15 +138,17 @@ export default class BoardPresident extends Component {
           <ElectoralBubbles results={results} />
         </div>
 
-        <div icon="./assets/icons/ico-cartogram.svg" label="Cartogram">
+        <div icon="./assets/icons/ico-cartogram.svg" label="Electoral">
           <Cartogram races={results} />
         </div>
 
-        <div icon="./assets/icons/ico-geo.svg" label="Map">
+        <div icon="./assets/icons/ico-geo.svg" label="Geography">
           <NationalMap races={results} />
         </div>
         
       </Tabs>}
+
+      <BoardKey race="president"/>
 
       <div label="Board" class="board-container President">
         {results && <>
@@ -156,8 +158,6 @@ export default class BoardPresident extends Component {
         </>}
       </div>
 
-      <BoardKey race="president"/>
-      
       <div class="source">Source: AP (as of <DateFormatter value={latest} />)</div>
     </div>
   }
