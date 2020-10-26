@@ -132,7 +132,7 @@ export default class BoardPresident extends Component {
       <Leaderboard called={called} />
       <hr class="divider" />
 
-      {results && (called.uncalled.length < 45) && <Tabs id="president-viz">
+      {results && (results.filter(r => r.called).length > 5) && <Tabs id="president-viz">
 
         <div icon="./assets/icons/ico-bubbles.svg" label="Margins">
           <ElectoralBubbles results={results} />

@@ -109,6 +109,7 @@ export default class ElectoralBubbles extends Component {
     nextTick(this.tick);
 
     var svg = this.svg.current;
+    if (!svg) return;
     var bounds = svg.getBoundingClientRect();
     var { width, height } = bounds;
     if (!width || !height) return;
@@ -166,8 +167,10 @@ export default class ElectoralBubbles extends Component {
     var touched = new Set();
     var lookup = {};
 
-    results = results.filter(r => r.called || r.eevp > .5);
-    for (var r of results) {
+    var uncalled = results.filter(r => r.eevp < .5 && !r.called);
+    var called = results.filter(r => r.called || r.eevp >= .5);
+
+    for (var r of called) {
       // find an existing node?
       var upsert = this.createNode(r);
       var existing = nodes.find(n => n.key == upsert.key);
@@ -189,7 +192,7 @@ export default class ElectoralBubbles extends Component {
 
     this.simulation.alpha(1);
 
-    this.setState({ nodes, lookup });
+    this.setState({ nodes, lookup, uncalled });
   }
 
   shouldComponentUpdate(props, state) {
@@ -257,7 +260,7 @@ console.log(state)
   }
 
   render(props, state) {
-    var { nodes, width, height } = state;
+    var { nodes, width, height, uncalled } = state;
     var [ n ] = nodes;
     return <div class="electoral-bubbles">
       <div class="key-above">
