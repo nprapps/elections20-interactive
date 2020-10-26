@@ -60,21 +60,25 @@ export var formatters = {
   },
   percentDecimal: v => (v * 100).toFixed(1) + "%",
   voteMargin: function (result) {
-
-    let prefix;
-    if (result.party === "Dem") {
-      prefix = "D";
-    } else if (result.party === "GOP") {
-      prefix = "R";
-    } else if (result.party =="Other") {
-      prefix = "O";
-    } else {
-      prefix = "I";
-    }
+    var prefix = getPartyPrefix(result.party);
 
     return prefix + " +" + Math.round(result.margin * 100);
   },
 };
+
+export function getPartyPrefix(party) {
+  let prefix;
+  if (party === "Dem") {
+    prefix = "D";
+  } else if (party === "GOP") {
+    prefix = "R";
+  } else if (party == "Other") {
+    prefix = "O";
+  } else {
+    prefix = "I";
+  }
+  return prefix;
+}
 
 export function getBucket(rating) {
   if (rating == "solid-d" || rating == "likely-d") {
@@ -160,9 +164,7 @@ export function groupCalled(results) {
   };
 
   if (results) {
-    results.forEach(
-      r => called[r.called ? r.winnerParty : "uncalled"].push(r)
-    );
+    results.forEach(r => called[r.called ? r.winnerParty : "uncalled"].push(r));
   }
 
   return called;
@@ -180,8 +182,7 @@ export function styleJSX(styles) {
   return list.join("; ");
 }
 
-export var winnerIcon =
-  `<span class="winner-icon" role="img" aria-label="check mark">
+export var winnerIcon = `<span class="winner-icon" role="img" aria-label="check mark">
     <svg
       aria-hidden="true"
       focusable="false"
