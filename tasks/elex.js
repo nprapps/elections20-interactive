@@ -20,6 +20,7 @@ module.exports = function(grunt) {
 
     var test = grunt.option("test");
     var offline = grunt.option("offline");
+    var zero = grunt.option("zero");
 
     // probably move this into a sheet to be safe
     // also, should we use the ticket merging system?
@@ -49,7 +50,7 @@ module.exports = function(grunt) {
     // get results from AP
     var rawResults = [];
     for (var t of tickets) {
-      var response = await redeemTicket(t, { test, offline });
+      var response = await redeemTicket(t, { zero, test, offline });
       if (!response) continue;
       // filter state results out of district requests
       if (t.params.level == "district") {
