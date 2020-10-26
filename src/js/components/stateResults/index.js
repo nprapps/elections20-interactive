@@ -193,24 +193,26 @@ export default class StateResults extends Component {
     });
 
     var tabElements = tabs.map(t => (
-      <div>
-        <a
+      <li class={`sortButton ${view == t.data ? 'selected' : ''}`} >
+        <span class="metric"><a
           aria-current={view == t.data}
           href={`#/states/${this.props.state}/${t.data}`}
           class="race-type-nav">
           {t.label}
         </a>
-      </div>
+        </span>
+        <span class="pipe"> | </span>
+      </li>
     ));
 
     return (
       <>
-        <nav class="race-calendar">
-          <div>
-            <span class="view-label">Election results: </span>
-          </div>
+        <ul class="sorter">
+          <li class="label">
+            Election results: 
+          </li>
           {tabElements}
-        </nav>
+        </ul>
       </>
     );
   }
