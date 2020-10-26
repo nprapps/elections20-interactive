@@ -27,6 +27,7 @@ module.exports = function (grunt) {
   grunt.registerTask("static", "Build all files", [
     "copy",
     "bundle",
+    "bundle:once",
     "less",
     "template"
   ]);
