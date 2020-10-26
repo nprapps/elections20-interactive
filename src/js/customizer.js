@@ -61,6 +61,7 @@ class Customizer extends Component {
       ["", "Key Races"],
       ["P", "President"],
       ["S", "Senate"],
+      ["G", "Governor"],
       ["H", "House"],
       ["I", "Ballot initiatives"]
     ];
