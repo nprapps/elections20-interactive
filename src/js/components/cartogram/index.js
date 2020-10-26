@@ -50,7 +50,6 @@ export default class Cartogram extends Component {
   }
 
   onMove(e) {
-    console.log(e);
     var svg = this.svgRef.current.querySelector("svg");
     var tooltip = this.tooltip.current;
 
@@ -91,6 +90,8 @@ export default class Cartogram extends Component {
     } else {
       result = results[0];
     }
+
+    if (!result) return;
 
     tooltip.innerHTML = `
       <h3>${result.stateName}${district ? districtDisplay : ""} <span>(${result.electoral})</span></h3>

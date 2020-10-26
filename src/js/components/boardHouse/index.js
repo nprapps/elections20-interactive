@@ -64,7 +64,7 @@ export default class BoardHouse extends Component {
 
         <BoardKey race="house"/>
         <div class="board-container House">
-          {results && (
+          {results && results.length && (
             <>
               <Results
                 races={buckets["toss-up"]}
