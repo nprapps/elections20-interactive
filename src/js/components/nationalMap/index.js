@@ -48,6 +48,12 @@ export default class NationalMap extends Component {
 
     var svg = this.svgRef.current.querySelector("svg");
     svg.addEventListener("mousemove", (e) => this.onMove(e));
+    svg.addEventListener("click", (e) => this.onClick(e));
+  }
+
+  onClick(e) {
+    var state = e.target.getAttribute("data-postal");
+    if (state) window.location.href = `#/states/${state}/P`;
   }
 
   onMove(e) {

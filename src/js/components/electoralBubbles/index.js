@@ -207,6 +207,12 @@ export default class ElectoralBubbles extends Component {
     this.observer.disconnect();
   }
 
+  onClick(e) {
+    var state = e.target.getAttribute("data-key").slice(0,2);
+console.log(state)
+    if (state) window.location.href = `#/states/${state}/P`;
+  }
+
   onMove(e) {
     var bounds = this.svg.current.getBoundingClientRect();
     var offsetX = e.clientX - bounds.left;
@@ -265,6 +271,7 @@ export default class ElectoralBubbles extends Component {
         <svg class="bubble-svg" ref={this.svg}
           onMousemove={this.onMove}
           onMouseleave={this.onExit}
+          onClick={this.onClick}
           role="img"
           aria-label="Bubble plot of state margins"
           preserveAspectRatio="none"
