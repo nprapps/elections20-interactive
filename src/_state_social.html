@@ -1,12 +1,17 @@
 <!doctype html>
 <%
   var stateMeta = grunt.data.json.states[state];
+  var shareStrings = grunt.data.archieml.longform.socialPages;
   var stateName = stateMeta.name;
-  var title = `${stateName} State Election Results 2020`;
-  var description = `View live results for ${stateName}'s ballot measures and races for president, governor, Senate, and House.`;
-  if (state == "DC") {
-    description = "View live results for Washington, D.C.’s ballot measure and race for president."
-  }
+  var defaultTitle = shareStrings.stateTitle;
+  var defaultDescription = shareStrings.stateDescription;
+
+  var title = shareStrings[`${state.toLowerCase()}Title`] || defaultTitle;
+  title = title.replace("%STATE%", stateName);
+
+  var description = shareStrings[`${state.toLowerCase()}Description`] || defaultDescription;
+  description = description.replace("%STATE%", stateName);
+  
   var base = `https://apps.npr.org/elections20-interactive`;
   var image = `${base}/assets/social_states/${state}.jpg`;
 
