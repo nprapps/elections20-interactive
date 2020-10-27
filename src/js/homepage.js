@@ -46,30 +46,28 @@ export default class Homepage extends Component {
     var called = groupCalled(results);
 
     var search = new URLSearchParams(window.location.search);
-    var Display = search.get("display") == "map" ? NationalMap :
-                  search.get("display") == "cartogram" ? Cartogram : 
-                  ElectoralBubbles;
+    var display = search.get("display");
 
     return <div class="president board">
       { test ? <TestBanner /> : "" }
       <ElectoralBars called={called} />
       <Leaderboard called={called} />
 
-      <Tabs id="president-viz">
+      {results && results.length && <Tabs id="president-viz">
 
-        <div icon="./assets/icons/ico-bubbles.svg" label="Margins">
+        <div icon="./assets/icons/ico-bubbles.svg" label="Margins" selected={display == "margins"}>
           <ElectoralBubbles results={results} />
         </div>
 
-        <div icon="./assets/icons/ico-cartogram.svg" label="Electoral">
+        <div icon="./assets/icons/ico-cartogram.svg" label="Electoral" selected={display == "cartogram"}>
           <Cartogram races={results} />
         </div>
 
-        <div icon="./assets/icons/ico-geo.svg" label="Geography">
+        <div icon="./assets/icons/ico-geo.svg" label="Geography" selected={display == "map"}>
           <NationalMap races={results} />
         </div>
         
-      </Tabs>
+      </Tabs>}
 
       { false && <div label="Board" class="board-container President">
         {results && <>

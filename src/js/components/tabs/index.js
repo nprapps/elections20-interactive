@@ -27,10 +27,15 @@ export function Panel(props) {
 export default class Tabs extends Component {
   constructor(props) {
     super();
-    var id = props.id || 0;
+    var { id = 0, children } = props;
+    var selected = children.find(c => c.props.selected);
+    var selectedIndex = 0;
+    if (selected) {
+      selectedIndex = children.indexOf(selected);
+    }
     this.state = {
       id,
-      selected: localStorage.getItem(`tabs-${id}`) || 0,
+      selected: selectedIndex || localStorage.getItem(`tabs-${id}`),
       clicked: false
     }
   }
