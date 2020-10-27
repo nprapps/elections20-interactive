@@ -307,7 +307,7 @@ export default class ElectoralBubbles extends Component {
           })}
         </svg>
       </div>
-      <h3 class="uncalled-head">Not yet called</h3>
+      <h3 class={`uncalled-head ${uncalled.length ? '' : "hidden"}`}>no results in/early results</h3>
       <div class="uncalled">
         {uncalled.map(uncall => {
           var reporting = uncall.eevp || uncall.reportingPercent;
