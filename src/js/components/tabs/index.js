@@ -35,7 +35,7 @@ export default class Tabs extends Component {
     }
     this.state = {
       id,
-      selected: selectedIndex || localStorage.getItem(`tabs-${id}`),
+      selected: selectedIndex || localStorage.getItem(`tabs-${id}`) || 0,
       clicked: false
     }
   }
