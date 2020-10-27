@@ -175,7 +175,7 @@ export default class CountyMap extends Component {
           class={`swatch ${getParty(
             candidate.party
           )} i${specialShading}`}></div>
-        <div class="name">{name}</div>
+        <div class="name">{`${name} (${getParty(candidate.party)})`}</div>
       </div>
     );
   }
