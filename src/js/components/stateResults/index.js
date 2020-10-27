@@ -95,12 +95,15 @@ export default class StateResults extends Component {
   }
 
   renderResults(view) {
+
+    var numberSort = (a, b) => a.seatNumber * 1 - b.seatNumber * 1;
+    var nameSort = (a, b) => a.seat < b.seat ? -1 : 1;
     if (view === "key") {
       return <KeyRaces state={this.props.state} />;
     } else if (view === "H" || view === "I") {
       var results = this.state.results
         .filter(r => r.office == view)
-        .sort((a, b) => a.seatNumber * 1 - b.seatNumber * 1);
+        .sort(view === "I" ? nameSort : numberSort);
       return (
         <div class="results-no-counties">
           <div class="results-wrapper">
