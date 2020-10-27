@@ -32,10 +32,42 @@ h1 {
 // Balance of power embed
 
 @height: 30px;
+@thin-height: @height / 2;
 
 main.embed-bop {
-  max-width: 768px;
   color: #444;
+
+  .container {
+    max-width: 768px;
+
+    &.inline {
+      display: flex;
+      max-width: 100%;
+
+      @media @mobile {
+        display: block;
+      }
+
+      .link-container {
+        flex: 1;
+        padding: 0 20px 20px;
+        border-right: 1px solid #ddd;
+
+        @media @mobile {
+          border: none;
+        }
+
+        &:last-child {
+          border-right: 0;
+        }
+      }
+
+      .candidate {
+        border: 0;
+      }
+    }
+  }
+  
 
   h3 {
     .gotham();
@@ -60,7 +92,7 @@ main.embed-bop {
     margin-left: 0;
   }
 
-  a.container {
+  a.link-container {
     text-decoration: none;
     color: #444;
 
@@ -76,7 +108,7 @@ main.embed-bop {
     font-size: 11px;
   }
 
-  .pres-container {
+  .number-container {
     display: flex;
     justify-content: center;
     align-items: stretch;
@@ -98,6 +130,7 @@ main.embed-bop {
 
       .name {
         .knockout-header();
+        line-height: 1.2em;
         text-transform: uppercase;
 
         @media @sidebar {
@@ -129,6 +162,21 @@ main.embed-bop {
         display: none;
       }
     }
+  }
+
+  .president {
+    .bar-container {
+      height: @thin-height;
+      margin-bottom: 20px;
+
+      .middle {
+        top: @thin-height / -5;
+        border-left: 1px solid #444;
+        height: @thin-height * 1.4;
+      }
+    }
+
+    
   }
 
   .bar-container {
