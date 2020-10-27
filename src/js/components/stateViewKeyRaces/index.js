@@ -2,6 +2,7 @@ import { h, Component, Fragment } from "preact";
 import gopher from "../gopher.js";
 import ResultsTableCandidates from "../resultsTableCandidates";
 import Strings from "strings.sheet.json";
+import stateLookup from "states.sheet.json";
 
 const STATES_WITHOUT_COUNTY_INFO = ["AK"];
 
@@ -81,9 +82,14 @@ export default class KeyRaces extends Component {
             </a>
           </h2>
           <div class="races">
-            {data.map(r => (
-              <ResultsTableCandidates data={r} />
-            ))}
+            {data.map(function(r) {
+              var isMultiple = data.length > 1;
+              var title = "";
+              if (isMultiple) {
+                title = stateLookup[r.state].name + "-" + (r.seatNumber || 1);
+              }
+              return <ResultsTableCandidates data={r} title={title} />
+            })}
           </div>
         </div>
       );
