@@ -155,7 +155,7 @@ async function init(results) {
           
           <div class="bar-container">
             <div class="bar dem" style={"width: " + (senate.Dem) + "%"}>
-              <div class="label">Dem. {senate.Dem >= 1 ? winnerIcon : ""}<span class="number">{senate.Dem}</span></div>
+              <div class="label">Dem. {senate.Dem >= 51 ? winnerIcon : ""}<span class="number">{senate.Dem}</span></div>
             </div>
             <div class="bar other" style={"width: " + (senate.Other) + "%"}>
               <div class="label">Ind. {senate.Other >= 51 ? winnerIcon : ""}<span class="number">{senate.Other}</span></div>

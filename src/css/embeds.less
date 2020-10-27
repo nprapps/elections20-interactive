@@ -31,6 +31,7 @@ h1 {
 
 // Balance of power embed
 
+@thick-height: @height * 1.3;
 @height: 20px;
 @thin-height: @height * 0.7;
 
@@ -48,6 +49,16 @@ main.embed-bop {
       }
     }
 
+    .bar-container {
+      height: @height;
+    }
+
+    .senate, .house {
+      .number-container {
+        display: flex;
+      }
+    }
+
     .link-container {
       flex: 1;
       padding: 0 3%;
@@ -55,6 +66,18 @@ main.embed-bop {
 
       h3 {
         margin-top: 10px;
+      }
+
+      &.senate {
+        h3 { margin-top: 10px; }
+      }
+
+      .label {
+        display: none;
+      }
+
+      .middle {
+        height: @thin-height * 1.7;
       }
 
       @media @mobile {
@@ -75,7 +98,7 @@ main.embed-bop {
           }
           .middle {
             top: @thin-height / -5;
-            height: @thin-height * 1.4;
+            height: @thin-height * 1.2;
           }
           h3 {
             margin-top: 0;
@@ -173,6 +196,10 @@ main.embed-bop {
     text-decoration: none;
     color: #444;
 
+    &.senate {
+      h3 { margin-top: 45px; }
+    }
+
     &:hover {
       h3 {
         color: @link-color;
@@ -183,6 +210,12 @@ main.embed-bop {
   .full {
     .knockout-header();
     font-size: 11px;
+  }
+
+  .senate, .house {
+    .number-container {
+      display: none;
+    }
   }
 
   .number-container {
@@ -263,7 +296,7 @@ main.embed-bop {
 
   .bar-container {
     width: 100%;
-    height: @height;
+    height: @thick-height;
     background: #ddd;
     margin-bottom: 15px;
     position: relative;
@@ -288,9 +321,8 @@ main.embed-bop {
     }
 
     .label {
-      display: none;
       position: absolute;
-      margin-top: calc(@height + 5px);
+      margin-top: calc(@height + 10px);
       .gotham();
       font-weight: bold;
       font-size: 12px;
@@ -319,7 +351,7 @@ main.embed-bop {
       position: absolute;
       top: @height / -5;
       border-left: 1px solid #444;
-      height: @height * 1.4;
+      height: @height * 1.5;
       width: 1px;
       right: 50%;
     }
@@ -335,8 +367,10 @@ main.embed-bop {
   }
 
   .source {
-    @media @mobile {
-      margin-top: 10px;
-    }
+    margin-top: 55px;
+
+    // @media @mobile {
+    //   margin-top: 10px;
+    // }
   }
 }
