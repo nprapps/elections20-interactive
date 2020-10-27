@@ -81,7 +81,7 @@ export default function ResultsTableCandidates(props) {
         <span class="left">
         {incumbentText}
         </span>
-        <span class="right">{reporting}</span>
+        <span class="right">{isUncontested ? "" : reporting}</span>
       </div>
       {uncontestedText}
     </div>
