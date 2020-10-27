@@ -130,7 +130,7 @@ export default class StateResults extends Component {
         {results.map((r, i) => (
           <>
             <a onClick={() => this.jump(`#race-${r.id}`)}>
-              {`${stateLookup[this.props.state].name}-${r.seatNumber || 1}`}
+              {`${stateLookup[this.props.state].name} ${r.seatNumber || 1}`}
             </a>{" "}
             {i < results.length - 1 ? "|" : ""}
           </>
@@ -170,7 +170,7 @@ export default class StateResults extends Component {
     var specialHeader = isSpecial ? (
       <h2 id={`${this.props.state}-${seatLabel}`}>{`${
         stateLookup[this.props.state].name
-      }-${seatLabel || 1}`}</h2>
+      } ${seatLabel || 1}`}</h2>
     ) : (
       ""
     );

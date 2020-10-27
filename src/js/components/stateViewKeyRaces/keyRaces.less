@@ -12,12 +12,24 @@ a.county-results {
     white-space: nowrap;
     -webkit-font-smoothing: antialiased;
 }
-.key-race-group h2 {
-    font-family: 'Gotham SSm', Helvetica, Arial, sans-serif;
-    font-weight: normal;
-    margin: 22px 0 22px 0;
-    font-weight: bold;
-    border-bottom: 2px solid #eee;
-    padding-bottom: 8px;
-    font-size: 1.1em;
+.key-race-group {
+    h2 {
+        font-family: 'Gotham SSm', Helvetica, Arial, sans-serif;
+        font-weight: normal;
+        margin: 22px 0 22px 0;
+        font-weight: bold;
+        border-bottom: 2px solid #eee;
+        padding-bottom: 8px;
+        font-size: 1.1em;
+    }
+
+    .results-table.statewide {
+        &.ballot {
+          margin-top: 30px;
+
+          &:first-child {
+            margin-top: 0;
+          }
+        }
+    }
 }

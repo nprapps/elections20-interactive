@@ -46,8 +46,10 @@ export default function ResultsTableCandidates(props) {
   var hasIncumbent = results.candidates.some(c => c.incumbent);
   var incumbentText = hasIncumbent ? <div>● - Incumbent</div> : "";
 
+  var ballot = results.office == "I";
+
   return (
-    <div class="results-table statewide">
+    <div class={"results-table statewide " + (ballot ? "ballot" : "")}>
       <div class="results-header">
         {seatName ? <caption> {seatName}</caption> : <span />}
         <span class="reporting">{reporting}</span>
@@ -56,7 +58,7 @@ export default function ResultsTableCandidates(props) {
         <div class="thead" role="rowgroup">
           <div class="tr" role="row">
             <div role="columnheader" class="th name" colspan="2">
-              Candidate
+              {ballot ? "" : "Candidate"}
             </div>
             <div role="columnheader" class="th percentage">
               Percent
