@@ -55,7 +55,7 @@ export default function ResultsTableCandidates(props) {
         <div class="thead" role="rowgroup">
           <div class="tr" role="row">
             <div role="columnheader" class="th name" colspan="2">
-              {ballot ? "" : "Candidate"}
+              {ballot ? "Option" : "Candidate"}
             </div>
             <div role="columnheader" class="th percentage">
               Percent
