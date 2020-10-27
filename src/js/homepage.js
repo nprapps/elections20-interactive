@@ -53,7 +53,7 @@ export default class Homepage extends Component {
       <ElectoralBars called={called} />
       <Leaderboard called={called} />
 
-      {results && results.length && <Tabs id="president-viz">
+      {results && results.length && <Tabs id="homepage-viz">
 
         <div icon="./assets/icons/ico-bubbles.svg" label="Margins" selected={display == "margins"}>
           <ElectoralBubbles results={results} />
