@@ -1,5 +1,6 @@
 import { h, Fragment, Component } from "preact";
 import track from "../../lib/tracking";
+import InlineSVG from "../inlineSVG";
 
 export function Tab(props) {
   return <button
@@ -8,7 +9,7 @@ export function Tab(props) {
     aria-selected={props.selected}
     onClick={props.choose}
   >
-    {props.icon && <img alt="" src={props.icon} class="icon" />}
+    {props.icon && <InlineSVG alt="" src={props.icon} class="icon" />}
     {props.label}
   </button>
 }
