@@ -37,7 +37,7 @@ h1 {
 
 main.embed-bop {
   color: #444;
-  // background: black;
+  background: black;
 
   .inline {
     .container {
@@ -51,6 +51,10 @@ main.embed-bop {
 
     .bar-container {
       height: @height;
+    }
+
+    .president .bar-container {
+      display: block;
     }
 
     .senate, .house {
@@ -77,7 +81,7 @@ main.embed-bop {
       }
 
       .middle {
-        height: @thin-height * 1.7;
+        height: @thin-height * 2;
       }
 
       @media @mobile {
@@ -98,7 +102,7 @@ main.embed-bop {
           }
           .middle {
             top: @thin-height / -5;
-            height: @thin-height * 1.2;
+            height: @thin-height * 1.4;
           }
           h3 {
             margin-top: 0;
@@ -121,7 +125,12 @@ main.embed-bop {
     }
 
     .candidate {
-      border: 0;
+      border: 0 !important;
+    }
+    .president {
+      .chatter {
+        margin-bottom: 10px;
+      }
     }
 
     .source {
@@ -148,6 +157,9 @@ main.embed-bop {
     }
     .divider {
       border-top: 1px solid #333;
+    }
+    .president .candidate:first-child {
+      border-right: 1px solid #333;
     }
   }
 
@@ -226,24 +238,11 @@ main.embed-bop {
     .candidate {
       flex: 1;
       text-align: center;
-      // border-left: 1px solid #eee;
       max-width: 150px;
-      // padding: 0 10px;
       color: #666;
       display: flex; 
       flex-direction: column; 
       justify-content: flex-end;
-
-      // &:first-child {
-      //   border-left: 0;
-      // }
-
-      // &.dem {
-      //   text-align: left;
-      // }
-      // &.gop {
-      //   text-align: right;
-      // }
 
       .name {
         .knockout-header();
@@ -258,7 +257,6 @@ main.embed-bop {
         .gotham();
         font-size: 30px;
         font-weight: bold;
-        // color: #666;
       }
     }
 
@@ -274,25 +272,19 @@ main.embed-bop {
       color: @ind;
       path { fill: @ind; }
     }
-    // .uncalled {
-    //   @media @sidebar {
-    //     display: none;
-    //   }
-    // }
   }
 
-  // .president {
-  //   .bar-container {
-  //     height: @thin-height;
-  //     margin-bottom: 20px;
-
-  //     .middle {
-  //       top: @thin-height / -5;
-  //       border-left: 1px solid #444;
-  //       height: @thin-height * 1.4;
-  //     }
-  //   }
-  // }
+  .president {
+    .chatter {
+      margin-bottom: 15px;
+    }
+    .bar-container {
+      display: none;
+    }
+    .candidate:first-child {
+      border-right: 1px solid #ddd;
+    }
+  }
 
   .bar-container {
     width: 100%;
@@ -351,14 +343,14 @@ main.embed-bop {
       position: absolute;
       top: @height / -5;
       border-left: 1px solid #444;
-      height: @height * 1.5;
+      height: @height * 1.8;
       width: 1px;
       right: 50%;
     }
   }
 
   .divider {
-    border-top: 1px solid #ddd;
+    border-top: 1px solid #eee;
     margin: 20px 0;
 
     @media @mobile {
@@ -368,9 +360,5 @@ main.embed-bop {
 
   .source {
     margin-top: 55px;
-
-    // @media @mobile {
-    //   margin-top: 10px;
-    // }
   }
 }
