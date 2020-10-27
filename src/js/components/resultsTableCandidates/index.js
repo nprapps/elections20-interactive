@@ -34,7 +34,7 @@ export default function ResultsTableCandidates(props) {
 
   var footnote;
   var uncontestedText = isUncontested ? (
-    <div>
+    <div class="footnote uncontested">
       The AP does not tabulate votes for uncontested races and declares its
       winner as soon as polls close.
     </div>
@@ -50,7 +50,6 @@ export default function ResultsTableCandidates(props) {
     <div class={"results-table statewide " + (ballot ? "ballot" : "")}>
       <div class="results-header">
         {seatName ? <caption> {seatName}</caption> : <span />}
-        <span class="reporting">{reporting}</span>
       </div>
       <div class={"board " + (isUncontested ? "uncontested" : "")} role="table">
         <div class="thead" role="rowgroup">
@@ -79,9 +78,12 @@ export default function ResultsTableCandidates(props) {
         </div>
       </div>
       <div class="footnote">
+        <span class="left">
         {incumbentText}
-        {uncontestedText}
+        </span>
+        <span class="right">{reporting}</span>
       </div>
+      {uncontestedText}
     </div>
   );
 }
