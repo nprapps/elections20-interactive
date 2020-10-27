@@ -171,7 +171,7 @@ module.exports = function (resultArray, overrides = {}) {
         }
 
         // add the state name to states
-        var stateKey = unitMeta.district ? `${unitMeta.state}-${unitMeta.district}` : unitMeta.state;
+        var stateKey = unitMeta.district && unitMeta.district != "AL" ? `${unitMeta.state}-${unitMeta.district}` : unitMeta.state;
         var stateMeta = states[stateKey];
         if (stateMeta) {
           unitMeta.stateName = stateMeta.name;
