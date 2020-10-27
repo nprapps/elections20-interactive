@@ -54,9 +54,9 @@ Tracked events
 Additional links and params
 --------------
 
-* Homepage embed: `/homepage.html` (param options: `display=margins,cartogram,map`)
-* Balance of Power embed (House and Senate bars): `/embedBOP.html` (`hp=true` adds presidential view)
-* Internal ballot initiative board: `/#/ballots`
+* Homepage embed: ``/homepage.html`` (param options: ``display=margins,cartogram,map``)
+* Balance of Power embed (House and Senate bars): ``/embedBOP.html`` (``hp=true`` adds presidential view for use on homepage)
+* Internal ballot initiative board: ``/#/ballots``
 
 Troubleshooting
 ---------------
