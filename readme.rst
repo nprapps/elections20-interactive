@@ -55,11 +55,11 @@ Additional links and params
 --------------
 
 * Homepage embed: ``/homepage.html``
-1. ``display=margins,cartogram,map`` controls which viz displays on load
+  * ``display=margins,cartogram,map`` controls which viz displays on load
 * Balance of Power embed (House and Senate bars): ``/embedBOP.html``
-1. ``president=true`` adds electoral totals to the top (for use on homepage)
-2. ``trio=true`` for side-by-side display (for use on liveblog)
-3. ``theme=dark`` for dark theme
+  * ``president=true`` adds electoral totals to the top (for use on homepage)
+  * ``trio=true`` for side-by-side display (for use on liveblog)
+  * ``theme=dark`` for dark theme
 * Internal ballot initiative board: ``/#/ballots``
 * Results embed customizer: ``/customizer.html``
 
