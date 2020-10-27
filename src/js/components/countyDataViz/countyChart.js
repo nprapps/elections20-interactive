@@ -56,7 +56,7 @@ export class CountyChart extends Component {
     var relationships = [
       "almost no",
       "a weak",
-      "moderate",
+      "a moderate",
       "a strong",
       "a very strong",
     ];
