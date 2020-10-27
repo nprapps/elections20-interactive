@@ -171,11 +171,12 @@ module.exports = function (resultArray, overrides = {}) {
         }
 
         // add the state name to states
-        var stateMeta = states[unitMeta.state];
+        var stateKey = unitMeta.district ? `${unitMeta.state}-${unitMeta.district}` : unitMeta.state;
+        var stateMeta = states[stateKey];
         if (stateMeta) {
-          unitMeta.stateName = states[unitMeta.state].name;
-          unitMeta.stateAP = states[unitMeta.state].ap;
-          unitMeta.rating = states[unitMeta.state].rating;
+          unitMeta.stateName = stateMeta.name;
+          unitMeta.stateAP = stateMeta.ap;
+          unitMeta.rating = stateMeta.rating;
         }
 
         var sheetMetadata = nprMetadata[raceMeta.id];
