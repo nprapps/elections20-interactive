@@ -12,7 +12,10 @@ class Customizer extends Component {
       selectedState: "AK",
       selectedOffice: "",
       races: [],
-      raceID: null
+      raceID: null,
+      dark: false,
+      showPresident: false,
+      inline: false
     }
 
     this.selectStatePage = this.selectStatePage.bind(this);
@@ -38,6 +41,10 @@ class Customizer extends Component {
     this.setState({ raceID: e.target.value })
   }
 
+  setFlag(flag, value) {
+    this.setState({ [flag]: value });
+  }
+
   async loadStateRaces(state) {
     this.setState({ races: [], raceID: null })
     var response = await fetch(`./data/states/${state}.json`);
@@ -54,7 +61,8 @@ class Customizer extends Component {
       ["house", "House"],
       ["state", "State page"],
       ["race", "Individual race"],
-      ["sidebar", "Sidebar BoP"]
+      ["sidebar", "Balance of power"],
+      ["homepage", "Homepage topper"]
     ];
 
     var offices = [
@@ -176,7 +184,64 @@ class Customizer extends Component {
             </>);
 
           case "sidebar":
-            var src = url + `embedBOP.html?hp=true`;
+            var src = new URL(url + `embedBOP.html`);
+            if (state.dark) src.searchParams.set("theme", "dark");
+            if (state.showPresident) src.searchParams.set("president", true);
+            if (state.inline) src.searchParams.set("inline", true)
+            return (<>
+              <div class="options">
+                <input 
+                  id="bop_dark" 
+                  type="checkbox" 
+                  value={state.dark} 
+                  onInput={() => this.setFlag("dark", !state.dark)} />
+                <label for="bop_dark">Dark theme</label>
+
+                <input 
+                  id="bop_showPresident" 
+                  type="checkbox" 
+                  value={state.showPresident} 
+                  onInput={() => this.setFlag("showPresident", !state.showPresident)} />
+                <label for="bop_showPresident">Show president</label>
+
+                <input 
+                  id="bop_triplet" 
+                  type="checkbox" 
+                  value={state.inline} 
+                  onInput={() => this.setFlag("inline", !state.inline)} />
+                <label for="bop_inline">Row layout</label>
+              </div>
+              <h2>Embeds</h2>
+              <div style="display: grid; grid-template-columns: 1fr 1fr; grid-gap: 8px">
+                <div>
+                  <h3>Pym</h3>
+                  <textarea rows="6" style="width:100%">
+                  {`<p
+                    data-pym-loader
+                    data-child-src="${src}"
+                    id="responsive-embed-election-sidebar">
+                      Loading...
+                  </p>
+                  <script src="https://pym.nprapps.org/npr-pym-loader.v2.min.js"></script>`.replace(/\s{2,}|\n/g, " ")}
+                  </textarea>
+                </div>
+                <div>
+                  <h3>Sidechain</h3>
+                  <textarea rows="6" style="width:100%">
+                  {`<side-chain src="${src}"></side-chain>
+                  <script src="https://apps.npr.org/elections20-interactive/sidechain.js"></script>`.replace(/\s{2,}|\n/g, " ")}
+                  </textarea>
+                </div>
+              </div>
+              <h2>Preview</h2>
+              <side-chain
+                src={src}
+              />
+            </>);
+            break;
+
+          case "homepage":
+            var src = new URL(url + `homepage.html`);
             return (<>
               <h2>Embeds</h2>
               <div style="display: grid; grid-template-columns: 1fr 1fr; grid-gap: 8px">
@@ -202,7 +267,6 @@ class Customizer extends Component {
               </div>
               <h2>Preview</h2>
               <side-chain
-                key={state.raceID}
                 src={src}
               />
             </>);
