@@ -6,6 +6,7 @@ import {
   formatters,
   availableMetrics,
   getParty,
+  getCountyCandidates,
 } from "../util.js";
 var { percentDecimal, voteMargin } = formatters;
 
@@ -39,6 +40,10 @@ export default class ResultsTableCounty extends Component {
 
     // Order by lead in overall state race
     const orderedCandidates = this.props.sortOrder;
+    const winningCands = getCountyCandidates(
+      this.props.sortOrder,
+      this.props.data
+    ).map(c => c.last);
     return (
       <div
         class={
@@ -61,7 +66,9 @@ export default class ResultsTableCounty extends Component {
                 onclick={() => this.updateSort("countyName")}>
                 <div>{this.getIcon("countyName")}</div>
               </th>
-              {orderedCandidates.map(cand => CandidateHeaderCell(cand))}
+              {orderedCandidates.map(cand =>
+                CandidateHeaderCell(cand, winningCands)
+              )}
               <th class="vote margin">
                 <div>
                   <span class="title">Vote margin</span>
@@ -84,6 +91,7 @@ export default class ResultsTableCounty extends Component {
                 candidates={orderedCandidates}
                 row={c}
                 metric={this.state.displayedMetric}
+                top={winningCands}
               />
             ))}
           </tbody>
@@ -233,12 +241,12 @@ export default class ResultsTableCounty extends Component {
 
 function ResultsRowCounty(props) {
   var { candidates, row, metric } = props;
-  var topCands = props.candidates.map(c => c.last);
+  var topCands = candidates.map(c => c.last);
 
   var orderedCandidates = candidates.map(function (header) {
-    // If on other candidate, get total percent of other votes
+    // If no other candidate, get total percent of other votes
     if (header.last == "Other") {
-      var other = mergeOthers(row.candidates, header.id, topCands);
+      var other = mergeOthers(row.candidates, header.id, topCands, props.top);
       return other;
     }
     var [match] = row.candidates.filter(c => header.id == c.id);
@@ -264,7 +272,8 @@ function ResultsRowCounty(props) {
       {orderedCandidates.map(c =>
         CandidatePercentCell(
           c,
-          c.party == leadingCand.party && c.last == leadingCand.last
+          c.party == leadingCand.party && c.last == leadingCand.last,
+          props.top
         )
       )}
       {MarginCell(row.candidates, leadingCand.party)}
@@ -273,9 +282,14 @@ function ResultsRowCounty(props) {
   );
 }
 
-function CandidateHeaderCell(candidate) {
+function CandidateHeaderCell(candidate, winningCands) {
+  var isWinner = winningCands.includes(candidate.last);
   return (
-    <th class="vote" key={candidate.party}>
+    <th
+      class={`vote ${
+        isWinner || candidate.last == "Other" ? "" : "not-leading"
+      }`}
+      key={candidate.party}>
       <div>
         <span class="title">{candidate.last}</span>
       </div>
@@ -286,12 +300,31 @@ function CandidateHeaderCell(candidate) {
 /*
  * Creates a candidate vote % cell. Colors with candidate party if candidate is leading.
  */
-function CandidatePercentCell(candidate, leading) {
+function CandidatePercentCell(candidate, leading, topCands) {
   var displayPercent = percentDecimal(candidate.percent);
   var party = getParty(candidate.party);
+  var otherDisplay =
+    candidate.party == "Other" ? (
+      <span class="display-percent mobile">{`${percentDecimal(
+        candidate.mobilePercent
+      )}`}</span>
+    ) : (
+      ""
+    );
+  var hideOnMobile = !(
+    candidate.last == "Other" || topCands.includes(candidate.last)
+  );
   return (
-    <td class={`vote ${party} ${leading ? "leading" : ""}`} key={candidate.id}>
-      {`${displayPercent}`}
+    <td
+      class={`vote ${party} ${leading ? "leading" : ""} ${
+        hideOnMobile ? "not-leading" : ""
+      }`}
+      key={candidate.id}>
+      <span
+        class={
+          candidate.party == "Other" ? "display-percent" : ""
+        }>{`${displayPercent}`}</span>
+      {otherDisplay}
     </td>
   );
 }
@@ -323,29 +356,24 @@ function calculateVoteMargin(candidates) {
 }
 
 // Borrowed from normalize
-// TODO: clean me up, can probably remove some of the this for our purposes
-var mergeOthers = function (candidates, raceID, topCandidates) {
+var mergeOthers = function (candidates, raceID, topCandidates, top) {
   // Only merged not top X candidates in state.
   var remaining = candidates.filter(c => !topCandidates.includes(c.last));
+  var mobileCands = candidates.filter(c => !top.includes(c.last));
   var other = {
     first: "",
     last: "Other",
     party: "Other",
     id: `other-${raceID}`,
-    votes: 0,
-    avotes: 0,
-    electoral: 0,
     percent: 0,
-    count: remaining.length,
+    mobilePercent: 0,
   };
   for (var c of remaining) {
-    other.votes += c.votes || 0;
-    other.avotes += c.avotes || 0;
     other.percent += c.percent || 0;
-    other.electoral += c.electoral || 0;
-    if (c.winner) {
-      other.winner = c.winner;
-    }
+  }
+  // Tally other county for tiny screen views
+  for (var c of mobileCands) {
+    other.mobilePercent += c.percent || 0;
   }
   return other;
 };

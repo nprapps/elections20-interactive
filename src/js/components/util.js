@@ -182,6 +182,23 @@ export function styleJSX(styles) {
   return list.join("; ");
 }
 
+export function getCountyCandidates(overall, counties) {
+  var winningCands = overall.slice(0, 2);
+  winningCands.concat(
+    counties
+      .filter(function (obj, index, self) {
+        return (
+          index ===
+          self.findIndex(function (t) {
+            return t.candidates[0].last === obj.candidates[0].last;
+          })
+        );
+      })
+      .map(c => c.candidates[0])
+  );
+  return winningCands;
+}
+
 export var winnerIcon = `<span class="winner-icon" role="img" aria-label="check mark">
     <svg
       aria-hidden="true"

@@ -6,6 +6,7 @@ import {
   getParty,
   getPartyPrefix,
   isSameCandidate,
+  getCountyCandidates,
 } from "../util.js";
 
 export default class CountyMap extends Component {
@@ -23,18 +24,7 @@ export default class CountyMap extends Component {
     this.height;
 
     // Only display candidates that are winning a county
-    var legendCands = props.sortOrder.slice(0,2);
-    legendCands.concat(props.data
-      .filter(function (obj, index, self) {
-        return (
-          index ===
-          self.findIndex(function (t) {
-            return (t.candidates[0].last === obj.candidates[0].last);
-          })
-        );
-      })
-      .map(c => c.candidates[0]));
-
+    var legendCands = getCountyCandidates(props.sortOrder, props.data);
     
     // Add in special marker if more than one candidate of same party is winning a county.
     var specialCount = 1;
