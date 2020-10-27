@@ -1,0 +1,66 @@
+<!doctype html>
+<%
+  var stateMeta = grunt.data.json.states[state];
+  var stateName = stateMeta.name;
+  var title = `${stateName} State Election Results 2020`;
+  var description = `Live election results: Get the latest for ${stateName}`;
+  var base = `https://apps.npr.org/elections20-interactive`;
+  var image = `${base}/assets/social_states/${state}.jpg`;
+
+  var there = `${base}/#/states/${state}`;
+  var here = `${base}/share/${state}.html`;
+
+%>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+
+    <title><%= stateName %> Election Results 2020 : NPR</title>
+
+    <!-- Favicon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="https://media.npr.org/templates/favicon/favicon-180x180.png" />
+    <link rel="icon" sizes="96x96" href="https://media.npr.org/templates/favicon/favicon-96x96.png" />
+    <link rel="icon" sizes="32x32" href="https://media.npr.org/templates/favicon/favicon-32x32.png" />
+    <link rel="icon" sizes="16x16" href="https://media.npr.org/templates/favicon/favicon-16x16.png" />
+
+    <!-- BEGIN TWITTER SUMMARY CARD -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="<%= title %>">
+    <meta name="twitter:site" content="@nprviz">
+    <meta name="twitter:url" content="<%= here %>">
+    <meta name="twitter:image" content="<%= image %>">
+    <meta name="twitter:description" content="<%= description %>">
+
+    <!-- Social sharing meta -->
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="<%= title %>">
+    <meta property="og:site_name" content="NPR Visuals">
+    <meta property="og:url" content="<%= here %>">
+    <meta property="og:image" content="<%= image %>">
+    <meta property="og:description" content="<%= description %>">
+
+    <meta property="fb:app_id" content="138837436154588">
+    <meta property="article:opinion" content="false">
+    <meta property="article:content_tier" content="free">
+    <meta property="fb:pages" content="10643211755">
+    <meta property="og:site_name" content="NPR.org" />
+  </head>
+  <body>
+    <noscript>
+      <p>If you are not automatically redirected, <a href="<%= there %>">visit the NPR live coverage here</a></p>
+    </noscript>
+
+    <script>
+      // Make sure we capture any UTM query parameters passed
+      var dest = new URL("<%= there %>");
+      dest.search = window.location.search;
+      var redirectURL = dest.toString();
+
+      // Using `location.replace()` means that users won't be able to
+      // navigate "back" to this stub page
+      window.location.replace(redirectURL);
+    </script>
+
+  </body>
+</html>

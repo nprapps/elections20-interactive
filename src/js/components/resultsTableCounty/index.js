@@ -1,4 +1,5 @@
 import { h, Fragment, Component, createRef } from "preact";
+import track from "../../lib/tracking";
 import {
   reportingPercentage,
   sortByOrder,
@@ -108,6 +109,9 @@ export default class ResultsTableCounty extends Component {
     var order = sortMetric.alpha ? -1 : 1;
     if (sortMetric == this.state.sortMetric) {
       order = this.state.order * -1;
+      track("county-sort", metricName);
+    } else {
+      track("county-metric", metricName);
     }
     var state = { sortMetric, order };
     if (opt_newMetric) state.displayedMetric = availableMetrics[metricName];

@@ -63,8 +63,8 @@ export class CountyChart extends Component {
     var index = Math.ceil(this.props.corr * relationships.length) - 1;
     return (
       <span class="description">
-        There is <b>{relationships[index]}</b> relationship between{" "}
-        <b> {this.props.title} </b> and party vote
+        <b>{this.props.title}</b> and party vote have{" "}
+        <b> {relationships[index]} </b> relationship
       </span>
     );
   }
@@ -114,7 +114,7 @@ export class CountyChart extends Component {
     if (x + 1 > bounds.width / 2) {
       x -= 130;
       y += 10;
-    } 
+    }
     tooltip.style.left = x + 20 + "px";
     tooltip.style.top = y + "px";
 

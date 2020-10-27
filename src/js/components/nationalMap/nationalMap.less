@@ -67,7 +67,7 @@
    	  		background: @gop;
    	  	}
    	  	&.Other {
-   	  		background: #9a9a9a;
+   	  		display: none;
    	  	}
    	  }
 	  }
@@ -92,6 +92,11 @@
 	g {
 		fill: #eee;
 		stroke: white;
+		cursor: pointer;
+
+		&.ne, &.me {
+			cursor: default;
+		}
 
 		&.early {
 			fill: #ddd;

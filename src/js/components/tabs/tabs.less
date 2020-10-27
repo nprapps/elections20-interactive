@@ -1,30 +1,71 @@
 .tabs[role="tablist"] {
   display: flex;
+  max-width: 650px;
+  margin: auto;
 
   [role="tab"] {
     background: white;
+    cursor: pointer;
     border: none;
     padding: 8px;
     text-transform: uppercase;
-    .gotham();
+    .knockout-header();
     border-bottom: 2px solid transparent;
+    display: block;
+    text-align: center;
+    flex: 1;
+    border: 1px solid #ddd;
+    background: #f7f7f7;
+
+    @media @mobile {
+      font-size: 12px;
+    }
+
+    &:first-child {
+      border-top-left-radius: 4px;
+      border-bottom-left-radius: 4px;
+    }
+    &:last-child {
+      border-top-right-radius: 4px;
+      border-bottom-right-radius: 4px;
+    }
 
     &:hover {
-      border-bottom-color: fade(@true, 20%);
+      // border-bottom-color: fade(@true, 20%);
+      background: #bbb;
+      border-color: #bbb;
+      color: white;
     }
 
-    &:focus {
-      background: #E8E8E8;
-      outline: none;
-    }
+    // &:focus {
+    //   background: #ccc;
+    //   // outline: none;
+    // }
 
     &[aria-selected="true"] {
-      border-bottom-color: @true;
+      // border-bottom-color: @true;
+      background: #444;
+      border-color: #444;
+      color: white;
+    }
+
+    img.icon {
+      display: inline;
+      max-width: 30px;
+      max-height: 1.5em;
+      margin-right: 6px;
+      vertical-align: middle;
+
+      @media @mobile {
+        display: block;
+        margin: 0 auto 4px;
+      }
     }
   }
 }
 
 [role="tabpanel"] {
+  padding: 20px 0 0;
 
   &:focus {
     outline: none;
@@ -32,6 +73,8 @@
   }
 
   &.inactive {
+    width: 100%;
+    max-width: 1200px;
     visibility: visible;
     position: absolute;
     left: -100000px;

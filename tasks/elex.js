@@ -8,6 +8,7 @@
 
 var { redeemTicket, apDate } = require("./lib/apResults");
 var normalize = require("./lib/normalizeResults");
+var nullify = require("./lib/nullifyResults");
 var augment = require("./lib/augmentResults");
 var fs = require("fs").promises;
 
@@ -20,6 +21,7 @@ module.exports = function(grunt) {
 
     var test = grunt.option("test");
     var offline = grunt.option("offline");
+    var zero = grunt.option("zero");
 
     // probably move this into a sheet to be safe
     // also, should we use the ticket merging system?
@@ -58,6 +60,7 @@ module.exports = function(grunt) {
           race.reportingUnits = race.reportingUnits.filter(u => u.level == "district");
         });
       }
+      if (zero) nullify(response);
       rawResults.push(response);
     }
     // turn AP into normalized race objects
@@ -134,7 +137,7 @@ module.exports = function(grunt) {
       house: geo.state.filter(r => r.office == "H"),
       senate: geo.state.filter(r => r.office == "S"),
       gov: geo.state.filter(r => r.office == "G"),
-      ballots: geo.state.filter(r => r.office == "I")
+      ballots: geo.state.filter(r => r.office == "I" && r.featured)
     }
 
     for (var office in byOffice) {

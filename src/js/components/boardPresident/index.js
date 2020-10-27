@@ -1,42 +1,61 @@
 import { h, Component, Fragment } from "preact";
 import gopher from "../gopher.js";
-import NationalMap from "../nationalMap";
-import Results from "../resultsBoardPresident";
-import TestBanner from "../testBanner";
-import DateFormatter from "../dateFormatter";
-import ElectoralArc from "../electoralArc";
-import ElectoralGrid from "../electoralGrid";
-import ElectoralBubbles from "../electoralBubbles";
-import BoardKey from "../boardKey";
-import Tabs from "../tabs";
 import { getBucket, sumElectoral, groupCalled, styleJSX } from "../util.js";
+
+import TestBanner from "../testBanner";
+
+import Tabs from "../tabs";
+import ElectoralBubbles from "../electoralBubbles";
+import Cartogram from "../cartogram";
+import NationalMap from "../nationalMap";
+
+import Results from "../resultsBoardPresident";
+import DateFormatter from "../dateFormatter";
+import BoardKey from "../boardKey";
+
+var winnerIcon =
+  <span class="winner-icon" role="img" aria-label="check mark">
+    <svg
+      aria-hidden="true"
+      focusable="false"
+      role="img"
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 512 512">
+      <path
+        fill="#333"
+        d="M173.898 439.404l-166.4-166.4c-9.997-9.997-9.997-26.206 0-36.204l36.203-36.204c9.997-9.998 26.207-9.998 36.204 0L192 312.69 432.095 72.596c9.997-9.997 26.207-9.997 36.204 0l36.203 36.204c9.997 9.997 9.997 26.206 0 36.204l-294.4 294.401c-9.998 9.997-26.207 9.997-36.204-.001z"></path>
+    </svg>
+  </span>;
 
 export function Leaderboard(props) {
   var { called } = props;
 
   return (
-    <div class="leaderboard">
-      <div class="results-header-group dem">
-        <h2 class="party">
-          <label>Biden</label>
-          <abbr>{sumElectoral(called.Dem)}</abbr>
-        </h2>
-      </div>
+    <ul class="electoral-leaderboard">
+      <li class="party dem">
+        <label>Biden {sumElectoral(called.Dem) >= 270 ? winnerIcon : ""}</label>
+        {sumElectoral(called.Dem)}
+      </li>
 
-      <div class="results-header-group not-called">
-        <h2 class="party">
+      {sumElectoral(called.uncalled) ?
+        <li class="party not-called">
           <label>Not Yet Called</label>
-          <abbr>{sumElectoral(called.uncalled)}</abbr>
-        </h2>
-      </div>
+          {sumElectoral(called.uncalled)}
+        </li>
+      : ""}
 
-      <div class="results-header-group gop">
-        <h2 class="party">
-          <label>Trump</label>
-          <abbr>{sumElectoral(called.GOP)}</abbr>
-        </h2>
-      </div>
-    </div>
+      <li class="party gop">
+        <label>Trump {sumElectoral(called.GOP) >= 270 ? winnerIcon : ""}</label>
+        {sumElectoral(called.GOP)}
+      </li>
+
+      {sumElectoral(called.Other) ?
+        <li class="party other">
+          <label>Other {sumElectoral(called.Other) >= 270 ? winnerIcon : ""}</label>
+          {sumElectoral(called.Other)}
+        </li>
+      : ""}
+    </ul>
   );
 }
 
@@ -48,8 +67,8 @@ export function ElectoralBars(props) {
   return <div class="electoral-bars" aria-hidden="true">
     <div class="bar Dem" style={styleJSX({ width: dWidth + "%" })} />
     <div class="bar GOP" style={styleJSX({ width: rWidth + "%" })} />
-    <hr class="divider">
-      <span class="label">270</span>
+    <hr class="victory">
+      <span class="label">270 to win</span>
     </hr>
   </div>
 };
@@ -111,22 +130,25 @@ export default class BoardPresident extends Component {
 
       <ElectoralBars called={called} />
       <Leaderboard called={called} />
+      <hr class="divider" />
 
-      <Tabs id="president-viz">
+      {results && (results.filter(r => r.called).length > 5) && <Tabs id="president-viz">
 
-        <div label="Margins">
+        <div icon="./assets/icons/ico-bubbles.svg" label="Margins">
           <ElectoralBubbles results={results} />
         </div>
 
-        <div label="Grid">
-          <ElectoralGrid results={results} />
+        <div icon="./assets/icons/ico-cartogram.svg" label="Electoral">
+          <Cartogram races={results} />
         </div>
 
-        <div label="Map">
-          {results && <NationalMap races={results} />}
+        <div icon="./assets/icons/ico-geo.svg" label="Geography">
+          <NationalMap races={results} />
         </div>
         
-      </Tabs>
+      </Tabs>}
+
+      <BoardKey race="president"/>
 
       <div label="Board" class="board-container President">
         {results && <>
@@ -136,8 +158,6 @@ export default class BoardPresident extends Component {
         </>}
       </div>
 
-      <BoardKey race="president"/>
-      
       <div class="source">Source: AP (as of <DateFormatter value={latest} />)</div>
     </div>
   }

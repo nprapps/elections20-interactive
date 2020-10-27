@@ -1,6 +1,7 @@
 import { Component, h, Fragment } from "preact";
 import Scrapple from "@twilburn/scrapple";
 import "./components/ad";
+import track from "./lib/tracking";
 
 import BoardGovernor from "./components/boardGovernor";
 import BoardHouse from "./components/boardHouse";
@@ -33,8 +34,8 @@ export default class App extends Component {
   }
 
   addRoute(path, route) {
-    this.router.add(path, ({ params }) => {
-      this.setState({ route, params });
+    this.router.add(path, ({ url, params }) => {
+      this.setState({ route, params, url });
     });
   }
 
@@ -63,7 +64,8 @@ export default class App extends Component {
   render(props, state) {
     // use a View component
     if (!state.route && state.View) {
-      console.log(`Loaded page component: ${state.View.name}`);
+      // console.log(`Loaded page component: ${state.View.name}`);
+      track(`route`, state.url || "none");
       document.body.dataset.view = state.View.name;
       try {
         return <state.View {...state.params} />
@@ -74,7 +76,8 @@ export default class App extends Component {
 
     // otherwise call a route method
     if (this[state.route]) {
-      console.log(`Loading local view method: ${state.route}()`);
+      // console.log(`Loading local view method: ${state.route}()`);
+      track(`route`, state.url || "none");
       document.body.dataset.view = state.route;
       try {
         return this[state.route](props, state);

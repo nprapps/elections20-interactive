@@ -98,7 +98,9 @@ export default class StateResults extends Component {
     if (view === "key") {
       return <KeyRaces state={this.props.state} />;
     } else if (view === "H" || view === "I") {
-      var results = this.state.results.filter(r => r.office == view);
+      var results = this.state.results
+        .filter(r => r.office == view)
+        .sort((a, b) => a.seatNumber * 1 - b.seatNumber * 1);
       return (
         <div class="results-no-counties">
           <div class="results-wrapper">
@@ -110,23 +112,31 @@ export default class StateResults extends Component {
       );
     } else {
       var results = this.state.results.filter(r => r.office == view);
-      return <div>
-        {results.length > 1 && this.renderJumpButtons(results)}
-        {results.map(r => this.getRaceWithCountyResults(r, results.length - 1))}
-      </div>
-
+      return (
+        <div>
+          {results.length > 1 && this.renderJumpButtons(results)}
+          {results.map(r =>
+            this.getRaceWithCountyResults(r, results.length - 1)
+          )}
+        </div>
+      );
     }
   }
 
   renderJumpButtons(results) {
-    return <nav class="jump-links">
-      Jump to results:
-    {results.map((r, i) => (<>
-      <a onClick={() => this.jump(`#race-${r.id}`)}>
-        {`${stateLookup[this.props.state].name}-${r.seatNumber || 1}`}
-      </a> { i < results.length - 1 ? "|" : ""}
-    </>))}
-    </nav>
+    return (
+      <nav class="jump-links">
+        Jump to results:
+        {results.map((r, i) => (
+          <>
+            <a onClick={() => this.jump(`#race-${r.id}`)}>
+              {`${stateLookup[this.props.state].name}-${r.seatNumber || 1}`}
+            </a>{" "}
+            {i < results.length - 1 ? "|" : ""}
+          </>
+        ))}
+      </nav>
+    );
   }
 
   jump(id) {
@@ -193,24 +203,25 @@ export default class StateResults extends Component {
     });
 
     var tabElements = tabs.map(t => (
-      <div>
-        <a
-          aria-current={view == t.data}
-          href={`#/states/${this.props.state}/${t.data}`}
-          class="race-type-nav">
-          {t.label}
-        </a>
-      </div>
+      <li class={`sortButton ${view == t.data ? "selected" : ""}`}>
+        <span class="metric">
+          <a
+            aria-current={view == t.data}
+            href={`#/states/${this.props.state}/${t.data}`}
+            class="race-type-nav">
+            {t.label}
+          </a>
+        </span>
+        <span class="pipe"> | </span>
+      </li>
     ));
 
     return (
       <>
-        <nav class="race-calendar">
-          <div>
-            <span class="view-label">Election results: </span>
-          </div>
+        <ul class="sorter">
+          <li class="label">Election results:</li>
           {tabElements}
-        </nav>
+        </ul>
       </>
     );
   }

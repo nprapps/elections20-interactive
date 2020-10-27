@@ -55,12 +55,18 @@ async function init(results) {
     {hp && <>
       <a class="container" href="http://apps.npr.org/elections20-interactive/#/president">
         <h3>President ›</h3>
-        <div class="chatter"><strong>270</strong> electoral votes needed to win</div>
+        <div class="chatter"><strong>270</strong> electoral votes to win</div>
         <div class="pres-container">
           <div class="candidate dem">
             <div class="name">Biden {president.Dem >= 270 ? winnerIcon : ""}</div>
             <div class="votes">{president.Dem}</div>
           </div>
+          {538 - president.Dem - president.GOP - president.Other ?
+            <div class="candidate uncalled">
+              <div class="name">Not Yet Called</div>
+              <div class="votes">{538 - president.Dem - president.GOP - president.Other}</div>
+            </div>
+          : ""}
           <div class="candidate gop">
             <div class="name">Trump {president.GOP >= 270 ? winnerIcon : ""}</div>
             <div class="votes">{president.GOP}</div>
@@ -71,12 +77,7 @@ async function init(results) {
               <div class="votes">{president.Other}</div>
             </div>
           : ""}
-          {538 - president.Dem - president.GOP - president.Other ?
-            <div class="candidate uncalled">
-              <div class="name">Uncalled</div>
-              <div class="votes">{538 - president.Dem - president.GOP - president.Other}</div>
-            </div>
-          : ""}
+          
         </div>
       </a>
       <div class="divider" />
@@ -84,7 +85,7 @@ async function init(results) {
 
     <a class="container" href="http://apps.npr.org/elections20-interactive/#/house">
       <h3>House ›</h3>
-      <div class="chatter"><strong>218</strong> seats needed for majority</div>
+      <div class="chatter"><strong>218</strong> seats for majority</div>
       <div class="bar-container">
         <div class="bar dem" style={"width: " + (house.Dem / 435 * 100) + "%"}>
           <div class="label">Dem. {house.Dem >= 218 ? winnerIcon : ""}<span class="number">{house.Dem}</span></div>
@@ -101,7 +102,7 @@ async function init(results) {
 
     <a class="container" href="http://apps.npr.org/elections20-interactive/#/senate">
       <h3>Senate ›</h3>
-      <div class="chatter"><strong>51</strong> seats needed for majority</div>
+      <div class="chatter"><strong>51</strong> seats for majority</div>
       <div class="bar-container">
         <div class="bar dem" style={"width: " + (senate.Dem) + "%"}>
           <div class="label">Dem. {senate.Dem >= 51 ? winnerIcon : ""}<span class="number">{senate.Dem}</span></div>

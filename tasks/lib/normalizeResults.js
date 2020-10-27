@@ -237,7 +237,7 @@ module.exports = function (resultArray, overrides = {}) {
         // - Independent candidate(s) exist and
         // - they're not marked as exceptions in a sheet
         // TODO: handle "jungle primary" races (LA and CA)
-        if (!roster && ballot.length > 2 && parties.size > 2 && unitMeta.level != "county") {
+        if (!roster && ballot.length > 2 && unitMeta.level != "county") {
           ballot = mergeOthers(ballot, raceMeta.id);
         }
 

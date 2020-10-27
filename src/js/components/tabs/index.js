@@ -1,4 +1,5 @@
 import { h, Fragment, Component } from "preact";
+import track from "../../lib/tracking";
 
 export function Tab(props) {
   return <button
@@ -6,7 +7,10 @@ export function Tab(props) {
     aria-controls={"tab-" + props.tab}
     aria-selected={props.selected}
     onClick={props.choose}
-  >{props.label}</button>
+  >
+    {props.icon && <img alt="" src={props.icon} class="icon" />}
+    {props.label}
+  </button>
 }
 
 export function Panel(props) {
@@ -33,6 +37,7 @@ export default class Tabs extends Component {
   choose(selected) {
     localStorage.setItem(`tabs-${this.state.id}`, selected);
     this.setState({ selected, clicked: true });
+    track("tab-selected", this.props.children[selected].props.label);
   }
 
   componentDidUpdate() {
@@ -45,7 +50,7 @@ export default class Tabs extends Component {
     return <div>
       <div role="tablist" class="tabs">
         {props.children.map((c, i) => (
-          <Tab label={c.props.label} tab={i} selected={state.selected == i} choose={() => this.choose(i)} />
+          <Tab icon={c.props.icon} label={c.props.label} tab={i} selected={state.selected == i} choose={() => this.choose(i)} />
         ))}
       </div>
       <div class="tabgroup">

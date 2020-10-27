@@ -28,8 +28,6 @@ export default class KeyRaces extends Component {
       grouped[r.office].push(r);
     }
 
-    //TODO: filter house races for "featured"
-
     this.setState({ races: data.results, grouped });
   }
 

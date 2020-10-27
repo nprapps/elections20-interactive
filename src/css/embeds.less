@@ -79,12 +79,18 @@ main.embed-bop {
   .pres-container {
     display: flex;
     justify-content: center;
+    align-items: stretch;
 
     .candidate {
       flex: 1;
       text-align: center;
       border-left: 1px solid #eee;
       max-width: 150px;
+      padding: 0 10px;
+      color: #666;
+      display: flex; 
+      flex-direction: column; 
+      justify-content: flex-end;
 
       &:first-child {
         border-left: 0;
@@ -102,18 +108,21 @@ main.embed-bop {
         .gotham();
         font-size: 30px;
         font-weight: bold;
-        color: #9a9a9a;
+        // color: #666;
       }
     }
 
     .dem {
-      .votes {color: @dem;}
+      color: @dem;
+      path { fill: @dem; }
     }
     .gop {
-      .votes {color: @gop;}
+      color: @gop;
+      path { fill: @gop; }
     }
     .other {
-      .votes {color: @ind;}
+      color: @ind;
+      path { fill: @ind; }
     }
     .uncalled {
       @media @sidebar {
@@ -135,13 +144,16 @@ main.embed-bop {
 
       &.dem {
         background: @dem;
+        path { fill: @dem; }
       }
       &.gop {
         background: @gop;
         float: right;
+        path { fill: @gop; }
       }
       &.other {
         background: @ind;
+        path { fill: @ind; }
       }
     }
 

@@ -1,13 +1,25 @@
 .electoral-bubbles {
+  position: relative;
+  
+  .key-above {
+    text-align: center;
+    .knockout();
+    color: @gray-darker;
+    text-transform: uppercase;
+    font-size: 18px;
+  }
+
   .key {
     display: flex;
-    color: @gray;
+    color: @gray-light;
+    font-size: 14px;
 
     div {
       flex: 1;
       padding: 0 10px;
       text-transform: uppercase;
-      .gotham();
+      .knockout();
+      font-weight: normal;
 
       &.dem {
         text-align: right;
@@ -20,7 +32,7 @@
     position: relative;
     padding-bottom: percentage(9 / 16);
 
-    svg {
+    svg.bubble-svg {
       position: absolute;
       top: 0;
       left: 0;
@@ -28,27 +40,175 @@
       height: 100%;
 
       circle {
-        fill-opacity: .5;
-
-        &.called {
-          fill-opacity: 1;
-        }
+        stroke-width: 1px;
+        cursor: pointer;
 
         &.Dem {
-          fill: @true;
+          fill: @demDim;
+          // stroke: @true;
+
+          &.called {
+            fill: @dem;
+          }
         }
 
         &.GOP {
-          fill: @rigorous;
+          fill: @gopDim;
+          // stroke: @rigorous;
+
+          &.called {
+            fill: @gop;
+          }
+        }
+
+        &.pending {
+          stroke-dasharray: 5 2;
+          stroke: gray;
+        }
+
+        &:hover {
+          stroke: black;
+          stroke-width: 2px;
         }
       }
 
       text {
         text-anchor: middle;
         fill: white;
-        // font-size: 12px;
         .knockout();
+        pointer-events: none;
+        line-height: 1;
+
+        &.pending {
+          fill: @gray;
+        }
       }
+    }
+  }
+
+  .uncalled-head {
+    text-align: center;
+    .knockout();
+    text-transform: uppercase;
+    color: @gray;
+  }
+
+  .uncalled {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    margin: auto;
+    max-width: 600px;
+
+    svg {
+      margin: 8px;
+      overflow: visible;
+
+      circle {
+        fill: #eee;
+        cursor: pointer;
+
+        &.early {
+          fill: #ddd;
+        }
+
+        &:hover {
+          stroke: black;
+          stroke-width: 2px;
+        }
+      }
+
+      text {
+        fill: @gray;
+        text-anchor: middle;
+        .knockout();
+        pointer-events: none;
+      }
+    }
+  }
+
+  .tooltip {
+    position: absolute;
+    border: 1px solid #eee;
+    background-color: white;
+    padding: 8px 8px 5px 8px;
+    display: none;
+    pointer-events: none;
+
+    &.show {
+      display: block;
+    }
+
+    h3 {
+      font-size: 11px;
+      margin: 0 0 3px 0;
+      font-family: "Knockout 31 4r","Helvetica Neue",Helvetica,Arial,sans-serif;
+      font-weight: normal;
+      text-transform: uppercase;
+      line-height: 1.2;
+      letter-spacing: .05em;
+      -webkit-font-smoothing: antialiased;
+      color: #333;
+
+      span {
+        color: #666;
+      }
+    }
+
+    .candidates {
+      .gotham();
+      min-width: 120px;
+      font-size: 10px;
+      color: #666;
+
+      .row {
+        border-top: 1px solid #eee;
+        padding: 3px 0 3px 0;
+      }
+
+      .name, .perc {
+        font-weight: normal;
+        display: inline-block;
+      }
+      .perc {
+        text-align: right;
+        float: right;
+      }
+      .party {
+        height: 6px;
+        width: 6px;
+        margin-right: 4px;
+        margin-top: 5px;
+        background: @ind;
+        float: left;
+
+        &.Dem {
+          background: @dem;
+        }
+        &.GOP {
+          background: @gop;
+        }
+        &.Other {
+          display: none;
+        }
+      }
+    }
+
+    .reporting {
+      .gotham();
+      margin: 0;
+      padding-top: 3px;
+      font-size: 10px;
+      color: #9a9a9a;
+      font-style: italic;
+      border-top: 1px solid #eee;
+    }
+
+    .winner-icon {
+      color: #666;
+      margin-left: 2px;
+      font-size: 8px;
     }
   }
 }

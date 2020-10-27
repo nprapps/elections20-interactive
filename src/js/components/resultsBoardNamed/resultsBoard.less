@@ -11,6 +11,10 @@
   justify-content: space-between;
   margin-bottom: 30px;
 
+  &.Gov {
+    margin-top: 25px;
+  }
+
   // @media @mobile {
   //   display: block;
   // }
@@ -389,7 +393,12 @@ table.results {
 .Ballot table.results tr {
   .state,
   th.state-hed {
-    flex: 1;
+    flex: 3;
+  }
+
+  .candidate,
+  th.candidate-hed {
+    flex: 0 0 100px;
   }
 }
 .President table.results tr {

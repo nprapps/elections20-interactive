@@ -1,0 +1,164 @@
+@import "values";
+
+.cartogram {
+	max-width: 950px;
+	margin: auto;
+	position: relative;
+
+	.tooltip {
+  	position: absolute;
+	  border: 1px solid #eee;
+	  background-color: white;
+	  padding: 8px 8px 5px 8px;
+	  display: none;
+	  pointer-events: none;
+
+	  &.shown {
+	    display: block;
+	  }
+
+	  h3 {
+	  	font-size: 11px;
+    	margin: 0 0 3px 0;
+    	font-family: "Knockout 31 4r","Helvetica Neue",Helvetica,Arial,sans-serif;
+	    font-weight: normal;
+	    text-transform: uppercase;
+	    line-height: 1.2;
+	    letter-spacing: .05em;
+	    -webkit-font-smoothing: antialiased;
+	    color: #333;
+
+	    span {
+	    	color: #666;
+	    }
+	  }
+
+	  .candidates {
+	  	.gotham();
+	  	min-width: 120px;
+	  	font-size: 10px;
+	  	color: #666;
+
+	  	.row {
+	  		border-top: 1px solid #eee;
+   	  	padding: 3px 0 3px 0;
+   	  }
+
+   	  .name, .perc {
+   	  	font-weight: normal;
+   	  	display: inline-block;
+   	  }
+   	  .perc {
+   	  	text-align: right;
+   	  	float: right;
+   	  }
+   	  .party {
+   	  	height: 6px;
+   	  	width: 6px;
+   	  	margin-right: 4px;
+    		margin-top: 5px;
+    		background: @ind;
+    		float: left;
+
+   	  	&.Dem {
+   	  		background: @dem;
+   	  	}
+   	  	&.GOP {
+   	  		background: @gop;
+   	  	}
+   	  	&.Other {
+   	  		display: none;
+   	  	}
+   	  }
+	  }
+
+	  .reporting {
+	  	.gotham();
+	  	margin: 0;
+	    padding-top: 3px;
+	    font-size: 10px;
+	    color: #9a9a9a;
+	    font-style: italic;
+	    border-top: 1px solid #eee;
+	  }
+
+	  .winner-icon {
+			color: #666;
+			margin-left: 2px;
+			font-size: 8px;
+		}
+	}
+
+	g {
+		fill: #eee;
+		stroke: white;
+		cursor: pointer;
+
+		&.early {
+			fill: #ddd;
+		}
+
+		&.leader {
+			fill: @indDim;
+		}
+		&.leader.GOP {
+			fill: @gopDim;
+		}
+		&.leader.Dem {
+			fill: @demDim;
+		}
+
+		&.winner {
+			fill: @ind;
+   
+			text {
+				fill: white;
+			}
+		}
+		&.winner.GOP {
+			fill: @gop;
+		}
+		&.winner.Dem {
+			fill: @dem;
+		}
+	}
+
+	text {
+		font-family: 'Knockout 31 4r';
+    font-weight: normal;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    -webkit-font-smoothing: antialiased;
+    fill: #666;
+    fill-opacity: 0.9;
+    text-anchor: middle;
+    stroke: none;
+    cursor: default;
+    pointer-events: none;
+    line-height: 1;
+
+    @media @mobile {
+    	font-size: 15px;
+    }
+
+    @media @tiny {
+    	font-size: 20px;
+    }
+
+    &.votes {
+	    fill-opacity: 0.75;
+	    font-size: 60%;
+
+	    @media @mobile {
+	    	display: none;
+	    }
+	  }
+	}
+
+	.hover {
+		stroke: black;
+		stroke-width: 2px;
+	}
+}
+

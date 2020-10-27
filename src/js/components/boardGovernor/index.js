@@ -54,12 +54,12 @@ export default class BoardGovernor extends Component {
       { test ? <TestBanner /> : "" }
       
       <h1 tabindex="-1">Governor</h1>
-      <BoardKey race="gov"/>
       <div class="board-container Gov">
         {races && <>
           <Results races={sorted} office="Gov" split={true}/>
         </>}
       </div>
+      <BoardKey race="gov"/>
       <div class="source">Source: AP (as of <DateFormatter value={latest} />)</div>
     </>;
   }

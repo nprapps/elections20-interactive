@@ -60,21 +60,25 @@ export var formatters = {
   },
   percentDecimal: v => (v * 100).toFixed(1) + "%",
   voteMargin: function (result) {
-
-    let prefix;
-    if (result.party === "Dem") {
-      prefix = "D";
-    } else if (result.party === "GOP") {
-      prefix = "R";
-    } else if (result.party =="Other") {
-      prefix = "O";
-    } else {
-      prefix = "I";
-    }
+    var prefix = getPartyPrefix(result.party);
 
     return prefix + " +" + Math.round(result.margin * 100);
   },
 };
+
+export function getPartyPrefix(party) {
+  let prefix;
+  if (party === "Dem") {
+    prefix = "D";
+  } else if (party === "GOP") {
+    prefix = "R";
+  } else if (party == "Other") {
+    prefix = "O";
+  } else {
+    prefix = "I";
+  }
+  return prefix;
+}
 
 export function getBucket(rating) {
   if (rating == "solid-d" || rating == "likely-d") {
@@ -155,13 +159,12 @@ export function groupCalled(results) {
   var called = {
     Dem: [],
     GOP: [],
+    Other: [],
     uncalled: [],
   };
 
   if (results) {
-    results.forEach(
-      r => r.called && called[r.winnerParty || "uncalled"].push(r)
-    );
+    results.forEach(r => called[r.called ? r.winnerParty : "uncalled"].push(r));
   }
 
   return called;
@@ -178,3 +181,16 @@ export function styleJSX(styles) {
   }
   return list.join("; ");
 }
+
+export var winnerIcon = `<span class="winner-icon" role="img" aria-label="check mark">
+    <svg
+      aria-hidden="true"
+      focusable="false"
+      role="img"
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 512 512">
+      <path
+        fill="#333"
+        d="M173.898 439.404l-166.4-166.4c-9.997-9.997-9.997-26.206 0-36.204l36.203-36.204c9.997-9.998 26.207-9.998 36.204 0L192 312.69 432.095 72.596c9.997-9.997 26.207-9.997 36.204 0l36.203 36.204c9.997 9.997 9.997 26.206 0 36.204l-294.4 294.401c-9.998 9.997-26.207 9.997-36.204-.001z"></path>
+    </svg>
+  </span>`;

@@ -54,17 +54,16 @@ export default class BoardHouse extends Component {
         {test ? <TestBanner /> : ""}
         <div class="header">
           <div class="title-wrapper">
-            <h1 tabindex="-1">Key House Results</h1>
+            <h1 tabindex="-1">House Results</h1>
             <div class="alert" dangerouslySetInnerHTML={({ __html: alert })} />
           </div>
           <div class="bop-wrapper">
             <BalanceOfPower race="house" data={results}/>
           </div>
         </div>
-
-        <BoardKey race="house"/>
         <div class="board-container House">
-          {results && (
+          <h2>Key Races</h2>
+          {results && results.length && (
             <>
               <Results
                 races={buckets["toss-up"]}
@@ -88,6 +87,7 @@ export default class BoardHouse extends Component {
             </>
           )}
         </div>
+        <BoardKey race="house"/>
         <div class="source">Source: AP (as of <DateFormatter value={latest} />)</div>
       </>
     );

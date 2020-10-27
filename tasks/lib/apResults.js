@@ -112,9 +112,13 @@ var redeemTicket = async function(ticket, options) {
     var headers = {};
     if (etags[tag]) headers["If-None-Match"] = etags[tag];
     try {
+      var flags = {
+        test: !!options.test,
+        setZeroCounts: !!options.zero
+      };
       var response = await axios({
         url: resultsURL + ticket.date,
-        params: Object.assign({}, resultsParams, ticket.params, { test: !!options.test }),
+        params: Object.assign({}, resultsParams, ticket.params, flags),
         headers,
         validateStatus: status => status == 200 || status == 304
       });

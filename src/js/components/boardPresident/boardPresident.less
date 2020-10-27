@@ -1,13 +1,77 @@
 @import "values";
 
 .board.president {
+  .electoral-leaderboard {
+    display: flex;
+    justify-content: center;
+    align-items: top;
+    padding: 0 0 30px;
+    margin: 0;
+    list-style-type: none;
+    .gotham();
+    text-transform: uppercase;
+    line-height: 1;
+    font-weight: bold;
+    align-items: stretch;
+
+    .party {
+      font-size: 64px;
+      // display: block;
+      padding: 0 40px;
+      text-align: center;
+      color: @gray;
+      border-left: 1px solid #eee;
+      display: flex; 
+      flex-direction: column; 
+      justify-content: flex-end;
+
+      &:first-child {
+        border-left: 0;
+      }
+
+      @media @mobile {
+        padding: 0 30px;
+        font-size: 40px;
+      }
+      @media (max-width: 500px) {
+        padding: 0 20px;
+      }
+
+      &.dem { 
+        color: @dem; 
+        path { fill: @dem; }
+      }
+      &.gop { 
+        color: @gop; 
+        path { fill: @gop; }
+      }
+      &.other { 
+        color: @ind; 
+        path { fill: @ind; }
+      }
+
+      label {
+        .knockout-header();
+        font-size: 16px;
+        margin-bottom: 6px;
+        display: block;
+        // color: #444;
+
+        @media @mobile {
+          font-size: 14px;
+        }
+      }
+    }
+  }
+
   .electoral-bars {
-    height: 30px;
+    height: 10px;
+    max-width: 600px;
     display: flex;
     justify-content: space-between;
     background: #CCC;
     position: relative;
-    margin-top: 30px;
+    margin: 40px auto 30px;
 
     .bar {
       height: 100%;
@@ -22,12 +86,13 @@
       }
     }
 
-    .divider {
+    hr.victory {
       position: absolute;
       left: 50%;
       top: -10px;
       bottom: -10px;
-      border: 1px solid fade(black, 20%);
+      border: 0;
+      border-left: 1px solid fade(black, 60%);
       overflow: visible;
 
       .label {
@@ -36,7 +101,14 @@
         color: @gray;
         transform: translateX(-50%);
         .knockout();
+        white-space: nowrap;
       }
     }
+  }
+
+  hr.divider {
+    max-width: 300px;
+    margin: 20px auto;
+    border: 1px solid @gray-lighter;
   }
 }
