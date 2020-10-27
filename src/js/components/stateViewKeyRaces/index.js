@@ -86,7 +86,7 @@ export default class KeyRaces extends Component {
               var isMultiple = data.length > 1;
               var title = "";
               if (isMultiple) {
-                title = stateLookup[r.state].name + "-" + (r.seatNumber || 1);
+                title = stateLookup[r.state].name + " " + (r.seatNumber || 1);
               }
               return <ResultsTableCandidates data={r} title={title} />
             })}
