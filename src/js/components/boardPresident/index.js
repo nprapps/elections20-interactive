@@ -102,7 +102,7 @@ export default class BoardPresident extends Component {
         r.districtDisplay = (r.district !== "AL") ? r.district : "";
       });
 
-      var sorted = results.sort(function(a,b) {
+      var sorted = results.slice().sort(function(a,b) {
         if (a.stateName > b.stateName) return 1;
         if (a.stateName < b.stateName) return -1;
         if (a.districtDisplay > b.districtDisplay) return 1;

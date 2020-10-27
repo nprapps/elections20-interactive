@@ -34,7 +34,7 @@ export default class BoardHouse extends Component {
     var { results, test, latest, alert } = this.state;
 
     if (results) {
-      var sorted = results.sort((a, b) =>
+      var sorted = results.slice().sort((a, b) =>
         a.state > b.state ? 1 : 
         a.state < b.state ? -1 : 
         parseInt(a.seatNumber) > parseInt(b.seatNumber) ? 1 : 

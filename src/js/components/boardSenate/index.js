@@ -35,7 +35,7 @@ export default class BoardSenate extends Component {
     var { results, test, latest, alert } = this.state;
 
     if (results) {
-      var sorted = results.sort((a,b) => a.name > b.name ? 1 : a.name < b.name ? -1 : 0);
+      var sorted = results.slice().sort((a,b) => a.name > b.name ? 1 : a.name < b.name ? -1 : 0);
 
       var buckets = {
         likelyD: [],
