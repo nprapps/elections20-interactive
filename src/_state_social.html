@@ -3,7 +3,10 @@
   var stateMeta = grunt.data.json.states[state];
   var stateName = stateMeta.name;
   var title = `${stateName} State Election Results 2020`;
-  var description = `Live election results: Get the latest for ${stateName}`;
+  var description = `View live results for ${stateName}'s ballot measures and races for president, governor, Senate, and House.`;
+  if (state == "DC") {
+    description = "View live results for Washington, D.C.’s ballot measure and race for president."
+  }
   var base = `https://apps.npr.org/elections20-interactive`;
   var image = `${base}/assets/social_states/${state}.jpg`;
 
