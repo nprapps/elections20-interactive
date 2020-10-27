@@ -61,7 +61,7 @@ Additional links and params
 * Balance of Power embed (House and Senate bars): ``/embedBOP.html``
 
   * ``president=true`` adds electoral totals to the top (for use on homepage)
-  * ``trio=true`` for side-by-side display (for use on liveblog)
+  * ``inline=true`` for side-by-side display (for use on liveblog)
   * ``theme=dark`` for dark theme
     
 * Internal ballot initiative board: ``/#/ballots``
