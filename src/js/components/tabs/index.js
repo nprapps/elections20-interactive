@@ -43,7 +43,7 @@ export default class Tabs extends Component {
 
   componentDidUpdate() {
     if (this.state.clicked) {
-      this.base.querySelector(`#tab-${this.state.selected}`).focus();
+      this.base.querySelector(`#tab-${this.state.selected}`).focus({ preventScroll: true });
     }
   }
 
