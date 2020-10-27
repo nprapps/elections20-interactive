@@ -48,15 +48,20 @@ export default class KeyRaces extends Component {
 
     var offices = "PGSHI".split("").filter(o => o in grouped);
 
+    var numberSort = (a, b) => a.seatNumber * 1 - b.seatNumber * 1;
+    var nameSort = (a, b) => a.seat < b.seat ? -1 : 1;
+
     return offices.map(o => {
       var data = grouped[o];
       // Filter house races for keyRaces
       if (o == "H") {
         data = data.filter(d => d.keyRace);
+        data.sort(numberSort);
         if (!data.length) return;
       }
       if (o == "I") {
         data = data.filter(d => d.featured);
+        data.sort(nameSort);
         if (!data.length) return;
       }
 
