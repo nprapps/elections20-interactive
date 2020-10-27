@@ -51,6 +51,13 @@ Tracked events
 * ``clicked-map`` - the user clicked a state on the national map
 * ``tab-selected`` - the user manually chose a tab to view
 
+Additional links and params
+--------------
+
+* Homepage embed: `/homepage.html` (param options: `display=margins,cartogram,map`)
+* Balance of Power embed (House and Senate bars): `/embedBOP.html` (`hp=true` adds presidential view)
+* Internal ballot initiative board: `/#/ballots`
+
 Troubleshooting
 ---------------
 
