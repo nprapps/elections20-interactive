@@ -152,13 +152,12 @@ export default class CountyMap extends Component {
       var hitThreshold = mapData[d].reportingPercent > 0.5;
       var allReporting = mapData[d].reportingPercent >= 1;
 
-      var [candidate] = this.legendCands.filter(c => isSameCandidate(c, top));
-      if (candidate.special) path.classList.add(`i${candidate.special}`);
-
       if (!hitThreshold) {
         path.style.fill = "#ddd";
         incomplete = true;
       } else {
+        var [candidate] = this.legendCands.filter(c => isSameCandidate(c, top));
+        if (candidate.special) path.classList.add(`i${candidate.special}`);
         path.classList.add(getParty(top.party));
         path.classList.add("leading");
         if (allReporting) path.classList.add("allin");

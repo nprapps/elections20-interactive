@@ -183,20 +183,25 @@ export function styleJSX(styles) {
 }
 
 export function getCountyCandidates(overall, counties) {
-  var winningCands = overall.slice(0, 2);
-  winningCands.concat(
-    counties
-      .filter(function (obj, index, self) {
-        return (
-          index ===
-          self.findIndex(function (t) {
-            return t.candidates[0].last === obj.candidates[0].last;
-          })
-        );
+  var countyWinners = counties.map(c => c.candidates[0]);
+  countyWinners = countyWinners.filter(function (obj, index, self) {
+    return (
+      index ===
+      self.findIndex(function (t) {
+        return t.last === obj.last;
       })
-      .map(c => c.candidates[0])
-  );
-  return winningCands;
+    );
+  });
+  var overallLeaders = overall.slice(0, 2).concat(countyWinners);
+  overallLeaders = overallLeaders.filter(function (obj, index, self) {
+    return (
+      index ===
+      self.findIndex(function (t) {
+        return t.last === obj.last;
+      })
+    );
+  });
+  return overallLeaders;
 }
 
 export var winnerIcon = `<span class="winner-icon" role="img" aria-label="check mark">
