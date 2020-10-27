@@ -66,9 +66,26 @@ main.embed-bop {
         border: 0;
       }
     }
+
+    &.dark {
+      h3, .middle {
+        color: #bbb;
+      }
+      .chatter, .uncalled {
+        color: #999;
+      }
+      .bar-container {
+        background: #222;
+      }
+    }
+
+    &.dark.inline {
+      .link-container {
+        border-right: 1px solid #222;
+      }
+    }
   }
   
-
   h3 {
     .gotham();
     font-size: 16px;
@@ -175,8 +192,6 @@ main.embed-bop {
         height: @thin-height * 1.4;
       }
     }
-
-    
   }
 
   .bar-container {
