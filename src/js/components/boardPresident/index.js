@@ -158,7 +158,7 @@ export default class BoardPresident extends Component {
         </>}
       </div>
 
-      <div class="source">Source: AP (as of <DateFormatter value={latest} />)</div>
+      <div class="source">Source: AP (as of <DateFormatter value={latest} />). Presidential race ratings from <a href="https://www.npr.org/2020/10/09/921596963/npr-electoral-map-biden-lead-widens-again-with-less-than-a-month-to-go">NPR</a>.</div>
     </div>
   }
 }

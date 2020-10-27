@@ -88,7 +88,7 @@ export default class BoardHouse extends Component {
           )}
         </div>
         <BoardKey race="house"/>
-        <div class="source">Source: AP (as of <DateFormatter value={latest} />)</div>
+        <div class="source">Source: AP (as of <DateFormatter value={latest} />). House race ratings from the <a href="https://cookpolitical.com/ratings/house-race-ratings">Cook Political Report</a>.</div>
       </>
     );
   }
