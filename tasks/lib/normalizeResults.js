@@ -196,6 +196,9 @@ module.exports = function (resultArray, overrides = {}) {
           if (sheetMetadata.featured) {
             unitMeta.featured = sheetMetadata.featured;
           }
+          if (sheetMetadata.theme) {
+            unitMeta.theme = sheetMetadata.theme;
+          }
           // For now, always override description with ours even if empty.
           unitMeta.description = sheetMetadata.description;
         }
