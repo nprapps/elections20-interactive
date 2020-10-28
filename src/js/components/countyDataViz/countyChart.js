@@ -18,7 +18,7 @@ export class CountyChart extends Component {
       top: 20,
       right: 5,
       bottom: 25,
-      left: 20,
+      left: 30,
     };
 
     window.addEventListener("resize", this.handleResize);
@@ -116,10 +116,10 @@ export class CountyChart extends Component {
     var x = e.clientX - bounds.left;
     var y = e.clientY - bounds.top;
     if (x - 2 > bounds.width / 2) {
-      x -= 160;
+      x -= 140;
       y += 10;
     }
-    tooltip.style.left = x + "px";
+    tooltip.style.left = x + 15 + "px";
     tooltip.style.top = y + "px";
 
     tooltip.classList.add("shown");
