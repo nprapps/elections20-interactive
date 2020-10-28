@@ -157,6 +157,7 @@ export default class Cartogram extends Component {
     var mapData = props.races;
     if (!this.svgRef.current) return;
     var svg = this.svgRef.current.querySelector("svg");
+    if (!svg) return;
 
     mapData.forEach(function (r) {
       var eevp = r.eevp || r.reportingPercent;
