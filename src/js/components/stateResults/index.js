@@ -83,7 +83,16 @@ export default class StateResults extends Component {
             <div class="results-elements">{this.renderResults(office)}</div>
           )}
           <div class="source">
-            Source: AP (as of <DateFormatter value={latest} />)
+            Source: AP (as of <DateFormatter value={latest} />
+            ). COVID-19 case data from{" "}
+            <a href="https://github.com/CSSEGISandData/COVID-19">
+              Center for Systems Science and Engineering at Johns Hopkins
+              University
+            </a>
+            . Demographic, income and education data from the Census Bureau.
+            Unemployment rates from the Bureau of Labor Statistics. 2016
+            presidential margin from the AP and may vary slightly from
+            state-certified final results.
           </div>
         </div>
 
@@ -95,9 +104,8 @@ export default class StateResults extends Component {
   }
 
   renderResults(view) {
-
     var numberSort = (a, b) => a.seatNumber * 1 - b.seatNumber * 1;
-    var nameSort = (a, b) => a.seat < b.seat ? -1 : 1;
+    var nameSort = (a, b) => (a.seat < b.seat ? -1 : 1);
     if (view === "key") {
       return <KeyRaces state={this.props.state} />;
     } else if (view === "H" || view === "I") {
