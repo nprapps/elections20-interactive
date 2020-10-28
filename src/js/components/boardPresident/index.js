@@ -126,7 +126,7 @@ export default class BoardPresident extends Component {
 
     return <div class="president board">
       { test ? <TestBanner /> : "" }
-      <h1 tabindex="-1">President</h1>
+      <h1 tabindex="-1">President Results</h1>
 
       <ElectoralBars called={called} />
       <Leaderboard called={called} />

@@ -40,7 +40,7 @@ export default class BoardGovernor extends Component {
     return <>
       { test ? <TestBanner /> : "" }
       
-      <h1 tabindex="-1">Governor</h1>
+      <h1 tabindex="-1">Governor Results</h1>
       <div class="board-container Gov">
         {results && <>
           <Results races={sorted} office="Gov" split={true}/>
