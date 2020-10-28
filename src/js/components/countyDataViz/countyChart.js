@@ -34,7 +34,9 @@ export class CountyChart extends Component {
   }
 
   // Lifecycle: Called just before our component will be destroyed
-  componentWillUnmount() {}
+  componentWillUnmount() {
+    window.removeEventListener("resize", this.handleResize);
+  }
 
   render() {
     if (!this.props.data) {
