@@ -48,9 +48,9 @@ export default function ResultsTableCandidates(props) {
 
   return (
     <div class={"results-table statewide " + (ballot ? "ballot" : "")}>
-      <div class="results-header">
-        {seatName ? <caption> {seatName}</caption> : <span />}
-      </div>
+      {seatName && <div class="results-header">
+         <caption> {seatName}</caption>
+      </div>}
       <div class={"board " + (isUncontested ? "uncontested" : "")} role="table">
         <div class="thead" role="rowgroup">
           <div class="tr" role="row">

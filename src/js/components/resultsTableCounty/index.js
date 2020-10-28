@@ -215,7 +215,7 @@ export default class ResultsTableCounty extends Component {
   getSorter() {
     return (
       <ul class="sorter">
-        <li class="label">Sort Counties By</li>
+        <li class="label">Sort Counties By:</li>
         {Object.keys(availableMetrics).map(m =>
           this.getSorterLi(availableMetrics[m])
         )}

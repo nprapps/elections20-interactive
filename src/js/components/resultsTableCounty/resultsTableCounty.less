@@ -88,6 +88,10 @@
       -webkit-font-smoothing: antialiased;
       position: relative;
 
+      &.county.sortable {
+        cursor: pointer;
+      }
+
       &.vote,
       &.comparison {
         line-height: 1;
@@ -121,9 +125,17 @@
               display: none;
             }
           }
+          cursor: pointer;
           padding-right: 15px;
         }
       }
+    }
+
+    th.county {
+      padding: 0 0 5px;
+    }
+    th.amt.precincts {
+      cursor: pointer;
     }
 
     th,
