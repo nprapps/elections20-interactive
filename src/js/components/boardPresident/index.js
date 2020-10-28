@@ -148,7 +148,7 @@ export default class BoardPresident extends Component {
         
       </Tabs>}
 
-      {results && (results.filter(r => r.called).length > 5) && <BoardKey race="president"/>}
+      <BoardKey race="president"/>
 
       <div label="Board" class="board-container President">
         {results && <>
@@ -157,8 +157,6 @@ export default class BoardPresident extends Component {
           <Results races={buckets.likelyR.slice()} hed="Likely Republican" office="President" addClass="last" />
         </>}
       </div>
-
-      {results && (results.filter(r => r.called).length <= 5) && <BoardKey race="president"/>}
 
       <div class="source">
         <div class="note">*Note: Expected vote is an Associated Press estimate of how much of the vote in an election has been counted. <a href="https://www.ap.org/en-us/topics/politics/elections/counting-the-vote">Read more about how EEVP is calculated</a>.</div>
