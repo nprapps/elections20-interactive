@@ -131,7 +131,7 @@ const availableMetrics = {
     format: formatters.percent,
   },
   covid: {
-    name: "Covid-19 Cases Per Capita",
+    name: "COVID-19 Cases Per Capita",
     format: formatters.comma,
     last: true,
   },
