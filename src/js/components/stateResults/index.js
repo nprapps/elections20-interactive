@@ -179,7 +179,7 @@ export default class StateResults extends Component {
     }
 
     var specialHeader = isSpecial ? (
-      <h2 id={`${this.props.state}-${seatLabel}`}>{`${
+      <h2 id={`${this.props.state}-${seatLabel || 1}`}>{`${
         stateLookup[this.props.state].name
       } ${seatLabel || 1}`}</h2>
     ) : (
