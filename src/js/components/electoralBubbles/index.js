@@ -68,6 +68,7 @@ export default class ElectoralBubbles extends Component {
   xAccess(d) {
     var centerX = this.state.width / 2;
     var { mx, margin, party } = d;
+    // generate log position
     var offset = party == "Dem" ? -POLAR_OFFSET : POLAR_OFFSET;
     var pole = centerX + (centerX * offset);
     var x = mx * centerX + pole;
@@ -137,12 +138,12 @@ export default class ElectoralBubbles extends Component {
 
   }
 
-  createNode(r) {
+  createNode(r, dataDomain) {
     var [ winner, loser ] = r.candidates;
     var margin = winner.percent - loser.percent;
     var party = winner.party;
     // normalize margin
-    var mx = Math.min(margin, DATA_DOMAIN) / VISUAL_DOMAIN;
+    var mx = Math.log(margin / dataDomain + 1);
     if (party == "Dem") mx *= -1;
     var x = mx;
     var { state, district, called, electoral } = r;
@@ -170,9 +171,15 @@ export default class ElectoralBubbles extends Component {
     var uncalled = results.filter(r => r.eevp < .5 && !r.called);
     var called = results.filter(r => r.called || r.eevp >= .5);
 
+    var dataDomain = Math.max(...called.map(function(r) {
+      var [ winner, loser ] = r.candidates;
+      return Math.abs(winner.percent - loser.percent);
+    }));
+    dataDomain = Math.ceil(dataDomain * 10) / 10;
+
     for (var r of called) {
       // find an existing node?
-      var upsert = this.createNode(r);
+      var upsert = this.createNode(r, dataDomain);
       var existing = nodes.find(n => n.key == upsert.key);
       if (existing) {
         upsert = Object.assign(existing, upsert);
@@ -276,10 +283,10 @@ export default class ElectoralBubbles extends Component {
 
     var uncalled = {};
     for (var k in props.buckets) {
-      uncalled[k] = props.buckets[k].filter(r => !r.called);
+      uncalled[k] = props.buckets[k].filter(r => !r.called && r.eevp < .5);
     }
 
-    var hasUncalled = [...uncalled.likelyD, ...uncalled.tossup, uncalled.likelyR].length;
+    var hasUncalled = [...uncalled.likelyD, ...uncalled.tossup, ...uncalled.likelyR].length;
 
     var titles = {
       likelyD: "Likely Democratic",
