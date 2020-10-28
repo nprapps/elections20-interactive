@@ -70,7 +70,10 @@ export default class BoardSenate extends Component {
           </>}
         </div>
         <BoardKey race="senate"/>
-        <div class="source">Source: AP (as of <DateFormatter value={latest} />). Senate race ratings from the <a href="https://cookpolitical.com/ratings/senate-race-ratings">Cook Political Report</a>. “Likely” seats include those rated both “Likely” and “Solid” for a party.</div>
+        <div class="source">
+          <div class="note">Note: Expected vote is an Associated Press estimate of how much of the vote in an election has been counted. <a href="https://www.ap.org/en-us/topics/politics/elections/counting-the-vote">Read more about how EEVP is calculated</a>.</div>
+          Source: AP (as of <DateFormatter value={latest} />). Senate race ratings from the <a href="https://cookpolitical.com/ratings/senate-race-ratings">Cook Political Report</a>. “Likely” seats include those rated both “Likely” and “Solid” for a party.
+        </div>
       </Fragment>
     );
   }
