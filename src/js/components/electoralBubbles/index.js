@@ -8,7 +8,7 @@ var d3 = require("d3-force/dist/d3-force.min.js");
 
 var { sqrt, PI, cos, sin } = Math;
 
-const Y_FORCE = .01;
+const Y_FORCE = .03;
 const X_FORCE = .4;
 const COLLIDE_FORCE = 1;
 const VISUAL_DOMAIN = .5;
@@ -175,7 +175,7 @@ export default class ElectoralBubbles extends Component {
       var [ winner, loser ] = r.candidates;
       return Math.abs(winner.percent - loser.percent);
     }));
-    dataDomain = Math.ceil(dataDomain * 10) / 10;
+    dataDomain = Math.max(Math.ceil(dataDomain * 10) / 10, .1);
 
     for (var r of called) {
       // find an existing node?
