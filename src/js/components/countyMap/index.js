@@ -175,7 +175,7 @@ export default class CountyMap extends Component {
           class={`swatch ${getParty(
             candidate.party
           )} i${specialShading}`}></div>
-        <div class="name">{`${name} (${getParty(candidate.party)})`}</div>
+        <div class="name">{`${name}`}</div>
       </div>
     );
   }
@@ -214,7 +214,7 @@ export default class CountyMap extends Component {
             candidate && candidate.special ? `i${candidate.special}` : "";
           var cs = `<div class="row">
             <span class="party ${cand.party} ${special}"></span>
-            <span>${cand.first} ${cand.last} (${getPartyPrefix(cand.party)}) </span>
+            <span>${cand.last}</span>
             <span class="amt">${reportingPercentage(cand.percent)}%</span>
         </div>`;
           return cs;
