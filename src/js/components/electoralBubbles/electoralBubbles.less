@@ -21,20 +21,18 @@
         cursor: pointer;
 
         &.Dem {
-          fill: lighten(@dem, 40%);
+          fill: @demDim;
 
           &.called {
-            fill: lighten(@dem, 20%);
-            stroke: @dem;
+            fill: @dem;
           }
         }
 
         &.GOP {
-          fill: lighten(@gop, 40%);
+          fill: @gopDim;
 
           &.called {
-            fill: lighten(@gop, 20%);
-            stroke: @gop;
+            fill: @gop;
           }
         }
 
@@ -118,12 +116,18 @@
     }
 
     circle {
-      fill: #E8E8E8;
-      stroke: #888;
+      cursor: pointer;
+      fill: #eee;
 
-      &.open {
+      &.early {
+        fill: #ddd;
+        stroke: gray;
         stroke-dasharray: 7 3;
       }
+      &:hover {
+          stroke: black;
+          stroke-width: 2px;
+        }
     }
 
     text {
