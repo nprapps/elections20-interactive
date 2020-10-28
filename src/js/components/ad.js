@@ -1,4 +1,23 @@
 var $ = require("../lib/qsa");
+
+// ad filtering code
+window.grumi = window.grumi || {
+    cfg: {
+        pubIds: {
+            'ca-pub-8864803855381259': true,
+            'ca-mb-app-pub-8864803855381259': true,
+            'ca-pub-6055882063795349': true,
+        },
+    },
+    key: '880a45f2-0015-49d2-b38f-2d26be44ae09',
+};
+const geoEdge = document.createElement('script');
+geoEdge.async = true;
+geoEdge.type = 'text/javascript';
+geoEdge.src = 'https://rumcdn.geoedge.be/880a45f2-0015-49d2-b38f-2d26be44ae09/grumi-ip.js';
+const lastNode = document.getElementsByTagName('script')[0];
+lastNode.parentNode.insertBefore(geoEdge, lastNode);
+
 window.googletag = window.googletag || {cmd: []};
 var gptLoaded = false;
 var gptSetup = false;
@@ -43,6 +62,7 @@ class GoogleAd extends HTMLElement {
     var id = "google-ad-" + guid++;
     elements.container.id = id;
 
+
     var size = this.dataset.size || "tall";
     var adSizeArray = adSizes[size];
 
@@ -54,6 +74,7 @@ class GoogleAd extends HTMLElement {
     }
 
     googletag.cmd.push(() => {
+      console.log(`Loading ad for #${id}...`);
       var adService = googletag.pubads();
 
       if (!gptSetup) {
