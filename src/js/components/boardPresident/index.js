@@ -97,6 +97,12 @@ export default class BoardPresident extends Component {
   render(props, state) {
     var { results, test, latest } = this.state;
 
+    var buckets = {
+      likelyD: [],
+      tossup: [],
+      likelyR: [],
+    };
+
     if (results) {
       results.forEach(function(r) {
         r.districtDisplay = (r.district !== "AL") ? r.district : "";
@@ -109,12 +115,6 @@ export default class BoardPresident extends Component {
         if (a.districtDisplay < b.districtDisplay) return -1;
         return 0;
       });
-
-      var buckets = {
-        likelyD: [],
-        tossup: [],
-        likelyR: [],
-      };
 
       sorted.forEach(function (r) {
         var bucketRating = getBucket(r.rating);
@@ -135,7 +135,7 @@ export default class BoardPresident extends Component {
       {results && (results.filter(r => r.called).length > 5) && <Tabs id="president-viz">
 
         <div icon="./assets/icons/ico-bubbles.svg" label="Margins">
-          <ElectoralBubbles results={results} />
+          <ElectoralBubbles results={results} buckets={buckets} />
         </div>
 
         <div icon="./assets/icons/ico-cartogram.svg" label="Electoral">
@@ -152,9 +152,9 @@ export default class BoardPresident extends Component {
 
       <div label="Board" class="board-container President">
         {results && <>
-          <Results races={buckets.tossup} hed="Competitive States" office="President" addClass="middle" split={true}/>
-          <Results races={buckets.likelyD} hed="Likely Democratic" office="President" addClass="first" />
-          <Results races={buckets.likelyR} hed="Likely Republican" office="President" addClass="last" />
+          <Results races={buckets.tossup.slice()} hed="Competitive States" office="President" addClass="middle" split={true}/>
+          <Results races={buckets.likelyD.slice()} hed="Likely Democratic" office="President" addClass="first" />
+          <Results races={buckets.likelyR.slice()} hed="Likely Republican" office="President" addClass="last" />
         </>}
       </div>
 
