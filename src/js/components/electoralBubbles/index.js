@@ -175,7 +175,7 @@ export default class ElectoralBubbles extends Component {
       var [ winner, loser ] = r.candidates;
       return Math.abs(winner.percent - loser.percent);
     }));
-    dataDomain = Math.ceil(dataDomain * 10) / 10;
+    dataDomain = Math.max(Math.ceil(dataDomain * 10) / 10, .1);
 
     for (var r of called) {
       // find an existing node?

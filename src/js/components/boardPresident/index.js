@@ -95,7 +95,7 @@ export default class BoardPresident extends Component {
   }
 
   render(props, state) {
-    var { results, test, latest } = this.state;
+    var { results = [], test, latest } = this.state;
 
     var buckets = {
       likelyD: [],
@@ -103,24 +103,22 @@ export default class BoardPresident extends Component {
       likelyR: [],
     };
 
-    if (results) {
-      results.forEach(function(r) {
-        r.districtDisplay = (r.district !== "AL") ? r.district : "";
-      });
+    results.forEach(function(r) {
+      r.districtDisplay = (r.district !== "AL") ? r.district : "";
+    });
 
-      var sorted = results.slice().sort(function(a,b) {
-        if (a.stateName > b.stateName) return 1;
-        if (a.stateName < b.stateName) return -1;
-        if (a.districtDisplay > b.districtDisplay) return 1;
-        if (a.districtDisplay < b.districtDisplay) return -1;
-        return 0;
-      });
+    var sorted = results.slice().sort(function(a,b) {
+      if (a.stateName > b.stateName) return 1;
+      if (a.stateName < b.stateName) return -1;
+      if (a.districtDisplay > b.districtDisplay) return 1;
+      if (a.districtDisplay < b.districtDisplay) return -1;
+      return 0;
+    });
 
-      sorted.forEach(function (r) {
-        var bucketRating = getBucket(r.rating);
-        if (bucketRating) buckets[bucketRating].push(r);
-      });
-    }
+    sorted.forEach(function (r) {
+      var bucketRating = getBucket(r.rating);
+      if (bucketRating) buckets[bucketRating].push(r);
+    });
 
     var called = groupCalled(results);
 
@@ -132,7 +130,7 @@ export default class BoardPresident extends Component {
       <Leaderboard called={called} />
       <hr class="divider" />
 
-      {results && (results.filter(r => r.called).length > 5) && <Tabs id="president-viz">
+      <Tabs id="president-viz">
 
         <div icon="./assets/icons/ico-bubbles.svg" label="Margins">
           <ElectoralBubbles results={results} buckets={buckets} />
@@ -146,7 +144,7 @@ export default class BoardPresident extends Component {
           <NationalMap races={results} />
         </div>
         
-      </Tabs>}
+      </Tabs>
 
       <BoardKey race="president"/>
 
