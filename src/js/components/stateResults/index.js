@@ -143,7 +143,7 @@ export default class StateResults extends Component {
             <a onClick={() => this.jump(`#race-${r.id}`)}>
               {`${stateLookup[this.props.state].name} ${r.seatNumber || 1}`}
             </a>{" "}
-            {i < results.length - 1 ? "|" : ""}
+            <span class="pipe">{i < results.length - 1 ? "|" : ""}</span>
           </>
         ))}
       </nav>

@@ -73,7 +73,7 @@
             a {
               text-decoration: none;
             }
-            
+
             &:hover {
               color: @link-hover-color;
               cursor: pointer;
@@ -155,14 +155,18 @@
   }
 
   .jump-links {
-    .gotham();
+    .knockout();
     font-size: 13px;
     padding: 12px 0;
+    color: @gray;
 
     a {
       display: inline-block;
       padding: 0 4px;
       cursor: pointer;
+    }
+    .pipe {
+      color: @gray-medium;
     }
   }
 
@@ -194,7 +198,9 @@
   }
 
   .results-elements {
-    h3 { margin-top: 45px; }
+    h3 {
+      margin-top: 45px;
+    }
 
     .results-counties h3 {
       margin-top: 0px;
