@@ -1,13 +1,13 @@
 .electoral-bubbles {
   position: relative;
   
-  .key-above {
-    text-align: center;
-    .knockout();
-    color: @gray-darker;
-    text-transform: uppercase;
-    font-size: 18px;
-  }
+  // .key-above {
+  //   text-align: center;
+  //   .knockout();
+  //   color: @gray-darker;
+  //   text-transform: uppercase;
+  //   font-size: 16px;
+  // }
 
   .aspect-ratio {
     position: relative;
@@ -59,8 +59,16 @@
           fill: @gray;
         }
 
+        &.tied {
+          fill: #9a9a9a;
+          .gotham();
+          text-transform: none;
+          font-style: italic;
+          line-spacing: 0.05em;
+        }
+
         &.leading-cue {
-          font-size: 20px;
+          font-size: 18px;
           fill: lighten(@gop, 10%);
           text-anchor: start;
 

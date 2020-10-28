@@ -295,9 +295,9 @@ export default class ElectoralBubbles extends Component {
     };
 
     return <div class="electoral-bubbles" onMousemove={this.onMove} onMouseleave={this.onExit}>
-      <div class="key-above">
-        Current tabulation
-      </div>
+{/*      <div class="key-above">
+        Current vote tabulation
+      </div>*/}
       <div class="aspect-ratio">
         <svg class="bubble-svg" ref={this.svg}
           role="img"
@@ -306,10 +306,13 @@ export default class ElectoralBubbles extends Component {
           width={width} height={height}
           viewBox={`0 0 ${width} ${height}`}
         >
-          <text class="leading-cue dem" x={width / 2 - 10} y="20">
+          <text class="leading-cue dem" x={width / 2 - 60} y="20">
             &lt; Biden leading
           </text>
-          <text class="leading-cue gop" x={width / 2 + 10} y="20">
+          <text class="tied" x={width / 2} y="20">
+            Tied
+          </text>
+          <text class="leading-cue gop" x={width / 2 + 60} y="20">
             Trump leading &gt;
           </text>
           {nodes.map(n => {

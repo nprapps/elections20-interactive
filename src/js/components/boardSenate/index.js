@@ -72,7 +72,7 @@ export default class BoardSenate extends Component {
         <BoardKey race="senate"/>
         <div class="source">
           <div class="note">*Note: Expected vote is an Associated Press estimate of how much of the vote in an election has been counted. <a href="https://www.ap.org/en-us/topics/politics/elections/counting-the-vote">Read more about how EEVP is calculated</a>.</div>
-          Source: AP (as of <DateFormatter value={latest} />). Senate race ratings from the <a href="https://cookpolitical.com/ratings/senate-race-ratings">Cook Political Report</a>. “Likely” seats include those rated both “Likely” and “Solid” for a party.
+          Source: AP (as of <DateFormatter value={latest} />). Senate race ratings from the nonpartisan <a href="https://cookpolitical.com/ratings/senate-race-ratings">Cook Political Report</a>. Seats listed as Likely Democratic or Likely Republican include contests rated as "Solid" and "Likely" for a particular party. Seats listed as Competitive include contests rated as leaning to a particular party, or a toss-up.
         </div>
       </Fragment>
     );
