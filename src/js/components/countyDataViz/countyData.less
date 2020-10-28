@@ -16,7 +16,7 @@
     }
   }
 
-  span.description {
+  div.description {
     font-weight: normal;
     color: #777;
     font-size: 12px;
@@ -27,8 +27,18 @@
     text-align: center;
     display: block;
 
-    span {
+    div.strength {
       font-weight: bold;
+      color: #fff;
+      border-radius: 4px;
+      display: inline-block;
+      margin: auto;
+      padding: 2px 5px;
+      font-size: 11px;
+
+      &.weak {
+        color: #777;
+      }
     }
   }
 

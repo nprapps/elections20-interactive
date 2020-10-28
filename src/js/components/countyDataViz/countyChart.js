@@ -57,17 +57,22 @@ export class CountyChart extends Component {
   renderCorrelation() {
     var relationships = [
       "almost no",
-      "a weak",
-      "a moderate",
-      "a strong",
-      "a very strong",
+      "weak",
+      "moderate",
+      "strong",
+      "very strong",
     ];
     var index = Math.ceil(this.props.corr * relationships.length) - 1;
+    var background = `background-color: (227, 141, 44, ${this.props.corr * 255})`;
     return (
-      <span class="description">
-        <b>{this.props.title}</b> and party vote have{" "}
-        <b> {relationships[index]} </b> relationship
-      </span>
+      <div class="description">
+        <div>{this.props.title}</div>
+        <div
+          class={`strength ${this.props.corr < 0.6 ? "weak" : ""}`}
+          style={`background-color: rgba(227, 141, 44, ${this.props.corr})`}>
+          {relationships[index]} trend
+        </div>
+      </div>
     );
   }
 
