@@ -29,7 +29,11 @@ class Customizer extends Component {
   }
 
   selectStatePage(e) {
-    this.setState({ selectedState: e.target.value, selectedOffice: null });
+    this.setState({
+      selectedState: e.target.value,
+      selectedOffice: null,
+      races: []
+    });
     this.loadStateRaces(e.target.value);
   }
 
@@ -46,10 +50,231 @@ class Customizer extends Component {
   }
 
   async loadStateRaces(state) {
-    this.setState({ races: [], raceID: null })
+    this.setState({ selectedState: state, races: [], raceID: null });
     var response = await fetch(`./data/states/${state}.json`);
     var json = await response.json();
     this.setState({ races: json.results });
+  }
+
+  board(free, props, state) {
+    var { url } = free;
+    var src = url + `#/${state.mode}`;
+    return (<>
+      <h2>Embeds</h2>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; grid-gap: 8px">
+        <div>
+          <h3>Pym</h3>
+          <textarea rows="6" style="width:100%">
+          {`<p
+            data-pym-loader
+            data-child-src="${src}"
+            id="responsive-embed-election-${state.selectedState}-${state.raceID}">
+              Loading...
+          </p>
+          <script src="https://pym.nprapps.org/npr-pym-loader.v2.min.js"></script>`.replace(/\s{2,}|\n/g, " ")}
+          </textarea>
+        </div>
+        <div>
+          <h3>Sidechain</h3>
+          <textarea rows="6" style="width:100%">
+          {`<side-chain src="${src}"></side-chain>
+          <script src="https://apps.npr.org/elections20-interactive/sidechain.js"></script>`.replace(/\s{2,}|\n/g, " ")}
+          </textarea>
+        </div>
+      </div>
+      <h2>Preview</h2>
+      <side-chain
+        key={state.raceID}
+        src={src}
+      />
+    </>);
+  }
+
+  statePage(free, props, state) {
+    var { url, offices, postals } = free;
+    var src = `${url}#/states/${state.selectedState}/${state.selectedOffice || ''}`;
+    return (<>
+      <div class="state-select">
+        <select value={state.selectedState} onInput={this.selectStatePage}>
+          {postals.map(s => <option value={s}>{stateSheet[s].name}</option>)}
+        </select>
+        <select value={state.selectedOffice} onInput={this.selectStateOffice}>
+          {offices.map(([data, label]) => (
+            <option value={data}>{label}</option>
+          ))}
+        </select>
+      </div>
+      <h2>Embeds</h2>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; grid-gap: 8px">
+        <div>
+          <h3>Pym</h3>
+          <textarea rows="6" style="width:100%">
+          {`<p
+            data-pym-loader
+            data-child-src="${src}"
+            id="responsive-embed-election-${state.selectedState}-${state.selectedOffice || "X"}">
+              Loading...
+          </p>
+          <script src="https://pym.nprapps.org/npr-pym-loader.v2.min.js"></script>`.replace(/\s{2,}|\n/g, " ")}
+          </textarea>
+        </div>
+        <div>
+          <h3>Sidechain</h3>
+          <textarea rows="6" style="width:100%">
+          {`<side-chain src="${src}"></side-chain>
+          <script src="https://apps.npr.org/elections20-interactive/sidechain.js"></script>`.replace(/\s{2,}|\n/g, " ")}
+          </textarea>
+        </div>
+      </div>
+      <h2>Preview</h2>
+      <side-chain 
+        key={state.selectedState} 
+        src={src} />
+    </>);
+  }
+
+  race(free, props, state) {
+    var { url, postals } = free;
+    var src = "";
+    if (state.raceID) {
+      var assembly = new URL(url + "./embed.html");
+      assembly.searchParams.set("file", `states/${state.selectedState}`);
+      assembly.searchParams.set("race", state.raceID);
+      src = assembly.toString();
+    }
+    return (<>
+      <div class="state-select">
+        <select value={state.selectedState} onInput={e => this.loadStateRaces(e.target.value)}>
+          {postals.map(s => <option value={s}>{stateSheet[s].name}</option>)}
+        </select>
+        <select value={state.selectedRace} onInput={this.selectRace}>
+          <option value="">Select an office</option>
+          {state.races.map(r => <option value={r.id}>
+            {`${strings["office-" + r.office]} ${r.seat ? r.seat : ""}`}
+          </option>)}
+        </select>
+      </div>
+      {state.raceID && <>
+        <h2>Embeds</h2>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; grid-gap: 8px">
+          <div>
+            <h3>Pym</h3>
+            <textarea rows="6" style="width:100%">
+            {`<p
+              data-pym-loader
+              data-child-src="${src}"
+              id="responsive-embed-election-${state.selectedState}-${state.raceID}">
+                Loading...
+            </p>
+            <script src="https://pym.nprapps.org/npr-pym-loader.v2.min.js"></script>`.replace(/\s{2,}|\n/g, " ")}
+            </textarea>
+          </div>
+          <div>
+            <h3>Sidechain</h3>
+            <textarea rows="6" style="width:100%">
+            {`<side-chain src="${src}"></side-chain>
+            <script src="https://apps.npr.org/elections20-interactive/sidechain.js"></script>`.replace(/\s{2,}|\n/g, " ")}
+            </textarea>
+          </div>
+        </div>
+        <h2>Preview</h2>
+        <side-chain
+          key={state.raceID}
+          src={src}
+        />
+      </>}
+    </>);
+  }
+
+  sidebar(free, props, state) {
+    var { url } = free;
+    var src = new URL(url + `embedBOP.html`);
+    if (state.dark) src.searchParams.set("theme", "dark");
+    if (state.showPresident) src.searchParams.set("president", true);
+    if (state.inline) src.searchParams.set("inline", true)
+    return (<>
+      <div class="options">
+        <input 
+          id="bop_dark" 
+          type="checkbox" 
+          value={state.dark} 
+          onInput={() => this.setFlag("dark", !state.dark)} />
+        <label for="bop_dark">Dark theme</label>
+
+        <input 
+          id="bop_showPresident" 
+          type="checkbox" 
+          value={state.showPresident} 
+          onInput={() => this.setFlag("showPresident", !state.showPresident)} />
+        <label for="bop_showPresident">Show president</label>
+
+        <input 
+          id="bop_triplet" 
+          type="checkbox" 
+          value={state.inline} 
+          onInput={() => this.setFlag("inline", !state.inline)} />
+        <label for="bop_inline">Row layout</label>
+      </div>
+      <h2>Embeds</h2>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; grid-gap: 8px">
+        <div>
+          <h3>Pym</h3>
+          <textarea rows="6" style="width:100%">
+          {`<p
+            data-pym-loader
+            data-child-src="${src}"
+            id="responsive-embed-election-sidebar">
+              Loading...
+          </p>
+          <script src="https://pym.nprapps.org/npr-pym-loader.v2.min.js"></script>`.replace(/\s{2,}|\n/g, " ")}
+          </textarea>
+        </div>
+        <div>
+          <h3>Sidechain</h3>
+          <textarea rows="6" style="width:100%">
+          {`<side-chain src="${src}"></side-chain>
+          <script src="https://apps.npr.org/elections20-interactive/sidechain.js"></script>`.replace(/\s{2,}|\n/g, " ")}
+          </textarea>
+        </div>
+      </div>
+      <h2>Preview</h2>
+      <side-chain
+        src={src}
+      />
+    </>);
+  }
+
+  homepage(free, props, state) {
+    var { url } = free;
+    var src = new URL(url + `homepage.html`);
+    return (<>
+      <h2>Embeds</h2>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; grid-gap: 8px">
+        <div>
+          <h3>Pym</h3>
+          <textarea rows="6" style="width:100%">
+          {`<p
+            data-pym-loader
+            data-child-src="${src}"
+            id="responsive-embed-election-sidebar">
+              Loading...
+          </p>
+          <script src="https://pym.nprapps.org/npr-pym-loader.v2.min.js"></script>`.replace(/\s{2,}|\n/g, " ")}
+          </textarea>
+        </div>
+        <div>
+          <h3>Sidechain</h3>
+          <textarea rows="6" style="width:100%">
+          {`<side-chain src="${src}"></side-chain>
+          <script src="https://apps.npr.org/elections20-interactive/sidechain.js"></script>`.replace(/\s{2,}|\n/g, " ")}
+          </textarea>
+        </div>
+      </div>
+      <h2>Preview</h2>
+      <side-chain
+        src={src}
+      />
+    </>);
   }
 
   render(props, state) {
@@ -75,7 +300,20 @@ class Customizer extends Component {
     ];
 
     var url = new URL(".", window.location.href).toString();
-  
+
+    var { selectedState, mode } = this.state;
+
+    var freeVariables = { url, offices, modes, postals };
+
+    var modePartials = {
+      "state": "statePage",
+      "race": "race",
+      "sidebar": "sidebar",
+      "homepage": "homepage"
+    };
+
+    var route = modePartials[mode] || "board";
+
     return (<>
       <div class="mode-select">
       {modes.map(([data, label]) => (<>
@@ -89,222 +327,7 @@ class Customizer extends Component {
         <label for={`mode-${data}`}>{label}</label>
       </>))}
       </div>
-      {(() => {
-        switch (state.mode) {
-          case "state":
-            var src = `${url}#/states/${state.selectedState}/${state.selectedOffice || ''}`;
-            return (<>
-              <div class="state-select">
-                <select value={state.selectedState} onInput={this.selectStatePage}>
-                  {postals.map(s => <option value={s}>{stateSheet[s].name}</option>)}
-                </select>
-                <select value={state.selectedOffice} onInput={this.selectStateOffice}>
-                  {offices.map(([data, label]) => (
-                    <option value={data}>{label}</option>
-                  ))}
-                </select>
-              </div>
-              <h2>Embeds</h2>
-              <div style="display: grid; grid-template-columns: 1fr 1fr; grid-gap: 8px">
-                <div>
-                  <h3>Pym</h3>
-                  <textarea rows="6" style="width:100%">
-                  {`<p
-                    data-pym-loader
-                    data-child-src="${src}"
-                    id="responsive-embed-election-${state.selectedState}-${state.selectedOffice || "X"}">
-                      Loading...
-                  </p>
-                  <script src="https://pym.nprapps.org/npr-pym-loader.v2.min.js"></script>`.replace(/\s{2,}|\n/g, " ")}
-                  </textarea>
-                </div>
-                <div>
-                  <h3>Sidechain</h3>
-                  <textarea rows="6" style="width:100%">
-                  {`<side-chain src="${src}"></side-chain>
-                  <script src="https://apps.npr.org/elections20-interactive/sidechain.js"></script>`.replace(/\s{2,}|\n/g, " ")}
-                  </textarea>
-                </div>
-              </div>
-              <h2>Preview</h2>
-              <side-chain 
-                key={state.selectedState} 
-                src={src} />
-            </>);
-
-          case "race":
-            var src = "";
-            if (state.raceID) {
-              var assembly = new URL(url + "./embed.html");
-              assembly.searchParams.set("file", `states/${state.selectedState}`);
-              assembly.searchParams.set("race", state.raceID);
-              src = assembly.toString();
-            }
-            return (<>
-              <div class="state-select">
-                <select value={state.selectedState} onInput={e => this.loadStateRaces(e.target.value)}>
-                  {postals.map(s => <option value={s}>{stateSheet[s].name}</option>)}
-                </select>
-                <select value={state.selectedRace} onInput={this.selectRace}>
-                  <option value="">Select an office</option>
-                  {state.races.map(r => <option value={r.id}>
-                    {`${strings["office-" + r.office]} ${r.seat ? r.seat : ""}`}
-                  </option>)}
-                </select>
-              </div>
-              {state.raceID && <>
-                <h2>Embeds</h2>
-                <div style="display: grid; grid-template-columns: 1fr 1fr; grid-gap: 8px">
-                  <div>
-                    <h3>Pym</h3>
-                    <textarea rows="6" style="width:100%">
-                    {`<p
-                      data-pym-loader
-                      data-child-src="${src}"
-                      id="responsive-embed-election-${state.selectedState}-${state.raceID}">
-                        Loading...
-                    </p>
-                    <script src="https://pym.nprapps.org/npr-pym-loader.v2.min.js"></script>`.replace(/\s{2,}|\n/g, " ")}
-                    </textarea>
-                  </div>
-                  <div>
-                    <h3>Sidechain</h3>
-                    <textarea rows="6" style="width:100%">
-                    {`<side-chain src="${src}"></side-chain>
-                    <script src="https://apps.npr.org/elections20-interactive/sidechain.js"></script>`.replace(/\s{2,}|\n/g, " ")}
-                    </textarea>
-                  </div>
-                </div>
-                <h2>Preview</h2>
-                <side-chain
-                  key={state.raceID}
-                  src={src}
-                />
-              </>}
-            </>);
-
-          case "sidebar":
-            var src = new URL(url + `embedBOP.html`);
-            if (state.dark) src.searchParams.set("theme", "dark");
-            if (state.showPresident) src.searchParams.set("president", true);
-            if (state.inline) src.searchParams.set("inline", true)
-            return (<>
-              <div class="options">
-                <input 
-                  id="bop_dark" 
-                  type="checkbox" 
-                  value={state.dark} 
-                  onInput={() => this.setFlag("dark", !state.dark)} />
-                <label for="bop_dark">Dark theme</label>
-
-                <input 
-                  id="bop_showPresident" 
-                  type="checkbox" 
-                  value={state.showPresident} 
-                  onInput={() => this.setFlag("showPresident", !state.showPresident)} />
-                <label for="bop_showPresident">Show president</label>
-
-                <input 
-                  id="bop_triplet" 
-                  type="checkbox" 
-                  value={state.inline} 
-                  onInput={() => this.setFlag("inline", !state.inline)} />
-                <label for="bop_inline">Row layout</label>
-              </div>
-              <h2>Embeds</h2>
-              <div style="display: grid; grid-template-columns: 1fr 1fr; grid-gap: 8px">
-                <div>
-                  <h3>Pym</h3>
-                  <textarea rows="6" style="width:100%">
-                  {`<p
-                    data-pym-loader
-                    data-child-src="${src}"
-                    id="responsive-embed-election-sidebar">
-                      Loading...
-                  </p>
-                  <script src="https://pym.nprapps.org/npr-pym-loader.v2.min.js"></script>`.replace(/\s{2,}|\n/g, " ")}
-                  </textarea>
-                </div>
-                <div>
-                  <h3>Sidechain</h3>
-                  <textarea rows="6" style="width:100%">
-                  {`<side-chain src="${src}"></side-chain>
-                  <script src="https://apps.npr.org/elections20-interactive/sidechain.js"></script>`.replace(/\s{2,}|\n/g, " ")}
-                  </textarea>
-                </div>
-              </div>
-              <h2>Preview</h2>
-              <side-chain
-                src={src}
-              />
-            </>);
-            break;
-
-          case "homepage":
-            var src = new URL(url + `homepage.html`);
-            return (<>
-              <h2>Embeds</h2>
-              <div style="display: grid; grid-template-columns: 1fr 1fr; grid-gap: 8px">
-                <div>
-                  <h3>Pym</h3>
-                  <textarea rows="6" style="width:100%">
-                  {`<p
-                    data-pym-loader
-                    data-child-src="${src}"
-                    id="responsive-embed-election-sidebar">
-                      Loading...
-                  </p>
-                  <script src="https://pym.nprapps.org/npr-pym-loader.v2.min.js"></script>`.replace(/\s{2,}|\n/g, " ")}
-                  </textarea>
-                </div>
-                <div>
-                  <h3>Sidechain</h3>
-                  <textarea rows="6" style="width:100%">
-                  {`<side-chain src="${src}"></side-chain>
-                  <script src="https://apps.npr.org/elections20-interactive/sidechain.js"></script>`.replace(/\s{2,}|\n/g, " ")}
-                  </textarea>
-                </div>
-              </div>
-              <h2>Preview</h2>
-              <side-chain
-                src={src}
-              />
-            </>);
-            break;
-
-          default:
-            var src = url + `#/${state.mode}`;
-            return (<>
-              <h2>Embeds</h2>
-              <div style="display: grid; grid-template-columns: 1fr 1fr; grid-gap: 8px">
-                <div>
-                  <h3>Pym</h3>
-                  <textarea rows="6" style="width:100%">
-                  {`<p
-                    data-pym-loader
-                    data-child-src="${src}"
-                    id="responsive-embed-election-${state.selectedState}-${state.raceID}">
-                      Loading...
-                  </p>
-                  <script src="https://pym.nprapps.org/npr-pym-loader.v2.min.js"></script>`.replace(/\s{2,}|\n/g, " ")}
-                  </textarea>
-                </div>
-                <div>
-                  <h3>Sidechain</h3>
-                  <textarea rows="6" style="width:100%">
-                  {`<side-chain src="${src}"></side-chain>
-                  <script src="https://apps.npr.org/elections20-interactive/sidechain.js"></script>`.replace(/\s{2,}|\n/g, " ")}
-                  </textarea>
-                </div>
-              </div>
-              <h2>Preview</h2>
-              <side-chain
-                key={state.raceID}
-                src={src}
-              />
-            </>);
-        }
-      })()}
+      {this[route](freeVariables, props, state)}
     </>)
   }
 }
