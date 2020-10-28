@@ -32,12 +32,27 @@ export default class BoardBallot extends Component {
   render() {
     var { results, test, latest } = this.state;
 
+
+    var themes = { };
+
+    for (var i in results) {
+      var r = results[i];
+      var theme = r.theme + " - " + r.description;
+      if (!themes[theme]) themes[theme] = [];
+      themes[theme].push(r);
+    }
+
     return <>
       <h1 tabindex="-1">Ballot Initiatives</h1>
       { test ? <TestBanner /> : "" }
 
       <div class="board-container">
-        {results && <Results races={results} office="Ballot"/>}
+        {Object.keys(themes).sort().map(function(t) {
+          return <>
+            <div class="theme-hed">{t}</div>
+            <Results races={themes[t]} office="Ballot"/>
+          </>;
+        })}
       </div>
       <BoardKey race="ballot"/>
       <div class="source">
