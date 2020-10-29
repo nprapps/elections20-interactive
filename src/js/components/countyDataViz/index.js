@@ -51,7 +51,7 @@ export class CountyDataViz extends Component {
     }
 
     var footnote = this.ommittedCounties
-      ? `${this.ommittedCounties} counties ommitted due top two parties being different than overall state top two parties`
+      ? "*Counties where leading parties differ from statewide leading parties are omitted."
       : "";
     return (
       <div class="trends">
@@ -92,7 +92,7 @@ export class CountyDataViz extends Component {
 
     // Filter out counties whose top 2 candidates don't match state.
     var filtered = resultsIn.filter(function (d) {
-      var countyParties = d.candidates.map(c => c.party);
+      var countyParties = d.candidates.slice(0, 2).map(c => c.party);
       return countyParties.includes(lead) && countyParties.includes(second);
     });
 
