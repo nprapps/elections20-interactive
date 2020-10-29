@@ -104,3 +104,10 @@ export default class Homepage extends Component {
 }
 
 render(<Homepage />, $.one(".embed-homepage"));
+
+window.addEventListener("hashchange", function(e) {
+  var hashed = `https://apps.npr.org/elections20-interactive/${window.location.hash}`;
+  var a = document.createElement("a");
+  a.href = hashed;
+  a.click();
+});
