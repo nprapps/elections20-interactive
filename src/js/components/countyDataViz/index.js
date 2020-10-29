@@ -55,8 +55,8 @@ export class CountyDataViz extends Component {
       : "";
     return (
       <div class="trends">
-        <h3 ref={this.trendsRef}>County Trends</h3>
-        <div class={this.state.collapsed ? "collapsed" : null}>
+        <h3>Demographic Trends</h3>
+        <div class={this.state.collapsed ? "collapsed" : null} ref={this.trendsRef}>
           {this.state.charts.map(c => (
             <div class="chart-wrapper">
               <CountyChart
@@ -127,7 +127,10 @@ export class CountyDataViz extends Component {
   }
 
   scrollToRef(ref) {
-    ref.current.scrollIntoView(true, { block: "nearest" });
+    if (ref.current) {
+      ref.current.focus();
+      ref.current.scrollIntoView(true);
+    }
   }
 
   toggleCollapsed() {

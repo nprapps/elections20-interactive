@@ -25,7 +25,10 @@ export default class ResultsTableCounty extends Component {
   }
 
   scrollToRef(ref) {
-    ref.current.scrollIntoView(true, { block: "nearest" });
+    if (ref.current) {
+      ref.current.focus();
+      ref.current.scrollIntoView();
+    }
   }
 
   toggleCollapsed() {
