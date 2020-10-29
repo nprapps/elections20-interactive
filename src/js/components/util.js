@@ -133,7 +133,6 @@ const availableMetrics = {
   covid: {
     name: "COVID-19 Cases Per Capita",
     format: formatters.comma,
-    last: true,
   },
   countyName: {
     name: "County",
@@ -144,6 +143,14 @@ const availableMetrics = {
 
 for (var k in availableMetrics) availableMetrics[k].key = k;
 
+export function getAvailableMetrics(state) {
+  var metrics = {...availableMetrics};
+  if (state == 'UT') {
+    delete metrics['covid'];
+  }
+  return metrics
+}
+
 export function getCountyVariable(data, variable) {
   var value = data[variable];
   // Have to special case past margin.
@@ -152,8 +159,6 @@ export function getCountyVariable(data, variable) {
   }
   return value * 1;
 }
-
-export { availableMetrics };
 
 export function groupCalled(results) {
   var called = {

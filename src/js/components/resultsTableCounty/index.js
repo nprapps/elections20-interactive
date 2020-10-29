@@ -4,7 +4,7 @@ import {
   reportingPercentage,
   sortByOrder,
   formatters,
-  availableMetrics,
+  getAvailableMetrics,
   getParty,
   getCountyCandidates,
 } from "../util.js";
@@ -14,11 +14,12 @@ export default class ResultsTableCounty extends Component {
   constructor(props) {
     super();
 
+    this.availableMetrics = getAvailableMetrics(props.state);
     this.tableRef = createRef();
     this.toggleCollapsed = this.toggleCollapsed.bind(this);
     this.state = {
-      sortMetric: availableMetrics.population,
-      displayedMetric: availableMetrics.population,
+      sortMetric: this.availableMetrics.population,
+      displayedMetric: this.availableMetrics.population,
       collapsed: true,
       order: -1,
     };
@@ -112,7 +113,7 @@ export default class ResultsTableCounty extends Component {
   }
 
   updateSort(metricName, opt_newMetric = false) {
-    var sortMetric = availableMetrics[metricName];
+    var sortMetric = this.availableMetrics[metricName];
     var order = sortMetric.alpha ? -1 : 1;
     if (sortMetric == this.state.sortMetric) {
       order = this.state.order * -1;
@@ -121,7 +122,7 @@ export default class ResultsTableCounty extends Component {
       track("county-metric", metricName);
     }
     var state = { sortMetric, order };
-    if (opt_newMetric) state.displayedMetric = availableMetrics[metricName];
+    if (opt_newMetric) state.displayedMetric = this.availableMetrics[metricName];
     this.setState(state);
   }
 
@@ -219,8 +220,8 @@ export default class ResultsTableCounty extends Component {
     return (
       <ul class="sorter">
         <li class="label">Sort Counties By:</li>
-        {Object.keys(availableMetrics).map(m =>
-          this.getSorterLi(availableMetrics[m])
+        {Object.keys(this.availableMetrics).map(m =>
+          this.getSorterLi(this.availableMetrics[m])
         )}
       </ul>
     );
@@ -236,7 +237,7 @@ export default class ResultsTableCounty extends Component {
         class={`sortButton ${selected}`}
         onclick={() => this.updateSort(metric.key, true)}>
         <span class="metric">{metric.name}</span>
-        {metric.last ? "" : <span class="pipe"> | </span>}
+        <span class="pipe"> | </span>
       </li>
     );
   }

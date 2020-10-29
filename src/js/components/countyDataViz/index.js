@@ -2,7 +2,7 @@ import { h, Component, createRef } from "preact";
 import gopher from "../gopher.js";
 
 import { CountyChart } from "./countyChart.js";
-import { availableMetrics, getCountyVariable, sortByParty } from "../util.js";
+import { getAvailableMetrics, getCountyVariable, sortByParty } from "../util.js";
 
 export class CountyDataViz extends Component {
   constructor(props) {
@@ -25,9 +25,10 @@ export class CountyDataViz extends Component {
     var cleanedData = this.getCleanedData(this.props.data, sorted);
 
     // Create display charts and sort by their correlations
+    var metrics = getAvailableMetrics(this.props.state)
     var charts = [];
-    for (var m of Object.keys(availableMetrics)) {
-      var metric = availableMetrics[m];
+    for (var m of Object.keys(metrics)) {
+      var metric = metrics[m];
       if (metric.hideFromToggle) continue;
       metric.corr = this.getCorrs(metric.key, cleanedData);
       charts.push(metric);
