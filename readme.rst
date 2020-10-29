@@ -66,6 +66,13 @@ Additional links and params
     
 * Internal ballot initiative board: ``/#/ballots``
 * Results embed customizer: ``/customizer.html``
+* Share pages, with metadata for social cards
+
+  * ``/share/XX.html`` - state pages, where XX is the postal code
+  * ``/share/president.html`` - Presidential big board
+  * ``/share/senate.html`` - Senate big board
+  * ``/share/house.html`` - House big board
+  * ``/share/governor.html`` - Governors big board
 
 Troubleshooting
 ---------------
