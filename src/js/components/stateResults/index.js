@@ -83,6 +83,7 @@ export default class StateResults extends Component {
             <div class="results-elements">{this.renderResults(office)}</div>
           )}
           <div class="source">
+            County Trends not shown for states with fewer than 10 counties reporting >50%. <br/><br/>
             Source: AP (as of <DateFormatter value={latest} />
             ). COVID-19 case data from{" "}
             <a href="https://github.com/CSSEGISandData/COVID-19">
