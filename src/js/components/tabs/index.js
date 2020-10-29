@@ -33,15 +33,25 @@ export default class Tabs extends Component {
     if (selected) {
       selectedIndex = children.indexOf(selected);
     }
+    var stored = null;
+    try {
+      stored = localStorage.getItem(`tabs-${id}`);
+    } catch (err) {
+      console.log("Unable to access local storage");
+    }
     this.state = {
       id,
-      selected: selectedIndex || localStorage.getItem(`tabs-${id}`) || 0,
+      selected: selectedIndex || stored || 0,
       clicked: false
     }
   }
 
   choose(selected) {
-    localStorage.setItem(`tabs-${this.state.id}`, selected);
+    try {
+      localStorage.setItem(`tabs-${this.state.id}`, selected);
+    } catch (err) {
+      console.log("Unable to save tab state to local storage");
+    }
     this.setState({ selected, clicked: true });
     track("tab-selected", this.props.children[selected].props.label);
   }
