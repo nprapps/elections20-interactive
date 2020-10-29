@@ -82,7 +82,7 @@ export default class ElectoralBubbles extends Component {
   }
 
   collisionRadius(d) {
-    return this.nodeRadius(d) + 4;
+    return this.nodeRadius(d) + 1;
   }
 
   resize() {
