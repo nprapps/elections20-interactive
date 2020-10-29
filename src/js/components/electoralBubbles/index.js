@@ -367,7 +367,13 @@ export default class ElectoralBubbles extends Component {
                       onClick={() => this.goToState(result.state)}
                     />
                     {size > MIN_TEXT && (
-                      <text x={r} y={r + size * .4} font-size={size + "px"}>{result.state}</text>
+                      <text 
+                        x={r} y={r + size * .4} 
+                        font-size={size + "px"}
+                        class={"uncalled-race " + `${reporting ? "early" : "open"}`}
+                      >
+                        {result.state}
+                      </text>
                     )}
                   </svg>
                 })}
