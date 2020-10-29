@@ -26,7 +26,9 @@ export default function ResultsTableCandidates(props) {
   }
 
   var isUncontested = results.candidates.length < 2;
-  var reporting = `${reportingPercentage(props.data.eevp || 0)}% in`;
+  var reporting = `${reportingPercentage(
+    (notStatewide ? props.data.reportingPercent : props.data.eevp) || 0
+  )}% in`;
 
   var hasMugs = results.candidates.some(c =>
     Object.keys(activeMugshots).includes(c.last)
@@ -48,9 +50,11 @@ export default function ResultsTableCandidates(props) {
 
   return (
     <div class={"results-table statewide " + (ballot ? "ballot" : "")}>
-      {seatName && <div class="results-header">
-         <caption> {seatName}</caption>
-      </div>}
+      {seatName && (
+        <div class="results-header">
+          <caption> {seatName}</caption>
+        </div>
+      )}
       <div class={"board " + (isUncontested ? "uncontested" : "")} role="table">
         <div class="thead" role="rowgroup">
           <div class="tr" role="row">
@@ -78,9 +82,7 @@ export default function ResultsTableCandidates(props) {
         </div>
       </div>
       <div class="footnote">
-        <span class="left">
-        {incumbentText}
-        </span>
+        <span class="left">{incumbentText}</span>
         <span class="right">{isUncontested ? "" : reporting}</span>
       </div>
       {uncontestedText}
@@ -141,7 +143,7 @@ function CandidateNameCell(candidate, office) {
     name = (
       <Fragment>
         <span class="first">{candidate.first || ""}</span> {candidate.last}
-        {office === "I" ? '' : ` (${getParty(candidate.party)}) `}
+        {office === "I" ? "" : ` (${getParty(candidate.party)}) `}
       </Fragment>
     );
   }
