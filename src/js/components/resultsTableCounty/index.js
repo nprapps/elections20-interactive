@@ -36,7 +36,7 @@ export default class ResultsTableCounty extends Component {
   }
 
   render() {
-    if (!this.props.data || !this.props.sortOrder || !this.props.sortOrder.length > 1) {
+    if (!this.props.data) {
       return;
     }
     var sortedData = this.sortCountyResults();
@@ -235,7 +235,7 @@ export default class ResultsTableCounty extends Component {
   }
 }
 
-function ResultsRowCounty(props) {
+export function ResultsRowCounty(props) {
   var { candidates, row, metric } = props;
   var topCands = props.candidates.map(c => c.last);
 
