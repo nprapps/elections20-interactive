@@ -25,11 +25,14 @@ export default class CountyMap extends Component {
 
     // Only display candidates that are winning a county
     var legendCands = getCountyCandidates(props.sortOrder, props.data);
-    
+
     // Add in special marker if more than one candidate of same party is winning a county.
     var specialCount = 1;
     legendCands.forEach(function (c, index) {
-      if (legendCands.filter(l => getParty(l.party) == getParty(c.party)).length > 1) {
+      if (
+        legendCands.filter(l => getParty(l.party) == getParty(c.party)).length >
+        1
+      ) {
         c.special = specialCount;
         specialCount += 1;
       }
@@ -210,11 +213,14 @@ export default class CountyMap extends Component {
       candText = displayCandidates
         .map(cand => {
           var [candidate] = legendCands.filter(c => isSameCandidate(c, cand));
+          var inStateTop = !!this.props.sortOrder.filter(c =>
+            isSameCandidate(c, cand)
+          ).length;
           var special =
             candidate && candidate.special ? `i${candidate.special}` : "";
           var cs = `<div class="row">
             <span class="party ${cand.party} ${special}"></span>
-            <span>${cand.last}</span>
+            <span>${cand.last} ${!inStateTop ? `(${getParty(cand.party)})` : ""}</span>
             <span class="amt">${reportingPercentage(cand.percent)}%</span>
         </div>`;
           return cand.percent > 0 ? cs : "";
