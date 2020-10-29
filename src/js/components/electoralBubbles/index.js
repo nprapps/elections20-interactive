@@ -281,9 +281,12 @@ export default class ElectoralBubbles extends Component {
       }
     });
 
-    var height = Math.ceil(distance / HEIGHT_STEP) * HEIGHT_STEP * 2;
+    var yBounds = Math.ceil(distance / HEIGHT_STEP) * HEIGHT_STEP;
+    if (yBounds - distance < 30) yBounds += 30;
+    var height = yBounds * 2;
+    var offset = 30;
     // create spacer for labels if they start to crowd the top
-    var offset = (height - distance * 2) < 30 ? 30 : 0;
+    // var offset = (height - distance * 2) < 30 ? 30 : 0;
 
     var uncalled = {};
     for (var k in props.buckets) {
@@ -319,6 +322,8 @@ export default class ElectoralBubbles extends Component {
           <text class="leading-cue gop" x={width / 2 + 40} y="20">
             Trump leading &gt;
           </text>
+          <line class="separator" x1={width / 2} x2={width / 2} y1="25" y2={height - 10 + offset} />
+          <g class="force-sim">
           {nodes.map(n => {
             // remove the max to let text shrink and vanish
             // var textSize = Math.max(this.nodeRadius(n) * .5, MIN_TEXT);
@@ -341,7 +346,7 @@ export default class ElectoralBubbles extends Component {
                 font-size={textSize + "px"}>{n.state}</text>}
             </>);
           })}
-          <line class="separator" x1={width / 2} x2={width / 2} y1="30" y2={height - 10 + offset} />
+          </g>
         </svg>
       </div>
       {hasUncalled && <div class="uncalled">
