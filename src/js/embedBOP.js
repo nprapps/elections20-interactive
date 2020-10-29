@@ -94,7 +94,7 @@ async function init(results) {
                 </div>
               : ""}*/}
               <div class="candidate gop">
-                <div class="name">Trump {president.GOP >= 0 ? winnerIcon : ""}</div>
+                <div class="name">Trump {president.GOP >= 270 ? winnerIcon : ""}</div>
                 <div class="votes">{president.GOP}</div>
               </div>
             </div>
