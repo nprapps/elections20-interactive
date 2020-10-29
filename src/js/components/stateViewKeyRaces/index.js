@@ -2,6 +2,7 @@ import { h, Component, Fragment } from "preact";
 import gopher from "../gopher.js";
 import ResultsTableCandidates from "../resultsTableCandidates";
 import Strings from "strings.sheet.json";
+import stateLookup from "states.sheet.json";
 
 const STATES_WITHOUT_COUNTY_INFO = ["AK"];
 
@@ -47,15 +48,20 @@ export default class KeyRaces extends Component {
 
     var offices = "PGSHI".split("").filter(o => o in grouped);
 
+    var numberSort = (a, b) => a.seatNumber * 1 - b.seatNumber * 1;
+    var nameSort = (a, b) => a.seat < b.seat ? -1 : 1;
+
     return offices.map(o => {
       var data = grouped[o];
       // Filter house races for keyRaces
       if (o == "H") {
         data = data.filter(d => d.keyRace);
+        data.sort(numberSort);
         if (!data.length) return;
       }
       if (o == "I") {
         data = data.filter(d => d.featured);
+        data.sort(nameSort);
         if (!data.length) return;
       }
 
@@ -81,9 +87,14 @@ export default class KeyRaces extends Component {
             </a>
           </h2>
           <div class="races">
-            {data.map(r => (
-              <ResultsTableCandidates data={r} />
-            ))}
+            {data.map(function(r) {
+              var isMultiple = data.length > 1;
+              var title = "";
+              if (isMultiple) {
+                title = stateLookup[r.state].name + " " + (r.seatNumber || 1);
+              }
+              return <ResultsTableCandidates data={r} title={title} />
+            })}
           </div>
         </div>
       );

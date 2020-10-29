@@ -34,7 +34,7 @@ export default class BoardHouse extends Component {
     var { results, test, latest, alert } = this.state;
 
     if (results) {
-      var sorted = results.sort((a, b) =>
+      var sorted = results.slice().sort((a, b) =>
         a.state > b.state ? 1 : 
         a.state < b.state ? -1 : 
         parseInt(a.seatNumber) > parseInt(b.seatNumber) ? 1 : 
@@ -88,7 +88,7 @@ export default class BoardHouse extends Component {
           )}
         </div>
         <BoardKey race="house"/>
-        <div class="source">Source: AP (as of <DateFormatter value={latest} />)</div>
+        <div class="source">Source: AP (as of <DateFormatter value={latest} />). House race ratings from the nonpartisan <a href="https://cookpolitical.com/ratings/house-race-ratings">Cook Political Report</a>.</div>
       </>
     );
   }

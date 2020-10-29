@@ -28,6 +28,8 @@
   caption {
     display: inline-block;
     text-align: left;
+    font-weight: bold;
+    font-size: 1em;
 
     @media @mobile {
       width: 100%;
@@ -82,6 +84,7 @@
       font-family: @sans;
       font-size: 0.85em;
       text-align: right;
+      font-style: italic;
     }
   }
 
@@ -435,6 +438,17 @@
   font-size: 11px;
   color: var(--secondary);
   margin-top: 5px;
-  text-align: right;
   font-style: italic;
+  display: flex;
+  justify-content: space-between;
+
+  .right {
+    text-align: right;
+  }
+}
+
+.embedded {
+  .results-table.statewide {
+    max-width: none;
+  }
 }

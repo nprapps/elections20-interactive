@@ -51,6 +51,22 @@ Tracked events
 * ``clicked-map`` - the user clicked a state on the national map
 * ``tab-selected`` - the user manually chose a tab to view
 
+Additional links and params
+--------------
+
+* Homepage embed: ``/homepage.html``
+   
+  * ``display=margins,cartogram,map`` controls which viz displays on load
+   
+* Balance of Power embed (House and Senate bars): ``/embedBOP.html``
+
+  * ``president=true`` adds electoral totals to the top (for use on homepage)
+  * ``inline=true`` for side-by-side display (for use on liveblog)
+  * ``theme=dark`` for dark theme
+    
+* Internal ballot initiative board: ``/#/ballots``
+* Results embed customizer: ``/customizer.html``
+
 Troubleshooting
 ---------------
 

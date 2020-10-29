@@ -35,7 +35,7 @@ export default class BoardSenate extends Component {
     var { results, test, latest, alert } = this.state;
 
     if (results) {
-      var sorted = results.sort((a,b) => a.name > b.name ? 1 : a.name < b.name ? -1 : 0);
+      var sorted = results.slice().sort((a,b) => a.name > b.name ? 1 : a.name < b.name ? -1 : 0);
 
       var buckets = {
         likelyD: [],
@@ -70,7 +70,10 @@ export default class BoardSenate extends Component {
           </>}
         </div>
         <BoardKey race="senate"/>
-        <div class="source">Source: AP (as of <DateFormatter value={latest} />)</div>
+        <div class="source">
+          <div class="note">*Note: Expected vote is an Associated Press estimate of how much of the vote in an election has been counted. <a href="https://www.ap.org/en-us/topics/politics/elections/counting-the-vote">Read more about how EEVP is calculated</a>.</div>
+          Source: AP (as of <DateFormatter value={latest} />). Senate race ratings from the nonpartisan <a href="https://cookpolitical.com/ratings/senate-race-ratings">Cook Political Report</a>. Seats listed as Likely Democratic or Likely Republican include contests rated as "Solid" and "Likely" for a particular party. Seats listed as Competitive include contests rated as leaning to a particular party, or a toss-up.
+        </div>
       </Fragment>
     );
   }

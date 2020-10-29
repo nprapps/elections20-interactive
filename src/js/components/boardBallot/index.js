@@ -32,15 +32,33 @@ export default class BoardBallot extends Component {
   render() {
     var { results, test, latest } = this.state;
 
+
+    var themes = { };
+
+    for (var i in results) {
+      var r = results[i];
+      var theme = r.theme + " - " + r.description;
+      if (!themes[theme]) themes[theme] = [];
+      themes[theme].push(r);
+    }
+
     return <>
       <h1 tabindex="-1">Ballot Initiatives</h1>
       { test ? <TestBanner /> : "" }
 
       <div class="board-container">
-        {results && <Results races={results} office="Ballot"/>}
+        {Object.keys(themes).sort().map(function(t) {
+          return <>
+            <div class="theme-hed">{t}</div>
+            <Results races={themes[t]} office="Ballot"/>
+          </>;
+        })}
       </div>
       <BoardKey race="ballot"/>
-      <div class="source">Source: AP (as of <DateFormatter value={latest} />)</div>
+      <div class="source">
+        <div class="note">*Note: Expected vote is an Associated Press estimate of how much of the vote in an election has been counted. <a href="https://www.ap.org/en-us/topics/politics/elections/counting-the-vote">Read more about how EEVP is calculated</a>.</div>
+        Source: AP (as of <DateFormatter value={latest} />)
+      </div>
     </>;
   }
 }

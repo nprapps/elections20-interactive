@@ -31,11 +31,155 @@ h1 {
 
 // Balance of power embed
 
-@height: 30px;
+@thick-height: @height * 1.3;
+@height: 20px;
+@thin-height: @height * 0.7;
 
 main.embed-bop {
-  max-width: 768px;
   color: #444;
+  // background: black;
+
+  .inline {
+    .container {
+      display: flex;
+      max-width: 100%;
+
+      @media @mobile {
+        display: block;
+      }
+    }
+
+    .bar-container {
+      height: @height;
+    }
+
+    .president .bar-container {
+      display: block;
+    }
+
+    .senate, .house {
+      .number-container {
+        display: flex;
+      }
+    }
+
+    .link-container {
+      flex: 1;
+      padding: 0 3%;
+      border-right: 1px solid #ddd;
+
+      h3 {
+        margin-top: 10px;
+      }
+
+      &.senate {
+        h3 { margin-top: 10px; }
+      }
+
+      .label {
+        display: none;
+      }
+
+      .middle {
+        height: @thin-height * 2;
+      }
+
+      @media @mobile {
+        border: none;
+        padding: 0;
+
+        &.senate, &.house {
+          width: 46%;
+          display: inline-block;
+        }
+        &.senate {
+          float: right;
+        }
+
+        &.president {
+          .bar-container {
+            height: @thin-height;
+          }
+          .middle {
+            top: @thin-height / -5;
+            height: @thin-height * 1.4;
+          }
+          h3 {
+            margin-top: 0;
+          }
+        }
+
+        .label {
+          display: block;
+        }
+        &.senate, &.house {
+          .number-container {
+            display: none;
+          }
+        }
+      }
+
+      &:last-child {
+        border-right: 0;
+      }
+    }
+
+    .candidate {
+      border: 0 !important;
+    }
+    .president {
+      .chatter {
+        margin-bottom: 10px;
+      }
+    }
+
+    .source {
+      margin-top: 20px;
+
+      @media @mobile {
+        margin-top: 35px;
+      }
+    }
+  }
+
+  .dark {
+    h3 {
+      color: #ccc;
+    }
+    .bar-container .middle {
+      border-left: 1px solid #ccc;
+    }
+    .chatter, .uncalled, .source {
+      color: #aaa;
+    }
+    .bar-container {
+      background: #333;
+    }
+    .divider {
+      border-top: 1px solid #333;
+    }
+    .president .candidate:first-child {
+      border-right: 1px solid #333;
+    }
+  }
+
+  .dark.inline {
+    .link-container {
+      border-right: 1px solid #333;
+
+      &:last-child {
+        border-right: none;
+      }
+
+      @media @mobile {
+        border: none;
+      }
+    }
+  }
+
+  .president h3 {
+    margin-top: 0;
+  }
 
   h3 {
     .gotham();
@@ -49,7 +193,7 @@ main.embed-bop {
     text-align: center;
     font-size: 12px;
     .gotham();
-    margin-bottom: 15px;
+    margin-bottom: 10px;
     color: #666;
   }
 
@@ -60,9 +204,13 @@ main.embed-bop {
     margin-left: 0;
   }
 
-  a.container {
+  a.link-container {
     text-decoration: none;
     color: #444;
+
+    &.senate {
+      h3 { margin-top: 45px; }
+    }
 
     &:hover {
       h3 {
@@ -76,7 +224,13 @@ main.embed-bop {
     font-size: 11px;
   }
 
-  .pres-container {
+  .senate, .house {
+    .number-container {
+      display: none;
+    }
+  }
+
+  .number-container {
     display: flex;
     justify-content: center;
     align-items: stretch;
@@ -84,20 +238,15 @@ main.embed-bop {
     .candidate {
       flex: 1;
       text-align: center;
-      border-left: 1px solid #eee;
       max-width: 150px;
-      padding: 0 10px;
       color: #666;
       display: flex; 
       flex-direction: column; 
       justify-content: flex-end;
 
-      &:first-child {
-        border-left: 0;
-      }
-
       .name {
         .knockout-header();
+        line-height: 1.2em;
         text-transform: uppercase;
 
         @media @sidebar {
@@ -108,7 +257,6 @@ main.embed-bop {
         .gotham();
         font-size: 30px;
         font-weight: bold;
-        // color: #666;
       }
     }
 
@@ -124,18 +272,25 @@ main.embed-bop {
       color: @ind;
       path { fill: @ind; }
     }
-    .uncalled {
-      @media @sidebar {
-        display: none;
-      }
+  }
+
+  .president {
+    .chatter {
+      margin-bottom: 15px;
+    }
+    .bar-container {
+      display: none;
+    }
+    .candidate:first-child {
+      border-right: 1px solid #ddd;
     }
   }
 
   .bar-container {
     width: 100%;
-    height: @height;
+    height: @thick-height;
     background: #ddd;
-    margin-bottom: 50px;
+    margin-bottom: 15px;
     position: relative;
 
     .bar {
@@ -159,7 +314,7 @@ main.embed-bop {
 
     .label {
       position: absolute;
-      margin-top: calc(@height + 5px);
+      margin-top: calc(@height + 10px);
       .gotham();
       font-weight: bold;
       font-size: 12px;
@@ -188,7 +343,7 @@ main.embed-bop {
       position: absolute;
       top: @height / -5;
       border-left: 1px solid #444;
-      height: @height * 1.4;
+      height: @height * 1.8;
       width: 1px;
       right: 50%;
     }
@@ -197,5 +352,13 @@ main.embed-bop {
   .divider {
     border-top: 1px solid #eee;
     margin: 20px 0;
+
+    @media @mobile {
+      margin: 15px 0 10px;
+    }
+  }
+
+  .source {
+    margin-top: 55px;
   }
 }

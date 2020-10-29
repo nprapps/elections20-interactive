@@ -16,8 +16,8 @@ export default function ResultsTableCandidates(props) {
   var results = props.data;
   var notStatewide = results.office === "H" || results.office === "I";
   var seatName = notStatewide ? results.seat : props.title;
-  if (results.office === "I" && results.description)
-    seatName += ` - ${results.description}`;
+  // if (results.office === "I" && results.description)
+  //   seatName += ` - ${results.description}`;
 
   let totalVotes = 0;
   for (let i = 0; i < results.candidates.length; i++) {
@@ -25,9 +25,7 @@ export default function ResultsTableCandidates(props) {
   }
 
   var isUncontested = results.candidates.length < 2;
-  var reporting = notStatewide
-    ? `${reportingPercentage(props.data.reportingPercent || 0)}% reporting`
-    : `${reportingPercentage(props.data.eevp || 0)}% in`;
+  var reporting = `${reportingPercentage(props.data.eevp || 0)}% in`;
 
   var hasMugs = results.candidates.some(c =>
     Object.keys(activeMugshots).includes(c.last)
@@ -35,7 +33,7 @@ export default function ResultsTableCandidates(props) {
 
   var footnote;
   var uncontestedText = isUncontested ? (
-    <div>
+    <div class="footnote uncontested">
       The AP does not tabulate votes for uncontested races and declares its
       winner as soon as polls close.
     </div>
@@ -45,17 +43,18 @@ export default function ResultsTableCandidates(props) {
   var hasIncumbent = results.candidates.some(c => c.incumbent);
   var incumbentText = hasIncumbent ? <div>● - Incumbent</div> : "";
 
+  var ballot = results.office == "I";
+
   return (
-    <div class="results-table statewide">
-      <div class="results-header">
-        {seatName ? <caption> {seatName}</caption> : <span />}
-        <span class="reporting">{reporting}</span>
-      </div>
+    <div class={"results-table statewide " + (ballot ? "ballot" : "")}>
+      {seatName && <div class="results-header">
+         <caption> {seatName}</caption>
+      </div>}
       <div class={"board " + (isUncontested ? "uncontested" : "")} role="table">
         <div class="thead" role="rowgroup">
           <div class="tr" role="row">
             <div role="columnheader" class="th name" colspan="2">
-              Candidate
+              {ballot ? "Option" : "Candidate"}
             </div>
             <div role="columnheader" class="th percentage">
               Percent
@@ -78,9 +77,12 @@ export default function ResultsTableCandidates(props) {
         </div>
       </div>
       <div class="footnote">
+        <span class="left">
         {incumbentText}
-        {uncontestedText}
+        </span>
+        <span class="right">{isUncontested ? "" : reporting}</span>
       </div>
+      {uncontestedText}
     </div>
   );
 }

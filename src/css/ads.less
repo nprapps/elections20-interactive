@@ -12,6 +12,7 @@ google-ad {
   margin: 0 auto;
   padding: 16px 15px;
   display: block;
+  text-align: center;
 
   .embedded & {
     display: none !important;
@@ -55,9 +56,14 @@ google-ad {
   .message {
     font-size: 10px;
     text-align: center;
+    display: none;
+
+    .has-ad& {
+      display: block;
+    }
   }
 
   &[data-size="wide"] {
-    .message { display: none; }
+    // .message { display: none; }
   }
 }

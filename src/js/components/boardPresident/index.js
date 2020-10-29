@@ -95,47 +95,45 @@ export default class BoardPresident extends Component {
   }
 
   render(props, state) {
-    var { results, test, latest } = this.state;
+    var { results = [], test, latest } = this.state;
 
-    if (results) {
-      results.forEach(function(r) {
-        r.districtDisplay = (r.district !== "AL") ? r.district : "";
-      });
+    var buckets = {
+      likelyD: [],
+      tossup: [],
+      likelyR: [],
+    };
 
-      var sorted = results.sort(function(a,b) {
-        if (a.stateName > b.stateName) return 1;
-        if (a.stateName < b.stateName) return -1;
-        if (a.districtDisplay > b.districtDisplay) return 1;
-        if (a.districtDisplay < b.districtDisplay) return -1;
-        return 0;
-      });
+    results.forEach(function(r) {
+      r.districtDisplay = (r.district !== "AL") ? r.district : "";
+    });
 
-      var buckets = {
-        likelyD: [],
-        tossup: [],
-        likelyR: [],
-      };
+    var sorted = results.slice().sort(function(a,b) {
+      if (a.stateName > b.stateName) return 1;
+      if (a.stateName < b.stateName) return -1;
+      if (a.districtDisplay > b.districtDisplay) return 1;
+      if (a.districtDisplay < b.districtDisplay) return -1;
+      return 0;
+    });
 
-      sorted.forEach(function (r) {
-        var bucketRating = getBucket(r.rating);
-        if (bucketRating) buckets[bucketRating].push(r);
-      });
-    }
+    sorted.forEach(function (r) {
+      var bucketRating = getBucket(r.rating);
+      if (bucketRating) buckets[bucketRating].push(r);
+    });
 
     var called = groupCalled(results);
 
     return <div class="president board">
       { test ? <TestBanner /> : "" }
-      <h1 tabindex="-1">President</h1>
+      <h1 tabindex="-1">President Results</h1>
 
       <ElectoralBars called={called} />
       <Leaderboard called={called} />
       <hr class="divider" />
 
-      {results && (results.filter(r => r.called).length > 5) && <Tabs id="president-viz">
+      <Tabs id="president-viz">
 
         <div icon="./assets/icons/ico-bubbles.svg" label="Margins">
-          <ElectoralBubbles results={results} />
+          <ElectoralBubbles results={results} buckets={buckets} />
         </div>
 
         <div icon="./assets/icons/ico-cartogram.svg" label="Electoral">
@@ -146,19 +144,22 @@ export default class BoardPresident extends Component {
           <NationalMap races={results} />
         </div>
         
-      </Tabs>}
+      </Tabs>
 
       <BoardKey race="president"/>
 
       <div label="Board" class="board-container President">
         {results && <>
-          <Results races={buckets.tossup} hed="Competitive States" office="President" addClass="middle" split={true}/>
-          <Results races={buckets.likelyD} hed="Likely Democratic" office="President" addClass="first" />
-          <Results races={buckets.likelyR} hed="Likely Republican" office="President" addClass="last" />
+          <Results races={buckets.tossup.slice()} hed="Competitive States" office="President" addClass="middle" split={true}/>
+          <Results races={buckets.likelyD.slice()} hed="Likely Democratic" office="President" addClass="first" />
+          <Results races={buckets.likelyR.slice()} hed="Likely Republican" office="President" addClass="last" />
         </>}
       </div>
 
-      <div class="source">Source: AP (as of <DateFormatter value={latest} />)</div>
+      <div class="source">
+        <div class="note">*Note: Expected vote is an Associated Press estimate of how much of the vote in an election has been counted. <a href="https://www.ap.org/en-us/topics/politics/elections/counting-the-vote">Read more about how EEVP is calculated</a>.</div>
+        Source: AP (as of <DateFormatter value={latest} />). Presidential race ratings from <a href="https://www.npr.org/2020/10/09/921596963/npr-electoral-map-biden-lead-widens-again-with-less-than-a-month-to-go">NPR</a>.
+      </div>
     </div>
   }
 }

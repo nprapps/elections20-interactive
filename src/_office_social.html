@@ -1,22 +1,16 @@
 <!doctype html>
 <%
-  var stateMeta = grunt.data.json.states[state];
   var shareStrings = grunt.data.archieml.longform.socialPages;
-  var stateName = stateMeta.name;
-  var defaultTitle = shareStrings.stateTitle;
-  var defaultDescription = shareStrings.stateDescription;
 
-  var title = shareStrings[`${state.toLowerCase()}Title`] || defaultTitle;
-  title = title.replace("%STATE%", stateName);
+  var title = shareStrings[`${office}Title`];
 
-  var description = shareStrings[`${state.toLowerCase()}Description`] || defaultDescription;
-  description = description.replace("%STATE%", stateName);
+  var description = shareStrings[`${office}Description`];
   
   var base = `https://apps.npr.org/elections20-interactive`;
-  var image = `${base}/assets/social_states/${state}.jpg`;
+  var image = `${base}/assets/social_states/${office}.jpg`;
 
-  var there = `${base}/#/states/${state}`;
-  var here = `${base}/share/${state}.html`;
+  var there = `${base}/#/states/${office}`;
+  var here = `${base}/share/${office}.html`;
 
 %>
 <html>

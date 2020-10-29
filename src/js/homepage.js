@@ -2,8 +2,10 @@ import { h, Fragment, Component, render } from "preact";
 import { ElectoralBars, Leaderboard } from "./components/boardPresident";
 import NationalMap from "./components/nationalMap";
 import ElectoralBubbles from "./components/electoralBubbles";
+import Cartogram from "./components/cartogram";
 import DateFormatter from "./components/dateFormatter";
 import TestBanner from "./components/testBanner";
+import Tabs from "./components/tabs";
 import { groupCalled, sumElectoral, getBucket } from "./components/util.js";
 import $ from "./lib/qsa";
 import gopher from "./components/gopher";
@@ -44,13 +46,28 @@ export default class Homepage extends Component {
     var called = groupCalled(results);
 
     var search = new URLSearchParams(window.location.search);
-    var Display = search.get("display") == "map" ? NationalMap : ElectoralBubbles;
+    var display = search.get("display");
 
     return <div class="president board">
       { test ? <TestBanner /> : "" }
       <ElectoralBars called={called} />
       <Leaderboard called={called} />
-      <Display results={results} />
+
+      {results && results.length && <Tabs id="homepage-viz">
+
+        <div icon="./assets/icons/ico-bubbles.svg" label="Margins" selected={display == "margins"}>
+          <ElectoralBubbles results={results} />
+        </div>
+
+        <div icon="./assets/icons/ico-cartogram.svg" label="Electoral" selected={display == "cartogram"}>
+          <Cartogram races={results} />
+        </div>
+
+        <div icon="./assets/icons/ico-geo.svg" label="Geography" selected={display == "map"}>
+          <NationalMap races={results} />
+        </div>
+        
+      </Tabs>}
 
       { false && <div label="Board" class="board-container President">
         {results && <>

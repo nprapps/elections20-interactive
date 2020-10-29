@@ -12,18 +12,26 @@
       .sr-only();
     }
     .leading {
-      color: #fff;
-      background-color: @ind;
-
-      &.Other {
-        background-color: @gray;
-      }
+      color: @gray;
+      background-color: @indDim;
 
       &.Dem {
-        background-color: @dem;
+        background-color: @demDim;
       }
       &.GOP {
-        background-color: @gop;
+        background-color: @gopDim;
+      }
+
+      &.allin {
+        color: #fff;
+        background-color: @ind;
+
+        &.Dem {
+          background-color: @dem;
+        }
+        &.GOP {
+          background-color: @gop;
+        }
       }
 
       .icon {
@@ -39,7 +47,7 @@
     td {
       position: relative;
       vertical-align: middle;
-      padding: 10px;
+      padding: 5px;
       border-bottom: 1px solid #eee;
       border-right: 1px solid #eee;
       &:last-child {
@@ -88,6 +96,10 @@
       -webkit-font-smoothing: antialiased;
       position: relative;
 
+      &.county.sortable {
+        cursor: pointer;
+      }
+
       &.vote,
       &.comparison {
         line-height: 1;
@@ -121,9 +133,17 @@
               display: none;
             }
           }
+          cursor: pointer;
           padding-right: 15px;
         }
       }
+    }
+
+    th.county {
+      padding: 0 0 5px;
+    }
+    th.amt.precincts {
+      cursor: pointer;
     }
 
     th,
@@ -131,16 +151,40 @@
       border-left: 1px solid #eee;
       text-align: center;
 
+      &.comparison {
+        width: 15%;
+      }
+      &.vote {
+        width: 11%;
+      }
+
       @media @mobile {
         font-size: 11px;
 
-        &.vote {
-          width: 10%;
-        }
-
         &.comparison {
-          width: 20%;
+          width: 18%;
         }
+      }
+
+      @media @tiny {
+        &.vote {
+          width: 12%;
+          span.display-percent {
+            display: none;
+
+            &.mobile {
+              display: block;
+            }
+          }
+
+          &.not-leading {
+            display: none;
+          }
+        }
+      }
+
+      span.display-percent.mobile {
+        display: none;
       }
 
       &:first-child {
@@ -163,7 +207,6 @@
         font-style: italic;
         text-align: right;
         white-space: nowrap;
-        width: 10%;
 
         @media @mobile {
           display: none;

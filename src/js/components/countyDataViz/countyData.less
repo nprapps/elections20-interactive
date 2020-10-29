@@ -16,19 +16,28 @@
     }
   }
 
-  span.description {
+  div.description {
     font-weight: normal;
     color: #777;
     font-size: 12px;
     line-height: 1.6;
     text-transform: uppercase;
     margin: auto;
-    margin-left: 20px;
+    margin-left: 30px;
     text-align: center;
     display: block;
 
-    span {
+    div.strength {
       font-weight: bold;
+      color: #fff;
+      display: inline-block;
+      margin: auto;
+      padding: 2px 5px;
+      font-size: 11px;
+
+      &.weak {
+        color: #777;
+      }
     }
   }
 
@@ -38,7 +47,11 @@
 
   text.axis-label {
     fill: #787878;
-    font-size: 12px;
+    font-size: 11px;
+
+    @media @mobile {
+      font-size: 12px;
+    }
   }
 
   .tooltip {
@@ -69,15 +82,19 @@
 
     .row {
       padding: 3px 0;
-      min-width: 120px;
+      .gotham();
+      max-width: 130px;
       font-size: 10px;
       color: #666;
-      text-transform: uppercase;
       border-top: 1px solid #eee;
 
       .amt {
         text-align: right;
         float: right;
+      }
+
+      .metric {
+        padding-right: 5px;
       }
 
       &:empty {
@@ -92,7 +109,7 @@
   display: block;
 
   .chart-wrapper {
-    width: 25%;
+    width: 33%;
     display: inline-block;
 
     @media @tablet {
@@ -122,7 +139,7 @@
     text-transform: uppercase;
   }
 
-  div.collapsed .chart-wrapper:nth-child(n + 5) {
+  div.collapsed .chart-wrapper:nth-child(n + 4) {
     display: none;
   }
 

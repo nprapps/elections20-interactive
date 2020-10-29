@@ -8,8 +8,8 @@ var d3 = require("d3-force/dist/d3-force.min.js");
 
 var { sqrt, PI, cos, sin } = Math;
 
-const Y_FORCE = .01;
-const X_FORCE = .2;
+const Y_FORCE = .03;
+const X_FORCE = .4;
 const COLLIDE_FORCE = 1;
 const VISUAL_DOMAIN = .5;
 const DATA_DOMAIN = .3;
@@ -17,6 +17,7 @@ const POLAR_OFFSET = .05;
 const MIN_TEXT = 10;
 const MIN_RADIUS = 3;
 const FROZEN = .001;
+const HEIGHT_STEP = 50;
 
 var nextTick = function(f) {
   requestAnimationFrame(f);
@@ -67,6 +68,7 @@ export default class ElectoralBubbles extends Component {
   xAccess(d) {
     var centerX = this.state.width / 2;
     var { mx, margin, party } = d;
+    // generate log position
     var offset = party == "Dem" ? -POLAR_OFFSET : POLAR_OFFSET;
     var pole = centerX + (centerX * offset);
     var x = mx * centerX + pole;
@@ -76,7 +78,7 @@ export default class ElectoralBubbles extends Component {
   nodeRadius(d) {
     var a = d.electoral;
     var r = Math.sqrt(a / PI);
-    return Math.max(r * (this.state.height / 40), MIN_RADIUS);
+    return Math.max(r * (this.state.width / 60), MIN_RADIUS);
   }
 
   collisionRadius(d) {
@@ -88,7 +90,7 @@ export default class ElectoralBubbles extends Component {
     if (!svg) return;
     var bounds = svg.getBoundingClientRect();
     var { width, height } = bounds;
-    this.setState({ width, height });
+    this.setState({ width });
     this.simulation.alpha(1);
   }
 
@@ -114,15 +116,10 @@ export default class ElectoralBubbles extends Component {
     var svg = this.svg.current;
     if (!svg) return;
     var bounds = svg.getBoundingClientRect();
-    var { width, height } = bounds;
-    if (!width || !height) return;
-    if (width != this.state.width && height != this.state.height) {
-
-      svg.setAttribute("width", width);
-      svg.setAttribute("height", height);
-      svg.setAttribute("viewBox", `0 0 ${width} ${height}`);
-      this.setState({ width, height });
-
+    var { width } = bounds;
+    if (!width) return;
+    if (width != this.state.width) {
+      this.setState({ width });
     }
 
     var { nodes } = this.state;
@@ -141,12 +138,12 @@ export default class ElectoralBubbles extends Component {
 
   }
 
-  createNode(r) {
+  createNode(r, dataDomain) {
     var [ winner, loser ] = r.candidates;
     var margin = winner.percent - loser.percent;
     var party = winner.party;
     // normalize margin
-    var mx = Math.min(margin, DATA_DOMAIN) / VISUAL_DOMAIN;
+    var mx = Math.log(margin / dataDomain + 1);
     if (party == "Dem") mx *= -1;
     var x = mx;
     var { state, district, called, electoral } = r;
@@ -174,9 +171,15 @@ export default class ElectoralBubbles extends Component {
     var uncalled = results.filter(r => r.eevp < .5 && !r.called);
     var called = results.filter(r => r.called || r.eevp >= .5);
 
+    var dataDomain = Math.max(...called.map(function(r) {
+      var [ winner, loser ] = r.candidates;
+      return Math.abs(winner.percent - loser.percent);
+    }));
+    dataDomain = Math.max(Math.ceil(dataDomain * 10) / 10, .1);
+
     for (var r of called) {
       // find an existing node?
-      var upsert = this.createNode(r);
+      var upsert = this.createNode(r, dataDomain);
       var existing = nodes.find(n => n.key == upsert.key);
       if (existing) {
         upsert = Object.assign(existing, upsert);
@@ -264,17 +267,37 @@ export default class ElectoralBubbles extends Component {
   }
 
   render(props, state) {
-    var { nodes, width, height, uncalled = [] } = state;
-    var [ n ] = nodes;
+    var { buckets } = props;
+    var { nodes, width, uncalled = [] } = state;
+
+    var distance = 0;
+    nodes.forEach(n => {
+      n.r = this.nodeRadius(n);
+      var outerBounds = Math.abs(n.y) + n.r;
+      if (outerBounds > distance) {
+        distance = outerBounds;
+      }
+    });
+
+    var height = Math.ceil(distance / HEIGHT_STEP) * HEIGHT_STEP * 2;
+
+    var uncalled = {};
+    for (var k in props.buckets) {
+      uncalled[k] = props.buckets[k].filter(r => !r.called && r.eevp < .5);
+    }
+
+    var hasUncalled = [...uncalled.likelyD, ...uncalled.tossup, ...uncalled.likelyR].length;
+
+    var titles = {
+      likelyD: "Likely Democratic",
+      tossup: "Competitive states",
+      likelyR: "Likely Republican"
+    };
 
     return <div class="electoral-bubbles" onMousemove={this.onMove} onMouseleave={this.onExit}>
-      <div class="key-above">
-        Who's ahead (current vote margin)
-      </div>
-      <div class="key">
-        <div class="dem">&lt; More Democratic</div>
-        <div class="gop">More Republican &gt;</div>
-      </div>
+{/*      <div class="key-above">
+        Current vote tabulation
+      </div>*/}
       <div class="aspect-ratio">
         <svg class="bubble-svg" ref={this.svg}
           role="img"
@@ -283,6 +306,15 @@ export default class ElectoralBubbles extends Component {
           width={width} height={height}
           viewBox={`0 0 ${width} ${height}`}
         >
+          <text class="leading-cue dem" x={width / 2 - 60} y="20">
+            &lt; Biden leading
+          </text>
+          <text class="tied" x={width / 2} y="20">
+            Tied
+          </text>
+          <text class="leading-cue gop" x={width / 2 + 60} y="20">
+            Trump leading &gt;
+          </text>
           {nodes.map(n => {
             // remove the max to let text shrink and vanish
             // var textSize = Math.max(this.nodeRadius(n) * .5, MIN_TEXT);
@@ -295,7 +327,7 @@ export default class ElectoralBubbles extends Component {
                 key={n.key}
                 cx={n.x}
                 cy={(n.y || 0) + height / 2}
-                r={this.nodeRadius(n)}
+                r={n.r}
                 onClick={() => this.goToState(n.state)}
               />
               {textSize > MIN_TEXT && <text 
@@ -307,25 +339,34 @@ export default class ElectoralBubbles extends Component {
           })}
         </svg>
       </div>
-      <h3 class="uncalled-head">Not yet called</h3>
-      <div class="uncalled">
-        {uncalled.map(uncall => {
-          var reporting = uncall.eevp || uncall.reportingPercent;
-          var r = Math.max(this.nodeRadius(uncall), MIN_RADIUS);
-          var size = r * .5;
-          return <svg width={r * 2} height={r * 2} class="uncalled-race">
-            <circle
-              class={"uncalled-race " + `${reporting ? "early" : "open"}`}
-              cx={r} cy={r} r={r}
-              data-key={uncall.district ? uncall.state + uncall.district : uncall.state}
-              onClick={() => this.goToState(uncall.state)}
-            />
-            {size > MIN_TEXT && (
-              <text x={r} y={r + size * .4} font-size={size + "px"}>{uncall.state}</text>
-            )}
-          </svg>
-        })}
-      </div>
+      {hasUncalled && <div class="uncalled">
+        <h3>No results yet / early results</h3>
+        <div class="triplets">
+          {["likelyD", "tossup", "likelyR"].map(rating => (
+            !uncalled[rating].length ? "" : <div class="uncalled">
+              <h4>{titles[rating]}</h4>
+              <div class="circles">
+                {uncalled[rating].sort((a, b) => b.electoral - a.electoral).map(result => {
+                  var reporting = result.eevp || result.reportingPercent;
+                  var r = Math.max(this.nodeRadius(result), MIN_RADIUS);
+                  var size = r * .5;
+                  return <svg width={r * 2} height={r * 2} class="uncalled-race">
+                    <circle
+                      class={"uncalled-race " + `${reporting ? "early" : "open"}`}
+                      cx={r} cy={r} r={r - 1}
+                      data-key={result.district ? result.state + result.district : result.state}
+                      onClick={() => this.goToState(result.state)}
+                    />
+                    {size > MIN_TEXT && (
+                      <text x={r} y={r + size * .4} font-size={size + "px"}>{result.state}</text>
+                    )}
+                  </svg>
+                })}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>}
       <div class="tooltip" ref={this.tooltip}></div>
     </div>
   }

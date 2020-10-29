@@ -1,8 +1,8 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="120" height="100" viewBox="0 0 120 100" class="bubble icon">
-  <circle cx="45" cy="50" r="20" />
-  <circle cx="70" cy="90" r="4" />
-  <circle cx="80" cy="20" r="10" />
-  <circle cx="100" cy="75" r="15" />
-  <circle cx="84" cy="50" r="4" />
-  <circle cx="110" cy="30" r="4" />
+<svg xmlns="http://www.w3.org/2000/svg" width="120" height="100" viewBox="0 0 120 100">
+  <circle cx="45" cy="50" r="20" fill="currentColor" />
+  <circle cx="70" cy="90" r="4" fill="currentColor" />
+  <circle cx="80" cy="20" r="10" fill="currentColor" />
+  <circle cx="100" cy="75" r="15" fill="currentColor" />
+  <circle cx="84" cy="50" r="4" fill="currentColor" />
+  <circle cx="110" cy="30" r="4" fill="currentColor" />
 </svg>

@@ -18,7 +18,7 @@ export class CountyChart extends Component {
       top: 20,
       right: 5,
       bottom: 25,
-      left: 20,
+      left: 30,
     };
 
     window.addEventListener("resize", this.handleResize);
@@ -34,7 +34,9 @@ export class CountyChart extends Component {
   }
 
   // Lifecycle: Called just before our component will be destroyed
-  componentWillUnmount() {}
+  componentWillUnmount() {
+    window.removeEventListener("resize", this.handleResize);
+  }
 
   render() {
     if (!this.props.data) {
@@ -55,17 +57,22 @@ export class CountyChart extends Component {
   renderCorrelation() {
     var relationships = [
       "almost no",
-      "a weak",
+      "weak",
       "moderate",
-      "a strong",
-      "a very strong",
+      "strong",
+      "very strong",
     ];
     var index = Math.ceil(this.props.corr * relationships.length) - 1;
+    var background = `background-color: (227, 141, 44, ${this.props.corr * 255})`;
     return (
-      <span class="description">
-        <b>{this.props.title}</b> and party vote have{" "}
-        <b> {relationships[index]} </b> relationship
-      </span>
+      <div class="description">
+        <div>{this.props.title}</div>
+        <div
+          class={`strength ${this.props.corr < 0.6 ? "weak" : ""}`}
+          style={`background-color: rgba(227, 141, 44, ${this.props.corr})`}>
+          {relationships[index]} trend
+        </div>
+      </div>
     );
   }
 
@@ -104,18 +111,20 @@ export class CountyChart extends Component {
     var displayVar = data[this.props.variable];
     tooltip.innerHTML = `
         <div class="name">${data.countyName}</div>
-        <div class="row">${this.props.title}: <span class="amt"> ${
+        <div class="row"><span class="metric">${
+          this.props.title
+        }: <span><span class="amt"> ${
       this.props.formatter ? this.props.formatter(displayVar) : displayVar
     }</span></div>`;
 
     var bounds = this.svgRef.current.getBoundingClientRect();
     var x = e.clientX - bounds.left;
     var y = e.clientY - bounds.top;
-    if (x + 1 > bounds.width / 2) {
-      x -= 130;
+    if (x - 2 > bounds.width / 2) {
+      x -= 140;
       y += 10;
     }
-    tooltip.style.left = x + 20 + "px";
+    tooltip.style.left = x + 15 + "px";
     tooltip.style.top = y + "px";
 
     tooltip.classList.add("shown");
@@ -128,7 +137,7 @@ export class CountyChart extends Component {
 
     var yLabel;
     if (this.props.variable == "past_margin") {
-      yLabel = "More democratic →";
+      yLabel = "More Democratic →";
     } else {
       yLabel = `Higher ${this.props.title} →`;
     }

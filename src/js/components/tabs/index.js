@@ -1,5 +1,6 @@
 import { h, Fragment, Component } from "preact";
 import track from "../../lib/tracking";
+import InlineSVG from "../inlineSVG";
 
 export function Tab(props) {
   return <button
@@ -8,7 +9,7 @@ export function Tab(props) {
     aria-selected={props.selected}
     onClick={props.choose}
   >
-    {props.icon && <img alt="" src={props.icon} class="icon" />}
+    {props.icon && <InlineSVG alt="" src={props.icon} class="icon" />}
     {props.label}
   </button>
 }
@@ -26,10 +27,15 @@ export function Panel(props) {
 export default class Tabs extends Component {
   constructor(props) {
     super();
-    var id = props.id || 0;
+    var { id = 0, children } = props;
+    var selected = children.find(c => c.props.selected);
+    var selectedIndex = 0;
+    if (selected) {
+      selectedIndex = children.indexOf(selected);
+    }
     this.state = {
       id,
-      selected: localStorage.getItem(`tabs-${id}`) || 0,
+      selected: selectedIndex || localStorage.getItem(`tabs-${id}`) || 0,
       clicked: false
     }
   }
@@ -42,7 +48,7 @@ export default class Tabs extends Component {
 
   componentDidUpdate() {
     if (this.state.clicked) {
-      this.base.querySelector(`#tab-${this.state.selected}`).focus();
+      this.base.querySelector(`#tab-${this.state.selected}`).focus({ preventScroll: true });
     }
   }
 

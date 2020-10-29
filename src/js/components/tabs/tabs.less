@@ -4,13 +4,10 @@
   margin: auto;
 
   [role="tab"] {
-    background: white;
     cursor: pointer;
-    border: none;
     padding: 8px;
     text-transform: uppercase;
     .knockout-header();
-    border-bottom: 2px solid transparent;
     display: block;
     text-align: center;
     flex: 1;
@@ -24,10 +21,12 @@
     &:first-child {
       border-top-left-radius: 4px;
       border-bottom-left-radius: 4px;
+      border-right: none;
     }
     &:last-child {
       border-top-right-radius: 4px;
       border-bottom-right-radius: 4px;
+      border-left: none;
     }
 
     &:hover {
@@ -49,12 +48,17 @@
       color: white;
     }
 
-    img.icon {
+    .icon {
       display: inline;
-      max-width: 30px;
-      max-height: 1.5em;
       margin-right: 6px;
       vertical-align: middle;
+
+      svg {
+        max-width: 30px;
+        max-height: 1.5em;
+        width: 100%;
+        height: 100%;
+      }
 
       @media @mobile {
         display: block;
@@ -66,6 +70,8 @@
 
 [role="tabpanel"] {
   padding: 20px 0 0;
+  // max-width: 875px;
+  margin: auto;
 
   &:focus {
     outline: none;
@@ -74,7 +80,6 @@
 
   &.inactive {
     width: 100%;
-    max-width: 1200px;
     visibility: visible;
     position: absolute;
     left: -100000px;

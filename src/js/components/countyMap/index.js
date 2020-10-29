@@ -6,6 +6,7 @@ import {
   getParty,
   getPartyPrefix,
   isSameCandidate,
+  getCountyCandidates,
 } from "../util.js";
 
 export default class CountyMap extends Component {
@@ -23,21 +24,12 @@ export default class CountyMap extends Component {
     this.height;
 
     // Only display candidates that are winning a county
-    var legendCands = props.data
-      .filter(function (obj, index, self) {
-        return (
-          index ===
-          self.findIndex(function (t) {
-            return t.candidates[0].last === obj.candidates[0].last;
-          })
-        );
-      })
-      .map(c => c.candidates[0]);
-
+    var legendCands = getCountyCandidates(props.sortOrder, props.data);
+    
     // Add in special marker if more than one candidate of same party is winning a county.
     var specialCount = 1;
     legendCands.forEach(function (c, index) {
-      if (legendCands.filter(l => isSameCandidate(l, c)).length > 1) {
+      if (legendCands.filter(l => getParty(l.party) == getParty(c.party)).length > 1) {
         c.special = specialCount;
         specialCount += 1;
       }
@@ -160,13 +152,12 @@ export default class CountyMap extends Component {
       var hitThreshold = mapData[d].reportingPercent > 0.5;
       var allReporting = mapData[d].reportingPercent >= 1;
 
-      var [candidate] = this.legendCands.filter(c => isSameCandidate(c, top));
-      if (candidate.special) path.classList.add(`i${candidate.special}`);
-
       if (!hitThreshold) {
         path.style.fill = "#ddd";
         incomplete = true;
       } else {
+        var [candidate] = this.legendCands.filter(c => isSameCandidate(c, top));
+        if (candidate.special) path.classList.add(`i${candidate.special}`);
         path.classList.add(getParty(top.party));
         path.classList.add("leading");
         if (allReporting) path.classList.add("allin");
@@ -184,7 +175,7 @@ export default class CountyMap extends Component {
           class={`swatch ${getParty(
             candidate.party
           )} i${specialShading}`}></div>
-        <div class="name">{name}</div>
+        <div class="name">{`${name}`}</div>
       </div>
     );
   }
@@ -223,7 +214,7 @@ export default class CountyMap extends Component {
             candidate && candidate.special ? `i${candidate.special}` : "";
           var cs = `<div class="row">
             <span class="party ${cand.party} ${special}"></span>
-            <span>${cand.first} ${cand.last} (${getPartyPrefix(cand.party)}) </span>
+            <span>${cand.last}</span>
             <span class="amt">${reportingPercentage(cand.percent)}%</span>
         </div>`;
           return cs;

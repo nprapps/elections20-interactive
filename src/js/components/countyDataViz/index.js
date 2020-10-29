@@ -21,7 +21,7 @@ export class CountyDataViz extends Component {
   // Lifecycle: Called whenever our component is created
   async componentDidMount() {
     // Sort by party for consistent display.
-    var sorted = this.props.order.sort(sortByParty);
+    var sorted = this.props.order.slice().sort(sortByParty);
     var cleanedData = this.getCleanedData(this.props.data, sorted);
 
     // Create display charts and sort by their correlations

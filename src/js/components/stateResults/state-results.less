@@ -63,6 +63,9 @@
         &.sortButton {
           padding-right: 5px;
           padding-bottom: 3px;
+          font-weight: bold;
+          line-height: 1.5em;
+          font-size: 13px;
 
           .metric {
             color: @link-color;
@@ -70,7 +73,7 @@
             a {
               text-decoration: none;
             }
-            
+
             &:hover {
               color: @link-hover-color;
               cursor: pointer;
@@ -152,14 +155,18 @@
   }
 
   .jump-links {
-    .gotham();
+    .knockout();
     font-size: 13px;
     padding: 12px 0;
+    color: @gray;
 
     a {
       display: inline-block;
       padding: 0 4px;
       cursor: pointer;
+    }
+    .pipe {
+      color: @gray-medium;
     }
   }
 
@@ -187,6 +194,16 @@
 
     &.hidden {
       display: none;
+    }
+  }
+
+  .results-elements {
+    h3 {
+      margin-top: 45px;
+    }
+
+    .results-counties h3 {
+      margin-top: 0px;
     }
   }
 

@@ -16,7 +16,7 @@ export default class BoardGovernor extends Component {
 
   onData(data) {
     var latest = Math.max(...data.results.map(r => r.updated));
-    this.setState({ races: data.results, test: data.test, latest });
+    this.setState({ ...data, latest });
   }
 
   // Lifecycle: Called whenever our component is created
@@ -31,36 +31,26 @@ export default class BoardGovernor extends Component {
   }
 
   render() {
-    var { races, test, latest } = this.state;
+    var { results, test, latest } = this.state;
     
-    if (races) {
-
-      var sorted = races.sort((a,b) => a.name > b.name ? 1 : a.name < b.name ? -1 : 0);
-
-      // var buckets = {
-      //   likelyD: [],
-      //   tossup: [],
-      //   likelyR: [],
-      // };
-
-      // sorted.forEach(function (r) {
-      //   var bucketRating = getBucket(r.rating);
-      //   if (bucketRating) buckets[bucketRating].push(r);
-      // });
-
+    if (results) {
+      var sorted = results.slice().sort((a,b) => a.name > b.name ? 1 : a.name < b.name ? -1 : 0);
     }
 
     return <>
       { test ? <TestBanner /> : "" }
       
-      <h1 tabindex="-1">Governor</h1>
+      <h1 tabindex="-1">Governor Results</h1>
       <div class="board-container Gov">
-        {races && <>
+        {results && <>
           <Results races={sorted} office="Gov" split={true}/>
         </>}
       </div>
       <BoardKey race="gov"/>
-      <div class="source">Source: AP (as of <DateFormatter value={latest} />)</div>
+      <div class="source">
+        <div class="note">*Note: Expected vote is an Associated Press estimate of how much of the vote in an election has been counted. <a href="https://www.ap.org/en-us/topics/politics/elections/counting-the-vote">Read more about how EEVP is calculated</a>.</div>
+        Source: AP (as of <DateFormatter value={latest} />)
+      </div>
     </>;
   }
 }
