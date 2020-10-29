@@ -41,4 +41,16 @@ var track = function(eventAction, eventLabel, eventValue) {
   if (window.ga) ga("send", event);
 };
 
+track.page = function(url) {
+  // don't send these when embedded
+  if (window.top != window) return;
+  var page = new URL(url, window.location.href);
+  page = page.toString();
+  console.log(`Virtual pageview: ${page}`);
+  if (window.ga) {
+    ga("set", "page", page);
+    ga("send", "pageview");
+  }
+}
+
 module.exports = track;
