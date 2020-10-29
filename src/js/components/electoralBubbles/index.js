@@ -243,13 +243,15 @@ export default class ElectoralBubbles extends Component {
       var stateName = stateSheet[data.state].name;
       var districtDisplay = data.district == "AL" ? "At-Large" : data.district;
       var h3 = data.district ? `${stateName} ${districtDisplay}` : stateName;
+      var candidates = data.candidates.filter(c => c.percent);
+
       tooltip.innerHTML = `
         <h3>${h3} (${data.electoral})</h3>
-        <div class="candidates">${data.candidates.map(c =>
+        <div class="candidates">${candidates.map(c =>
           `<div class="row">
               <div class="party ${c.party}"></div>
               <div class="name">${c.last}</div> ${c.winner == "X" ? winnerIcon : ""}
-              <div class="perc">${c.percent ? Math.round(c.percent * 1000) / 10 : "0"}%</div>
+              <div class="perc">${Math.round(c.percent * 1000) / 10}%</div>
           </div>`
         ).join("")}</div>
         <div class="reporting">${reportingPercentage(
