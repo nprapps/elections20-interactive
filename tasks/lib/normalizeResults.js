@@ -108,8 +108,8 @@ var mergeOthers = function (candidates, raceID) {
   };
   
   for (var c of remaining) {
-    // preserve candidates with >10% of the vote
-    if (c.votes / total > 0.1 || NEVER_MERGE.has(c.id)) {
+    // preserve candidates with >3% of the vote
+    if (c.votes / total > 0.03 || NEVER_MERGE.has(c.id)) {
       merged.push(c);
       continue;
     }
