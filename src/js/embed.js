@@ -32,7 +32,14 @@ async function init() {
   var template = <>
     {results.map(function(r) {
       var office = strings["office-" + r.office];
-      return <ResultsTableCandidates data={r} title={office} />
+      return (<>
+        <ResultsTableCandidates data={r} title={office} />
+        <a 
+          class="see-full" 
+          href={`https://apps.npr.org/elections20-interactive/#/states/${r.state}/${r.office}`}>
+            See full results &rsaquo;
+        </a>
+      </>);
     })}
   </>;
   render(template, container);
