@@ -337,6 +337,7 @@ export default class ElectoralBubbles extends Component {
                 font-size={textSize + "px"}>{n.state}</text>}
             </>);
           })}
+          <line class="separator" x1={width / 2} x2={width / 2} y1="10" y2={height - 10} />
         </svg>
       </div>
       {hasUncalled && <div class="uncalled">
