@@ -85,14 +85,13 @@ export default class StateResults extends Component {
           <div class="source">
             County Trends not shown for states with fewer than 10 counties reporting >50%. <br/><br/>
             Source: AP (as of <DateFormatter value={latest} />
-            ). COVID-19 case data from{" "}
+            ). Candidates receiving less than 3% support not shown individually. Population data are 2014-2018 ACS 5-year estimates. Demographic, income and education data from the Census Bureau. COVID-19 case data from{" "}
             <a href="https://github.com/CSSEGISandData/COVID-19">
               Center for Systems Science and Engineering at Johns Hopkins
               University
             </a>
-            . Demographic, income and education data from the Census Bureau.
-            Unemployment rates from the Bureau of Labor Statistics. 2016
-            presidential margin from the AP and may vary slightly from
+            . Unemployment rates from the Bureau of Labor Statistics. 2016
+            presidential margins from the AP and may vary slightly from
             state-certified final results.
           </div>
         </div>
