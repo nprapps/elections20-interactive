@@ -217,7 +217,7 @@ export default class CountyMap extends Component {
             <span>${cand.last}</span>
             <span class="amt">${reportingPercentage(cand.percent)}%</span>
         </div>`;
-          return cs;
+          return cand.percent > 0 ? cs : "";
         })
         .join("");
 
