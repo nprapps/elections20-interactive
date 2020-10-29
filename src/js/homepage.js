@@ -41,6 +41,9 @@ export default class Homepage extends Component {
       r.districtDisplay = (r.district !== "AL") ? r.district : "";
     });
 
+    var early = results.filter(r => !r.called && r.eevp <= .5 && r.eevp).length;
+    var silent = results.filter(r => !r.called && !r.eevp).length;
+
     var buckets = {
       likelyD: [],
       tossup: [],
@@ -78,6 +81,18 @@ export default class Homepage extends Component {
 
         <div icon="./assets/icons/ico-bubbles.svg" label="Margins" selected={display == "margins"}>
           <ElectoralBubbles results={results}  buckets={buckets} />
+          {early + silent && (
+          <div class="disclaimer">
+            { early && silent ? 
+              `An additional ${early} ${early > 1 ? "states have" : "state has"} early results,
+              and ${silent} ${silent > 1 ? "have" : "has"} not started reporting yet. ` :
+              early ? `An additional ${early} ${early > 1 ? "states have" : "state has"} early results. ` :
+              `An additional ${silent} ${silent > 1 ? "states have" : "state has"} not started reporting yet. `
+            } 
+            <a href="https://apps.npr.org/elections20-interactive">See full results &rsaquo;</a>
+          </div>
+          )}
+
         </div>
 
         <div icon="./assets/icons/ico-cartogram.svg" label="Electoral" selected={display == "cartogram"}>
