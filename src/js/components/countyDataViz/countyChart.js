@@ -68,7 +68,7 @@ export class CountyChart extends Component {
       <div class="description">
         <div>{this.props.title}</div>
         <div
-          class={`strength ${this.props.corr < 0.6 ? "weak" : ""}`}
+          class={`strength ${this.props.corr < 0.4 ? "weak" : ""}`}
           style={`background-color: rgba(227, 141, 44, ${this.props.corr})`}>
           {relationships[index]} trend
         </div>
