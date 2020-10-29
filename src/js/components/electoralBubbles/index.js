@@ -168,8 +168,8 @@ export default class ElectoralBubbles extends Component {
     var lookup = {};
     results.forEach(r => lookup[r.state + (r.district || "")] = r);
 
-    var uncalled = results.filter(r => r.eevp < .5 && !r.called);
-    var called = results.filter(r => r.called || r.eevp >= .5);
+    var uncalled = results.filter(r => r.eevp <= .5 && !r.called);
+    var called = results.filter(r => r.called || r.eevp > .5);
 
     var dataDomain = Math.max(...called.map(function(r) {
       var [ winner, loser ] = r.candidates;
@@ -280,10 +280,12 @@ export default class ElectoralBubbles extends Component {
     });
 
     var height = Math.ceil(distance / HEIGHT_STEP) * HEIGHT_STEP * 2;
+    // create spacer for labels if they start to crowd the top
+    var offset = (height - distance * 2) < 30 ? 30 : 0;
 
     var uncalled = {};
     for (var k in props.buckets) {
-      uncalled[k] = props.buckets[k].filter(r => !r.called && r.eevp < .5);
+      uncalled[k] = props.buckets[k].filter(r => !r.called && r.eevp <= .5);
     }
 
     var hasUncalled = [...uncalled.likelyD, ...uncalled.tossup, ...uncalled.likelyR].length;
@@ -303,16 +305,16 @@ export default class ElectoralBubbles extends Component {
           role="img"
           aria-label="Bubble plot of state margins"
           preserveAspectRatio="none"
-          width={width} height={height}
-          viewBox={`0 0 ${width} ${height}`}
+          width={width} height={height + offset}
+          viewBox={`0 0 ${width} ${height + offset}`}
         >
-          <text class="leading-cue dem" x={width / 2 - 60} y="20">
+          <text class="leading-cue dem" x={width / 2 - 40} y="20">
             &lt; Biden leading
           </text>
           <text class="tied" x={width / 2} y="20">
             Tied
           </text>
-          <text class="leading-cue gop" x={width / 2 + 60} y="20">
+          <text class="leading-cue gop" x={width / 2 + 40} y="20">
             Trump leading &gt;
           </text>
           {nodes.map(n => {
@@ -326,18 +328,18 @@ export default class ElectoralBubbles extends Component {
                 data-key={n.key}
                 key={n.key}
                 cx={n.x}
-                cy={(n.y || 0) + height / 2}
+                cy={(n.y || 0) + height / 2 + offset}
                 r={n.r}
                 onClick={() => this.goToState(n.state)}
               />
               {textSize > MIN_TEXT && <text 
                 class={`${n.party} ${n.called ? "called" : "pending"}`}
                 x={n.x} 
-                y={n.y + (height / 2) + (textSize * .4)}
+                y={n.y + (height / 2) + (textSize * .4) + offset}
                 font-size={textSize + "px"}>{n.state}</text>}
             </>);
           })}
-          <line class="separator" x1={width / 2} x2={width / 2} y1="10" y2={height - 10} />
+          <line class="separator" x1={width / 2} x2={width / 2} y1="30" y2={height - 10 + offset} />
         </svg>
       </div>
       {hasUncalled && <div class="uncalled">

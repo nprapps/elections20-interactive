@@ -72,6 +72,10 @@
           fill: lighten(@gop, 10%);
           text-anchor: start;
 
+          @media @mobile {
+            font-size: 12px;
+          }
+
           &.dem {
             text-anchor: end;
             fill: lighten(@dem, 10%);
