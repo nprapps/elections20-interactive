@@ -88,7 +88,7 @@ export class CountyDataViz extends Component {
     var lead = order[0].party;
     var second = order[1].party;
 
-    var resultsIn = data.filter(d => d.reportingPercent >= 0.5);
+    var resultsIn = data.filter(d => d.reportingPercent > 0.5);
 
     // Filter out counties whose top 2 candidates don't match state.
     var filtered = resultsIn.filter(function (d) {

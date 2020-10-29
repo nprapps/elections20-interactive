@@ -262,7 +262,7 @@ function ResultsRowCounty(props) {
     metricValue = metric.format(metricValue);
   }
 
-  var leadingCand = row.reportingPercent >= .5 ? row.candidates[0] : "";
+  var leadingCand = row.reportingPercent > .5 ? row.candidates[0] : "";
   var reportingPercent = reportingPercentage(row.reportingPercent) + "% in";
 
   return (
