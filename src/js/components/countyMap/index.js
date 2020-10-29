@@ -29,7 +29,7 @@ export default class CountyMap extends Component {
     // Add in special marker if more than one candidate of same party is winning a county.
     var specialCount = 1;
     legendCands.forEach(function (c, index) {
-      if (legendCands.filter(l => l.party == c.party).length > 1) {
+      if (legendCands.filter(l => getParty(l.party) == getParty(c.party)).length > 1) {
         c.special = specialCount;
         specialCount += 1;
       }
