@@ -11,9 +11,9 @@ var { sqrt, PI, cos, sin } = Math;
 const Y_FORCE = .03;
 const X_FORCE = .4;
 const COLLIDE_FORCE = 1;
-const VISUAL_DOMAIN = .5;
-const DATA_DOMAIN = .3;
-const POLAR_OFFSET = .05;
+const MIN_DOMAIN = .1;
+const MAX_DOMAIN = .5;
+const POLAR_OFFSET = .01;
 const MIN_TEXT = 10;
 const MIN_RADIUS = 3;
 const FROZEN = .001;
@@ -22,6 +22,8 @@ const HEIGHT_STEP = 50;
 var nextTick = function(f) {
   requestAnimationFrame(f);
 }
+
+var clamp = (v, l, h) => Math.min(Math.max(v, l), h);
 
 export default class ElectoralBubbles extends Component {
 
@@ -143,7 +145,7 @@ export default class ElectoralBubbles extends Component {
     var margin = winner.percent - loser.percent;
     var party = winner.party;
     // normalize margin
-    var mx = Math.log(margin / dataDomain + 1);
+    var mx = Math.log(Math.min(margin, MAX_DOMAIN) / dataDomain + 1);
     if (party == "Dem") mx *= -1;
     var x = mx;
     var { state, district, called, electoral } = r;
@@ -175,7 +177,7 @@ export default class ElectoralBubbles extends Component {
       var [ winner, loser ] = r.candidates;
       return Math.abs(winner.percent - loser.percent);
     }));
-    dataDomain = Math.max(Math.ceil(dataDomain * 10) / 10, .1);
+    dataDomain = clamp(Math.ceil(dataDomain * 10) / 10, MIN_DOMAIN, MAX_DOMAIN);
 
     for (var r of called) {
       // find an existing node?
