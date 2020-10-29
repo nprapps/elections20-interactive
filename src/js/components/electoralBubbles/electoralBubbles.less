@@ -50,7 +50,7 @@
       text {
         text-anchor: middle;
         fill: white;
-        .knockout();
+        .knockout-header();
         pointer-events: none;
         line-height: 1;
         text-transform: uppercase;
@@ -60,15 +60,20 @@
         }
 
         &.tied {
-          fill: #9a9a9a;
+          fill: @gray;
           .gotham();
           text-transform: none;
           font-style: italic;
           line-spacing: 0.05em;
+
+          @media @mobile {
+            font-size: 12px;
+          }
         }
 
         &.leading-cue {
-          font-size: 18px;
+          font-weight: bold;
+          font-size: 16px;
           fill: lighten(@gop, 10%);
           text-anchor: start;
 
@@ -91,22 +96,27 @@
   }
 
   .uncalled {
+    flex: 1;
     text-align: center;
-    text-transform: uppercase;
 
     @media @mobile {
       display: none;
     }
 
     h3 {
-      .knockout();
+      .knockout-header();
+      text-transform: uppercase;
       margin-bottom: 0;
+      font-size: 16px;
+      color: @gray;
+      font-weight: bold;
+      font-size: 16px;
     }
 
     h4 {
-      .knockout();
-      color: @gray;
-      font-size: 16px;
+      .gotham();
+      font-size: 14px;
+      font-weight: bold;
     }
 
     .triplets {
@@ -145,6 +155,7 @@
 
     text {
       text-anchor: middle;
+      pointer-events: none;
     }
   }
 

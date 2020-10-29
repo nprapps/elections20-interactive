@@ -343,7 +343,7 @@ export default class ElectoralBubbles extends Component {
         </svg>
       </div>
       {hasUncalled && <div class="uncalled">
-        <h3>No results yet / early results</h3>
+        <h3>Early or no results yet:</h3>
         <div class="triplets">
           {["likelyD", "tossup", "likelyR"].map(rating => (
             !uncalled[rating].length ? "" : <div class="uncalled">
