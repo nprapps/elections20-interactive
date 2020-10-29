@@ -46,6 +46,7 @@ main.embed-bop {
 
       @media @mobile {
         display: block;
+        padding: 0 25px;
       }
     }
 
@@ -65,7 +66,7 @@ main.embed-bop {
 
     .link-container {
       flex: 1;
-      padding: 0 3%;
+      padding: 0 25px;
       border-right: 1px solid #ddd;
 
       h3 {
@@ -137,7 +138,7 @@ main.embed-bop {
       margin-top: 20px;
 
       @media @mobile {
-        margin-top: 35px;
+        margin-top: 40px;
       }
     }
   }
@@ -146,8 +147,17 @@ main.embed-bop {
     h3 {
       color: #eee;
     }
-    .bar-container .middle {
-      border-left: 1px solid #eee;
+    .bar-container {
+      .middle {
+        border-left: 1px solid #eee;
+      }
+      .bar.gop {
+        background: lighten(@gop,10%);
+        path { fill: lighten(@gop,10%) }
+      }
+      .gop .label {
+        color: lighten(@gop,10%);
+      }
     }
     .chatter, .uncalled {
       color: #ccc;
@@ -164,6 +174,10 @@ main.embed-bop {
     }
     .president .candidate:first-child {
       border-right: 1px solid #777;
+    }
+    .candidate.gop {
+      color: lighten(@gop,10%);
+      path { fill: lighten(@gop,10%); }
     }
   }
 
