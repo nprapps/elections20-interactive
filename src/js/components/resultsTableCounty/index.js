@@ -259,7 +259,7 @@ function ResultsRowCounty(props) {
     metricValue = metric.format(metricValue);
   }
 
-  var leadingCand = row.reportingPercent == 1 ? row.candidates[0] : "";
+  var leadingCand = row.reportingPercent >= .5 ? row.candidates[0] : "";
   var reportingPercent = reportingPercentage(row.reportingPercent) + "% in";
 
   return (
@@ -273,7 +273,8 @@ function ResultsRowCounty(props) {
         CandidatePercentCell(
           c,
           c.party == leadingCand.party && c.last == leadingCand.last,
-          props.top
+          props.top,
+          row.reportingPercent
         )
       )}
       {MarginCell(row.candidates, leadingCand.party)}
@@ -300,7 +301,7 @@ function CandidateHeaderCell(candidate, winningCands) {
 /*
  * Creates a candidate vote % cell. Colors with candidate party if candidate is leading.
  */
-function CandidatePercentCell(candidate, leading, topCands) {
+function CandidatePercentCell(candidate, leading, topCands, percentIn) {
   var displayPercent = percentDecimal(candidate.percent);
   var party = getParty(candidate.party);
   var otherDisplay =
@@ -314,11 +315,12 @@ function CandidatePercentCell(candidate, leading, topCands) {
   var hideOnMobile = !(
     candidate.last == "Other" || topCands.includes(candidate.last)
   );
+  var allIn = percentIn >= 1;
   return (
     <td
       class={`vote ${party} ${leading ? "leading" : ""} ${
         hideOnMobile ? "not-leading" : ""
-      }`}
+      } ${allIn ? "allin" : ""}`}
       key={candidate.id}>
       <span
         class={

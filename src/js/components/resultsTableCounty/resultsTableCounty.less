@@ -12,18 +12,26 @@
       .sr-only();
     }
     .leading {
-      color: #fff;
-      background-color: @ind;
-
-      &.Other {
-        background-color: @gray;
-      }
+      color: @gray;
+      background-color: @indDim;
 
       &.Dem {
-        background-color: @dem;
+        background-color: @demDim;
       }
       &.GOP {
-        background-color: @gop;
+        background-color: @gopDim;
+      }
+
+      &.allin {
+        color: #fff;
+        background-color: @ind;
+
+        &.Dem {
+          background-color: @dem;
+        }
+        &.GOP {
+          background-color: @gop;
+        }
       }
 
       .icon {
