@@ -49,6 +49,14 @@ var translation = {
     winner: "winner",
     incumbent: "incumbent",
   },
+  metadata: {
+    previousParty: "party",
+    keyRace: "key_race",
+    rating: "rating",
+    seat: "name",
+    featured: "featured",
+    theme: "theme"
+  }
 };
 
 var translate = {};
@@ -181,24 +189,8 @@ module.exports = function (resultArray, overrides = {}) {
 
         var sheetMetadata = nprMetadata[raceMeta.id];
         if (sheetMetadata) {
-          if (sheetMetadata.party) {
-            unitMeta.previousParty = sheetMetadata.party;
-          }
-          if (sheetMetadata.key_race) {
-            unitMeta.keyRace = sheetMetadata.key_race;
-          }
-          if (sheetMetadata.rating) {
-            unitMeta.rating = sheetMetadata.rating;
-          }
-          if (sheetMetadata.name) {
-            unitMeta.seat = sheetMetadata.name;
-          }
-          if (sheetMetadata.featured) {
-            unitMeta.featured = sheetMetadata.featured;
-          }
-          if (sheetMetadata.theme) {
-            unitMeta.theme = sheetMetadata.theme;
-          }
+          var meta = translate.metadata(sheetMetadata);
+          Object.assign(unitMeta, meta);
           // For now, always override description with ours even if empty.
           unitMeta.description = sheetMetadata.description;
         }
