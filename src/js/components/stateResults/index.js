@@ -187,7 +187,7 @@ export default class StateResults extends Component {
       ""
     );
     return (
-      <div id={`race-${race.id}`} tabindex="-1">
+      <div id={`race-${race.id}`} class="race" tabindex="-1">
         {specialHeader}
         <ResultsTableCandidates data={race} />
         {countyResults}
