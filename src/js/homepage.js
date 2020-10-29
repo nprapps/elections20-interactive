@@ -35,13 +35,34 @@ export default class Homepage extends Component {
   }
 
   render(props, state) {
-    var { results, test, latest } = this.state;
+    var { results = [], test, latest } = this.state;
 
-    if (results) {
-      results.forEach(function(r) {
-        r.districtDisplay = (r.district !== "AL") ? r.district : "";
-      });
-    }
+    results.forEach(function(r) {
+      r.districtDisplay = (r.district !== "AL") ? r.district : "";
+    });
+
+    var buckets = {
+      likelyD: [],
+      tossup: [],
+      likelyR: [],
+    };
+
+    results.forEach(function(r) {
+      r.districtDisplay = (r.district !== "AL") ? r.district : "";
+    });
+
+    var sorted = results.slice().sort(function(a,b) {
+      if (a.stateName > b.stateName) return 1;
+      if (a.stateName < b.stateName) return -1;
+      if (a.districtDisplay > b.districtDisplay) return 1;
+      if (a.districtDisplay < b.districtDisplay) return -1;
+      return 0;
+    });
+
+    sorted.forEach(function (r) {
+      var bucketRating = getBucket(r.rating);
+      if (bucketRating) buckets[bucketRating].push(r);
+    });
 
     var called = groupCalled(results);
 
@@ -56,7 +77,7 @@ export default class Homepage extends Component {
       {results && results.length && <Tabs id="homepage-viz">
 
         <div icon="./assets/icons/ico-bubbles.svg" label="Margins" selected={display == "margins"}>
-          <ElectoralBubbles results={results} />
+          <ElectoralBubbles results={results}  buckets={buckets} />
         </div>
 
         <div icon="./assets/icons/ico-cartogram.svg" label="Electoral" selected={display == "cartogram"}>
