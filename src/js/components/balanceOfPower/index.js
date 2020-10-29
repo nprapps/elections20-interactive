@@ -26,7 +26,6 @@ export default class BalanceOfPower extends Component {
     }
     var results = this.getCongressBOP(this.props.data);
 
-    // TODO: add in check icon
     return (
       <div class="leaderboard">
         <div class="results-header-group net-gain">
