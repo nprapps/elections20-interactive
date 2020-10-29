@@ -51,7 +51,7 @@ export class CountyDataViz extends Component {
     }
 
     var footnote = this.ommittedCounties
-      ? "*Counties where leading parties differ from statewide leading parties are omitted."
+      ? "Counties where leading parties differ from statewide leading parties are omitted."
       : "";
     return (
       <div class="trends">
@@ -79,7 +79,7 @@ export class CountyDataViz extends Component {
           data-less="Show less">
           {this.state.collapsed ? `Show all ▼` : `Show less ▲`}
         </button>
-        <div class="footnote">{footnote}</div>
+        <div class="footnote">Trends subject to change as results come in. {footnote}</div>
       </div>
     );
   }
