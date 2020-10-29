@@ -83,7 +83,7 @@ export default class StateResults extends Component {
             <div class="results-elements">{this.renderResults(office)}</div>
           )}
           <div class="source">
-            County Trends not shown for states with fewer than 10 counties reporting >50%. <br/><br/>
+            Demographic Trends not shown for special elections or states with fewer than 10 counties reporting above 50%. <br/><br/>
             Source: AP (as of <DateFormatter value={latest} />
             ). Candidates receiving less than 3% support not shown individually. Population data are 2014-2018 ACS 5-year estimates. Demographic, income and education data from the Census Bureau. COVID-19 case data from{" "}
             <a href="https://github.com/CSSEGISandData/COVID-19">
@@ -160,7 +160,7 @@ export default class StateResults extends Component {
 
   getRaceWithCountyResults(race, oneOfMultiple) {
     var order = race.candidates;
-    var isSpecial = oneOfMultiple || !!race.seat;
+    var isSpecial = !!race.seat;
 
     var seatLabel =
       race.office == "H" || race.office == "S" ? race.seatNumber : "";
@@ -178,7 +178,7 @@ export default class StateResults extends Component {
       );
     }
 
-    var specialHeader = isSpecial ? (
+    var specialHeader = oneOfMultiple ? (
       <h2 id={`${this.props.state}-${seatLabel || 1}`}>{`${
         stateLookup[this.props.state].name
       } ${seatLabel || 1}`}</h2>
