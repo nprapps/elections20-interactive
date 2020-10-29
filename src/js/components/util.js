@@ -144,11 +144,11 @@ const availableMetrics = {
 for (var k in availableMetrics) availableMetrics[k].key = k;
 
 export function getAvailableMetrics(state) {
-  var metrics = {...availableMetrics};
-  if (state == 'UT') {
-    delete metrics['covid'];
+  var metrics = { ...availableMetrics };
+  if (state == "UT") {
+    delete metrics["covid"];
   }
-  return metrics
+  return metrics;
 }
 
 export function getCountyVariable(data, variable) {
@@ -188,7 +188,9 @@ export function styleJSX(styles) {
 }
 
 export function getCountyCandidates(overall, counties) {
-  var countyWinners = counties.map(c => c.candidates[0]);
+  var countyWinners = counties
+    .filter(c => (c.reportingPercent && c.reportingPercent > 0.5))
+    .map(c => c.candidates[0]);
   countyWinners = countyWinners.filter(function (obj, index, self) {
     return (
       index ===
