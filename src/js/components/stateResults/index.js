@@ -83,7 +83,9 @@ export default class StateResults extends Component {
             <div class="results-elements">{this.renderResults(office)}</div>
           )}
           <div class="source">
-            Demographic Trends not shown for special elections or states with fewer than 10 counties reporting above 50%. <br/><br/>
+            {stateName !== "Alaska" && 
+              <div class="note">Demographic trends not shown for special elections or states with fewer than 10 counties reporting above 50%.</div>
+            }
             Source: AP (as of <DateFormatter value={latest} />
             ). Candidates receiving less than 3% support not shown individually. Demographic, income and education data from the Census Bureau. COVID-19 case data from{" "}
             <a href="https://github.com/CSSEGISandData/COVID-19">
