@@ -14,7 +14,8 @@ const COLLIDE_FORCE = 1;
 const MIN_DOMAIN = .1;
 const MAX_DOMAIN = .3;
 const POLAR_OFFSET = .02;
-const MIN_TEXT = 10;
+const HIDE_TEXT = 6;
+const MIN_TEXT = 12;
 const MIN_RADIUS = 3;
 const FROZEN = .001;
 const HEIGHT_STEP = 50;
@@ -325,8 +326,6 @@ export default class ElectoralBubbles extends Component {
           <line class="separator" x1={width / 2} x2={width / 2} y1="25" y2={height - 10 + offset} />
           <g class="force-sim">
           {nodes.map(n => {
-            // remove the max to let text shrink and vanish
-            // var textSize = Math.max(this.nodeRadius(n) * .5, MIN_TEXT);
             var textSize = this.nodeRadius(n) * .5;
             return (<>
               <circle
@@ -339,11 +338,11 @@ export default class ElectoralBubbles extends Component {
                 r={n.r}
                 onClick={() => this.goToState(n.state)}
               />
-              {textSize > MIN_TEXT && <text 
+              {textSize > HIDE_TEXT && <text 
                 class={`${n.party} ${n.called ? "called" : "pending"}`}
                 x={n.x} 
                 y={n.y + (height / 2) + (textSize * .4) + offset}
-                font-size={textSize + "px"}>{n.state}</text>}
+                font-size={Math.max(textSize, MIN_TEXT) + "px"}>{n.state}</text>}
             </>);
           })}
           </g>
