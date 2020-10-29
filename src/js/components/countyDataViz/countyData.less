@@ -17,9 +17,9 @@
   }
 
   div.description {
-    font-weight: normal;
+    .knockout-header();
     color: #777;
-    font-size: 12px;
+    font-size: 13px;
     line-height: 1.6;
     text-transform: uppercase;
     margin: auto;
@@ -28,15 +28,30 @@
     display: block;
 
     div.strength {
-      font-weight: bold;
       color: #fff;
+      font-weight: bold;
       display: inline-block;
       margin: auto;
-      padding: 2px 5px;
-      font-size: 11px;
+      margin-top: 3px;
+      padding: 0px 5px 1px;
+      font-size: 10px;
+      border-radius: 2px;
 
-      &.weak {
+      &.almost-no {
+        background-color: #eee;
         color: #777;
+      }
+      &.weak {
+        background-color: #bbb;
+      }
+      &.moderate {
+        background-color: #888;
+      }
+      &.strong {
+        background-color: #555;
+      }
+      &.very-strong {
+        background-color: #222;
       }
     }
   }
@@ -105,12 +120,13 @@
 }
 
 .trends {
-  margin-bottom: 25px;
+  margin-bottom: 15px;
   display: block;
 
   .chart-wrapper {
     width: 33%;
     display: inline-block;
+    margin-bottom: 10px;
 
     @media @tablet {
       width: 33%;

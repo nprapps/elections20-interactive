@@ -63,13 +63,12 @@ export class CountyChart extends Component {
       "very strong",
     ];
     var index = Math.ceil(this.props.corr * relationships.length) - 1;
-    var background = `background-color: (227, 141, 44, ${this.props.corr * 255})`;
+    // var background = `background-color: (227, 141, 44, ${this.props.corr * 255})`;
     return (
       <div class="description">
         <div>{this.props.title}</div>
         <div
-          class={`strength ${this.props.corr < 0.4 ? "weak" : ""}`}
-          style={`background-color: rgba(102, 102, 102, ${this.props.corr})`}>
+          class={`strength ${relationships[index].replace(" ","-")}`}>
           {relationships[index]} trend
         </div>
       </div>
