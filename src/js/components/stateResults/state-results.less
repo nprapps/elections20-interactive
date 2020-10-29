@@ -155,15 +155,20 @@
   }
 
   .jump-links {
-    .knockout();
-    font-size: 13px;
-    padding: 12px 0;
+    .knockout-header();
+    font-size: 11px;
+    // padding: 2px 0;
+    margin-bottom: -20px;
     color: @gray;
 
     a {
       display: inline-block;
       padding: 0 4px;
       cursor: pointer;
+      .gotham();
+      text-transform: none;
+      font-weight: bold;
+      letter-spacing: 0;
     }
     .pipe {
       color: @gray-medium;
