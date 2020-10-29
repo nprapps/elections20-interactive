@@ -131,25 +131,31 @@ export default class Cartogram extends Component {
       var labelBox = label.getBBox();
       var hasDistricts = g.querySelector("[data-postal]");
 
-
       // handle NE and ME labels
       if (hasDistricts) {
         var x = bbox.x - 10;
         var y = bbox.y + labelBox.height;
       } else {
         var x = bbox.x + bbox.width / 2;
-        var y = bbox.y + bbox.height / 2 - 2;
+        var y = bbox.y + bbox.height / 2 + labelBox.height / 2 - 3;
       }
+
+      // on desktop, add electoral votes 
+
+      if (window.innerWidth > 600) {
+        y -= labelBox.height / 2 - 2;
+        var votes = states[stateName].electoral;
+        var electoralLabel = document.createElementNS(svg.namespaceURI, "text");
+        electoralLabel.textContent = votes;
+        g.appendChild(electoralLabel);
+
+        electoralLabel.setAttribute("x", x);
+        electoralLabel.setAttribute("y", y + 10);
+        electoralLabel.setAttribute("class", "votes");
+      }
+
       label.setAttribute("x", x);
       label.setAttribute("y", y);
-
-      var votes = states[stateName].electoral;
-      var electoralLabel = document.createElementNS(svg.namespaceURI, "text");
-      electoralLabel.textContent = votes;
-      electoralLabel.setAttribute("x", x);
-      electoralLabel.setAttribute("y", y + 10);
-      electoralLabel.setAttribute("class", "votes");
-      g.appendChild(electoralLabel);
     });
   }
 
