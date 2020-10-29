@@ -37,7 +37,7 @@ h1 {
 
 main.embed-bop {
   color: #444;
-  // background: black;
+  // background: #333;
 
   .inline {
     .container {
@@ -144,28 +144,32 @@ main.embed-bop {
 
   .dark {
     h3 {
-      color: #ccc;
+      color: #eee;
     }
     .bar-container .middle {
-      border-left: 1px solid #ccc;
+      border-left: 1px solid #eee;
     }
-    .chatter, .uncalled, .source {
+    .chatter, .uncalled {
+      color: #ccc;
+    } 
+
+    .source {
       color: #aaa;
     }
     .bar-container {
-      background: #333;
+      background: #777;
     }
     .divider {
-      border-top: 1px solid #333;
+      border-top: 1px solid #777;
     }
     .president .candidate:first-child {
-      border-right: 1px solid #333;
+      border-right: 1px solid #777;
     }
   }
 
   .dark.inline {
     .link-container {
-      border-right: 1px solid #333;
+      border-right: 1px solid #777;
 
       &:last-child {
         border-right: none;
@@ -360,5 +364,6 @@ main.embed-bop {
 
   .source {
     margin-top: 55px;
+    text-align: center;
   }
 }
