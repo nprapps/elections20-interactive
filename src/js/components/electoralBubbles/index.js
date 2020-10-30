@@ -100,6 +100,11 @@ export default class ElectoralBubbles extends Component {
   intersect([e]) {
     if (e.isIntersecting) {
       if (!this.running) {
+        var svg = this.svg.current;
+        if (!this.svg) return;
+        var bounds = svg.getBoundingClientRect();
+        var { width } = bounds;
+        this.setState({ width });
         console.log("Starting force sim...");
         this.running = true;
         this.simulation.alpha(1);
@@ -180,6 +185,8 @@ export default class ElectoralBubbles extends Component {
     }));
     dataDomain = clamp(Math.ceil(dataDomain * 10) / 10, MIN_DOMAIN, MAX_DOMAIN);
 
+    var maxRadius = this.nodeRadius({ electoral: 55 });
+
     for (var r of called) {
       // find an existing node?
       var upsert = this.createNode(r, dataDomain);
@@ -190,7 +197,7 @@ export default class ElectoralBubbles extends Component {
       } else {
         // add the node
         upsert.x = this.xAccess(upsert);
-        upsert.y = 0;
+        upsert.y = (maxRadius - this.nodeRadius(r)) * (Math.random() > .5 ? 1 : -1);
         nodes.push(upsert);
         touched.add(upsert);
       }
