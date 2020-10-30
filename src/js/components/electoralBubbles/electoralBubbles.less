@@ -1,5 +1,10 @@
 .electoral-bubbles {
   position: relative;
+  margin-bottom: 30px;
+
+  @media @mobile {
+    margin-bottom: 0px;
+  }
   
   // .key-above {
   //   text-align: center;
@@ -86,9 +91,11 @@
             display: none;
           }
 
-          @media @tiny {
+          @media @mobile {
             font-size: 12px;
+          }
 
+          @media @tiny {
             &.mobile {
               display: block;
             }
