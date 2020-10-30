@@ -158,7 +158,8 @@ module.exports = function(grunt) {
         state: r.state,
         district: r.district,
         winner: r.winnerParty,
-        electoral: r.electoral
+        electoral: r.electoral,
+        previous: r.previousParty
       }
     }
 
