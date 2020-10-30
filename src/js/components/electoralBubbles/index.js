@@ -197,7 +197,7 @@ export default class ElectoralBubbles extends Component {
       } else {
         // add the node
         upsert.x = this.xAccess(upsert);
-        upsert.y = (maxRadius - this.nodeRadius(r)) * (Math.random() > .5 ? 1 : -1);
+        upsert.y = (maxRadius - this.nodeRadius(r)) * (Math.random() > .5 ? 2 : -2);
         nodes.push(upsert);
         touched.add(upsert);
       }

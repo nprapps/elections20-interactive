@@ -30,7 +30,8 @@ export default class StateResults extends Component {
     this.setState({ data });
   }
 
-  updateTimestamp(timestamp, e) {
+  updateTimestamp(timestamp) {
+    console.log(timestamp);
     var latest = Math.max(this.state.latest || 0, timestamp);
     this.setState({ latest });
   }
@@ -88,7 +89,7 @@ export default class StateResults extends Component {
             {stateName !== "Alaska" && 
               <div class="note">Demographic trends not shown for special elections or states with fewer than 10 counties reporting above 50%.</div>
             }
-            Source: AP (as of <DateFormatter value={latest} />
+            Source: AP (as of <DateFormatter value={state.latest} />
             ). Candidates receiving less than 3% support not shown individually. Demographic, income and education data from the Census Bureau. COVID-19 case data from{" "}
             <a href="https://github.com/CSSEGISandData/COVID-19">
               Center for Systems Science and Engineering at Johns Hopkins
