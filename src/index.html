@@ -1,5 +1,12 @@
 <!doctype html>
-<html lang="en-US">
+<%
+  var doc = archieml.longform;
+  var social = {
+    title: doc.socialPages.defaultTitle,
+    description: doc.socialPages.defaultDescription
+  };
+  Object.assign(grunt.data.json.project, social);
+%><html lang="en-US">
   <head>
     <%= t.include("partials/_head.html", grunt.data.json) %>
     <link rel="stylesheet" type="text/css" href="style.css">

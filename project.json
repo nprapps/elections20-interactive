@@ -24,8 +24,8 @@
   },
   "title": "2020 Elections",
   "description": "",
-  "url": "",
-  "image": "assets/logo.png",
+  "url": "https://apps.npr.org/elections20-interactive/",
+  "image": "assets/social_office/president.jpg",
   "analytics": {
     "topicIDs": [],
     "primaryTopic": "",
@@ -33,6 +33,6 @@
   },
   "sheets": ["1tukZUCrK_YRtdQtU1ZNNEjDH1tHgBeYIw4aiw8zj8l0"],
   "docs": {"longform": "1NzIbd-pC0eAvfTLi4S4MOmto9PsOLz6U-2zsOlwSujY"},
-  "embedded": true,
+  "embedded": false,
   "production": true
 }
