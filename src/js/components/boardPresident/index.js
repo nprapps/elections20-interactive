@@ -158,7 +158,7 @@ export default class BoardPresident extends Component {
 
       <div class="source">
         <div class="note">*Note: Expected vote is an Associated Press estimate of how much of the vote in an election has been counted. <a href="https://www.ap.org/en-us/topics/politics/elections/counting-the-vote">Read more about how EEVP is calculated</a>.</div>
-        Source: AP (as of <DateFormatter value={latest} />). Presidential race ratings from <a href="https://www.npr.org/2020/10/09/921596963/npr-electoral-map-biden-lead-widens-again-with-less-than-a-month-to-go">NPR</a>.
+        Source: AP (as of <DateFormatter value={latest} />). Presidential race ratings from <a href="https://www.npr.org/2020/10/30/929077049/final-npr-electoral-map-biden-has-the-edge-but-trump-retains-narrow-path">NPR</a>.
       </div>
     </div>
   }
