@@ -71,6 +71,7 @@ export class CountyDataViz extends Component {
             </div>
           ))}
         </div>
+        <div class="footnote">Trends subject to change as results come in. {footnote}</div>
         <button
           class={`toggle-table ${
             this.state.cleanedData.length > 4 ? "" : "hidden"
@@ -80,7 +81,7 @@ export class CountyDataViz extends Component {
           data-less="Show less">
           {this.state.collapsed ? `Show all ▼` : `Show less ▲`}
         </button>
-        <div class="footnote">Trends subject to change as results come in. {footnote}</div>
+        
       </div>
     );
   }
