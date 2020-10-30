@@ -92,10 +92,10 @@ export default class Homepage extends Component {
           {early + silent && (
           <div class="disclaimer">
             { early && silent ? 
-              `An additional ${early} ${early > 1 ? "states have" : "state has"} early results,
+              `An additional ${early} ${early > 1 ? "voting units have" : "voting unit has"} early results,
               and ${silent} ${silent > 1 ? "have" : "has"} not started reporting yet. ` :
-              early ? `An additional ${early} ${early > 1 ? "states have" : "state has"} early results. ` :
-              `An additional ${silent} ${silent > 1 ? "states have" : "state has"} not started reporting yet. `
+              early ? `An additional ${early} ${early > 1 ? "voting units have" : "voting unit has"} early results. ` :
+              `An additional ${silent} ${silent > 1 ? "voting units have" : "voting unit has"} not started reporting yet. `
             } 
             <a href="https://apps.npr.org/elections20-interactive">See full results &rsaquo;</a>
           </div>
