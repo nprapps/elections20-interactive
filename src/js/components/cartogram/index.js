@@ -1,9 +1,10 @@
-import { h, Component, createRef } from "preact";
+import { h, Component, createRef, Fragment } from "preact";
 import gopher from "../gopher.js";
 import { reportingPercentage, winnerIcon } from "../util.js";
 import states from "states.sheet.json";
 import $ from "../../lib/qsa";
 import track from "../../lib/tracking";
+import BoardKey from "../boardKey";
 
 export default class Cartogram extends Component {
   constructor(props) {
@@ -33,10 +34,13 @@ export default class Cartogram extends Component {
 
   render() {
     return (
+      <>
+      <BoardKey race="president" simple="true"/>
       <div class="cartogram">
         <div ref={this.svgRef} onMove={this.onMove}></div>
         <div class="tooltip" ref={this.tooltip}></div>
       </div>
+      </>
     );
   }
 

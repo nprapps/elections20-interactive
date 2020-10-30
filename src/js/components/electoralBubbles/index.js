@@ -2,6 +2,7 @@ import { h, Fragment, Component, createRef } from "preact";
 import { reportingPercentage, winnerIcon, groupCalled } from "../util";
 import track from "../../lib/tracking";
 import stateSheet from "states.sheet.json";
+import BoardKey from "../boardKey";
 
 // d3 is weird about imports, apparently
 var d3 = require("d3-force/dist/d3-force.min.js");
@@ -311,7 +312,10 @@ export default class ElectoralBubbles extends Component {
       likelyR: "Likely Republican"
     };
 
-    return <div class="electoral-bubbles" onMousemove={this.onMove} onMouseleave={this.onExit}>
+    return (
+      <>
+      <BoardKey race="president" simple="true"/>
+      <div class="electoral-bubbles" onMousemove={this.onMove} onMouseleave={this.onExit}>
 {/*      <div class="key-above">
         Current vote tabulation
       </div>*/}
@@ -393,5 +397,6 @@ export default class ElectoralBubbles extends Component {
       </div>}
       <div class="tooltip" ref={this.tooltip}></div>
     </div>
+    </>)
   }
 }
