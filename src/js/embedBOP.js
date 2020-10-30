@@ -114,7 +114,8 @@ async function init(results) {
           <a class="link-container president" href="http://apps.npr.org/elections20-interactive/#/president" target="_top">
             
             <h3>President</h3>
-            <div class="chatter"><strong>270</strong> electoral votes to win | <a>See full results ›</a></div>
+            <div class="full-link"><a>See full results ›</a></div>
+            <div class="chatter"><strong>270</strong> electoral votes to win</div>
             
             <div class="bar-container">
               <div class="bar dem" style={"width: " + (president.Dem / 538 * 100) + "%"}></div>
@@ -154,8 +155,16 @@ async function init(results) {
         <a class="link-container house" href="http://apps.npr.org/elections20-interactive/#/house" target="_top">
           
           <h3>House</h3>
-          <div class="chatter"><strong>218</strong> seats for majority | <a>See full results ›</a></div>
+          <div class="full-link"><a>See full results ›</a></div>
+          <div class="chatter"><strong>218</strong> seats for majority </div>
           
+          <div class="net-gain-container">
+            <div class="gain-label">Net gain</div>
+            <div class={"net-gain " + house.netGainParty}>{house.netGainParty != "none"
+                ? house.netGainParty + " +" + house.netGain
+                : "No change"}</div>
+          </div>
+
           <div class="bar-container">
             <div class="bar dem" style={"width: " + (house.Dem.total / 435 * 100) + "%"}>
               <div class="label">Dem. {house.Dem.total >= 218 ? winnerIcon : ""}<span class="number">{house.Dem.total}</span></div>
@@ -192,11 +201,7 @@ async function init(results) {
             </div>
           </div>
 
-          <div class="net-gain-container">
-            <div class={"net-gain " + house.netGainParty}>{house.netGainParty != "none"
-                ? house.netGainParty + " +" + house.netGain
-                : "No change"}</div>
-          </div>
+          
         </a>
 
         {/*SENATE*/}
@@ -204,7 +209,15 @@ async function init(results) {
         <a class="link-container senate" href="http://apps.npr.org/elections20-interactive/#/senate" target="_top">
           
           <h3>Senate</h3>
-          <div class="chatter"><strong>51</strong> seats for majority | <a>See full results ›</a></div>
+          <div class="full-link"><a>See full results ›</a></div>
+          <div class="chatter"><strong>51</strong> seats for majority</div>
+
+          <div class="net-gain-container">
+            <div class="gain-label">Net gain</div>
+            <div class={"net-gain " + senate.netGainParty}>{senate.netGainParty != "none"
+                    ? senate.netGainParty + " +" + senate.netGain
+                    : "No change"}</div>
+          </div>
           
           <div class="bar-container">
             <div class="bar dem" style={"width: " + (senate.Dem.total) + "%"}>
@@ -242,11 +255,6 @@ async function init(results) {
             </div>
           </div>
 
-          <div class="net-gain-container">
-            <div class={"net-gain " + senate.netGainParty}>{senate.netGainParty != "none"
-                    ? senate.netGainParty + " +" + senate.netGain
-                    : "No change"}</div>
-          </div>
         </a>
       </div>
 
