@@ -90,7 +90,7 @@ export default class StateResults extends Component {
               <div class="note">Demographic trends not shown for special elections or states with fewer than 10 counties reporting above 50%.</div>
             }
             Source: AP (as of <DateFormatter value={state.latest} />
-            ). Candidates receiving less than 3% support not shown individually. Demographic, income and education data from the Census Bureau. COVID-19 case data from{" "}
+            ). Candidates receiving less than 5% support not shown individually. Demographic, income and education data from the Census Bureau. COVID-19 case data from{" "}
             <a href="https://github.com/CSSEGISandData/COVID-19">
               Center for Systems Science and Engineering at Johns Hopkins
               University
