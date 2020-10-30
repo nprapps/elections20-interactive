@@ -15,6 +15,7 @@ export default class NationalMap extends Component {
 
     this.state = {};
     this.svgRef = createRef();
+    this.tooltip = createRef();
   }
 
   // Lifecycle: Called whenever our component is created
@@ -40,7 +41,7 @@ export default class NationalMap extends Component {
       <BoardKey race="president" simple="true"/>
       <div class="map">
         <div ref={this.svgRef}></div>
-        <div class="tooltip"></div>
+        <div class="tooltip" ref={this.tooltip}></div>
       </div>
       </>
     );
@@ -66,7 +67,7 @@ export default class NationalMap extends Component {
 
   onMove(e) {
     var svg = this.svgRef.current.querySelector("svg");
-    var tooltip = this.base.querySelector(".tooltip");
+    var tooltip = this.tooltip.current;
 
     // hover styles
     var currentHover = svg.querySelector(".hover");
