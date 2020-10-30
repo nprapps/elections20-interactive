@@ -43,11 +43,9 @@ export default class ResultsTableCounty extends Component {
     var sortedData = this.sortCountyResults();
 
     // Order by lead in overall state race
-    const orderedCandidates = this.props.sortOrder;
-    const winningCands = getCountyCandidates(
-      this.props.sortOrder,
-      this.props.data
-    ).map(c => c.last);
+    const orderedCandidates = this.props.sortOrder.slice(0, 3);
+    if (orderedCandidates.length < this.props.sortOrder.length)
+      orderedCandidates.push({ last: "Other", party: "Other" });
     return (
       <div
         class={
@@ -70,9 +68,7 @@ export default class ResultsTableCounty extends Component {
                 onclick={() => this.updateSort("countyName")}>
                 <div>{this.getIcon("countyName")}</div>
               </th>
-              {orderedCandidates.map(cand =>
-                CandidateHeaderCell(cand, winningCands)
-              )}
+              {orderedCandidates.map(cand => CandidateHeaderCell(cand))}
               <th class="vote margin">
                 <div>
                   <span class="title">Vote margin</span>
@@ -92,10 +88,9 @@ export default class ResultsTableCounty extends Component {
             {sortedData.map(c => (
               <ResultsRowCounty
                 key={c.fips}
-                candidates={orderedCandidates}
+                orderedCandidates={orderedCandidates}
                 row={c}
                 metric={this.state.displayedMetric}
-                top={winningCands}
               />
             ))}
           </tbody>
@@ -122,30 +117,31 @@ export default class ResultsTableCounty extends Component {
       track("county-metric", metricName);
     }
     var state = { sortMetric, order };
-    if (opt_newMetric) state.displayedMetric = this.availableMetrics[metricName];
+    if (opt_newMetric)
+      state.displayedMetric = this.availableMetrics[metricName];
     this.setState(state);
   }
 
   getIcon(metric) {
     var sorted = this.state.sortMetric.key == metric;
     var svg = (
-          <svg
-            aria-hidden="true"
-            role="img"
-            xmlns="http://www.w3.org/2000/svg"
-            width="10"
-            height="16"
-            viewBox="0 0 320 512">
-            <path
-              fill={ sorted && this.state.order < 0 ? "#999": "#ddd"}
-              d="M41 288h238c21.4 0 32.1 25.9 17 41L177 448c-9.4 9.4-24.6 9.4-33.9 0L24 329c-15.1-15.1-4.4-41 17-41z"
-              class=""></path>
-            <path
-              fill={ sorted && this.state.order > 0 ? "#999": "#ddd"}
-              d="M279 224H41c-21.4 0-32.1-25.9-17-41L143 64c9.4-9.4 24.6-9.4 33.9 0l119 119c15.2 15.1 4.5 41-16.9 41z"
-              class=""></path>
-          </svg>
-        );
+      <svg
+        aria-hidden="true"
+        role="img"
+        xmlns="http://www.w3.org/2000/svg"
+        width="10"
+        height="16"
+        viewBox="0 0 320 512">
+        <path
+          fill={sorted && this.state.order < 0 ? "#999" : "#ddd"}
+          d="M41 288h238c21.4 0 32.1 25.9 17 41L177 448c-9.4 9.4-24.6 9.4-33.9 0L24 329c-15.1-15.1-4.4-41 17-41z"
+          class=""></path>
+        <path
+          fill={sorted && this.state.order > 0 ? "#999" : "#ddd"}
+          d="M279 224H41c-21.4 0-32.1-25.9-17-41L143 64c9.4-9.4 24.6-9.4 33.9 0l119 119c15.2 15.1 4.5 41-16.9 41z"
+          class=""></path>
+      </svg>
+    );
     return <span>{svg}</span>;
   }
 
@@ -213,13 +209,12 @@ export default class ResultsTableCounty extends Component {
 }
 
 function ResultsRowCounty(props) {
-  var { candidates, row, metric } = props;
-  var topCands = candidates.map(c => c.last);
-
-  var orderedCandidates = candidates.map(function (header) {
+  var { orderedCandidates, row, metric } = props;
+  var topCands = orderedCandidates.map(c => c.last);
+  var candidates = orderedCandidates.map(function (header) {
     // If no other candidate, get total percent of other votes
     if (header.last == "Other") {
-      var other = mergeOthers(row.candidates, header.id, topCands, props.top);
+      var other = mergeOthers(row.candidates, header.id, topCands);
       return other;
     }
     var [match] = row.candidates.filter(c => header.id == c.id);
@@ -232,7 +227,7 @@ function ResultsRowCounty(props) {
     metricValue = metric.format(metricValue);
   }
 
-  var leadingCand = row.reportingPercent > .5 ? row.candidates[0] : "";
+  var leadingCand = row.reportingPercent > 0.5 ? row.candidates[0] : "";
   var reportingPercent = reportingPercentage(row.reportingPercent) + "% in";
 
   return (
@@ -242,28 +237,22 @@ function ResultsRowCounty(props) {
         <span class="precincts mobile">{reportingPercent}</span>
       </td>
       <td class="precincts amt">{reportingPercent}</td>
-      {orderedCandidates.map(c =>
+      {candidates.map(c =>
         CandidatePercentCell(
           c,
           c.party == leadingCand.party && c.last == leadingCand.last,
-          props.top,
           row.reportingPercent
         )
       )}
-      {MarginCell(row.candidates, leadingCand.party)}
+      {MarginCell(row.candidates, leadingCand, topCands)}
       <td class="comparison"> {metricValue} </td>
     </tr>
   );
 }
 
-function CandidateHeaderCell(candidate, winningCands) {
-  var isWinner = winningCands.includes(candidate.last);
+function CandidateHeaderCell(candidate) {
   return (
-    <th
-      class={`vote ${
-        isWinner || candidate.last == "Other" ? "" : "not-leading"
-      }`}
-      key={candidate.party}>
+    <th class="vote" key={candidate.party}>
       <div>
         <span class="title">{candidate.last}</span>
       </div>
@@ -274,32 +263,13 @@ function CandidateHeaderCell(candidate, winningCands) {
 /*
  * Creates a candidate vote % cell. Colors with candidate party if candidate is leading.
  */
-function CandidatePercentCell(candidate, leading, topCands, percentIn) {
+function CandidatePercentCell(candidate, leading, percentIn) {
   var displayPercent = percentDecimal(candidate.percent);
   var party = getParty(candidate.party);
-  var otherDisplay =
-    candidate.party == "Other" ? (
-      <span class="display-percent mobile">{`${percentDecimal(
-        candidate.mobilePercent
-      )}`}</span>
-    ) : (
-      ""
-    );
-  var hideOnMobile = !(
-    candidate.last == "Other" || topCands.includes(candidate.last)
-  );
   var allIn = percentIn >= 1;
   return (
-    <td
-      class={`vote ${party} ${leading ? "leading" : ""} ${
-        hideOnMobile ? "not-leading" : ""
-      } ${allIn ? "allin" : ""}`}
-      key={candidate.id}>
-      <span
-        class={
-          candidate.party == "Other" ? "display-percent" : ""
-        }>{`${displayPercent}`}</span>
-      {otherDisplay}
+    <td class={`vote ${party} ${leading ? "leading" : ""} ${allIn ? "allin" : ""}`} key={candidate.id}>
+      {displayPercent}
     </td>
   );
 }
@@ -307,15 +277,17 @@ function CandidatePercentCell(candidate, leading, topCands, percentIn) {
 /*
  * Creates the margin cell. Colors with candidate party if candidate is leading.
  */
-function MarginCell(candidates, leading) {
+function MarginCell(candidates, leadingCand, topCands) {
   var party;
-  if (leading) {
-    party = getParty(leading);
+  var voteMargin = "-";
+  if (topCands.includes(candidates[0].last)) {
+    voteMargin = calculateVoteMargin(candidates);
+    if (leadingCand) {
+      var party = getParty(leadingCand.party);
+    }
   }
 
-  return (
-    <td class={`vote margin ${party}`}>{calculateVoteMargin(candidates)}</td>
-  );
+  return <td class={`vote margin ${party}`}>{voteMargin}</td>;
 }
 
 /*
@@ -331,10 +303,9 @@ function calculateVoteMargin(candidates) {
 }
 
 // Borrowed from normalize
-var mergeOthers = function (candidates, raceID, topCandidates, top) {
+var mergeOthers = function (candidates, raceID, topCandidates) {
   // Only merged not top X candidates in state.
   var remaining = candidates.filter(c => !topCandidates.includes(c.last));
-  var mobileCands = candidates.filter(c => !top.includes(c.last));
   var other = {
     first: "",
     last: "Other",
@@ -345,10 +316,6 @@ var mergeOthers = function (candidates, raceID, topCandidates, top) {
   };
   for (var c of remaining) {
     other.percent += c.percent || 0;
-  }
-  // Tally other county for tiny screen views
-  for (var c of mobileCands) {
-    other.mobilePercent += c.percent || 0;
   }
   return other;
 };

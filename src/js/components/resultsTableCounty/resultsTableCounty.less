@@ -7,6 +7,7 @@
     font-size: 12px;
     table-layout: fixed;
     width: 100%;
+    // display: block;
 
     tbody.collapsed :nth-child(n + 11) {
       .sr-only();
@@ -47,7 +48,7 @@
     td {
       position: relative;
       vertical-align: middle;
-      padding: 5px;
+      padding: 8px;
       border-bottom: 1px solid #eee;
       border-right: 1px solid #eee;
       &:last-child {
@@ -134,7 +135,6 @@
             }
           }
           cursor: pointer;
-          padding-right: 15px;
         }
       }
     }
@@ -160,31 +160,27 @@
 
       @media @mobile {
         font-size: 11px;
+        padding: 5px 2px;
 
         &.comparison {
           width: 18%;
+        }
+
+        &.county {
+          span {
+            max-width: 60px;
+          }
+        }
+
+        &.vote {
+          width: 12%;
         }
       }
 
       @media @tiny {
         &.vote {
-          width: 12%;
-          span.display-percent {
-            display: none;
-
-            &.mobile {
-              display: block;
-            }
-          }
-
-          &.not-leading {
-            display: none;
-          }
+          width: 13%;
         }
-      }
-
-      span.display-percent.mobile {
-        display: none;
       }
 
       &:first-child {
