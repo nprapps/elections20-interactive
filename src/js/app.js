@@ -48,7 +48,8 @@ export default class App extends Component {
   componentDidUpdate(_, state) {
     if (this.base && this.state.route != state.route || this.state.View != state.view) {
       var headline = this.__P.querySelector("h1, h2");
-      if (headline) {
+      // only scroll if we find a headline and we're not embedded
+      if (headline && window.top == window) {
         setTimeout(() => {
           headline.focus();
           console.log(`Updating route focus to "${headline.textContent}"`);
