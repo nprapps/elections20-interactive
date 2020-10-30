@@ -140,10 +140,10 @@ module.exports = function (resultArray, overrides = {}) {
   var { calls = [], candidates = {}, rosters = {}, states = {} } = overrides;
 
   var nprMetadata = {
-    ...overrides.house,
-    ...overrides.senate,
-    ...overrides.governors,
-    ...overrides.ballot_measures,
+    H: overrides.house,
+    S: overrides.senate,
+    G: overrides.governors,
+    I: overrides.ballot_measures,
   };
 
   for (var response of resultArray) {
@@ -187,7 +187,7 @@ module.exports = function (resultArray, overrides = {}) {
           unitMeta.rating = stateMeta.rating;
         }
 
-        var sheetMetadata = nprMetadata[raceMeta.id];
+        var sheetMetadata = (nprMetadata[raceMeta.office] || {})[raceMeta.id];
         if (sheetMetadata) {
           var meta = translate.metadata(sheetMetadata);
           Object.assign(unitMeta, meta);
