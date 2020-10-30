@@ -144,7 +144,7 @@ export default class Cartogram extends Component {
 
       // on desktop, add electoral votes 
 
-      if (window.innerWidth > 600) {
+      if (window.innerWidth > 650) {
         y -= labelBox.height / 2 - 2;
         var votes = states[stateName].electoral;
         var electoralLabel = document.createElementNS(svg.namespaceURI, "text");
