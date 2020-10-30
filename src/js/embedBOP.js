@@ -40,19 +40,66 @@ async function init(results) {
     winner: ""
   }
   var house = {
-    Dem: 0,
-    GOP: 0,
-    Other: 0
+    Dem: {total: 0, gains: 0},
+    GOP: {total: 0, gains: 0},
+    Other: {total: 0, gains: 0}
   }
   var senate = {
-    Dem: InactiveSenateRaces.Dem,
-    GOP: InactiveSenateRaces.GOP,
-    Other: InactiveSenateRaces.Other
+    Dem:  {total: InactiveSenateRaces.Dem, gains: 0},
+    GOP: {total: InactiveSenateRaces.GOP, gains: 0},
+    Other: {total: InactiveSenateRaces.Other, gains: 0}
   }
 
+  // Tally vote/seat totals and gains (TODO: clean up the grossness)
+
   results.president.forEach(r => president[r.winner] += r.electoral);
-  results.house.forEach(r => house[r.winner] += 1);
-  results.senate.forEach(r => senate[r.winner] += 1);
+
+  results.house.forEach(function(r) {
+    house[r.winner].total += 1;
+
+    // Should just be MI-3 libertarian
+    if (r.previous !== "Dem" && r.previous !== "GOP") {
+      // console.log("house", r)
+      r.previous = "Other";
+    }
+
+    if (r.winner !== r.previous) {
+      house[r.winner].gains += 1;
+      house[r.previous].gains -= 1;
+    }
+  });
+
+  results.senate.forEach(function(r) {
+    senate[r.winner].total += 1;
+
+    if (r.previous !== "Dem" && r.previous !== "GOP") {
+      // console.log("senate", r)
+      r.previous = "Other";
+    }
+
+    if (r.winner !== r.previous) {
+      senate[r.winner].gains += 1;
+      senate[r.previous].gains -= 1;
+    }
+  });
+
+  house.netGainParty = "none";
+  var [topHouse] = Object.keys(house)
+    .map(k => ({ party: k, gains: house[k].gains }))
+    .sort((a, b) => b.gains - a.gains);
+  if (topHouse.gains > 0) {
+    house.netGainParty = topHouse.party;
+    house.netGain = topHouse.gains;
+  }
+
+  senate.netGainParty = "none";
+  var [topSenate] = Object.keys(senate)
+    .map(k => ({ party: k, gains: senate[k].gains }))
+    .sort((a, b) => b.gains - a.gains);
+  if (topSenate.gains > 0) {
+    senate.netGainParty = topSenate.party;
+    senate.netGain = topSenate.gains;
+  }
 
   var container = $.one("main.embed-bop");
 
@@ -110,27 +157,27 @@ async function init(results) {
           <div class="chatter"><strong>218</strong> seats for majority | <a>See full results ›</a></div>
           
           <div class="bar-container">
-            <div class="bar dem" style={"width: " + (house.Dem / 435 * 100) + "%"}>
-              <div class="label">Dem. {house.Dem >= 218 ? winnerIcon : ""}<span class="number">{house.Dem}</span></div>
+            <div class="bar dem" style={"width: " + (house.Dem.total / 435 * 100) + "%"}>
+              <div class="label">Dem. {house.Dem.total >= 218 ? winnerIcon : ""}<span class="number">{house.Dem.total}</span></div>
             </div>
-            <div class="bar other" style={"width: " + (house.Other / 435 * 100) + "%"}>
-              {house.Other ? <div class="label">Ind. {house.Other >= 218 ? winnerIcon : ""}<span class="number">{house.Other}</span></div> : ""}
+            <div class="bar other" style={"width: " + (house.Other.total / 435 * 100) + "%"}>
+              {house.Other.total ? <div class="label">Ind. {house.Other.total >= 218 ? winnerIcon : ""}<span class="number">{house.Other.total}</span></div> : ""}
             </div>
-            <div class="bar gop" style={"width: " + (house.GOP / 435 * 100) + "%"}>
-              <div class="label">GOP {house.GOP >= 218 ? winnerIcon : ""}<span class="number">{house.GOP}</span></div>
+            <div class="bar gop" style={"width: " + (house.GOP.total / 435 * 100) + "%"}>
+              <div class="label">GOP {house.GOP.total >= 218 ? winnerIcon : ""}<span class="number">{house.GOP.total}</span></div>
             </div>
             <div class="middle"></div>
           </div>
 
           <div class="number-container">
             <div class="candidate dem">
-              <div class="name">Dem. {house.Dem >= 218 ? winnerIcon : ""}</div>
-              <div class="votes">{house.Dem}</div>
+              <div class="name">Dem. {house.Dem.total >= 218 ? winnerIcon : ""}</div>
+              <div class="votes">{house.Dem.total}</div>
             </div>
-            {house.Other ?
+            {house.Other.total ?
               <div class="candidate other">
-                <div class="name">Ind. {house.Other >= 218 ? winnerIcon : ""}</div>
-                <div class="votes">{house.Other}</div>
+                <div class="name">Ind. {house.Other.total >= 218 ? winnerIcon : ""}</div>
+                <div class="votes">{house.Other.total}</div>
               </div>
             : ""}
            {/* {435 - house.Dem - house.GOP - house.Other ?
@@ -140,9 +187,15 @@ async function init(results) {
               </div>
             : ""}*/}
             <div class="candidate gop">
-              <div class="name">GOP {house.GOP >= 218 ? winnerIcon : ""}</div>
-              <div class="votes">{house.GOP}</div>
+              <div class="name">GOP {house.GOP.total >= 218 ? winnerIcon : ""}</div>
+              <div class="votes">{house.GOP.total}</div>
             </div>
+          </div>
+
+          <div class="net-gain-container">
+            <div class={"net-gain " + house.netGainParty}>{house.netGainParty != "none"
+                ? house.netGainParty + " +" + house.netGain
+                : "No change"}</div>
           </div>
         </a>
 
@@ -154,27 +207,27 @@ async function init(results) {
           <div class="chatter"><strong>51</strong> seats for majority | <a>See full results ›</a></div>
           
           <div class="bar-container">
-            <div class="bar dem" style={"width: " + (senate.Dem) + "%"}>
-              <div class="label">Dem. {senate.Dem >= 51 ? winnerIcon : ""}<span class="number">{senate.Dem}</span></div>
+            <div class="bar dem" style={"width: " + (senate.Dem.total) + "%"}>
+              <div class="label">Dem. {senate.Dem.total >= 51 ? winnerIcon : ""}<span class="number">{senate.Dem.total}</span></div>
             </div>
-            <div class="bar other" style={"width: " + (senate.Other) + "%"}>
-              <div class="label">Ind. {senate.Other >= 51 ? winnerIcon : ""}<span class="number">{senate.Other}</span></div>
+            <div class="bar other" style={"width: " + (senate.Other.total) + "%"}>
+              <div class="label">Ind. {senate.Other.total >= 51 ? winnerIcon : ""}<span class="number">{senate.Other.total}</span></div>
             </div>
-            <div class="bar gop" style={"width: " + (senate.GOP) + "%"}>
-              <div class="label">GOP {senate.GOP >= 51 ? winnerIcon : ""}<span class="number">{senate.GOP}</span></div>
+            <div class="bar gop" style={"width: " + (senate.GOP.total) + "%"}>
+              <div class="label">GOP {senate.GOP.total >= 51 ? winnerIcon : ""}<span class="number">{senate.GOP.total}</span></div>
             </div>
             <div class="middle"></div>
           </div>
 
           <div class="number-container">
             <div class="candidate dem">
-              <div class="name">Dem. {senate.Dem >= 51 ? winnerIcon : ""}</div>
-              <div class="votes">{senate.Dem}</div>
+              <div class="name">Dem. {senate.Dem.total >= 51 ? winnerIcon : ""}</div>
+              <div class="votes">{senate.Dem.total}</div>
             </div>
-            {senate.Other ?
+            {senate.Other.total ?
               <div class="candidate other">
-                <div class="name">Ind. {senate.Other >= 51 ? winnerIcon : ""}</div>
-                <div class="votes">{senate.Other}</div>
+                <div class="name">Ind. {senate.Other.total >= 51 ? winnerIcon : ""}</div>
+                <div class="votes">{senate.Other.total}</div>
               </div>
             : ""}
             {/*{100 - senate.Dem - senate.GOP - senate.Other ?
@@ -184,9 +237,15 @@ async function init(results) {
               </div>
             : ""}*/}
             <div class="candidate gop">
-              <div class="name">GOP {senate.GOP >= 51 ? winnerIcon : ""}</div>
-              <div class="votes">{senate.GOP}</div>
+              <div class="name">GOP {senate.GOP.total >= 51 ? winnerIcon : ""}</div>
+              <div class="votes">{senate.GOP.total}</div>
             </div>
+          </div>
+
+          <div class="net-gain-container">
+            <div class={"net-gain " + senate.netGainParty}>{senate.netGainParty != "none"
+                    ? senate.netGainParty + " +" + senate.netGain
+                    : "No change"}</div>
           </div>
         </a>
       </div>

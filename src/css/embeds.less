@@ -387,6 +387,27 @@ main.embed-bop {
     }
   }
 
+ .net-gain-container {
+    text-align: center;
+
+    .net-gain {
+      font-size: 11px;
+      .gotham();
+      font-weight: bold;
+      background: gray;
+      color: white;
+      display: inline-block;
+      padding: 3px 6px;
+
+      &.Dem {
+        background: @dem;
+      }
+      &.GOP {
+        background: @gop;
+      }
+    }
+  }
+
   .divider {
     border-top: 1px solid #eee;
     margin: 20px 0;
