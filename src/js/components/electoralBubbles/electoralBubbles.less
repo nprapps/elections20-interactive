@@ -22,17 +22,21 @@
 
         &.Dem {
           fill: @demDim;
+          stroke: darken(@demDim,8%);
 
           &.called {
             fill: @dem;
+            stroke: darken(@dem,8%);
           }
         }
 
         &.GOP {
           fill: @gopDim;
+          stroke: darken(@gopDim,8%);
 
           &.called {
             fill: @gop;
+            stroke: darken(@gop,8%);
           }
         }
 
@@ -44,6 +48,7 @@
         &:hover {
           stroke: black;
           stroke-width: 2px;
+          stroke-dasharray: 0;
         }
       }
 
@@ -149,15 +154,17 @@
     circle {
       cursor: pointer;
       fill: #e3e3e3;
+      stroke: darken(#e3e3e3,8%);
+      // stroke-dasharray: 7 3;
 
       &.early {
         fill: #e3e3e3;
-        // stroke: gray;
-        // stroke-dasharray: 7 3;
+        stroke: darken(#e3e3e3,8%);
       }
       &:hover {
           stroke: black;
           stroke-width: 2px;
+          stroke-dasharray: 0;
         }
     }
 

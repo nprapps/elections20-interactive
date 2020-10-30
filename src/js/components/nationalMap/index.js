@@ -1,8 +1,9 @@
-import { h, Component, createRef } from "preact";
+import { h, Component, createRef, Fragment } from "preact";
 import gopher from "../gopher.js";
 import { reportingPercentage, winnerIcon } from "../util.js";
 import track from "../../lib/tracking";
 import states from "states.sheet.json";
+import BoardKey from "../boardKey";
 
 var northeastStates = ["VT", "NH", "MA", "CT", "RI", "NJ", "DE", "MD", "DC"];
 
@@ -35,10 +36,13 @@ export default class NationalMap extends Component {
 
   render() {
     return (
+      <>
+      <BoardKey race="president" simple="true"/>
       <div class="map">
         <div ref={this.svgRef}></div>
         <div class="tooltip"></div>
       </div>
+      </>
     );
   }
 
