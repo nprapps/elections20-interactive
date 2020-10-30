@@ -1,5 +1,4 @@
 import { h, Component, Fragment } from "preact";
-import gopher from "../gopher.js";
 import InactiveSenateRaces from "inactive_senate_races.sheet.json";
 import {getParty} from "../util.js"
 
