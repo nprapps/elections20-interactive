@@ -6,6 +6,7 @@ Also sets overrides for candidate/race metadata, and applies winner overrides.
 */
 
 var ROUNDING = 10000;
+var MERGE_THRESHOLD = .05;
 
 var nprDate = apDate => {
   var [y, m, d] = apDate.split("-").map(parseFloat);
@@ -116,8 +117,8 @@ var mergeOthers = function (candidates, raceID) {
   };
   
   for (var c of remaining) {
-    // preserve candidates with >3% of the vote
-    if (c.votes / total > 0.03 || NEVER_MERGE.has(c.id)) {
+    // preserve candidates with >N% of the vote
+    if (c.votes / total > MERGE_THRESHOLD || NEVER_MERGE.has(c.id)) {
       merged.push(c);
       continue;
     }
