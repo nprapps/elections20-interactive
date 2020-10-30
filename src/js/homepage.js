@@ -79,6 +79,14 @@ export default class Homepage extends Component {
 
       {results && results.length && <Tabs id="homepage-viz">
 
+        <div icon="./assets/icons/ico-geo.svg" label="Geography" selected={display == "map"}>
+          <NationalMap races={results} />
+        </div>
+
+        <div icon="./assets/icons/ico-cartogram.svg" label="Electoral" selected={display == "cartogram"}>
+          <Cartogram races={results} />
+        </div>
+        
         <div icon="./assets/icons/ico-bubbles.svg" label="Margins" selected={display == "margins"}>
           <ElectoralBubbles results={results}  buckets={buckets} />
           {early + silent && (
@@ -94,15 +102,6 @@ export default class Homepage extends Component {
           )}
 
         </div>
-
-        <div icon="./assets/icons/ico-cartogram.svg" label="Electoral" selected={display == "cartogram"}>
-          <Cartogram races={results} />
-        </div>
-
-        <div icon="./assets/icons/ico-geo.svg" label="Geography" selected={display == "map"}>
-          <NationalMap races={results} />
-        </div>
-        
       </Tabs>}
 
       { false && <div label="Board" class="board-container President">

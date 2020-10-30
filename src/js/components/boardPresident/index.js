@@ -132,16 +132,16 @@ export default class BoardPresident extends Component {
 
       <Tabs id="president-viz">
 
-        <div icon="./assets/icons/ico-bubbles.svg" label="Margins">
-          <ElectoralBubbles results={results} buckets={buckets} />
+        <div icon="./assets/icons/ico-geo.svg" label="Geography">
+          <NationalMap races={results} />
         </div>
 
         <div icon="./assets/icons/ico-cartogram.svg" label="Electoral">
           <Cartogram races={results} />
         </div>
 
-        <div icon="./assets/icons/ico-geo.svg" label="Geography">
-          <NationalMap races={results} />
+        <div icon="./assets/icons/ico-bubbles.svg" label="Margins">
+          <ElectoralBubbles results={results} buckets={buckets} />
         </div>
         
       </Tabs>
