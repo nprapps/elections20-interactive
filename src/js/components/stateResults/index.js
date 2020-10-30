@@ -75,11 +75,11 @@ export default class StateResults extends Component {
                 src={"./assets/states/" + this.props.state + ".svg"}></img>
               {stateName}
             </h1>
+            {this.renderTabSwitcher(office)}
             <div
               class="chatter"
               dangerouslySetInnerHTML={{ __html: chatter }}
             />
-            {this.renderTabSwitcher(office)}
           </header>
           {results && (
             <div class="results-elements">{this.renderResults(office)}</div>

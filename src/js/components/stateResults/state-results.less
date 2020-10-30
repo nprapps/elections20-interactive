@@ -27,12 +27,23 @@
     margin: 0 0 15px 0;
     overflow: hidden;
 
+    .chatter {
+      font-size: 16px;
+      line-height: 1.4em;
+      border-bottom: 2px solid #ccc;
+
+      &:empty {
+        display: none;
+      }
+    }
+
     .sorter {
       font-family: @gotham;
       font-size: 12px;
       list-style-type: none;
       margin-bottom: 5px;
       padding: 0;
+      border-bottom: 2px solid #EEE;
 
       // @media screen and (max-width: @screen-xs) { text-align: center; }
 
