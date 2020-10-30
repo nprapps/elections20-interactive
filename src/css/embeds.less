@@ -81,12 +81,25 @@ main.embed-bop {
       padding: 0 25px;
       border-right: 1px solid #ddd;
 
-      h3 {
-        margin-top: 10px;
+      &.house {
+        order: 1;
+      }
+
+      &.president {
+        order: 2;
       }
 
       &.senate {
+        order: 3;
         h3 { margin-top: 10px; }
+      }
+
+      a {
+        white-space: nowrap;
+      }
+
+      h3 {
+        margin-top: 10px;
       }
 
       .label {
@@ -148,6 +161,7 @@ main.embed-bop {
 
     .source {
       margin-top: 20px;
+      text-align: center;
 
       @media @mobile {
         margin-top: 40px;
@@ -240,12 +254,6 @@ main.embed-bop {
 
     &.senate {
       h3 { margin-top: 45px; }
-    }
-
-    &:hover {
-      h3 {
-        color: @link-color;
-      }
     }
   }
 
@@ -390,7 +398,6 @@ main.embed-bop {
 
   .source {
     margin-top: 55px;
-    text-align: center;
   }
 }
 

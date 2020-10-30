@@ -66,8 +66,8 @@ async function init(results) {
         {params.president && <>
           <a class="link-container president" href="http://apps.npr.org/elections20-interactive/#/president" target="_top">
             
-            <h3>President ›</h3>
-            <div class="chatter"><strong>270</strong> electoral votes to win</div>
+            <h3>President</h3>
+            <div class="chatter"><strong>270</strong> electoral votes to win | <a>See full results ›</a></div>
             
             <div class="bar-container">
               <div class="bar dem" style={"width: " + (president.Dem / 538 * 100) + "%"}></div>
@@ -106,8 +106,8 @@ async function init(results) {
 
         <a class="link-container house" href="http://apps.npr.org/elections20-interactive/#/house" target="_top">
           
-          <h3>House ›</h3>
-          <div class="chatter"><strong>218</strong> seats for majority</div>
+          <h3>House</h3>
+          <div class="chatter"><strong>218</strong> seats for majority | <a>See full results ›</a></div>
           
           <div class="bar-container">
             <div class="bar dem" style={"width: " + (house.Dem / 435 * 100) + "%"}>
@@ -150,8 +150,8 @@ async function init(results) {
 
         <a class="link-container senate" href="http://apps.npr.org/elections20-interactive/#/senate" target="_top">
           
-          <h3>Senate ›</h3>
-          <div class="chatter"><strong>51</strong> seats for majority</div>
+          <h3>Senate</h3>
+          <div class="chatter"><strong>51</strong> seats for majority | <a>See full results ›</a></div>
           
           <div class="bar-container">
             <div class="bar dem" style={"width: " + (senate.Dem) + "%"}>
