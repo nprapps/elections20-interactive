@@ -17,7 +17,9 @@ export default class StateResults extends Component {
   constructor(props) {
     super();
 
-    this.state = {};
+    this.state = {
+      data: {}
+    };
     this.onData = this.onData.bind(this);
     this.handleSelect = this.handleSelect.bind(this);
   }
@@ -25,7 +27,7 @@ export default class StateResults extends Component {
   onData(data) {
     var latest = Math.max(...data.results.map(r => r.updated));
     this.updateTimestamp(latest);
-    this.setState(data);
+    this.setState({ data });
   }
 
   updateTimestamp(timestamp, e) {
@@ -43,14 +45,14 @@ export default class StateResults extends Component {
 
   shouldComponentUpdate(newProps, newState) {
     if (this.props.state != newProps.state) {
-      this.setState({ results: null });
+      this.setState({ data: {} });
       gopher.unwatch(`./data/states/${this.props.state}.json`, this.onData);
       gopher.watch(`./data/states/${newProps.state}.json`, this.onData);
     }
   }
 
   render(props, state) {
-    var { results, test, latest, chatter } = this.state;
+    var { results, test, latest, chatter } = this.state.data;
 
     let stateName = stateLookup[this.props.state].name;
 
@@ -111,7 +113,7 @@ export default class StateResults extends Component {
     if (view === "key") {
       return <KeyRaces state={this.props.state} />;
     } else if (view === "H" || view === "I") {
-      var results = this.state.results
+      var results = this.state.data.results
         .filter(r => r.office == view)
         .sort(view === "I" ? nameSort : numberSort);
       return (
@@ -124,7 +126,7 @@ export default class StateResults extends Component {
         </div>
       );
     } else {
-      var results = this.state.results.filter(r => r.office == view);
+      var results = this.state.data.results.filter(r => r.office == view);
       return (
         <div>
           {results.length > 1 && this.renderJumpButtons(results)}
@@ -198,8 +200,9 @@ export default class StateResults extends Component {
 
   renderTabSwitcher(view) {
     // Create the tab switcher, between different race types
-    if (!this.state.results) return false;
-    var available = new Set(this.state.results.map(r => r.office));
+    var { results } = this.state.data;
+    if (!results) return false;
+    var available = new Set(results.map(r => r.office));
     var tabs = "PGSHI"
       .split("")
       .filter(o => available.has(o))

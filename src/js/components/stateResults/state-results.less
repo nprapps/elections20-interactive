@@ -102,25 +102,16 @@
     }
 
     h1 {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+
       .state-name {
         display: block;
         font-size: 40%;
         font-weight: normal;
         margin-bottom: 1px;
         padding-top: 3px;
-      }
-    }
-
-    .state-icon {
-      font-size: 80px;
-      float: left;
-      line-height: 0.9;
-      color: @gray-light;
-
-      i.stateface {
-        font-style: normal;
-        display: inline-block;
-        margin-right: 5px;
       }
     }
 
@@ -234,14 +225,18 @@
   }
 
   h1 {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    margin-bottom: 30px;
+
     img.icon {
-      float: left;
+      display: block;
       margin-right: 14px;
       max-width: 75px;
       height: 60px;
       opacity: 0.4;
       outline: none;
-      margin-bottom: 30px;
     }
   }
 
