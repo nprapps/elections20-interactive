@@ -131,7 +131,7 @@ const availableMetrics = {
     format: formatters.percent,
   },
   covid: {
-    name: "COVID-19 Cases Per Capita",
+    name: "COVID-19 Cases Per 1,000",
     format: formatters.comma,
   },
   countyName: {

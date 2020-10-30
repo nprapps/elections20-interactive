@@ -58,7 +58,7 @@ module.exports = function (results, data) {
 
       var census = data.csv.census_data[r.fips];
       var covid = data.csv.covid_county_cases[r.fips]
-        ? data.csv.covid_county_cases[r.fips] / census.population
+        ? (data.csv.covid_county_cases[r.fips] / census.population * 1000)
         : null;
 
       var bls = data.csv.unemployment_data[r.fips] || {};
