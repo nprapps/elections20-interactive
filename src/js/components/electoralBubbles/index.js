@@ -327,14 +327,26 @@ export default class ElectoralBubbles extends Component {
           width={width} height={height + offset}
           viewBox={`0 0 ${width} ${height + offset}`}
         >
-          <text class="leading-cue dem" x={width / 2 - 40} y="20">
-            &lt; Biden leading
+          <text class="leading-cue dem desktop" x={width / 2 - 40} y="20">
+            &lt; Stronger Biden Lead
+          </text>
+          <text class="leading-cue dem mobile" x={width / 2 - 40} y="20">
+            Stronger
+          </text>
+          <text class="leading-cue dem mobile" x={width / 2 - 40} y="35">
+            &lt; Biden Lead
           </text>
           <text class="tied" x={width / 2} y="20">
             Tied
           </text>
-          <text class="leading-cue gop" x={width / 2 + 40} y="20">
-            Trump leading &gt;
+          <text class="leading-cue gop desktop" x={width / 2 + 40} y="20">
+            Stronger Trump lead &gt;
+          </text>
+          <text class="leading-cue gop mobile" x={width / 2 + 40} y="20">
+            Stronger
+          </text>
+          <text class="leading-cue gop mobile" x={width / 2 + 40} y="35">
+             Trump lead &gt;
           </text>
           <line class="separator" x1={width / 2} x2={width / 2} y1="25" y2={height - 10 + offset} />
           <g class="force-sim">

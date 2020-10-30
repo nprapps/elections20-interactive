@@ -46,7 +46,7 @@
         }
 
         &:hover {
-          stroke: black;
+          stroke: black !important;
           stroke-width: 2px;
           stroke-dasharray: 0;
         }
@@ -82,8 +82,19 @@
           fill: lighten(@gop, 10%);
           text-anchor: start;
 
-          @media @mobile {
+          &.mobile {
+            display: none;
+          }
+
+          @media @tiny {
             font-size: 12px;
+
+            &.mobile {
+              display: block;
+            }
+            &.desktop {
+              display: none;
+            }
           }
 
           &.dem {
