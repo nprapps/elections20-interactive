@@ -160,7 +160,7 @@ async function init(results) {
   
           <div class="number-container">
             <div class="candidate dem">
-              <div class="name">Dem. {house.Dem.total >= 8 ? winnerIcon : ""}</div>
+              <div class="name">Dem. {house.Dem.total >= 218 ? winnerIcon : ""}</div>
               <div class="votes">{house.Dem.total}</div>
             </div>
             {house.Other.total ?
@@ -214,7 +214,7 @@ async function init(results) {
           
           <div class="number-container">
             <div class="candidate dem">
-              <div class="name">Dem. {senate.Dem.total >= 1 ? winnerIcon : ""}</div>
+              <div class="name">Dem. {senate.Dem.total >= 51 ? winnerIcon : ""}</div>
               <div class="votes">{senate.Dem.total}</div>
             </div>
             {senate.Other.total ?
