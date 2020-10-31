@@ -257,7 +257,7 @@
 
       &.sortButton {
         .metric {
-          color: @link-color;
+          color: #4774cc;
           padding: 0 5px;
 
           &:hover {
@@ -294,7 +294,7 @@
   }
 
   button {
-    .knockout();
+    .knockout-header();
     background-color: #fff;
     border: none;
     box-shadow: none;
@@ -307,8 +307,14 @@
     padding: 10px;
     text-transform: uppercase;
 
+
     &:focus {
       outline: none;
+    }
+    
+    &:hover {
+      color: @link-hover-color;
+      cursor: pointer;
     }
 
     &.toggle-table.hidden {
