@@ -150,7 +150,7 @@ export default class ElectoralBubbles extends Component {
   createNode(r, dataDomain) {
     var [ winner, loser ] = r.candidates;
     var margin = winner.percent - loser.percent;
-    var party = winner.party;
+    var party = r.winnerParty || winner.party;
     // normalize margin
     var mx = Math.log(Math.min(margin, MAX_DOMAIN) / dataDomain + 1);
     if (party == "Dem") mx *= -1;

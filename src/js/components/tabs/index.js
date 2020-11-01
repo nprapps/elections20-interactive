@@ -33,15 +33,17 @@ export default class Tabs extends Component {
     if (selected) {
       selectedIndex = children.indexOf(selected);
     }
+    var primed = null;
     var stored = null;
     try {
+      primed = localStorage.getItem(id);
       stored = localStorage.getItem(`tabs-${id}`);
     } catch (err) {
       console.log("Unable to access local storage");
     }
     this.state = {
       id,
-      selected: selectedIndex || stored || 0,
+      selected: primed || selectedIndex || stored || 0,
       clicked: false
     }
   }
