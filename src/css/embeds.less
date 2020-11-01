@@ -93,6 +93,29 @@ main.embed-bop {
       }
     }
 
+    .house {
+      .full-link {
+        text-align: right;
+
+        @media @tiny {
+          text-align: left;
+        }
+      }
+      .net-gain-container {
+        left: 25px;
+        right: auto;
+
+        @media @tablet {
+          left: 0;
+        }
+
+        @media @tiny {
+          left: auto;
+          right: 0;
+        }
+      }
+    }
+
     .full-link {
       text-align: left;
       margin-top: 23px;
