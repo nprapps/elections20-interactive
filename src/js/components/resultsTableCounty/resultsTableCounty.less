@@ -134,7 +134,12 @@
               display: none;
             }
           }
+          padding-right: 15px;
           cursor: pointer;
+
+          @media @mobile {
+            padding-right: 0;
+          }
         }
       }
     }
@@ -307,11 +312,10 @@
     padding: 10px;
     text-transform: uppercase;
 
-
     &:focus {
       outline: none;
     }
-    
+
     &:hover {
       color: @link-hover-color;
       cursor: pointer;
