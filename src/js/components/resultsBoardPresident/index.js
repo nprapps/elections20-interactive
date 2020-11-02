@@ -60,8 +60,8 @@ export default function ResultsBoardPresident(props) {
               	<tr role="row">
                   <th role="columnheader" class="state-hed">State</th>
               		<th role="columnheader" class="electoral-hed">E.V.</th>
-                  <th role="columnheader" class="party-hed">Dem.</th>
-              		<th role="columnheader" class="party-hed">GOP</th>
+                  <th role="columnheader" class="party-hed">Biden</th>
+              		<th role="columnheader" class="party-hed">Trump</th>
                   <th role="columnheader" class="reporting-hed">% in</th>
                   <th role="columnheader" class="little-hed"></th>
               	</tr>
