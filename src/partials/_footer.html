@@ -18,10 +18,29 @@
       </ul>
     </div>
 
-    <h3 class="state-hed">2020 State Results</h3>
-
+    <h3 class="state-hed">2020 Election Results</h3>
 
     <div class="state-nav link-block">
+      <div>
+        <a href="#/president">
+          President
+        </a>
+      </div>
+      <div>
+        <a href="#/house">
+          U.S. House
+        </a>
+      </div>
+      <div>
+        <a href="#/senate">
+          U.S. Senate
+        </a>
+      </div>
+      <div class="gov-link">
+        <a href="#/governor">
+          Governor
+        </a>
+      </div>
 
       <% for (var s in json.states) { %>
       <% if (json.states[s].district) continue; %>
