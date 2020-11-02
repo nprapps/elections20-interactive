@@ -271,7 +271,7 @@ module.exports = function (resultArray, overrides = {}) {
           if (c.winner == "R") unitMeta.runoff = true;
         });
 
-        // set the winner and runoff flags
+        // set the winner and called flags
         if (winner) {
           unitMeta.called = true;
           unitMeta.winnerParty = winner.party;

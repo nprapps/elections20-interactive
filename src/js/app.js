@@ -23,6 +23,10 @@ export default class App extends Component {
 
     this.router = new Scrapple();
     // this.router.onhit = () => {};
+    this.router.onmiss = e => {
+      console.log(`Route for "/${e}" does not exist, resetting app location...`);
+      window.location = "#/";
+    }
 
     this.addView(["/", "/president"], BoardPresident);
     this.addView("/house", BoardHouse);
