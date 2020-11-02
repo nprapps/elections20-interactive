@@ -86,7 +86,7 @@ export default class StateResults extends Component {
             <div class="results-elements">{this.renderResults(office)}</div>
           )}
           <div class="source">
-            <div class="note">Note: <em>% in</em> for presidential, U.S. Senate and governor races represents expected vote, an Associated Press estimate of how much of the vote in an election has been counted. <a href="https://www.ap.org/en-us/topics/politics/elections/counting-the-vote">Read more about how EEVP is calculated.</a> <em>% in</em> for House, Ballot and county-level results represents percent of precincts reporting.</div>
+            <div class="note">Note: <em>% in</em> for presidential, U.S. Senate and governor races represents expected vote, an Associated Press estimate of the share of total ballots cast in an election that have been counted. <a href="https://www.ap.org/en-us/topics/politics/elections/counting-the-vote">Read more about how EEVP is calculated.</a> <em>% in</em> for House, Ballot and county-level results represents percent of precincts reporting.</div>
             {(stateName !== "Alaska" && props.subview) && 
               <div class="note">Demographic trends not shown for special elections or states with fewer than 10 counties reporting above 50%.</div>
             }

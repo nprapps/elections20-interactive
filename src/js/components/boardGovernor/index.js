@@ -48,7 +48,7 @@ export default class BoardGovernor extends Component {
       </div>
       <BoardKey race="gov"/>
       <div class="source">
-        <div class="note">*Note: Expected vote is an Associated Press estimate of how much of the vote in an election has been counted. <a href="https://www.ap.org/en-us/topics/politics/elections/counting-the-vote">Read more about how EEVP is calculated</a>.</div>
+        <div class="note">*Note: Expected vote is an Associated Press estimate of the share of total ballots cast in an election that have been counted. <a href="https://www.ap.org/en-us/topics/politics/elections/counting-the-vote">Read more about how EEVP is calculated</a>.</div>
         Source: AP (as of <DateFormatter value={latest} />)
       </div>
     </>;
