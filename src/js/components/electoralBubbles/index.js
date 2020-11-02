@@ -15,7 +15,7 @@ const COLLIDE_FORCE = 1;
 const MIN_DOMAIN = .1;
 const MAX_DOMAIN = .3;
 const POLAR_OFFSET = .02;
-const HIDE_TEXT = 6;
+const HIDE_TEXT = 7;
 const MIN_TEXT = 12;
 const MIN_RADIUS = 3;
 const FROZEN = .001;
@@ -102,7 +102,7 @@ export default class ElectoralBubbles extends Component {
     if (e.isIntersecting) {
       if (!this.running) {
         var svg = this.svg.current;
-        if (!this.svg) return;
+        if (!svg) return;
         var bounds = svg.getBoundingClientRect();
         var { width } = bounds;
         this.setState({ width });
@@ -177,7 +177,6 @@ export default class ElectoralBubbles extends Component {
     var lookup = {};
     results.forEach(r => lookup[r.state + (r.district || "")] = r);
 
-    var uncalled = results.filter(r => r.eevp <= .5 && !r.called);
     var called = results.filter(r => r.called || r.eevp > .5);
 
     var dataDomain = Math.max(...called.map(function(r) {
@@ -210,7 +209,7 @@ export default class ElectoralBubbles extends Component {
 
     this.simulation.alpha(1);
 
-    this.setState({ nodes, lookup, uncalled });
+    this.setState({ nodes, lookup });
   }
 
   shouldComponentUpdate(props, state) {
@@ -281,7 +280,7 @@ export default class ElectoralBubbles extends Component {
 
   render(props, state) {
     var { buckets } = props;
-    var { nodes, width, uncalled = [] } = state;
+    var { nodes, width } = state;
 
     var distance = 0;
     nodes.forEach(n => {
@@ -301,7 +300,7 @@ export default class ElectoralBubbles extends Component {
 
     var uncalled = {};
     for (var k in props.buckets) {
-      uncalled[k] = props.buckets[k].filter(r => !r.called && r.eevp <= .5);
+      uncalled[k] = props.buckets[k].filter(r => !r.called && (r.eevp || 0) <= .5);
     }
 
     var hasUncalled = [...uncalled.likelyD, ...uncalled.tossup, ...uncalled.likelyR].length;
@@ -314,12 +313,9 @@ export default class ElectoralBubbles extends Component {
 
     return (
       <>
-      <BoardKey race="president" simple="true"/>
       <div class="electoral-bubbles" onMousemove={this.onMove} onMouseleave={this.onExit}>
-{/*      <div class="key-above">
-        Current vote tabulation
-      </div>*/}
-      <div class="aspect-ratio">
+      {nodes.length && <div class="aspect-ratio">
+        <BoardKey race="president" simple="true"/>
         <svg class="bubble-svg" ref={this.svg}
           role="img"
           aria-label="Bubble plot of state margins"
@@ -372,7 +368,7 @@ export default class ElectoralBubbles extends Component {
           })}
           </g>
         </svg>
-      </div>
+      </div>}
       {hasUncalled > 0 && <div class="uncalled">
         <h3>Early or no results yet:</h3>
         <div class="triplets">
@@ -382,7 +378,7 @@ export default class ElectoralBubbles extends Component {
               <div class="circles">
                 {uncalled[rating].sort((a, b) => b.electoral - a.electoral).map(result => {
                   var reporting = result.eevp || result.reportingPercent;
-                  var r = Math.max(this.nodeRadius(result), MIN_RADIUS);
+                  var r = Math.max(this.nodeRadius(result), MIN_RADIUS) * .5;
                   var size = r * .5;
                   return <svg width={r * 2} height={r * 2} class="uncalled-race">
                     <circle
@@ -391,10 +387,10 @@ export default class ElectoralBubbles extends Component {
                       data-key={result.district ? result.state + result.district : result.state}
                       onClick={() => this.goToState(result.state)}
                     />
-                    {size > MIN_TEXT && (
+                    {size > HIDE_TEXT && (
                       <text 
                         x={r} y={r + size * .4} 
-                        font-size={size + "px"}
+                        font-size={Math.max(MIN_TEXT, size) + "px"}
                         class={"uncalled-race " + `${reporting ? "early" : "open"}`}
                       >
                         {result.state}
