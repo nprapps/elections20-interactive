@@ -6,7 +6,7 @@ export default function BoardKey(props) {
 	var hasParties = race !== "ballot";
   var hasPickup = race == "house" || race == "senate";
 	var hasIncumbent = race == "house" || race == "senate" || race == "gov";
-	var hasEEVP = race !== "house";
+	var hasEEVP = race !== "house" && race !== "ballot";
 
   return <div class="board-key">
     {full && <h3>Key</h3>}

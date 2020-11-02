@@ -109,7 +109,7 @@ export default class ResultsTableCounty extends Component {
 
   updateSort(metricName, opt_newMetric = false) {
     var sortMetric = this.availableMetrics[metricName];
-    var order = sortMetric.alpha ? -1 : 1;
+    var order = sortMetric.alpha ? 1 : -1;
     if (sortMetric == this.state.sortMetric) {
       order = this.state.order * -1;
       track("county-sort", metricName);
