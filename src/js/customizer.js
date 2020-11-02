@@ -223,7 +223,7 @@ class Customizer extends Component {
           {`<p
             data-pym-loader
             data-child-src="${src}"
-            id="responsive-embed-election-sidebar">
+            id="responsive-embed-election-congress">
               Loading...
           </p>
           <script src="https://pym.nprapps.org/npr-pym-loader.v2.min.js"></script>`.replace(/\s{2,}|\n/g, " ")}
@@ -256,7 +256,7 @@ class Customizer extends Component {
           {`<p
             data-pym-loader
             data-child-src="${src}"
-            id="responsive-embed-election-sidebar">
+            id="responsive-embed-electoral-college">
               Loading...
           </p>
           <script src="https://pym.nprapps.org/npr-pym-loader.v2.min.js"></script>`.replace(/\s{2,}|\n/g, " ")}
