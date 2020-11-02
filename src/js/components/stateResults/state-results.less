@@ -27,20 +27,12 @@
   }
 
   &.results.key {
-    #state-header {
-      .chatter {
-        border-bottom: none;
-      }
+    .chatter {
+      border-bottom: none;
     }
   }
 
-  // header
-  #state-header {
-    margin: 0 0 10px 0;
-    overflow: hidden;
-    display: flex;
-    border-bottom: 2px solid #eee;
-
+  &.results {
     .chatter {
       font-size: 14px;
       line-height: 1.4em;
@@ -51,6 +43,14 @@
         display: none;
       }
     }
+  }
+
+  // header
+  #state-header {
+    margin: 0 0 10px 0;
+    overflow: hidden;
+    display: flex;
+    border-bottom: 2px solid #eee;
 
     .sorter {
       font-family: @gotham;

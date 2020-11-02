@@ -80,11 +80,8 @@ export default class StateResults extends Component {
               </h1>
               {this.renderTabSwitcher(office)}
             </div>
-            <div
-              class="chatter"
-              dangerouslySetInnerHTML={{ __html: chatter }}
-            />
           </header>
+          <div class="chatter" dangerouslySetInnerHTML={{ __html: chatter }} />
           {results && (
             <div class="results-elements">{this.renderResults(office)}</div>
           )}
