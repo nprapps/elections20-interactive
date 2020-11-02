@@ -25,7 +25,7 @@ export class CountyDataViz extends Component {
     var cleanedData = this.getCleanedData(this.props.data, sorted);
 
     // Create display charts and sort by their correlations
-    var metrics = getAvailableMetrics(this.props.state)
+    var metrics = getAvailableMetrics(this.props.state);
     var charts = [];
     for (var m of Object.keys(metrics)) {
       var metric = metrics[m];

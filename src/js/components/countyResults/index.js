@@ -22,7 +22,7 @@ export default class CountyResults extends Component {
     var office = json.results[0].office;
     this.setState({ data: json.results, office });
   }
-  
+
   async componentDidMount() {
     gopher.watch(
       `./data/counties/${this.props.state}-${this.props.raceid}.json`,
@@ -47,7 +47,11 @@ export default class CountyResults extends Component {
     var dataViz;
     if (!this.props.isSpecial) {
       dataViz = (
-        <CountyDataViz data={this.state.data} order={this.props.order.slice(0,2)} />
+        <CountyDataViz
+          data={this.state.data}
+          order={this.props.order.slice(0, 2)}
+          state={this.props.state.toUpperCase()}
+        />
       );
     }
 
