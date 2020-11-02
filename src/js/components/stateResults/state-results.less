@@ -29,15 +29,18 @@
   &.results.key {
     .chatter {
       border-bottom: none;
+      padding-bottom: 0;
     }
   }
 
   &.results {
     .chatter {
-      font-size: 14px;
-      line-height: 1.4em;
       color: #454545;
-      border-bottom: 2px solid #ccc;
+      border-bottom: 2px solid #eee;
+      font-size: 16px;
+      line-height: 1.5em;
+      font-family: @serif;
+      padding-bottom: 10px;
 
       &:empty {
         display: none;
@@ -50,7 +53,7 @@
     margin: 0 0 10px 0;
     overflow: hidden;
     display: flex;
-    border-bottom: 2px solid #eee;
+    // border-bottom: 2px solid #eee;
 
     .sorter {
       font-family: @gotham;
@@ -132,8 +135,9 @@
         display: block;
         font-size: 40%;
         font-weight: normal;
-        margin-bottom: 1px;
-        padding-top: 3px;
+        margin-bottom: 2px;
+        padding-top: 2px;
+        color: #666;
       }
     }
 
