@@ -102,10 +102,11 @@ export default class ElectoralBubbles extends Component {
     if (e.isIntersecting) {
       if (!this.running) {
         var svg = this.svg.current;
-        if (!svg) return;
-        var bounds = svg.getBoundingClientRect();
-        var { width } = bounds;
-        this.setState({ width });
+        if (svg) {
+          var bounds = svg.getBoundingClientRect();
+          var { width } = bounds;
+          this.setState({ width });
+        }
         console.log("Starting force sim...");
         this.running = true;
         this.simulation.alpha(1);
@@ -314,61 +315,63 @@ export default class ElectoralBubbles extends Component {
     return (
       <>
       <div class="electoral-bubbles" onMousemove={this.onMove} onMouseleave={this.onExit}>
-      {nodes.length > 0 && <div class="aspect-ratio">
+      {nodes.length > 0 && <>
         <BoardKey race="president" simple="true"/>
-        <svg class="bubble-svg" ref={this.svg}
-          role="img"
-          aria-label="Bubble plot of state margins"
-          preserveAspectRatio="none"
-          width={width} height={height + offset}
-          viewBox={`0 0 ${width} ${height + offset}`}
-        >
-          <text class="leading-cue dem desktop" x={width / 2 - 40} y="20">
-            &lt; Stronger Biden Lead
-          </text>
-          <text class="leading-cue dem mobile" x={width / 2 - 40} y="20">
-            Stronger
-          </text>
-          <text class="leading-cue dem mobile" x={width / 2 - 40} y="35">
-            &lt; Biden Lead
-          </text>
-          <text class="tied" x={width / 2} y="20">
-            Tied
-          </text>
-          <text class="leading-cue gop desktop" x={width / 2 + 40} y="20">
-            Stronger Trump lead &gt;
-          </text>
-          <text class="leading-cue gop mobile" x={width / 2 + 40} y="20">
-            Stronger
-          </text>
-          <text class="leading-cue gop mobile" x={width / 2 + 40} y="35">
-             Trump lead &gt;
-          </text>
-          <line class="separator" x1={width / 2} x2={width / 2} y1="25" y2={height - 10 + offset} />
-          <g class="force-sim">
-          {nodes.map(n => {
-            var textSize = this.nodeRadius(n) * .5;
-            return (<>
-              <circle
-                class={`${n.party} ${n.called ? "called" : "pending"}`}
-                vector-effect="non-scaling-stroke"
-                data-key={n.key}
-                key={n.key}
-                cx={n.x}
-                cy={(n.y || 0) + height / 2 + offset}
-                r={n.r}
-                onClick={() => this.goToState(n.state)}
-              />
-              {textSize > HIDE_TEXT && <text 
-                class={`${n.party} ${n.called ? "called" : "pending"}`}
-                x={n.x} 
-                y={n.y + (height / 2) + (textSize * .4) + offset}
-                font-size={Math.max(textSize, MIN_TEXT) + "px"}>{n.state}</text>}
-            </>);
-          })}
-          </g>
-        </svg>
-      </div>}
+        <div class="aspect-ratio">
+          <svg class="bubble-svg" ref={this.svg}
+            role="img"
+            aria-label="Bubble plot of state margins"
+            preserveAspectRatio="none"
+            width={width} height={height + offset}
+            viewBox={`0 0 ${width} ${height + offset}`}
+          >
+            <text class="leading-cue dem desktop" x={width / 2 - 40} y="20">
+              &lt; Stronger Biden Lead
+            </text>
+            <text class="leading-cue dem mobile" x={width / 2 - 40} y="20">
+              Stronger
+            </text>
+            <text class="leading-cue dem mobile" x={width / 2 - 40} y="35">
+              &lt; Biden Lead
+            </text>
+            <text class="tied" x={width / 2} y="20">
+              Tied
+            </text>
+            <text class="leading-cue gop desktop" x={width / 2 + 40} y="20">
+              Stronger Trump lead &gt;
+            </text>
+            <text class="leading-cue gop mobile" x={width / 2 + 40} y="20">
+              Stronger
+            </text>
+            <text class="leading-cue gop mobile" x={width / 2 + 40} y="35">
+               Trump lead &gt;
+            </text>
+            <line class="separator" x1={width / 2} x2={width / 2} y1="25" y2={height - 10 + offset} />
+            <g class="force-sim">
+            {nodes.map(n => {
+              var textSize = this.nodeRadius(n) * .5;
+              return (<>
+                <circle
+                  class={`${n.party} ${n.called ? "called" : "pending"}`}
+                  vector-effect="non-scaling-stroke"
+                  data-key={n.key}
+                  key={n.key}
+                  cx={n.x}
+                  cy={(n.y || 0) + height / 2 + offset}
+                  r={n.r}
+                  onClick={() => this.goToState(n.state)}
+                />
+                {textSize > HIDE_TEXT && <text 
+                  class={`${n.party} ${n.called ? "called" : "pending"}`}
+                  x={n.x} 
+                  y={n.y + (height / 2) + (textSize * .4) + offset}
+                  font-size={Math.max(textSize, MIN_TEXT) + "px"}>{n.state}</text>}
+              </>);
+            })}
+            </g>
+          </svg>
+        </div>
+      </>}
       {hasUncalled > 0 && <div class="uncalled">
         <h3>Early or no results yet:</h3>
         <div class="triplets">
