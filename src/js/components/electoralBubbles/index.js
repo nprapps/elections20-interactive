@@ -314,7 +314,7 @@ export default class ElectoralBubbles extends Component {
     return (
       <>
       <div class="electoral-bubbles" onMousemove={this.onMove} onMouseleave={this.onExit}>
-      {nodes.length && <div class="aspect-ratio">
+      {!!nodes.length && <div class="aspect-ratio">
         <BoardKey race="president" simple="true"/>
         <svg class="bubble-svg" ref={this.svg}
           role="img"
