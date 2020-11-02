@@ -1,0 +1,1 @@
+module.exports = window.top != window || document.body.classList.contains("embedded");

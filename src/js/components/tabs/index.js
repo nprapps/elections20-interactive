@@ -24,26 +24,31 @@ export function Panel(props) {
   </div>
 }
 
+var firstNotNull = function(...values) {
+  for (var v of values) {
+    if (v !== null) return v;
+  }
+}
+
 export default class Tabs extends Component {
   constructor(props) {
     super();
     var { id = 0, children } = props;
-    var selected = children.find(c => c.props.selected);
-    var selectedIndex = 0;
-    if (selected) {
-      selectedIndex = children.indexOf(selected);
-    }
-    var primed = null;
+    var selectedChild = children.find(c => c.props.selected);
     var stored = null;
+    var childIndex = null;
+    if (selectedChild) {
+      childIndex = children.indexOf(selectedChild);
+    }
     try {
-      primed = localStorage.getItem(id);
       stored = localStorage.getItem(`tabs-${id}`);
     } catch (err) {
       console.log("Unable to access local storage");
     }
+    var selected = firstNotNull(childIndex, stored, 0);
     this.state = {
       id,
-      selected: primed || selectedIndex || stored || 0,
+      selected,
       clicked: false
     }
   }

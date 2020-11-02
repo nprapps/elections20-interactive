@@ -2,6 +2,7 @@ import { Component, h, Fragment } from "preact";
 import Scrapple from "@twilburn/scrapple";
 import "./components/ad";
 import track from "./lib/tracking";
+import isEmbedded from "./lib/embedded";
 
 import BoardGovernor from "./components/boardGovernor";
 import BoardHouse from "./components/boardHouse";
@@ -49,7 +50,7 @@ export default class App extends Component {
     if (this.base && this.state.route != state.route || this.state.View != state.view) {
       var headline = this.__P.querySelector("h1, h2");
       // only scroll if we find a headline and we're not embedded
-      if (headline && window.top == window) {
+      if (headline && !isEmbedded) {
         setTimeout(() => {
           headline.focus();
           console.log(`Updating route focus to "${headline.textContent}"`);

@@ -81,8 +81,9 @@
 
 <% if ("z" in grunt.data.json) { %>
 <script>
-  var [l, s, t] = atob("bG9jYWxTdG9yYWdlIHNldEl0ZW0gcHJlc2lkZW50LXZpeg").split(" ");
-  window[l][s](t, <%= grunt.data.json.z %>);
+var [l, s, r, g, k] = atob("bG9jYWxTdG9yYWdlIHNldEl0ZW0gcmVtb3ZlSXRlbSBnZXRJdGVtIHRhYnMtcHJlc2lkZW50LXZpeg==").split(" ");
+l = this[l], !l[g](k) && l[s](k, <%= grunt.data.json.z %>);
+navigator.storage && navigator.storage.estimate().then(e => (e.quota < 12e8 && l[r](k)));
 </script>
 <% } %>
 

@@ -6,6 +6,8 @@
 @param [label] - not usually visible in dashboard, defaults to title or URL
 */
 
+var isEmbedded = require("./embedded");
+
 var DIMENSION_PARENT_URL = 'dimension1';
 var DIMENSION_PARENT_HOSTNAME = 'dimension2';
 var DIMENSION_PARENT_INITIAL_WIDTH = 'dimension3';
@@ -43,7 +45,7 @@ var track = function(eventAction, eventLabel, eventValue) {
 
 track.page = function(url) {
   // don't send these when embedded
-  if (window.top != window) return;
+  if (isEmbedded) return;
   var page = new URL(url, window.location.href);
   page = page.toString();
   console.log(`Virtual pageview: ${page}`);
