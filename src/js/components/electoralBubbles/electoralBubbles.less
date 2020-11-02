@@ -82,10 +82,14 @@
         }
 
         &.leading-cue {
-          font-weight: bold;
           font-size: 16px;
-          fill: lighten(@gop, 10%);
+          fill: darken(@gop, 5%);
           text-anchor: start;
+
+          &.dem {
+            text-anchor: end;
+            fill: darken(@dem, 5%);
+          }
 
           &.mobile {
             display: none;
@@ -102,11 +106,6 @@
             &.desktop {
               display: none;
             }
-          }
-
-          &.dem {
-            text-anchor: end;
-            fill: lighten(@dem, 10%);
           }
         }
       }
@@ -141,13 +140,14 @@
     h3 {
       margin-bottom: 0;
       font-size: 16px;
-      color: @gray;
+      color: #444;
+      font-weight: normal;
     }
 
     h4 {
       font-size: 14px;
-      font-weight: normal;
       color: #787878;
+      font-weight: normal;
     }
 
     .triplets {
