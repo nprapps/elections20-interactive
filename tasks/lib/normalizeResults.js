@@ -268,12 +268,12 @@ module.exports = function (resultArray, overrides = {}) {
             }
           }
           if (c.winner == "X") winner = c;
+          if (c.winner == "R") unitMeta.runoff = true;
         });
 
         // set the winner and runoff flags
         if (winner) {
           unitMeta.called = true;
-          unitMeta.runoff = winner.winner == "R";
           unitMeta.winnerParty = winner.party;
         }
 
