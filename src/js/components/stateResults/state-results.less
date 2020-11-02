@@ -38,6 +38,8 @@
   #state-header {
     margin: 0 0 10px 0;
     overflow: hidden;
+    display: flex;
+    border-bottom: 2px solid #eee;
 
     .chatter {
       font-size: 14px;
@@ -56,7 +58,7 @@
       list-style-type: none;
       margin-bottom: 5px;
       padding: 0;
-      border-bottom: 2px solid #eee;
+      margin-top: 5px;
 
       // @media screen and (max-width: @screen-xs) { text-align: center; }
 
@@ -126,10 +128,6 @@
     }
 
     h1 {
-      display: flex;
-      align-items: center;
-      justify-content: flex-start;
-
       .state-name {
         display: block;
         font-size: 40%;
@@ -249,23 +247,21 @@
   }
 
   h1 {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
     margin-bottom: 5px;
+  }
 
-    img.icon {
-      display: block;
-      margin-right: 14px;
-      max-width: 75px;
-      height: 60px;
-      opacity: 0.4;
-      outline: none;
+  img.icon {
+    display: inline-block;
+    float: left;
+    margin-right: 14px;
+    max-width: 75px;
+    height: 60px;
+    opacity: 0.4;
+    outline: none;
 
-      @media @tiny {
-        margin-right: 8px;
-        max-width: 68px;
-      }
+    @media @tiny {
+      margin-right: 8px;
+      max-width: 68px;
     }
   }
 

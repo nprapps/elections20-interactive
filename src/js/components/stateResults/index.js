@@ -18,7 +18,7 @@ export default class StateResults extends Component {
     super();
 
     this.state = {
-      data: {}
+      data: {},
     };
     this.onData = this.onData.bind(this);
     this.handleSelect = this.handleSelect.bind(this);
@@ -70,13 +70,16 @@ export default class StateResults extends Component {
         <div class="content">
           {test ? <TestBanner /> : ""}
           <header id="state-header">
-            <h1 tabindex="-1">
-              <img
-                class="icon"
-                src={"./assets/states/" + this.props.state + ".svg"}></img>
-              {stateName}
-            </h1>
-            {this.renderTabSwitcher(office)}
+            <img
+              class="icon"
+              src={"./assets/states/" + this.props.state + ".svg"}></img>
+            <div class="header-text">
+              <h1 tabindex="-1">
+                <div class="state-name">Election results</div>
+                {stateName}
+              </h1>
+              {this.renderTabSwitcher(office)}
+            </div>
             <div
               class="chatter"
               dangerouslySetInnerHTML={{ __html: chatter }}
@@ -86,12 +89,27 @@ export default class StateResults extends Component {
             <div class="results-elements">{this.renderResults(office)}</div>
           )}
           <div class="source">
-            <div class="note">Note: <em>% in</em> for presidential, U.S. Senate and governor races represents expected vote, an Associated Press estimate of the share of total ballots cast in an election that have been counted. <a href="https://www.ap.org/en-us/topics/politics/elections/counting-the-vote">Read more about how EEVP is calculated.</a> <em>% in</em> for House, Ballot and county-level results represents percent of precincts reporting.</div>
-            {(stateName !== "Alaska" && props.subview) && 
-              <div class="note">Demographic trends not shown for special elections or states with fewer than 10 counties reporting above 50%.</div>
-            }
+            <div class="note">
+              Note: <em>% in</em> for presidential, U.S. Senate and governor
+              races represents expected vote, an Associated Press estimate of
+              the share of total ballots cast in an election that have been
+              counted.{" "}
+              <a href="https://www.ap.org/en-us/topics/politics/elections/counting-the-vote">
+                Read more about how EEVP is calculated.
+              </a>{" "}
+              <em>% in</em> for House, Ballot and county-level results
+              represents percent of precincts reporting.
+            </div>
+            {stateName !== "Alaska" && props.subview && (
+              <div class="note">
+                Demographic trends not shown for special elections or states
+                with fewer than 10 counties reporting above 50%.
+              </div>
+            )}
             Source: AP (as of <DateFormatter value={state.latest} />
-            ). Candidates receiving less than 5% support not shown individually. Demographic, income and education data from the Census Bureau. COVID-19 case data from{" "}
+            ). Candidates receiving less than 5% support not shown individually.
+            Demographic, income and education data from the Census Bureau.
+            COVID-19 case data from{" "}
             <a href="https://github.com/CSSEGISandData/COVID-19">
               Center for Systems Science and Engineering at Johns Hopkins
               University
@@ -236,10 +254,7 @@ export default class StateResults extends Component {
 
     return (
       <>
-        <ul class="sorter">
-          <li class="label">Election results:</li>
-          {tabElements}
-        </ul>
+        <ul class="sorter">{tabElements}</ul>
       </>
     );
   }
