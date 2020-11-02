@@ -87,13 +87,13 @@ export default class StateResults extends Component {
           )}
           <div class="source">
             {!props.subview && 
-              <div class="note">Note: "% in" for Presidential, Senate and Governor results represents expected vote, an Associated Press estimate of how much of the vote in an election has been counted. <a href="https://www.ap.org/en-us/topics/politics/elections/counting-the-vote">Read more about how EEVP is calculated.</a> "% in" for House, Ballot and county-level results represents percent of precincts reporting.</div>
+              <div class="note">Note: <em>% in</em> for presidential, U.S. Senate and governor races represents expected vote, an Associated Press estimate of how much of the vote in an election has been counted. <a href="https://www.ap.org/en-us/topics/politics/elections/counting-the-vote">Read more about how EEVP is calculated.</a> <em>% in</em> for House, Ballot and county-level results represents percent of precincts reporting.</div>
             }
             {(props.subview == "P" || props.subview == "S" || props.subview == "G") && 
-              <div class="note">Note: "% in" for Presidential, Senate and Governor results represents expected vote, an Associated Press estimate of how much of the vote in an election has been counted. <a href="https://www.ap.org/en-us/topics/politics/elections/counting-the-vote">Read more about how EEVP is calculated.</a></div>
+              <div class="note">Note: <em>% in</em> for presidential, U.S. Senate and governor races represents expected vote, an Associated Press estimate of how much of the vote in an election has been counted. <a href="https://www.ap.org/en-us/topics/politics/elections/counting-the-vote">Read more about how EEVP is calculated.</a></div>
             }
             {(props.subview == "H" || props.subview == "I") && 
-              <div class="note">Note: "% in" for House, Ballot and county-level results represents percent of precincts reporting.</div>
+              <div class="note">Note: <em>% in</em> for U.S. House, state ballot and county-level results represents percent of precincts reporting.</div>
             }
             {(stateName !== "Alaska" && props.subview) && 
               <div class="note">Demographic trends not shown for special elections or states with fewer than 10 counties reporting above 50%.</div>
