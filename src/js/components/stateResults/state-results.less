@@ -26,16 +26,24 @@
     }
   }
 
+  &.results.key {
+    #state-header {
+      .chatter {
+        border-bottom: none;
+      }
+    }
+  }
+
   // header
   #state-header {
     margin: 0 0 10px 0;
     overflow: hidden;
 
     .chatter {
-      font-size: 16px;
-      line-height: 1.5em;
+      font-size: 14px;
+      line-height: 1.4em;
       color: #454545;
-      font-family: @serif;
+      border-bottom: 2px solid #ccc;
 
       &:empty {
         display: none;
@@ -48,7 +56,7 @@
       list-style-type: none;
       margin-bottom: 5px;
       padding: 0;
-      border-bottom: 2px solid #EEE;
+      border-bottom: 2px solid #eee;
 
       // @media screen and (max-width: @screen-xs) { text-align: center; }
 

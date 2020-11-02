@@ -65,7 +65,7 @@ export default class StateResults extends Component {
 
     return (
       <div
-        class="state-results results"
+        class={`state-results results ${office == "key" ? "key" : ""}`}
         onupdatedtime={e => this.updateTimestamp(e.detail, e)}>
         <div class="content">
           {test ? <TestBanner /> : ""}
