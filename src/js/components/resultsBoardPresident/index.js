@@ -69,7 +69,7 @@ export default function ResultsBoardPresident(props) {
 
                 {races.map(function(r, i) {
                   var hasResult = r.eevp || r.reporting || r.called || r.runoff;
-                  var reporting = r.eevp || r.reportingPercent;
+                  var reporting = "eevp" in r ? r.eevp : r.reportingPercent;
                   var percentIn = reporting || reporting == 0 
                     ? <span>{reportingPercentage(reporting)}%<span class="in"> in</span></span>
                     : "";

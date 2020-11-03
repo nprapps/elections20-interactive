@@ -5,7 +5,7 @@ import states from "states.sheet.json";
 function CandidateCells(race, winner) {
   var sorted = race.candidates.slice(0, 2).sort(sortByParty);
   var leading = race.candidates[0];
-  var reporting = race.eevp || race.reportingPercent;
+  var reporting = "eevp" in race ? race.eevp : race.reportingPercent;
 
   return sorted.map(function(c) {
     var className = ["candidate", c.party];
