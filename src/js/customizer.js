@@ -56,9 +56,7 @@ class Customizer extends Component {
     this.setState({ races: json.results });
   }
 
-  board(free, props, state) {
-    var { url } = free;
-    var src = url + `#/${state.mode}`;
+  embeds(src, id) {
     return (<>
       <h2>Embeds</h2>
       <div style="display: grid; grid-template-columns: 1fr 1fr; grid-gap: 8px">
@@ -68,7 +66,7 @@ class Customizer extends Component {
           {`<p
             data-pym-loader
             data-child-src="${src}"
-            id="responsive-embed-election-${state.selectedState}-${state.mode}">
+            id="${id}">
               Loading...
           </p>
           <script src="https://pym.nprapps.org/npr-pym-loader.v2.min.js"></script>`.replace(/\s{2,}|\n/g, " ")}
@@ -82,6 +80,14 @@ class Customizer extends Component {
           </textarea>
         </div>
       </div>
+    </>);
+  }
+
+  board(free, props, state) {
+    var { url } = free;
+    var src = url + `#/${state.mode}`;
+    return (<>
+      {this.embeds(src, `responsive-embed-election-${state.selectedState}-${state.mode}`)}
       <h2>Preview</h2>
       <side-chain
         key={state.raceID}
@@ -104,28 +110,7 @@ class Customizer extends Component {
           ))}
         </select>
       </div>
-      <h2>Embeds</h2>
-      <div style="display: grid; grid-template-columns: 1fr 1fr; grid-gap: 8px">
-        <div>
-          <h3>Pym</h3>
-          <textarea rows="6" style="width:100%">
-          {`<p
-            data-pym-loader
-            data-child-src="${src}"
-            id="responsive-embed-election-${state.selectedState}-${state.selectedOffice || "X"}">
-              Loading...
-          </p>
-          <script src="https://pym.nprapps.org/npr-pym-loader.v2.min.js"></script>`.replace(/\s{2,}|\n/g, " ")}
-          </textarea>
-        </div>
-        <div>
-          <h3>Sidechain</h3>
-          <textarea rows="6" style="width:100%">
-          {`<side-chain src="${src}"></side-chain>
-          <script src="https://apps.npr.org/elections20-interactive/sidechain.js"></script>`.replace(/\s{2,}|\n/g, " ")}
-          </textarea>
-        </div>
-      </div>
+      {this.embeds(src, `responsive-embed-election-${state.selectedState}-${state.selectedOffice || "X"}`)}
       <h2>Preview</h2>
       <side-chain 
         key={state.selectedState} 
@@ -155,28 +140,7 @@ class Customizer extends Component {
         </select>
       </div>
       {state.raceID && <>
-        <h2>Embeds</h2>
-        <div style="display: grid; grid-template-columns: 1fr 1fr; grid-gap: 8px">
-          <div>
-            <h3>Pym</h3>
-            <textarea rows="6" style="width:100%">
-            {`<p
-              data-pym-loader
-              data-child-src="${src}"
-              id="responsive-embed-election-${state.selectedState}-${state.raceID}">
-                Loading...
-            </p>
-            <script src="https://pym.nprapps.org/npr-pym-loader.v2.min.js"></script>`.replace(/\s{2,}|\n/g, " ")}
-            </textarea>
-          </div>
-          <div>
-            <h3>Sidechain</h3>
-            <textarea rows="6" style="width:100%">
-            {`<side-chain src="${src}"></side-chain>
-            <script src="https://apps.npr.org/elections20-interactive/sidechain.js"></script>`.replace(/\s{2,}|\n/g, " ")}
-            </textarea>
-          </div>
-        </div>
+        {this.embeds(src, `responsive-embed-election-${state.selectedState}-${state.raceID}`)}
         <h2>Preview</h2>
         <side-chain
           key={state.raceID}
@@ -215,28 +179,7 @@ class Customizer extends Component {
           onInput={() => this.setFlag("inline", !state.inline)} />
         <label for="bop_inline">Row layout</label>
       </div>
-      <h2>Embeds</h2>
-      <div style="display: grid; grid-template-columns: 1fr 1fr; grid-gap: 8px">
-        <div>
-          <h3>Pym</h3>
-          <textarea rows="6" style="width:100%">
-          {`<p
-            data-pym-loader
-            data-child-src="${src}"
-            id="responsive-embed-election-congress">
-              Loading...
-          </p>
-          <script src="https://pym.nprapps.org/npr-pym-loader.v2.min.js"></script>`.replace(/\s{2,}|\n/g, " ")}
-          </textarea>
-        </div>
-        <div>
-          <h3>Sidechain</h3>
-          <textarea rows="6" style="width:100%">
-          {`<side-chain src="${src}"></side-chain>
-          <script src="https://apps.npr.org/elections20-interactive/sidechain.js"></script>`.replace(/\s{2,}|\n/g, " ")}
-          </textarea>
-        </div>
-      </div>
+      {this.embeds(src, "responsive-embed-election-congress")}
       <h2>Preview</h2>
       <side-chain
         src={src}
@@ -248,28 +191,7 @@ class Customizer extends Component {
     var { url } = free;
     var src = new URL(url + `homepage.html`);
     return (<>
-      <h2>Embeds</h2>
-      <div style="display: grid; grid-template-columns: 1fr 1fr; grid-gap: 8px">
-        <div>
-          <h3>Pym</h3>
-          <textarea rows="6" style="width:100%">
-          {`<p
-            data-pym-loader
-            data-child-src="${src}"
-            id="responsive-embed-electoral-college">
-              Loading...
-          </p>
-          <script src="https://pym.nprapps.org/npr-pym-loader.v2.min.js"></script>`.replace(/\s{2,}|\n/g, " ")}
-          </textarea>
-        </div>
-        <div>
-          <h3>Sidechain</h3>
-          <textarea rows="6" style="width:100%">
-          {`<side-chain src="${src}"></side-chain>
-          <script src="https://apps.npr.org/elections20-interactive/sidechain.js"></script>`.replace(/\s{2,}|\n/g, " ")}
-          </textarea>
-        </div>
-      </div>
+      {this.embeds(src, "responsive-embed-electoral-college")}
       <h2>Preview</h2>
       <side-chain
         src={src}
