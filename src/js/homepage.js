@@ -86,18 +86,19 @@ export default class Homepage extends Component {
         <div icon="./assets/icons/ico-cartogram.svg" label="Electoral" selected={display == "cartogram"}>
           <Cartogram races={results} />
         </div>
-        
+
         <div icon="./assets/icons/ico-bubbles.svg" label="Margins" selected={display == "margins"}>
           <ElectoralBubbles results={results}  buckets={buckets} />
           {early + silent && (
           <div class="disclaimer">
-            { early && silent ? 
-              `An additional ${early} ${early > 1 ? "voting units have" : "voting unit has"} early results,
-              and ${silent} ${silent > 1 ? "have" : "has"} not started reporting yet. ` :
-              early ? `An additional ${early} ${early > 1 ? "voting units have" : "voting unit has"} early results. ` :
-              `An additional ${silent} ${silent > 1 ? "voting units have" : "voting unit has"} not started reporting yet. `
-            } 
-            <a href="https://apps.npr.org/elections20-interactive">See full results &rsaquo;</a>
+            {
+              // early && silent ?
+              // `An additional ${early} ${early > 1 ? "voting units have" : "voting unit has"} early results,
+              // and ${silent} ${silent > 1 ? "have" : "has"} not started reporting yet. ` :
+              // early ? `An additional ${early} ${early > 1 ? "voting units have" : "voting unit has"} early results. ` :
+              // `An additional ${silent} ${silent > 1 ? "voting units have" : "voting unit has"} not started reporting yet. `
+            }
+            To appear in this chart, a state must have either a declared winner or 50% or more of the estimated vote tabulated. States will be added as results come in. <a href="https://apps.npr.org/elections20-interactive">See full results &rsaquo;</a>
           </div>
           )}
 
@@ -111,7 +112,7 @@ export default class Homepage extends Component {
           <Results races={buckets.likelyR} hed="Likely Republican" office="President" addClass="last" />
         </>}
       </div> }
-      
+
       <div class="source">Source: AP (as of <DateFormatter value={latest} />)</div>
     </div>
   }
