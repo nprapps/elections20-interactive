@@ -194,7 +194,7 @@ export default class StateResults extends Component {
           raceid={race.id}
           order={order}
           isSpecial={isSpecial}
-          key={race.id}
+          key={`${race.id}-${race.state}`}
         />
       );
     }
