@@ -245,7 +245,7 @@ export default class CountyMap extends Component {
     var x = e.clientX - bounds.left;
     var y = e.clientY - bounds.top;
     if (x > bounds.width / 2) {
-      x -= tooltip.offsetWidth + 10;
+      x -= 150;
     } else {
       x += 20;
     }
