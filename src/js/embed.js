@@ -36,7 +36,8 @@ async function init() {
       return (<>
         <ResultsTableCandidates data={r} title={office} />
         {!params.linkless && <a 
-          class="see-full" 
+          class="see-full"
+          target="_blank"
           href={`https://apps.npr.org/elections20-interactive/#/states/${r.state}/${r.office}`}>
             See full results &rsaquo;
         </a>}
