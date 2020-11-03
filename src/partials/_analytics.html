@@ -29,14 +29,15 @@ if (window.top !== window) {
     dimension2: parentHostname,
     dimension3: initialWidth
   });
+  ga("send", "pageview");
 } else {
   // standalone page analytics
   ga("create", "UA-5828686-4", "auto");
   ga("set", {
     dimension22: document.title
   });
+  // do not send pageview because we'll handle that virtually
 }
-ga("send", "pageview");
 </script>
 <!-- End Google Analytics -->
 

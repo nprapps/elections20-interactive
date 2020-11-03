@@ -72,7 +72,7 @@ export default class App extends Component {
     if (!state.route && state.View) {
       // console.log(`Loaded page component: ${state.View.name}`);
       track(`route`, state.url || "none");
-      if (state.url) track.page(state.url);
+      track.page(state.url || "president");
       document.body.dataset.view = state.View.name;
       try {
         return <state.View {...state.params} />
