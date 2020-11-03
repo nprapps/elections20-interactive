@@ -36,7 +36,7 @@ export default class Cartogram extends Component {
     return (
       <>
       <BoardKey race="president" simple="true"/>
-      <div class="cartogram">
+      <div class="cartogram" role="img" aria-label="Cartogram of state results">
         <div ref={this.svgRef} onMove={this.onMove}></div>
         <div class="tooltip" ref={this.tooltip}></div>
       </div>

@@ -378,30 +378,38 @@ export default class ElectoralBubbles extends Component {
           {["likelyD", "tossup", "likelyR"].map(rating => (
             !uncalled[rating].length ? "" : <div class="uncalled">
               <h4>{titles[rating]}</h4>
-              <div class="circles">
+              <ul class="circles">
                 {uncalled[rating].sort((a, b) => b.electoral - a.electoral).map(result => {
                   var reporting = result.eevp || result.reportingPercent;
                   var r = Math.max(this.nodeRadius(result), MIN_RADIUS) * .5;
                   var size = r * .5;
-                  return <svg width={r * 2} height={r * 2} class="uncalled-race">
-                    <circle
-                      class={"uncalled-race " + `${reporting ? "early" : "open"}`}
-                      cx={r} cy={r} r={r - 1}
-                      data-key={result.district ? result.state + result.district : result.state}
-                      onClick={() => this.goToState(result.state)}
-                    />
-                    {size > HIDE_TEXT && (
-                      <text 
-                        x={r} y={r + size * .4} 
-                        font-size={Math.max(MIN_TEXT, size) + "px"}
+                  return <li>
+                    <svg width={r * 2} height={r * 2}
+                      class="uncalled-race"
+                      role="img"
+                      aria-label={result.stateName}
+                      alt={result.stateName}
+                    >
+                      <circle
+                        role="presentation"
                         class={"uncalled-race " + `${reporting ? "early" : "open"}`}
-                      >
-                        {result.state}
-                      </text>
-                    )}
-                  </svg>
+                        cx={r} cy={r} r={r - 1}
+                        data-key={result.district ? result.state + result.district : result.state}
+                        onClick={() => this.goToState(result.state)}
+                      />
+                      {size > HIDE_TEXT && (
+                        <text
+                          x={r} y={r + size * .4} 
+                          font-size={Math.max(MIN_TEXT, size) + "px"}
+                          class={"uncalled-race " + `${reporting ? "early" : "open"}`}
+                        >
+                          {result.state}
+                        </text>
+                      )}
+                    </svg>
+                  </li>
                 })}
-              </div>
+              </ul>
             </div>
           ))}
         </div>

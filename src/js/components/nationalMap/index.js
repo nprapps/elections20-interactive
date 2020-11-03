@@ -40,7 +40,7 @@ export default class NationalMap extends Component {
       <>
       <BoardKey race="president" simple="true"/>
       <div class="map">
-        <div ref={this.svgRef}></div>
+        <div ref={this.svgRef} role="img" aria-label="National map of results"></div>
         <div class="tooltip" ref={this.tooltip}></div>
       </div>
       </>

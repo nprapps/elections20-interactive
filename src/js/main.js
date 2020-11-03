@@ -1,6 +1,7 @@
 // require("./lib/pym");
 
 import $ from "./lib/qsa";
+import track from "./lib/tracking";
 import { h, render, Fragment } from "preact";
 
 import Sidechain from "@nprapps/sidechain";
@@ -20,9 +21,10 @@ if (appContainer) {
 var SUPPRESS = 3 * 60 * 60; // three hours
 var COOKIE = "suppress-about-box";
 
-var hideBox = function() {
+var hideBox = function(e) {
   $.one(".about-box").classList.add("closed");
   document.cookie = `${COOKIE}=true;max-age=${SUPPRESS}`;
+  if (e) track("closed-about-box");
 }
 
 // hide about box on click
