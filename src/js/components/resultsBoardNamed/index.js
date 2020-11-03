@@ -99,7 +99,7 @@ export default function ResultsBoardNamed(props) {
 
                       {/* State */}
                       <td class="state" role="cell">
-                        <a href={"#/states/" + r.state + "/" + r.office}>
+                        <a target="_top" href={"?#/states/" + r.state + "/" + r.office}>
                           <span class="not-small">
                             {states[r.state].ap + seatLabel + ballotLabel}
                           </span>

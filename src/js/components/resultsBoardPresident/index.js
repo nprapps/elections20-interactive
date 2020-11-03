@@ -1,5 +1,6 @@
 import { h, Fragment } from "preact";
 import { reportingPercentage } from "../util";
+import isEmbedded from "../../lib/embedded";
 import states from "states.sheet.json";
 
 var sortParty = function(p) {
@@ -81,7 +82,10 @@ export default function ResultsBoardPresident(props) {
 
                       {/* State */}
                       <td role="cell" class="state">
-                        <a href={"#/states/" + r.state + "/" + r.office}>
+                        <a
+                          href={"?#/states/" + r.state + "/" + r.office}
+                          target="_top"
+                        >
                           {stateDetail.ap} {r.district && r.district !== "AL" ? r.district : ""}
                         </a>
                       </td>
