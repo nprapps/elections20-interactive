@@ -15,6 +15,7 @@ export default class CountyMap extends Component {
 
     this.fipsLookup = [];
 
+    this.handleResize = this.handleResize.bind(this);
     this.state = {};
     this.svgRef = createRef();
     this.containerRef = createRef();
@@ -48,15 +49,28 @@ export default class CountyMap extends Component {
     var text = await response.text();
     var svg = await this.loadSVG(text);
     this.setState({ svg: svg });
+
+    window.addEventListener("resize", this.handleResize);
   }
 
   // Lifecycle: Called just before our component will be destroyed
   componentWillUnmount() {
     // stop when not renderable
+    window.removeEventListener("resize", this.handleResize);
   }
 
   componentDidUpdate() {
     this.paint();
+  }
+
+  handleResize() {
+    var newWidth = window.innerWidth;
+    if (!this.state.width || newWidth != this.state.width) {
+      this.setState({
+        width: newWidth,
+      });
+      this.updateDimensions();
+    }
   }
 
   render() {
@@ -220,7 +234,9 @@ export default class CountyMap extends Component {
             candidate && candidate.special ? `i${candidate.special}` : "";
           var cs = `<div class="row">
             <span class="party ${cand.party} ${special}"></span>
-            <span>${cand.last} ${!inStateTop ? `(${getParty(cand.party)})` : ""}</span>
+            <span>${cand.last} ${
+            !inStateTop ? `(${getParty(cand.party)})` : ""
+          }</span>
             <span class="amt">${reportingPercentage(cand.percent)}%</span>
         </div>`;
           return cand.percent > 0 ? cs : "";
