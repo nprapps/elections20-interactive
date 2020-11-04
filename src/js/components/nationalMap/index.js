@@ -214,6 +214,8 @@ export default class NationalMap extends Component {
       var stateGroup = svg.querySelector(`.${state}`);
       if (!stateGroup) return;
 
+      stateGroup.classList.remove("early", "winner", "leader", "GOP", "Dem");
+
       if (eevp > 0) {
         stateGroup.classList.add("early");
       }
@@ -222,8 +224,6 @@ export default class NationalMap extends Component {
         stateGroup.classList.add(leader);
       }
       if (winner) {
-        stateGroup.classList.remove("leader");
-        stateGroup.classList.remove(leader);
         stateGroup.classList.add("winner");
         stateGroup.classList.add(winner);
       }

@@ -56,6 +56,7 @@ export default class Cartogram extends Component {
 
   onClick(e) {
     var group = e.target.closest("svg > g");
+    if (!group) return;
     var state = group.getAttribute("data-postal");
     if (state) {
       window.location.href = `#/states/${state}/P`;
@@ -182,6 +183,8 @@ export default class Cartogram extends Component {
 
       groups.forEach(function(g) {
 
+        g.classList.remove("early", "winner", "leader", "GOP", "Dem");
+
         if (eevp > 0) {
           g.classList.add("early");
         }
@@ -190,8 +193,6 @@ export default class Cartogram extends Component {
           g.classList.add(leader);
         }
         if (winner) {
-          g.classList.remove("leader");
-          g.classList.remove(leader);
           g.classList.add("winner");
           g.classList.add(winner);
         }
