@@ -71,9 +71,9 @@ export default class ElectoralBubbles extends Component {
 
   xAccess(d) {
     var centerX = this.state.width / 2;
-    var { mx, margin, party } = d;
+    var { mx, margin, alignment } = d;
     // generate log position
-    var offset = party == "Dem" ? -POLAR_OFFSET : POLAR_OFFSET;
+    var offset = alignment == "Dem" ? -POLAR_OFFSET : POLAR_OFFSET;
     var pole = centerX + (centerX * offset);
     var x = mx * centerX + pole;
     return x;
@@ -152,9 +152,10 @@ export default class ElectoralBubbles extends Component {
     var [ winner, loser ] = r.candidates;
     var margin = winner.percent - loser.percent;
     var party = r.winnerParty || winner.party;
+    var alignment = winner.party;
     // normalize margin
     var mx = Math.log(Math.min(margin, MAX_DOMAIN) / dataDomain + 1);
-    if (party == "Dem") mx *= -1;
+    if (alignment == "Dem") mx *= -1;
     var x = mx;
     var { state, district, called, electoral } = r;
     var key = r.district ? r.state + r.district : r.state;
@@ -167,6 +168,7 @@ export default class ElectoralBubbles extends Component {
       margin,
       mx,
       party,
+      alignment,
       original: r
     };
   }
