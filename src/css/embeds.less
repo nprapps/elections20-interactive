@@ -52,7 +52,7 @@ main.embed {
 
 main.embed-bop {
   color: #444;
-  // background: #333;
+  background: #333;
 
   .full-link {
     font-size: 12px;
@@ -482,10 +482,10 @@ main.embed-bop {
       padding: 3px 6px;
 
       &.Dem {
-        background: @dem;
+        background: lighten(@dem,10%);
       }
       &.GOP {
-        background: @gop;
+        background: lighten(@gop,10%);
       }
 
       @media @sidebar {
