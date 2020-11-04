@@ -99,8 +99,7 @@ export default class StateResults extends Component {
             </div>
             {stateName !== "Alaska" && props.subview && (
               <div class="note">
-                Demographic trends not shown for special elections or states
-                with fewer than 10 counties reporting above 50%.
+                {strings["trends_footnote"]}
               </div>
             )}
             Source: AP (as of <DateFormatter value={state.latest} />
