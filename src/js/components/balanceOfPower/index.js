@@ -29,8 +29,8 @@ export default class BalanceOfPower extends Component {
       <div class="leaderboard">
         <div class="results-header-group net-gain">
           <h2 class={"party " + results.netGainParty.toLowerCase()} title="">
-            <label class={results.netGainParty == "none" ? "hidden" : ""}>
-              Net change
+            <label>
+              Net gain
             </label>
             <abbr title="">
               {results.netGainParty != "none"
