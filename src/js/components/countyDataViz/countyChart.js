@@ -222,6 +222,11 @@ export class CountyChart extends Component {
     maxY = Math.ceil(maxY * 100) / 100;
     minY = Math.floor(minY * 100) / 100;
 
+    if (this.props.variable == "past_margin") {
+      minY = -1;
+      maxY = 1;
+    }
+
     this.xScale = scaleFactory([0, 1], [0, chartWidth]);
     this.yScale = scaleFactory([minY, maxY], [chartHeight, 0]);
 
