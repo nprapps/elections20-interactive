@@ -94,7 +94,7 @@ export default class StateResults extends Component {
               <a href="https://www.ap.org/en-us/topics/politics/elections/counting-the-vote">
                 Read more about how EEVP is calculated.
               </a>{" "}
-              <em>% in</em> for House, Ballot and county-level results
+              <em>% in</em> for House, ballot and county-level results
               represents percent of precincts reporting.
             </div>
             {stateName !== "Alaska" && props.subview && (
