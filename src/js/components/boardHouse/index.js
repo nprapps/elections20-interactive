@@ -32,41 +32,41 @@ export default class BoardHouse extends Component {
   }
 
   render() {
-    var { results, test, latest, alert } = this.state;
+    var { results = [], test, latest, alert } = this.state;
 
-    if (results) {
-      var sorted = results.slice().filter(r => r.keyRace).sort((a, b) =>
-        a.state > b.state ? 1 : 
-        a.state < b.state ? -1 : 
-        parseInt(a.seatNumber) > parseInt(b.seatNumber) ? 1 : 
-        parseInt(a.seatNumber) < parseInt(b.seatNumber) ? -1 : 0
-      );
+    var sorted = results.slice().sort((a, b) =>
+      a.state > b.state ? 1 : 
+      a.state < b.state ? -1 : 
+      parseInt(a.seatNumber) > parseInt(b.seatNumber) ? 1 : 
+      parseInt(a.seatNumber) < parseInt(b.seatNumber) ? -1 : 0
+    );
 
-      var buckets = {
-        likelyD: [],
-        tossup: [],
-        likelyR: [],
-      };
+    sorted = sorted.filter(r => r.keyRace || (r.winnerParty && r.winnerParty != r.previousParty));
 
-      sorted.forEach(function (r) {
-        switch (r.rating) {
-          case "solid-d":
-          case "likely-d":
-          case "lean-d":
-            buckets.likelyD.push(r);
-            break;
+    var buckets = {
+      likelyD: [],
+      tossup: [],
+      likelyR: [],
+    };
 
-          case "solid-r":
-          case "likely-r":
-          case "lean-r":
-            buckets.likelyR.push(r);
-            break;
+    sorted.forEach(function (r) {
+      switch (r.rating) {
+        case "solid-d":
+        case "likely-d":
+        case "lean-d":
+          buckets.likelyD.push(r);
+          break;
 
-          default:
-            buckets.tossup.push(r);
-        }
-      });
-    }
+        case "solid-r":
+        case "likely-r":
+        case "lean-r":
+          buckets.likelyR.push(r);
+          break;
+
+        default:
+          buckets.tossup.push(r);
+      }
+    });
 
     return (
       <>
