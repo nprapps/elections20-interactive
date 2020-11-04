@@ -44,7 +44,12 @@ export default class ResultsTableCounty extends Component {
 
     // Order by lead in overall state race
     const orderedCandidates = this.props.sortOrder.slice(0, 3);
-    if (orderedCandidates.length < this.props.sortOrder.length)
+    var [otherCand] = this.props.sortOrder.filter(c => c.last == "Other");
+    if (
+      orderedCandidates.length < this.props.sortOrder.length &&
+      otherCand &&
+      (otherCand.percent)
+    )
       orderedCandidates.push({ last: "Other", party: "Other" });
     return (
       <div
@@ -268,7 +273,11 @@ function CandidatePercentCell(candidate, leading, percentIn) {
   var party = getParty(candidate.party);
   var allIn = percentIn >= 1;
   return (
-    <td class={`vote ${party} ${leading ? "leading" : ""} ${allIn ? "allin" : ""}`} key={candidate.id}>
+    <td
+      class={`vote ${party} ${leading ? "leading" : ""} ${
+        allIn ? "allin" : ""
+      }`}
+      key={candidate.id}>
       {displayPercent}
     </td>
   );
