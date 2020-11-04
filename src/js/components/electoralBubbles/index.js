@@ -383,7 +383,7 @@ export default class ElectoralBubbles extends Component {
               <ul class="circles">
                 {uncalled[rating].sort((a, b) => b.electoral - a.electoral).map(result => {
                   var reporting = result.eevp || result.reportingPercent;
-                  var r = Math.max(this.nodeRadius(result), MIN_RADIUS) * .5;
+                  var r = Math.max(this.nodeRadius(result), MIN_RADIUS);
                   var size = r * .5;
                   return <li>
                     <svg width={r * 2} height={r * 2}
