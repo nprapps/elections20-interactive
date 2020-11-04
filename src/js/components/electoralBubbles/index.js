@@ -19,7 +19,7 @@ const HIDE_TEXT = 7;
 const MIN_TEXT = 12;
 const MIN_RADIUS = 3;
 const FROZEN = .001;
-const HEIGHT_STEP = 50;
+const HEIGHT_STEP = 70;
 
 var nextTick = function(f) {
   requestAnimationFrame(f);
@@ -50,6 +50,7 @@ export default class ElectoralBubbles extends Component {
     this.onExit = this.onExit.bind(this);
 
     var simulation = d3.forceSimulation();
+    simulation.alphaDecay(0.04);
     simulation.stop(); // only run when visible
 
     var xForce = d3.forceX().x(this.xAccess).strength(X_FORCE);
