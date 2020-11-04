@@ -1,8 +1,12 @@
 import { h, Component, createRef } from "preact";
-import gopher from "../gopher.js";
 
 import { CountyChart } from "./countyChart.js";
-import { getAvailableMetrics, getCountyVariable, sortByParty } from "../util.js";
+import {
+  getAvailableMetrics,
+  getCountyVariable,
+  sortByParty,
+} from "../util.js";
+import strings from "strings.sheet.json";
 
 export class CountyDataViz extends Component {
   constructor(props) {
@@ -52,12 +56,14 @@ export class CountyDataViz extends Component {
     }
 
     var footnote = this.ommittedCounties
-      ? "Counties where leading parties differ from statewide leading parties are omitted."
+      ? strings["omitted_county_footer"]
       : "";
     return (
       <div class="trends">
         <h3>Demographic Trends</h3>
-        <div class={this.state.collapsed ? "collapsed" : null} ref={this.trendsRef}>
+        <div
+          class={this.state.collapsed ? "collapsed" : null}
+          ref={this.trendsRef}>
           {this.state.charts.map(c => (
             <div class="chart-wrapper">
               <CountyChart
@@ -71,7 +77,9 @@ export class CountyDataViz extends Component {
             </div>
           ))}
         </div>
-        <div class="footnote">Trends subject to change as results come in. {footnote}</div>
+        <div class="footnote">
+          Trends subject to change as results come in. {footnote}
+        </div>
         <button
           class={`toggle-table ${
             this.state.cleanedData.length > 4 ? "" : "hidden"
@@ -81,7 +89,6 @@ export class CountyDataViz extends Component {
           data-less="Show less">
           {this.state.collapsed ? `Show all ▼` : `Show less ▲`}
         </button>
-        
       </div>
     );
   }
@@ -121,8 +128,11 @@ export class CountyDataViz extends Component {
   }
 
   getCorrs(v, data) {
-    var correlation = pearsonCorrelation([data.map(d => d.x),
-      data.map(d => getCountyVariable(d, v))], 0, 1);
+    var correlation = pearsonCorrelation(
+      [data.map(d => d.x), data.map(d => getCountyVariable(d, v))],
+      0,
+      1
+    );
     return Math.abs(correlation);
   }
 
@@ -183,9 +193,10 @@ function pearsonCorrelation(prefs, p1, p2) {
     pSum += prefs[p1][si[i]] * prefs[p2][si[i]];
   }
 
-  var num = pSum - (sum1 * sum2 / n);
-  var den = Math.sqrt((sum1Sq - Math.pow(sum1, 2) / n) *
-      (sum2Sq - Math.pow(sum2, 2) / n));
+  var num = pSum - (sum1 * sum2) / n;
+  var den = Math.sqrt(
+    (sum1Sq - Math.pow(sum1, 2) / n) * (sum2Sq - Math.pow(sum2, 2) / n)
+  );
 
   if (den == 0) return 0;
 
