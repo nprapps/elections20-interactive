@@ -95,8 +95,10 @@ export default class ElectoralBubbles extends Component {
     if (!svg) return;
     var bounds = svg.getBoundingClientRect();
     var { width, height } = bounds;
+    if (width != this.state.width) {
+      this.simulation.alpha(1);
+    }
     this.setState({ width });
-    this.simulation.alpha(1);
   }
 
   intersect([e]) {
