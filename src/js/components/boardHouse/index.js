@@ -5,6 +5,7 @@ import BalanceOfPower from "../balanceOfPower";
 import TestBanner from "../testBanner";
 import DateFormatter from "../dateFormatter";
 import BoardKey from "../boardKey";
+import { getBucket } from "../util";
 
 export default class BoardHouse extends Component {
   constructor(props) {
@@ -34,18 +35,36 @@ export default class BoardHouse extends Component {
     var { results, test, latest, alert } = this.state;
 
     if (results) {
-      var sorted = results.slice().sort((a, b) =>
+      var sorted = results.slice().filter(r => r.keyRace).sort((a, b) =>
         a.state > b.state ? 1 : 
         a.state < b.state ? -1 : 
         parseInt(a.seatNumber) > parseInt(b.seatNumber) ? 1 : 
         parseInt(a.seatNumber) < parseInt(b.seatNumber) ? -1 : 0
       );
 
-      var buckets = {};
+      var buckets = {
+        likelyD: [],
+        tossup: [],
+        likelyR: [],
+      };
 
       sorted.forEach(function (r) {
-        if (!buckets[r.rating]) buckets[r.rating] = [];
-        buckets[r.rating].push(r);
+        switch (r.rating) {
+          case "solid-d":
+          case "likely-d":
+          case "lean-d":
+            buckets.likelyD.push(r);
+            break;
+
+          case "solid-r":
+          case "likely-r":
+          case "lean-r":
+            buckets.likelyR.push(r);
+            break;
+
+          default:
+            buckets.tossup.push(r);
+        }
       });
     }
 
@@ -66,20 +85,20 @@ export default class BoardHouse extends Component {
           {results && results.length && (
             <>
               <Results
-                races={buckets["toss-up"]}
+                races={buckets.tossup}
                 hed="Toss-Up Seats"
                 office="House"
                 addClass="middle"
                 split={true}
               />
               <Results
-                races={buckets["lean-d"]}
+                races={buckets.likelyD}
                 hed="Lean Democratic"
                 office="House"
                 addClass="first"
               />
               <Results
-                races={buckets["lean-r"]}
+                races={buckets.likelyR}
                 hed="Lean Republican"
                 office="House"
                 addClass="last"
