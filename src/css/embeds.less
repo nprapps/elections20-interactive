@@ -1,5 +1,6 @@
 @import "values";
 @sidebar: ~"(max-width: 300px)";
+@inline: ~"(max-width: 700px)";
 
 h1 {
   font-size: 24px;
@@ -81,7 +82,7 @@ main.embed-bop {
         padding: 0 5px;
       }
 
-      @media @tablet {
+      @media @inline{
         display: block;
       }
     }
@@ -94,7 +95,7 @@ main.embed-bop {
       right: 25px;
       bottom: 8px;
 
-      @media @tablet {
+      @media @inline {
         right: 0;
       }
     }
@@ -111,7 +112,7 @@ main.embed-bop {
         left: 25px;
         right: auto;
 
-        @media @tablet {
+        @media @inline {
           left: 0;
         }
 
@@ -144,7 +145,7 @@ main.embed-bop {
         margin-top: 23px;
         text-align: center;
 
-        @media @tablet {
+        @media @inline {
           margin-top: 10px;
         }
       }
@@ -185,7 +186,7 @@ main.embed-bop {
         height: @thin-height * 1.7;
       }
 
-      @media @tablet {
+      @media @inline {
         border: none;
         padding: 0;
 
@@ -305,7 +306,7 @@ main.embed-bop {
         border-right: none;
       }
 
-      @media @tablet {
+      @media @inline {
         border: none;
       }
     }
