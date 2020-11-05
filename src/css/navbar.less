@@ -163,6 +163,10 @@ nav.results-nav {
           border-top: 1px solid #ddd;
           margin-top: 15px;
         }
+
+        &.state-nav {
+          padding: 9px 8px;
+        }
       }
     }
   }
@@ -209,10 +213,6 @@ nav.results-nav {
       box-shadow: 0 8px 12px fade(black, 20%);
       z-index: 999;
 
-      @media @mobile {
-        border: none;
-      }
-
       li {
         border-top: none;
         .gotham();
@@ -224,6 +224,7 @@ nav.results-nav {
       }
 
       @media @mobile {
+        border: none;
         position: static;
         box-shadow: none;
         padding: 8px 0 0;
