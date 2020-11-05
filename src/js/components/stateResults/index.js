@@ -110,9 +110,7 @@ export default class StateResults extends Component {
               Center for Systems Science and Engineering at Johns Hopkins
               University
             </a>
-            . Unemployment rates from the Bureau of Labor Statistics. 2016
-            presidential margins from the AP and may vary slightly from
-            state-certified final results.
+            . {strings["unemployment_footnote"]} {strings["margins_footnote"]}
           </div>
         </div>
 
