@@ -192,7 +192,7 @@ function CandidateVoteCell(candidate, uncontested) {
     );
   }
   var candPercent = candidate.percent
-    ? `${reportingPercentage(candidate.percent)}%`
+    ? `${Math.round(candidate.percent*1000)/10}%`
     : "-";
   return (
     <div role="cell" class="td percentage">

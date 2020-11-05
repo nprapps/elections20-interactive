@@ -100,6 +100,8 @@ export default class Homepage extends Component {
         </>}
       </div> }
 
+      <div class="full-link"><a href="https://apps.npr.org/elections20-interactive/">See full results ›</a></div>
+
       <div class="source">Source: AP (as of <DateFormatter value={latest} />)</div>
     </div>
   }

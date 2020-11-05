@@ -269,8 +269,15 @@ main.embed-bop {
     .chatter, .uncalled {
       color: #ccc;
     }
-    .net-gain-container .gain-label {
-      color: #ccc;
+    .net-gain-container {
+      .gain-label {
+        color: #ccc;
+      }
+      .net-gain {
+        &.GOP {
+          background: lighten(@gop,10%);
+        }
+      }
     }
     .source {
       color: #aaa;
@@ -404,10 +411,10 @@ main.embed-bop {
 
     .bar {
       height: 100%;
-      display: inline-block;
 
       &.dem {
         background: @dem;
+        float: left;
         path { fill: @dem; }
       }
       &.gop {
@@ -417,6 +424,7 @@ main.embed-bop {
       }
       &.other {
         background: @ind;
+        float: left;
         path { fill: @ind; }
       }
     }
@@ -482,10 +490,10 @@ main.embed-bop {
       padding: 3px 6px;
 
       &.Dem {
-        background: lighten(@dem,10%);
+        background: @dem;
       }
       &.GOP {
-        background: lighten(@gop,10%);
+        background: @gop;
       }
 
       @media @sidebar {
@@ -513,5 +521,10 @@ main.embed-homepage {
     font-style: italic;
     font-size: 12px;
     color: #787878;
+  }
+  .full-link {
+    .knockout-header();
+    text-align: center;
+    a { text-decoration: none; }
   }
 }
