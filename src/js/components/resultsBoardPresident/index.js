@@ -21,7 +21,7 @@ function CandidateCells(race, winner) {
 
     return (
       <td role="cell" key={c.id} class={className.join(" ")}>
-        <div class="perc">{Math.round(c.percent*100)}%</div>
+        <div class="perc">{Math.round(c.percent*1000)/10}%</div>
       </td>
     );    
   });
