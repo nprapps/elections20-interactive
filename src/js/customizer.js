@@ -175,11 +175,11 @@ class Customizer extends Component {
         <label for="bop_showPresident">Show president</label>
 
         <input 
-          id="bop_showPresident" 
+          id="bop_onlyPresident" 
           type="checkbox" 
           value={state.onlyPresident} 
           onInput={() => this.setFlag("onlyPresident", !state.onlyPresident)} />
-        <label for="bop_showPresident">Show president</label>
+        <label for="bop_onlyPresident">Only president</label>
 
         <input 
           id="bop_triplet" 
