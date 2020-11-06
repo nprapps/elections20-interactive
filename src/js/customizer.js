@@ -15,6 +15,7 @@ class Customizer extends Component {
       raceID: null,
       dark: false,
       showPresident: false,
+      onlyPresident: false,
       inline: false
     }
 
@@ -156,6 +157,7 @@ class Customizer extends Component {
     if (state.dark) src.searchParams.set("theme", "dark");
     if (state.showPresident) src.searchParams.set("president", true);
     if (state.inline) src.searchParams.set("inline", true)
+    if (state.onlyPresident) src.searchParams.set("onlyPresident", true);
     return (<>
       <div class="options">
         <input 
@@ -170,6 +172,13 @@ class Customizer extends Component {
           type="checkbox" 
           value={state.showPresident} 
           onInput={() => this.setFlag("showPresident", !state.showPresident)} />
+        <label for="bop_showPresident">Show president</label>
+
+        <input 
+          id="bop_showPresident" 
+          type="checkbox" 
+          value={state.onlyPresident} 
+          onInput={() => this.setFlag("onlyPresident", !state.onlyPresident)} />
         <label for="bop_showPresident">Show president</label>
 
         <input 

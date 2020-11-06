@@ -31,7 +31,6 @@ export default class StateResults extends Component {
   }
 
   updateTimestamp(timestamp) {
-    console.log(timestamp);
     var latest = Math.max(this.state.latest || 0, timestamp);
     this.setState({ latest });
   }
