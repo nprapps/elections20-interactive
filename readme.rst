@@ -57,6 +57,8 @@ Additional links and params
 * Balance of Power embed (House and Senate bars): ``/embedBOP.html``
 
   * ``president=true`` adds electoral totals to the top (for use on homepage)
+  * ``hideCongress=true`` hides House and Senate bars on mobile view
+  * ``onlyPresident=true`` hides House and Senate bars on all views
   * ``inline=true`` for side-by-side display (for use on liveblog)
   * ``theme=dark`` for dark theme
     

@@ -13,7 +13,9 @@ var search = new URLSearchParams(window.location.search);
 var params = {
   president: null,
   inline: null,
-  theme: null
+  theme: null,
+  hideCongress: null,
+  onlyPresident: null
 };
 
 for (var k in params) params[k] = search.get(k);
@@ -105,7 +107,7 @@ async function init(results) {
 
   var template = <>
 
-    <div class={(params.inline ? "inline " : "") + (params.theme ? "dark" : "")}>
+    <div class={(params.inline ? "inline " : "") + (params.theme ? "dark " : "") + (params.hideCongress? "hide-congress" : "") + (params.onlyPresident? "only-pres" : "")}>
       <div class="container">
 
         {/*PRESIDENT*/}
