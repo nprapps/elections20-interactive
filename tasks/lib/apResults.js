@@ -114,7 +114,7 @@ var redeemTicket = async function(ticket, options) {
     try {
       var flags = {};
       if (options.test) flags.test = true;
-      if (option.zero) flags.setZeroCounts = true;
+      if (options.zero) flags.setZeroCounts = true;
       var response = await axios({
         url: resultsURL + ticket.date,
         params: Object.assign({}, resultsParams, ticket.params, flags),
