@@ -1,87 +1,6 @@
 export { getAvailableMetrics, getCountyVariable, getCountyCandidates } from "./county_util.js";
-export { formatters, DateFormatter, getPartyPrefix } from "./formatters.js"
-
-/*
-  Display-friendly formatting for reporting numbers (don't round to 0/100%)
-*/
-export function reportingPercentage(pct) {
-  if (pct > 0 && pct < 0.005) {
-    return "<1";
-  } else if (pct > 0.995 && pct < 1) {
-    return ">99";
-  } else {
-    return Math.round(pct * 100);
-  }
-}
-
-/*
-  Sort a list of candidates by party, with Dems always first and GOP always last
-*/
-
-export function sortByParty(a, b) {
-  var getPartyValue = c =>
-    c.party == "GOP" || c.party == "No"
-      ? Infinity
-      : c.party == "Dem" || c.party == "Yes"
-      ? -Infinity
-      : c.party
-      ? c.party.charCodeAt(0)
-      : 0;
-
-  return getPartyValue(a) - getPartyValue(b);
-}
-
-export function isSameCandidate(c1, c2) {
-  return c1.last == c2.last && c1.party == c2.party;
-}
-
-/*
-  Sort a list of candidates by a predefined order
-*/
-export function sortByOrder(a, b, order) {
-  var getPartyValue = c => {
-    if (!order.includes(c)) {
-      return Infinity;
-    }
-    return order.indexOf(c);
-  };
-
-  return getPartyValue(a) - getPartyValue(b);
-}
-
-export function getBucket(rating) {
-  if (rating == "solid-d" || rating == "likely-d") {
-    return "likelyD";
-  } else if (rating == "lean-d" || rating == "toss-up" || rating == "lean-r") {
-    return "tossup";
-  } else if (rating == "solid-r" || rating == "likely-r") {
-    return "likelyR";
-  }
-}
-
-export function getParty(party) {
-  if (["Dem", "GOP", "Other", "No", "Yes"].includes(party)) {
-    return party;
-  }
-  return "Ind";
-}
-
-export function groupCalled(results) {
-  var called = {
-    Dem: [],
-    GOP: [],
-    Other: [],
-    uncalled: [],
-  };
-
-  if (results) {
-    results.forEach(r => called[r.called ? r.winnerParty : "uncalled"].push(r));
-  }
-
-  return called;
-}
-
-export var sumElectoral = list => list.reduce((t, r) => t + r.electoral, 0);
+export { formatters, DateFormatter, getPartyPrefix, getParty, reportingPercentage } from "./formatters.js"
+export { sortByParty, sortByOrder, getBucket, groupCalled } from "./sorters.js"
 
 export function styleJSX(styles) {
   var list = [];
@@ -93,6 +12,11 @@ export function styleJSX(styles) {
   return list.join("; ");
 }
 
+export function isSameCandidate(c1, c2) {
+  return c1.last == c2.last && c1.party == c2.party;
+}
+
+export var sumElectoral = list => list.reduce((t, r) => t + r.electoral, 0);
 
 export var winnerIcon = `<span class="winner-icon" role="img" aria-label="check mark">
     <svg

@@ -73,3 +73,23 @@ export function getPartyPrefix(party) {
   }
   return prefix;
 }
+
+export function getParty(party) {
+  if (["Dem", "GOP", "Other", "No", "Yes"].includes(party)) {
+    return party;
+  }
+  return "Ind";
+}
+
+/*
+  Display-friendly formatting for reporting numbers (don't round to 0/100%)
+*/
+export function reportingPercentage(pct) {
+  if (pct > 0 && pct < 0.005) {
+    return "<1";
+  } else if (pct > 0.995 && pct < 1) {
+    return ">99";
+  } else {
+    return Math.round(pct * 100);
+  }
+}
