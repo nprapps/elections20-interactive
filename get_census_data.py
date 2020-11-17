@@ -62,6 +62,9 @@ def processData(data):
   data['percent_white'] = data['white_alone'] / data['race_hispanic_total']
   data['percent_hispanic'] = data['hispanic_total'] / data['race_hispanic_total']
   data['percent_bachelors'] = data['percent_bachelors'].astype(float) / 100
+
+  print(data.columns)
+  data = data[['key', 'percent_black', 'percent_white', 'percent_hispanic', 'percent_bachelors', 'population', 'median_income']]
   return data
 
 if __name__ == "__main__":
