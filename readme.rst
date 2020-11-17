@@ -47,6 +47,15 @@ Tracked events
 * ``clicked-map`` - the user clicked a state on the national map
 * ``tab-selected`` - the user manually chose a tab to view
 
+Getting County Data
+--------------
+
+Pulling county unemployment and census data relies on several python scripts, in the root directoy. 
+* ``get_unemployment_data.py`` - Pulls unemployment data from the U.S. Bureau of Labor Statistics. To run, it you must pass in the year you wish to pull in the format of '19' for '2019' etc.
+* ``get_census_data.py`` - Uses the censusdata package to pull population, race, and employment data from the census, maps them to human-readable names, and calculates some percentages. Before running in a new year, check the detail and subject table codes are still correct, as the census changes these occasionally. 
+
+For 2020, Covid case numbers were added. If these numbers are no longer relevant, covid will need to be removed from availableMetrics in the util.
+
 Additional links and params
 --------------
 
