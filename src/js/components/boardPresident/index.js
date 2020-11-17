@@ -10,7 +10,7 @@ import Cartogram from "../cartogram";
 import NationalMap from "../nationalMap";
 
 import Results from "../resultsBoardPresident";
-import DateFormatter from "../dateFormatter";
+import DateFormatter from "../util";
 import BoardKey from "../boardKey";
 
 var winnerIcon =

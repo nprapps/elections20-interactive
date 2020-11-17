@@ -2,7 +2,7 @@ import { h, render, Fragment } from "preact";
 import gopher from "./components/gopher";
 import $ from "./lib/qsa";
 import InactiveSenateRaces from "inactive_senate_races.sheet.json";
-import DateFormatter from "./components/dateFormatter";
+import DateFormatter from "./components/util";
 
 import Sidechain from "@nprapps/sidechain";
 var guest = Sidechain.registerGuest();

@@ -3,7 +3,7 @@ import gopher from "../gopher.js";
 import Results from "../resultsBoardNamed";
 import BalanceOfPower from "../balanceOfPower";
 import TestBanner from "../testBanner";
-import DateFormatter from "../dateFormatter";
+import DateFormatter from "../util";
 import BoardKey from "../boardKey";
 import { getBucket } from "../util.js";
 

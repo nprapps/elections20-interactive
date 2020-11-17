@@ -3,7 +3,7 @@ import { ElectoralBars, Leaderboard } from "./components/boardPresident";
 import NationalMap from "./components/nationalMap";
 import ElectoralBubbles from "./components/electoralBubbles";
 import Cartogram from "./components/cartogram";
-import DateFormatter from "./components/dateFormatter";
+import DateFormatter from "./components/util";
 import TestBanner from "./components/testBanner";
 import Tabs from "./components/tabs";
 import { groupCalled, sumElectoral, getBucket } from "./components/util.js";

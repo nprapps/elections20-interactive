@@ -5,7 +5,7 @@ import KeyRaces from "../stateViewKeyRaces";
 import ResultsTableCandidates from "../resultsTableCandidates";
 import CountyResults from "../countyResults";
 import TestBanner from "../testBanner";
-import DateFormatter from "../dateFormatter";
+import DateFormatter from "../util";
 
 import stateLookup from "states.sheet.json";
 import strings from "strings.sheet.json";
