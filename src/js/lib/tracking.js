@@ -28,6 +28,7 @@ var track = function(eventAction, eventLabel, eventValue) {
 
   // hack canonical link tags
   var canonicalurl = String(window.location.href);
+  var canonicalurl = canonicalurl.replace("index.html", "");
   canonicalurl = canonicalurl.replace("apps.npr.org.s3.amazonaws.com", "apps.npr.org");
   // localhost shouldn't ever appear in what google is indexing, but...
   canonicalurl = canonicalurl.replace("localhost:8000/", "apps.npr.org/elections20-interactive/");
