@@ -15,7 +15,8 @@
   "scripts": {
     "src/js/main.js": "build/app.js",
     "src/js/embedBOP.js": "build/embedBOP.js",
-    "src/js/homepage.js": "build/homepage.js"
+    "src/js/homepage.js": "build/homepage.js",
+    "src/js/analytics.js": "build/analytics.js"
   },
   "scriptsOnce": {
     "src/js/embed.js": "build/embed.js",
