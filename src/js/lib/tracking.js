@@ -7,6 +7,7 @@
 */
 
 var isEmbedded = require("./embedded");
+var DataConsent = require ('./data-consent');
 
 var DIMENSION_PARENT_URL = 'dimension1';
 var DIMENSION_PARENT_HOSTNAME = 'dimension2';
@@ -17,6 +18,9 @@ var a = document.createElement("a");
 var slug = window.location.pathname.replace(/^\/|\/$/g, "");
 
 var track = function(eventAction, eventLabel, eventValue) {
+  // Bail early if opted out of Performance and Analytics consent groups
+  if (!DataConsent.hasConsentedTo(DataConsent.PERFORMANCE_AND_ANALYTICS)) return;
+
   var event = {
     eventAction,
     eventLabel,
@@ -46,6 +50,10 @@ var track = function(eventAction, eventLabel, eventValue) {
 track.page = function(url) {
   // don't send these when embedded
   if (isEmbedded) return;
+  
+  // Bail early if opted out of Performance and Analytics consent groups
+  if (!DataConsent.hasConsentedTo(DataConsent.PERFORMANCE_AND_ANALYTICS)) return;
+
   var page = new URL(url, window.location.href);
   page = page.toString();
   console.log(`Virtual pageview: ${page}`);
