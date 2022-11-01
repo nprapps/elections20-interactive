@@ -5,16 +5,55 @@
     <link rel="stylesheet" type="text/css" href="style.css">
     <title>2020 Election Embeds</title>
     <style>
-body {
-  padding: 0 20px;
-  max-width: 800px;
-  margin: auto;
-}
+      body {
+        padding: 0 20px;
+        max-width: 800px;
+        margin: auto;
+      }
 
-side-chain {
-  width: 100%;
-  outline: 1px dotted #CCC;
-}
+      side-chain {
+        width: 100%;
+        outline: 1px dotted #CCC;
+      }
+
+
+      /* Styles for social image */
+
+      .social-image-preview {
+        width: 100%;
+        background-color: #eee;
+        padding: 1em;
+      }
+      .social-image-preview a {
+        margin: 0 auto;
+      }
+      .social-image-preview img {
+        max-width: 300px;
+        max-height: 300px;
+      }
+
+      .loader {
+        border: 8px solid #ccc;
+        border-top: 8px solid #aaa;
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        animation: spin 1.2s linear infinite;
+      }
+      .is-hidden {
+        display: none;
+      }
+
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+
+      @media (prefers-reduced-motion) {
+        .loader {
+          animation: none;
+        }
+      }
     </style>
   </head>
   <body>
