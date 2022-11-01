@@ -7,7 +7,7 @@
 */
 
 var isEmbedded = require("./embedded");
-var DataConsent = require ('./data-consent');
+var DataConsent = require('./data-consent');
 
 var DIMENSION_PARENT_URL = 'dimension1';
 var DIMENSION_PARENT_HOSTNAME = 'dimension2';
