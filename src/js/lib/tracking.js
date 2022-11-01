@@ -29,6 +29,30 @@ var track = function(eventAction, eventLabel, eventValue) {
     eventCategory: "apps-" + slug
   }
 
+
+  // hack canonical link tags
+  var canonicalurl = String(window.location.href);
+  var canonicalurl = canonicalurl.replace("index.html", "");
+  canonicalurl = canonicalurl.replace("apps.npr.org.s3.amazonaws.com", "apps.npr.org");
+  // localhost shouldn't ever appear in what google is indexing, but...
+  canonicalurl = canonicalurl.replace("localhost:8000/", "apps.npr.org/elections20-interactive/");
+
+  canonicalurl = canonicalurl.split("?")[0];
+
+
+  const canonical = document.querySelector('link[rel="canonical"]');
+  if (canonical) {
+    console.log("canonical exists, changing link to " + canonicalurl);
+    canonical.href = canonicalurl;
+  } else {
+    console.log("No canonical exists, setting link to " + canonicalurl);
+    const linkTag = document.createElement('link');
+    linkTag.setAttribute('rel', 'canonical');
+    linkTag.href=canonicalurl;
+    document.head.appendChild(linkTag);
+  };
+
+
   console.log(`Tracking: ${eventAction} / ${eventLabel} / ${eventValue}`)
 
   var search = window.location.search.replace(/^\?/, "");
