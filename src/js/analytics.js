@@ -3,7 +3,7 @@ var DataConsent = require('./lib/data-consent');
 var googleAnalyticsAlreadyInitialized = false;
 
 var setupGoogleAnalytics = function() {
-  // Bail early if user hasn't consented
+  // Bail early if opted out of Performance and Analytics consent groups
   if (!DataConsent.hasConsentedTo(DataConsent.PERFORMANCE_AND_ANALYTICS)) return;
 
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -47,12 +47,17 @@ var setupGoogleAnalytics = function() {
   googleAnalyticsAlreadyInitialized = true;
 }
 
+// Add GA initialization to window.onload
+var oldOnload = window.onload;
+window.onload = (typeof window.onload != 'function') ? setupGoogleAnalytics : function() { oldOnload(); setupGoogleAnalytics(); };
 
-var oldonload = window.onload;
-window.onload = (typeof window.onload != 'function') ? setupGoogleAnalytics : function() { oldonload(); setupGoogleAnalytics(); };
-
+// Listen for DataConsentChanged event 
 document.addEventListener('npr:DataConsentChanged', () => {
+
+  // Bail early if it's already been set up 
   if (googleAnalyticsAlreadyInitialized) return;
+
+  // When a user opts into performance and analytics cookies, initialize GA
   if (DataConsent.hasConsentedTo(DataConsent.PERFORMANCE_AND_ANALYTICS)) {
     setupGoogleAnalytics();
   }  
