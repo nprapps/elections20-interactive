@@ -20,8 +20,6 @@ class Customizer extends Component {
       showPresident: false,
       onlyPresident: false,
       inline: false,
-
-      // socialShare
       image: null,
       loadingImage: false
     }
@@ -37,7 +35,14 @@ class Customizer extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (prevState.mode !== this.state.mode) {
+    if ( (prevState.mode !== this.state.mode)
+      || (prevState.selectedState !== this.state.selectedState)
+      || (prevState.selectedOffice !== this.state.selectedOffice)
+      || (prevState.dark !== this.state.dark)
+      || (prevState.showPresident !== this.state.showPresident)
+      || (prevState.onlyPresident !== this.state.onlyPresident)
+      || (prevState.inline !== this.state.inline)
+    ) {
       this.setState({ image: null })
     }
   }
@@ -128,12 +133,12 @@ class Customizer extends Component {
         <div class={ `social-image-preview ${this.state.loadingImage || this.state.image ? '' : 'is-hidden'}`}>
           { 
             this.state.loadingImage 
-              ? <div><div class='loader'></div>Loading image...this may take a little while</div> 
+              ? <div class="loading"><div class='loader'></div>Loading image...this may take a little while</div> 
               : "" 
           }
           { 
             this.state.image ? ( 
-            <a download="image.png" href={`${this.state.image}`}><img class="preview-image" src={`${this.state.image}`} alt="generated social image"/></a>
+            <a id="download" download="image.png" href={`${this.state.image}`}><img class="preview-image" src={`${this.state.image}`} alt="generated social image"/></a>
             ) : ''
           }
         </div>
@@ -145,27 +150,28 @@ class Customizer extends Component {
   board(free, props, state) {
     var { url } = free;
     var src = url + `#/${state.mode}`;
-
-    // TODO - swap this out 
-    var screenshotSrc = 'https://apps.npr.org/elections20-interactive/' +  `#/${state.mode}`;
+    var screenshotSrc = src.indexOf('localhost') > -1 
+      ? `https://apps.npr.org/elections20-interactive/#/${state.mode}`
+      : src
     
     return (<>
       {this.embeds(src, `responsive-embed-election-${state.selectedState}-${state.mode}`)}
-      {this.socialShare(screenshotSrc)}
       <h2>Preview</h2>
       <side-chain
         key={state.raceID}
         src={src}
-      />
+        />
+      {this.socialShare(screenshotSrc)}
     </>);
   }
 
   statePage(free, props, state) {
     var { url, offices, postals } = free;
     var src = `${url}#/states/${state.selectedState}/${state.selectedOffice || ''}`;
-    // TODO - swap this out 
-    var screenshotSrc = 'https://apps.npr.org/elections20-interactive/' +  (`#/states/${state.selectedState}/${state.selectedOffice || ''}`);
-    
+    var screenshotSrc = src.indexOf('localhost') > -1 
+      ? `https://apps.npr.org/elections20-interactive/#/states/${state.selectedState}/${state.selectedOffice || ''}`
+      : src
+
     return (<>
       <div class="state-select">
         <select value={state.selectedState} onInput={this.selectStatePage}>
@@ -178,11 +184,11 @@ class Customizer extends Component {
         </select>
       </div>
       {this.embeds(src, `responsive-embed-election-${state.selectedState}-${state.selectedOffice || "X"}`)}
-      {this.socialShare(screenshotSrc)}
       <h2>Preview</h2>
       <side-chain 
         key={state.selectedState} 
         src={src} />
+      {this.socialShare(screenshotSrc)}
     </>);
   }
 
@@ -195,10 +201,8 @@ class Customizer extends Component {
       assembly.searchParams.set("race", state.raceID);
       src = assembly.toString();
     }
-
-    // construct screenshotSrc
-    let screenshotSrc;
-    if (state.raceID) {
+    var screenshotSrc = src;
+    if (state.raceID && src.indexOf('localhost') > -1) {
       var assembly = new URL('https://apps.npr.org/elections20-interactive/' + "./embed.html");
       assembly.searchParams.set("file", `states/${state.selectedState}`);
       assembly.searchParams.set("race", state.raceID);
@@ -219,12 +223,12 @@ class Customizer extends Component {
       </div>
       {state.raceID && <>
         {this.embeds(src, `responsive-embed-election-${state.selectedState}-${state.raceID}`)}
-        {this.socialShare(screenshotSrc)}
         <h2>Preview</h2>
         <side-chain
           key={state.raceID}
           src={src}
-        />
+          />
+        {this.socialShare(screenshotSrc)}
       </>}
     </>);
   }
@@ -237,12 +241,15 @@ class Customizer extends Component {
     if (state.inline) src.searchParams.set("inline", true)
     if (state.onlyPresident) src.searchParams.set("onlyPresident", true);
 
-    var screenshotUrl = new URL('https://apps.npr.org/elections20-interactive/embedBOP.html')
-    if (state.dark) screenshotUrl.searchParams.set("theme", "dark");
-    if (state.showPresident) screenshotUrl.searchParams.set("president", true);
-    if (state.inline) screenshotUrl.searchParams.set("inline", true)
-    if (state.onlyPresident) screenshotUrl.searchParams.set("onlyPresident", true);
-    var screenshotSrc = screenshotUrl.toString();
+    var screenshotSrc;
+    if (src.toString().indexOf('localhost') > -1) {
+      var screenshotUrl = new URL('https://apps.npr.org/elections20-interactive/' + `embedBOP.html`);
+      if (state.dark) screenshotUrl.searchParams.set("theme", "dark");
+      if (state.showPresident) screenshotUrl.searchParams.set("president", true);
+      if (state.inline) screenshotUrl.searchParams.set("inline", true)
+      if (state.onlyPresident) screenshotUrl.searchParams.set("onlyPresident", true);
+      screenshotSrc = screenshotUrl.toString();
+    }
 
     return (<>
       <div class="options">
@@ -275,25 +282,28 @@ class Customizer extends Component {
         <label for="bop_inline">Row layout</label>
       </div>
       {this.embeds(src, "responsive-embed-election-congress")}
-      {this.socialShare(screenshotSrc)}
       <h2>Preview</h2>
       <side-chain
         src={src}
-      />
+        />
+      {this.socialShare(screenshotSrc)}
     </>);
   }
 
   homepage(free, props, state) {
     var { url } = free;
     var src = new URL(url + `homepage.html`);
-    var screenshotSrc = 'https://apps.npr.org/elections20-interactive/homepage.html'
+    var screenshotSrc = src.toString().indexOf('localhost') > -1 
+      ? 'https://apps.npr.org/elections20-interactive/homepage.html'
+      : src.toString()
+
     return (<>
       {this.embeds(src, "responsive-embed-electoral-college")}
-      {this.socialShare(screenshotSrc)}
       <h2>Preview</h2>
       <side-chain
         src={src}
-      />
+        />
+      {this.socialShare(screenshotSrc)}
     </>);
   }
 
