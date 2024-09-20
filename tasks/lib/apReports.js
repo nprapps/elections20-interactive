@@ -12,7 +12,8 @@ var baseParams = {
 var getAPIData = async function(url, ...params) {
   var response = await axios({
     url,
-    params: Object.assign({}, baseParams, ...params)
+    params: Object.assign({}, baseParams, ...params),
+    headers: {"x-api-key": process.env.AP_API_KEY}
   });
   return response.data;
 };
